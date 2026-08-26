@@ -26,9 +26,9 @@ the repo root or in `products/` — `node build.js` overwrites them.**
 | `src/build.js` | Page shell (`<head>`, header, footer), shared partials, `page()` writer. |
 | `build.js` | Entry point. Requires `src/pages.js` (which writes as a side effect), then emits sitemap + robots. |
 | `assets/css/site.css` | Design system: tokens, components, the drawn material textures. |
-| `assets/css/motion.css` | Scroll/enter animation only. Reveal is opt-in via `html.io`. |
+| `assets/css/motion.css` | Scroll animation, and the structural sections that depend on it (the pinned family rail). Native CSS scroll timelines first; `html.io` is only the Firefox fallback. |
 | `assets/js/site.js` | Nav, filters, contact form, light source. |
-| `assets/js/motion.js` | Adds `.in` to `[data-anim]` elements as they enter view. |
+| `assets/js/motion.js` | Retracting header (all browsers) + the IntersectionObserver reveal fallback (Firefox only). Does **nothing** for reveals on Chrome/Safari. |
 | `dist/` | Deploy bundle. Regenerate with the snippet in README. Gitignored. |
 
 Adding a product or project is a `src/content.js` edit plus `node build.js` —
@@ -36,19 +36,40 @@ cards, detail pages, filters, counts and the sitemap all follow automatically.
 
 ## Non-obvious things that will bite you
 
-**Animation gates visibility.** `[data-anim]` elements are hidden until
-`motion.js` adds `.in`. When verifying in a browser, add the class — setting any
-other attribute does nothing, and `[data-anim="frame"]` clips its contents away
-entirely, which looks exactly like a broken image.
+**Animation gates visibility, and there are two engines doing it.** Chrome,
+Edge and Safari 26 run the reveals entirely in CSS via `animation-timeline:
+view()` — `motion.js` is not involved at all. Firefox has no support, so
+`motion.js` adds `html.io` and drives the same reveals with an
+IntersectionObserver.
+
+This matters when you inspect a page: on Chrome, adding `.in` does **nothing**,
+because there is no `.in` rule on that path. Anything below the fold reads as
+`opacity: 0`, and `[data-anim="frame"]` clips its contents away entirely, which
+looks exactly like a broken image. To force everything visible, kill the
+animation rather than adding a class:
 
 ```js
-document.querySelectorAll('[data-anim]').forEach(e => e.classList.add('in'));
+document.querySelectorAll('[data-anim]').forEach(e => {
+  e.style.cssText += ';animation:none!important;opacity:1!important;' +
+                     'transform:none!important;clip-path:none!important;';
+});
 ```
 
-**Scroll reveal is deliberately fail-safe.** `.rise`-style elements are visible
-by default; the hidden state is applied by script only once it has confirmed it
-can reveal them again. Do not "simplify" this into a CSS-only hidden state — a
-script error would make the whole catalogue invisible.
+**Scroll reveal is deliberately fail-safe.** Nothing in the stylesheet hides
+content on its own. The hidden state comes from `html.io`, which the inline
+`HEAD_BOOT` script in `src/build.js` adds *only* on the Firefox path — and that
+same script arms a six-second timer to strip it back off unless `motion.js`
+arrives and sets `documentElement.dataset.mo`. A blocked, failed or slow script
+therefore leaves a plain readable page, never an empty one. Do not "simplify"
+this into a CSS-only hidden state.
+
+**`view()` cannot resolve inside `overflow: hidden`.** An `overflow: hidden`
+ancestor is a scroll container, so a `view()` timeline on anything inside one
+never advances and the element stays stuck at its start state — invisible. This
+is why the hero/CTA/page-head walls borrow a *named* timeline
+(`view-timeline-name`) published by their section instead of using `view()`
+directly, and why `[data-anim]` goes on the `.card` itself and never on
+`.card-surface`.
 
 **`.nav a` outranks `.btn-primary`** on specificity. Any button placed in the
 nav needs its colour restated or it inherits the muted link grey.
@@ -78,16 +99,40 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
-- `--brand` is the cyan from the client's logo, and is the **only** interactive
-  colour. `--brand-deep` / `--brand-ink` are the same hue tuned for contrast on
-  fills and on the paper ground.
-- `--brass` / `--brass-ink` are for **numerals and spec values only**.
+**The palette is neutral.** A true greyscale from `--ink` `#0E0E0F` to
+`--paper` `#F2F2F1`. Nothing is warm or cool. There is exactly one hue on the
+site.
+
+- `--brand` is the cyan from the client's logo and is the **only** colour,
+  reserved for interactive things — links, focus, primary buttons. Because it is
+  the only hue, it reads as "you can click this". Do not spend it on decoration.
+  `--brand-deep` / `--brand-ink` are the same hue tuned for contrast.
+- `--mark` / `--mark-ink` are **neutrals**, not an accent. They carry figures,
+  hairline rules and markers. (They replaced `--brass` / `--brass-ink`; if you
+  see those names anywhere, that reference is stale.)
+- All emphasis is a step in **lightness**, never a change in hue.
+- Type: `--display` is Instrument Serif, which ships **one weight**. Hierarchy is
+  size, space and measure — nothing here can be emphasised by making it bolder.
+  `--body` is Instrument Sans, `--mono` is IBM Plex Mono for labels and specs.
+  The families are set in `site.css`; the Google Fonts URL is `FONTS` in
+  `src/build.js`. Change both together.
+- A fixed 3% film grain sits over the viewport (`body::after`). It is what stops
+  the large flat neutrals reading as screen fill. Removing it flattens the site.
 - Dark sections and light sections alternate: dark where the page is
   atmospheric, light where it is informational.
 - The logo is the client's asset. Scale it, never restyle or recolour it.
 
-Every text/background pair currently measures at or above 4.5:1. If you change a
-token, re-check — the brass and cyan both sit close to the line.
+**Section shapes are deliberately varied.** The page used to be one shape
+repeated — eyebrow + heading left, lead right, then a grid of equal cards — and
+eight of those in a row read as a template. Each block now has its own shape:
+`.diptych` (full-bleed 50/50 split), the pinned `.rail-sec` family rail,
+`.roomdex` (an index, not a tile grid), `.process-grid` (sticky aside),
+`.voices` (full-width quote rows), `.statement`, and `.cat-grid` (first product
+in each family spans two columns). Reach for an existing shape before adding a
+grid of equal cards.
+
+Every text/background pair measures at or above 4.5:1; the lowest is 5.9:1. If
+you change a token, re-check.
 
 ## Still outstanding
 
