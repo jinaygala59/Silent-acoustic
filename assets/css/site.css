@@ -1,0 +1,1288 @@
+/* =========================================================================
+   Silence Acoustic — design system
+
+   The palette is neutral. Not warm, not cool — a true greyscale from near-
+   black to off-white, with exactly one colour in the whole system.
+
+   Three rules hold the thing together, and most of what makes the site feel
+   considered is that they are never broken:
+
+     1. There is no decorative colour. Figures, rules and markers are the
+        brightest neutral in their context; labels are the dimmest. All
+        emphasis is a step in lightness, never a change in hue.
+     2. The logo cyan is for interactive things only — links, focus, primary
+        buttons. It is the single hue on the site, which is what makes it
+        read as "you can click this" rather than as decoration.
+     3. Hierarchy comes from size, space and measure. The display face has one
+        weight, so nothing here can be emphasised by making it bolder.
+   ========================================================================= */
+
+:root {
+  /* -- ground: neutral near-black, the treated room ---------------------
+     Four steps rather than one flat fill. Every dark surface on the site is
+     one of these, so a panel sitting on the page reads as a raised object
+     under the same light rather than a box drawn on top of it. */
+  --ink:        #0E0E0F;
+  --ink-panel:  #17171A;
+  --ink-raise:  #202024;
+  --ink-edge:   #2E2E33;
+
+  /* -- paper: neutral off-white, the datasheet ------------------------- */
+  --paper:      #F2F2F1;
+  --paper-sub:  #E8E8E7;
+  --paper-edge: #D2D2D1;
+
+  /* -- text ------------------------------------------------------------ */
+  --on-dark:      #EDEDEC;   /* 16.4:1 on --ink */
+  --on-dark-mute: #9A9A99;   /*  6.8:1 on --ink */
+  --on-light:      #131314;  /* 16.5:1 on --paper */
+  --on-light-mute: #56565A;  /*  6.5:1 on --paper */
+
+  /* -- accents ---------------------------------------------------------
+     --brand is the cyan lifted straight from the Silence Acoustic logo, and
+     it is the only hue in the system. The -deep and -ink variants exist
+     because the logo cyan is too light to hold white text or to sit on the
+     paper ground at 4.5:1 — same hue, tuned for contrast.
+
+     --mark took over the job a brass accent used to do: figures, hairline rules and
+     markers. It is a neutral, so the datasheet reads as precision rather
+     than as ornament, and nothing on the page competes with the one cyan. */
+  --brand:      #2AB3DE;   /* logo cyan — links and accents on dark, 7.9:1 */
+  --brand-lift: #6BD0F0;   /* hover on dark */
+  --brand-deep: #0E6C8B;   /* solid fills carrying white text — 5.9:1 */
+  --brand-ink:  #0B6480;   /* links and labels on the paper ground — 5.9:1 */
+  --mark:       #D8D8D6;   /* figures + rules on the dark ground — 13.5:1 */
+  --mark-ink:   #4A4A4E;   /* the same role on the paper ground — 7.9:1 */
+
+  /* -- type ------------------------------------------------------------ */
+  --display: 'Instrument Serif', 'Times New Roman', Times, serif;
+  --body:    'Instrument Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* fluid scale — 320px → 1440px.
+     Larger at the top than before: a 400-weight serif needs size to carry a
+     page the way an 800-weight grotesk did, and the extra scale is most of
+     what separates a considered layout from a cramped one. */
+  --t-hero: clamp(3rem, 1.55rem + 6.4vw, 7rem);
+  --t-h1:   clamp(2.75rem, 1.5rem + 5.6vw, 6rem);
+  --t-h2:   clamp(2.125rem, 1.35rem + 3.4vw, 3.75rem);
+  --t-h3:   clamp(1.375rem, 1.15rem + 1.1vw, 1.9375rem);
+  --t-lead: clamp(1.0625rem, 1rem + 0.42vw, 1.25rem);
+  --t-body: clamp(1rem, 0.97rem + 0.16vw, 1.0625rem);
+  --t-mono: clamp(0.6875rem, 0.655rem + 0.16vw, 0.75rem);
+
+  /* -- structure ------------------------------------------------------- */
+  --rail: 7.5rem;             /* left spec-margin on desktop */
+  --gut: clamp(1.5rem, 5vw, 5rem);
+  --measure: 64ch;
+  --max: 88rem;
+  --pad-y: clamp(5.5rem, 11vw, 11rem);
+  --r: 2px;                   /* panels are milled, not rounded */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* -- elevation --------------------------------------------------------
+     Long and soft. A short dark shadow reads as a drop-shadow effect; a long
+     faint one reads as an object standing slightly off the page. */
+  --lift:   0 1px 2px rgba(14, 14, 15, 0.05), 0 10px 30px -14px rgba(14, 14, 15, 0.20);
+  --lift-2: 0 2px 6px rgba(14, 14, 15, 0.06), 0 30px 70px -28px rgba(14, 14, 15, 0.32);
+  --lift-d:   0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -18px rgba(0, 0, 0, 0.7);
+  --lift-d-2: 0 2px 8px rgba(0, 0, 0, 0.45), 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+}
+
+/* =========================== reset ====================================== */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+  }
+}
+body {
+  font-family: var(--body);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--on-light);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+
+/* Film grain.
+   One fixed, composited layer of very fine noise over the whole viewport at
+   three per cent. It is doing the same job a paper stock does in print: large
+   flat fills stop looking like flat fills. Take it out and the dark sections
+   immediately read as screen-flat again. Non-interactive, and it sits under
+   the skip link so it can never intercept focus. */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 150;
+  pointer-events: none; opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+@media print { body::after { display: none; } }
+
+:focus-visible {
+  outline: 2px solid var(--brand-deep);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+.dark :focus-visible { outline-color: var(--brand-lift); }
+
+::selection { background: var(--brand-deep); color: #fff; }
+
+.skip {
+  position: absolute; left: 0; top: 0; z-index: 200;
+  transform: translateY(-120%);
+  background: var(--ink); color: var(--on-dark);
+  padding: 0.75rem 1.25rem; font-family: var(--mono); font-size: var(--t-mono);
+  text-decoration: none;
+}
+.skip:focus { transform: translateY(0); }
+
+/* =========================== type =======================================
+   Instrument Serif ships one weight, and that is the discipline: hierarchy
+   comes from size, measure and space, never from making something bolder. */
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.021em;
+  text-wrap: balance;
+}
+h3, h4 { line-height: 1.08; letter-spacing: -0.012em; }
+
+p { text-wrap: pretty; }
+
+/* An eyebrow used to be cyan; three or four of them per screen turned the
+   accent into wallpaper. The word is now quiet text and the rule beside it
+   carries a bright hairline instead — emphasis by lightness, not by hue. */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--t-mono);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--on-light-mute);
+  display: flex; align-items: center; gap: 0.85rem;
+}
+.dark .eyebrow { color: var(--on-dark-mute); }
+.eyebrow::before {
+  content: ''; width: 2.25rem; height: 1px; flex: none;
+  background: var(--mark-ink); opacity: 0.9;
+}
+.dark .eyebrow::before { background: var(--mark); }
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.62;
+  color: var(--on-light-mute);
+  max-width: var(--measure);
+}
+.dark .lead { color: var(--on-dark-mute); }
+
+/* spec value — figures read brighter than their labels, and that is the only
+   emphasis they get */
+.val {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--mark-ink);
+  letter-spacing: -0.01em;
+}
+.dark .val { color: var(--mark); }
+
+/* =========================== layout ===================================== */
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+}
+
+/* the spec margin: a hairline rule with a rotated label, like a drawing
+   sheet edge. Carries the section's real name — never a running number. */
+.railed { position: relative; }
+@media (min-width: 62rem) {
+  .railed { padding-left: var(--rail); }
+  .railed::before {
+    content: ''; position: absolute; left: calc(var(--rail) - 2.6rem); top: 0.35rem; bottom: 0;
+    width: 1px; background: currentColor; opacity: 0.16;
+  }
+  .rail-label {
+    position: absolute; left: calc(var(--rail) - 2.6rem); top: 0.35rem;
+    transform-origin: 0 0; transform: rotate(90deg) translateX(0.1rem) translateY(-0.62rem);
+    font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    white-space: nowrap; opacity: 0.5;
+  }
+}
+@media (max-width: 61.999rem) { .rail-label { display: none; } }
+
+section { padding-block: var(--pad-y); }
+.dark { background: var(--ink); color: var(--on-dark); }
+.dark h1, .dark h2, .dark h3 { color: var(--on-dark); }
+
+.grid { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr)); }
+
+.stack   { display: flex; flex-direction: column; }
+.stack-s { gap: 0.75rem; } .stack-m { gap: 1.5rem; } .stack-l { gap: 2.5rem; }
+.row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+
+.section-head {
+  display: grid; gap: clamp(1rem, 2.5vw, 2rem);
+  grid-template-columns: 1fr; align-items: end;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+@media (min-width: 56rem) {
+  .section-head.split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+}
+.section-head h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
+
+/* =========================== SIGNATURE ==================================
+   Acoustic surfaces, drawn in CSS. Every image on this site is the surface of
+   a product — there is no stock photography anywhere. Each family keeps its
+   own temperature, so a page of 19 cards reads as a materials library rather
+   than a colour chart:
+     PET felt  → warm neutral grey      foam  → cold near-black
+     timber    → warm brown             proofing → cold graphite
+   Only the printed panel carries saturated colour, because printing is the
+   one product whose whole point is that it does.
+   ------------------------------------------------------------------------ */
+
+.surface {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-panel);
+  isolation: isolate;
+}
+/* Light source. A tighter, brighter key that follows the pointer, plus a fixed
+   vignette underneath it — a panel photographed under one lamp rather than an
+   evenly lit swatch. The vignette is what stops a wide, shallow surface from
+   flattening into grey at card size. */
+.surface::after {
+  content: '';
+  position: absolute; inset: -20%;
+  background:
+    radial-gradient(38% 52% at var(--lx, 32%) var(--ly, 16%),
+      rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.05) 44%, transparent 70%),
+    radial-gradient(120% 108% at 50% 32%,
+      transparent 44%, rgba(8, 8, 9, 0.30) 82%, rgba(8, 8, 9, 0.5));
+  pointer-events: none; z-index: 2;
+  transition: background 220ms linear;
+}
+.surface > * { position: relative; z-index: 3; }
+.surface::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+
+/* -- PET felt: a fine woven tooth, warm neutral -------------------------- */
+.s-felt::before {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 30% 25%, #3D3D3C, #272625 60%, #1C1B1A);
+}
+/* -- felt tiles: the same board, with the module joints showing ---------- */
+.s-tile::before {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 25% 100%,
+    linear-gradient(0deg,  rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 100% 33.33%,
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.24) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 62% 30%, #3B3B3A, #252423 62%, #1A1918);
+}
+/* -- desk screen: felt board inside an aluminium edge -------------------- */
+.s-screen::before {
+  background:
+    linear-gradient(90deg, #646362 0 4px, transparent 4px calc(100% - 4px), #646362 calc(100% - 4px)),
+    linear-gradient(0deg,  #646362 0 4px, transparent 4px calc(100% - 4px), #51504E calc(100% - 4px)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 40% 30%, #3B3B3A, #252423 62%, #1A1A1A);
+}
+/* -- micro-perforation: a precise sub-millimetre dot grid ---------------- */
+.s-perf::before {
+  background:
+    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 0 0 / 11px 11px,
+    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 5.5px 5.5px / 11px 11px,
+    linear-gradient(158deg, #353433, #1F1F1E 58%, #151514);
+}
+/* -- CNC grooves: V-cut lines with a lit face and a shadow face ---------- */
+.s-groove::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #131313 0px, #131313 2px,
+      #5E5D5B 3px, #403F3D 13px,
+      #232322 21px, #131313 23px);
+}
+/* -- 3D embossed: offset raised blocks catching light on one corner ------ */
+.s-emboss::before {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.15) 0 45%, transparent 45%) 0 0 / 26px 26px,
+    linear-gradient(-45deg, rgba(0,0,0,0.52) 0 45%, transparent 45%) 13px 13px / 26px 26px,
+    linear-gradient(160deg, #353433, #1D1D1C);
+}
+/* -- parametric: flowing contour ribs ------------------------------------ */
+.s-param::before {
+  background:
+    repeating-radial-gradient(ellipse 150% 46% at 22% 122%,
+      #0A0A0A 0 5px, #3A3937 6px 11px, #0A0A0A 12px 17px);
+}
+/* -- printed: the one surface whose job is to carry colour ---------------
+   Held to darkened, desaturated versions of the palette's own hues. At full
+   saturation this tile read as a rendering fault in a grid of eighteen
+   monochrome ones — the point is "this panel takes print", not "look here". */
+.s-print::before {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,0.42) 1.2px, transparent 1.4px) 0 0 / 9px 9px,
+    linear-gradient(118deg, #17627A 0 26%, #6E7276 26% 52%, #3C4044 52% 74%, #23252A 74%);
+}
+
+/* -- ceiling cloud: a flat board seen from below, edge lit --------------- */
+.s-cloud::before {
+  background:
+    linear-gradient(0deg, rgba(0,0,0,0.6) 0 6%, transparent 6% 94%, rgba(255,240,214,0.14) 94%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px),
+    linear-gradient(168deg, #3C3B3A, #252423 65%, #181817);
+}
+/* -- baffles: fins on edge, deep shadow between ------------------------- */
+.s-baffle::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #040404 0px, #040404 13px,
+      #232322 15px, #55534F 27px, #232322 39px,
+      #040404 41px, #040404 54px);
+}
+
+/* -- foam: colder and darker than felt; foam is charcoal ---------------- */
+.s-wedge::before {
+  background:
+    repeating-linear-gradient(90deg, #070708 0px, #2E2E30 13px, #070708 26px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0px, rgba(0,0,0,0) 14px, rgba(0,0,0,0.5) 28px);
+}
+.s-pyramid::before {
+  background:
+    repeating-linear-gradient(45deg,  #070708 0, #2F2F31 11px, #070708 22px),
+    repeating-linear-gradient(-45deg, rgba(16,16,20,0.7) 0, rgba(92,92,102,0.22) 11px, rgba(16,16,20,0.7) 22px);
+  background-blend-mode: overlay;
+}
+
+/* -- timber slats: warm brown, rounded ribs, shadow valley -------------- */
+.s-slat::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #0C0C0B 0px, #0C0C0B 3px,
+      #2A2A28 3px, #454340 9px,
+      #6B6862 16px, #4E4C48 23px,
+      #262624 28px, #0C0C0B 31px);
+}
+/* -- wood wool: pale straw fibre, the lightest surface in the set ------- */
+.s-wool::before {
+  background:
+    repeating-linear-gradient(74deg,  rgba(216,216,214,0.26) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-64deg, rgba(200,200,198,0.20) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(21deg,  rgba(132,132,130,0.28) 0 1px, transparent 1px 8px),
+    linear-gradient(140deg, #5A5856, #393837 72%);
+}
+
+/* -- perforated timber: larger holes on a warm veneer ground ------------ */
+.s-woodperf::before {
+  background:
+    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 0 0 / 19px 19px,
+    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 9.5px 9.5px / 19px 19px,
+    repeating-linear-gradient(96deg, rgba(104,104,102,0.16) 0 1px, transparent 1px 9px),
+    linear-gradient(150deg, #494745, #2B2B2A 66%, #1E1E1D);
+}
+/* -- polyester batt: soft, low-density fibre, paler and cooler ---------- */
+.s-batt::before {
+  background:
+    repeating-linear-gradient(82deg,  rgba(226,226,232,0.14) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-72deg, rgba(210,212,220,0.10) 0 2px, transparent 2px 7px),
+    radial-gradient(ellipse 70% 50% at 30% 30%, #505152, #323232 62%, #242425);
+}
+/* -- acoustic glazing: offset laminated panes, edge-lit ----------------- */
+.s-glass::before {
+  background:
+    linear-gradient(104deg, transparent 0 38%, rgba(198,204,208,0.16) 38% 46%, transparent 46%),
+    linear-gradient(104deg, transparent 0 58%, rgba(198,204,208,0.10) 58% 63%, transparent 63%),
+    linear-gradient(0deg, #464748 0 5%, transparent 5% 95%, #404142 95%),
+    linear-gradient(150deg, #2C2D2E, #181919);
+}
+
+/* -- proofing: cold graphite, dense and near-flat ----------------------- */
+.s-mlv::before {
+  background:
+    repeating-linear-gradient(112deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 5px),
+    linear-gradient(150deg, #2B2B2C, #141415);
+}
+.s-door::before {
+  background:
+    linear-gradient(90deg, #505051 0 8%, transparent 8% 92%, #414243 92%),
+    linear-gradient(0deg,  #505051 0 6%, transparent 6% 94%, #383838 94%),
+    linear-gradient(150deg, #2B2B2C, #171717);
+}
+
+/* -- photographs -------------------------------------------------------
+   Real product and project photography sits on top of the drawn texture, so
+   the texture is what shows while an image loads or if one ever 404s. Photos
+   sit above the light wash (z-index 2) — a moving highlight belongs on a
+   drawn surface, not on someone's photograph. */
+.surface > img,
+.surface > picture > img {
+  position: absolute; inset: 0; z-index: 4;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+/* Many of their catalogue shots are cut out on white. On the dark ground a
+   raw white rectangle punches a hole in the page, so those get a soft inset
+   frame rather than sitting flush. */
+.dark .card-surface::after,
+.dark .gal-surface::after {
+  content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(232,228,219,0.10),
+              inset 0 -40px 48px -32px rgba(9,7,5,0.55);
+}
+a.card:hover > .card-surface > img,
+.gal-item:hover > .gal-surface > img { transform: scale(1.035); }
+.card-surface > img, .gal-surface > img { transition: transform 520ms var(--ease); }
+
+/* product detail: featured shot + supporting gallery */
+.pd-hero { position: relative; overflow: hidden; }
+.pd-gallery {
+  display: grid; gap: 0.75rem; margin-top: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+}
+.pd-shot {
+  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+  border-radius: var(--r); border: 1px solid var(--paper-edge);
+  background: var(--ink-panel);
+}
+.pd-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* =========================== header ===================================== */
+.site-head {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(14, 14, 15, 0.7);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid rgba(237, 237, 236, 0.08);
+  color: var(--on-dark);
+}
+.site-head .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; min-height: 5.25rem;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  text-decoration: none; flex: none;
+}
+/* The logo is the client's own asset — never restyled, only scaled. Height is
+   fixed and width follows, so the lockup can never distort. */
+.brand-logo { height: 2rem; width: auto; flex: none; }
+.brand-logo-full { height: 3.25rem; width: auto; flex: none; }
+@media (max-width: 30rem) { .brand-logo { height: 1.6rem; } }
+.brand:hover .brand-logo, .brand:hover .brand-logo-full { opacity: 0.85; }
+.brand-logo, .brand-logo-full { transition: opacity 200ms var(--ease); }
+
+.nav { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2.25rem); }
+.nav a {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; color: var(--on-dark-mute);
+  padding-block: 0.45rem; position: relative;
+  transition: color 220ms var(--ease);
+}
+.nav a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--mark); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 320ms var(--ease);
+}
+.nav a:hover, .nav a[aria-current="page"] { color: var(--on-dark); }
+.nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
+/* `.nav a` (0,1,1) outranks `.btn-primary` (0,1,0), so the CTA in the nav needs
+   its colour restating or the label inherits the muted link grey. */
+.nav a.btn-primary, .nav a.btn-primary:hover { color: #FFFFFF; }
+.nav a.btn::after { content: none; }
+
+.nav-toggle {
+  display: none; background: none; border: 1px solid rgba(237, 237, 236, 0.24);
+  color: var(--on-dark); width: 2.6rem; height: 2.6rem; border-radius: var(--r);
+  cursor: pointer; align-items: center; justify-content: center; flex: none;
+}
+.nav-toggle-bars { display: block; width: 1.0625rem; height: 9px; position: relative; }
+.nav-toggle-bars::before, .nav-toggle-bars::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 1.5px;
+  background: currentColor; transition: transform 260ms var(--ease), opacity 160ms;
+}
+.nav-toggle-bars::before { top: 0; } .nav-toggle-bars::after { bottom: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: translateY(3.75px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after  { transform: translateY(-3.75px) rotate(-45deg); }
+
+@media (max-width: 60rem) {
+  .nav-toggle { display: inline-flex; }
+  .nav {
+    position: fixed; inset: 5.25rem 0 auto 0;
+    background: var(--ink); border-bottom: 1px solid rgba(237, 237, 236, 0.12);
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: 0.5rem var(--gut) 1.5rem;
+    transform: translateY(-8px); opacity: 0; visibility: hidden;
+    transition: opacity 200ms var(--ease), transform 240ms var(--ease), visibility 200ms;
+    max-height: calc(100dvh - 5.25rem); overflow-y: auto;
+  }
+  .nav[data-open="true"] { transform: none; opacity: 1; visibility: visible; }
+  .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(237, 237, 236, 0.09); font-size: 0.8125rem; }
+  .nav a::after { display: none; }
+  .nav .btn { margin-top: 1.1rem; justify-content: center; }
+}
+
+/* =========================== buttons ==================================== */
+/* Wider, quieter, more letterspaced than before, and the ghost variant fills
+   from the left on hover instead of just recolouring its outline. */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 1.05rem 1.75rem; border-radius: var(--r);
+  text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: background 260ms var(--ease), color 260ms var(--ease),
+              border-color 260ms var(--ease), transform 260ms var(--ease),
+              box-shadow 260ms var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-arrow { transition: transform 260ms var(--ease); }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+.btn-primary { background: var(--brand-deep); color: #FFFFFF; box-shadow: var(--lift); }
+.btn-primary:hover { background: var(--brand-ink); box-shadow: var(--lift-2); }
+
+.btn-ghost { border-color: rgba(237, 237, 236, 0.24); color: var(--on-dark); }
+.btn-ghost::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: var(--on-dark);
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 420ms var(--ease);
+}
+.btn-ghost:hover { border-color: var(--on-dark); color: var(--ink); }
+.btn-ghost:hover::before { transform: scaleX(1); }
+.light .btn-ghost, .btn-ghost.on-light { border-color: var(--paper-edge); color: var(--on-light); }
+.light .btn-ghost::before, .btn-ghost.on-light::before { background: var(--on-light); }
+.light .btn-ghost:hover, .btn-ghost.on-light:hover { border-color: var(--on-light); color: var(--paper); }
+
+/* text link with a rule that draws in */
+.tlink {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--brand-ink);
+  padding-bottom: 0.3rem; position: relative;
+}
+.dark .tlink { color: var(--brand); }
+.tlink::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: currentColor; opacity: 0.35;
+  transform: scaleX(0.24); transform-origin: 0 50%;
+  transition: transform 300ms var(--ease), opacity 300ms;
+}
+.tlink:hover::after { transform: scaleX(1); opacity: 1; }
+.tlink:hover .btn-arrow { transform: translateX(3px); }
+
+/* =========================== hero =======================================
+   The headline used to sit in a 1.32fr column with the wall bleeding behind
+   it under a diagonal scrim, which meant the type was permanently fighting
+   the texture for contrast. The wall is now a hard-edged sample band down the
+   right — a material specimen mounted beside the statement rather than
+   wallpaper behind it — so the type has clean ground and can be much larger.
+   No mask, no diagonal scrim, no contrast risk. */
+.hero {
+  position: relative; background: var(--ink); color: var(--on-dark);
+  padding-block: clamp(4.5rem, 10vw, 9rem) clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+.hero-wall {
+  position: absolute; inset: 0 0 0 auto; width: 38%; z-index: 0;
+  pointer-events: none; opacity: 0.95;
+  border-left: 1px solid rgba(237, 237, 236, 0.14);
+}
+@media (max-width: 64rem) {
+  /* No room for a band beside the type — the wall goes behind it, dimmed,
+     with a straight vertical scrim doing the contrast work. */
+  .hero-wall { inset: 0; width: 100%; opacity: 0.5; border-left: 0; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(14, 14, 15, 0.92) 0 55%, rgba(14, 14, 15, 0.8) 78%, rgba(14, 14, 15, 0.62));
+  }
+}
+.hero .wrap { position: relative; z-index: 3; }
+@media (min-width: 64rem) {
+  /* keep the copy clear of the sample band */
+  .hero > .wrap { padding-right: calc(38% + var(--gut)); }
+  .hero > .wrap.hero-rail { padding-right: var(--gut); }
+}
+
+h1.hero-title {
+  font-size: var(--t-hero);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin-block: 2rem 2.75rem;
+  max-width: 14ch;
+}
+
+/* Stacked, deliberately. Lead and buttons side by side was the first attempt
+   and it does not fit: the copy column is already only ~62% of the page once
+   the sample band takes its share, and two buttons at their natural width
+   left the lead about twelve characters wide. */
+.hero-foot { display: grid; gap: clamp(1.75rem, 3vw, 2.5rem); justify-items: start; }
+/* the echo: the last line decays like a reverb tail. Italic rather than a
+   tone shift — the word leans away instead of merely going grey. */
+.hero-title .decay { font-style: italic; color: var(--on-dark-mute); }
+.hero-lead { max-width: 46ch; }
+.hero-cta { margin-top: clamp(2.25rem, 4vw, 3.25rem); gap: 0.85rem; }
+
+/* the spec strip: real, checkable claims — not vanity counters */
+.hero-specs {
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  border-top: 1px solid rgba(237, 237, 236, 0.14);
+  display: grid; gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+}
+.hero-spec { padding: 1.75rem 1.5rem 0 0; position: relative; }
+@media (min-width: 48rem) {
+  .hero-spec + .hero-spec { border-left: 1px solid rgba(237, 237, 236, 0.14); padding-left: 1.75rem; }
+}
+/* a tick above each figure, on the rule — the drawing-sheet detail that
+   makes the strip read as a measured scale rather than four stat boxes */
+.hero-spec::before {
+  content: ''; position: absolute; left: 0; top: -1px; width: 1.5rem; height: 1px;
+  background: var(--mark);
+}
+@media (min-width: 48rem) { .hero-spec + .hero-spec::before { left: 1.75rem; } }
+.hero-spec dt {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+  margin-bottom: 0.65rem;
+}
+.hero-spec dd {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.625rem);
+  letter-spacing: -0.02em; color: var(--mark); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.hero-spec dd small {
+  display: block; font-family: var(--body); font-weight: 400;
+  font-size: 0.875rem; letter-spacing: 0; color: var(--on-dark-mute);
+  margin-top: 0.65rem; line-height: 1.5;
+}
+
+/* =========================== cards ====================================== */
+/* A card is a mounted sample, not a bordered box: the fill is the ground it
+   sits on, the hairline is barely there, and the object is separated from the
+   page by a long shadow rather than a drawn outline. */
+.card {
+  display: flex; flex-direction: column;
+  background: var(--paper-sub); border: 1px solid var(--paper-edge);
+  border-radius: var(--r); overflow: hidden;
+  text-decoration: none; color: inherit;
+  box-shadow: var(--lift);
+  transition: border-color 320ms var(--ease), transform 320ms var(--ease),
+              box-shadow 320ms var(--ease);
+}
+.dark .card {
+  background: var(--ink-panel); border-color: rgba(237, 237, 236, 0.09);
+  box-shadow: var(--lift-d);
+}
+a.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--mark-ink);
+  box-shadow: var(--lift-2);
+}
+.dark a.card:hover { border-color: var(--mark); box-shadow: var(--lift-d-2); }
+
+.card-surface { aspect-ratio: 4 / 3; flex: none; }
+.card-body { padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+.card-cat {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-light-mute);
+}
+.dark .card-cat { color: var(--on-dark-mute); }
+.card h3 { font-size: 1.3125rem; letter-spacing: -0.014em; }
+.card p { font-size: 0.9375rem; line-height: 1.58; color: var(--on-light-mute); }
+.dark .card p { color: var(--on-dark-mute); }
+.card-foot {
+  margin-top: auto; padding-top: 1.1rem;
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--brand-ink);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.dark .card-foot { color: var(--brand); }
+a.card:hover .btn-arrow { transform: translateX(4px); }
+
+/* A panel is a card that is not a link: same mounted-sample treatment, no
+   hover lift. These used to be inline `border: 1px solid` on a bare article,
+   which is why they read as boxes next to the real cards. */
+.panel {
+  background: var(--paper-sub);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--lift);
+}
+.dark .panel {
+  background: var(--ink-panel);
+  border-color: rgba(237, 237, 236, 0.09);
+  box-shadow: var(--lift-d);
+}
+.panel-pad { padding: clamp(1.5rem, 3vw, 2.25rem); }
+.panel h3 { font-size: var(--t-h3); margin: 1rem 0 0.75rem; }
+.panel p { color: var(--on-light-mute); }
+.dark .panel p { color: var(--on-dark-mute); }
+
+/* room-type panel: the target figure leads, because that number is the whole
+   argument — a room is designed to hit it, not to a coverage percentage */
+.room-target {
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--mark-ink) !important;
+  padding-bottom: 0.9rem; border-bottom: 1px solid var(--paper-edge);
+}
+.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(237, 237, 236, 0.12); }
+.room h3 { font-size: 1.375rem; margin: 0.9rem 0 0.5rem; }
+.room-note { font-size: 0.9375rem; line-height: 1.58; }
+
+/* sector tiles — dark, textured, minimal */
+.sector {
+  position: relative; display: flex; align-items: flex-end;
+  min-height: clamp(11rem, 20vw, 14rem);
+  padding: 1.25rem; text-decoration: none; color: var(--on-dark);
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid rgba(237, 237, 236, 0.12);
+  transition: border-color 240ms var(--ease), transform 240ms var(--ease);
+}
+.sector { box-shadow: var(--lift-d); }
+.sector:hover { border-color: var(--mark); transform: translateY(-4px); box-shadow: var(--lift-d-2); }
+/* the tile's own scrim: sits above the texture, behind the label */
+.sector > span { position: relative; display: block; width: 100%; }
+.sector > span::before {
+  content: ''; position: absolute; z-index: -1;
+  left: -1.25rem; right: -1.25rem; bottom: -1.25rem; top: -3rem;
+  background: linear-gradient(180deg, transparent, rgba(8, 8, 9, 0.62) 45%, rgba(8, 8, 9, 0.92));
+}
+.sector-name {
+  font-family: var(--display); font-weight: 400;
+  font-size: 1.3125rem; line-height: 1.1; letter-spacing: -0.016em;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+}
+.sector-rt {
+  display: block; margin-top: 0.5rem;
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
+  color: var(--mark); text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+}
+
+/* =========================== spec table =================================
+   The datasheet is the part of this site a specifier actually reads, so it
+   gets the same care as the headlines: a bright rule under the caption, room
+   between the rows, and the label in sentence case rather than shouting in
+   tracked-out caps at a line that was already wrapping. */
+.spec {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 0.8125rem;
+}
+.spec caption {
+  text-align: left; font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--on-light-mute);
+  padding-bottom: 1rem; margin-bottom: 0.25rem;
+  border-bottom: 1px solid var(--mark-ink);
+}
+.dark .spec caption { color: var(--on-dark-mute); border-bottom-color: var(--mark); }
+.spec th, .spec td { text-align: left; padding: 1rem 1rem 1rem 0; vertical-align: top; }
+.spec td { padding-right: 0; }
+.spec th {
+  font-family: var(--body); font-weight: 400; font-size: 0.875rem;
+  color: var(--on-light-mute); width: 46%;
+  letter-spacing: 0; text-transform: none; line-height: 1.45;
+}
+.dark .spec th { color: var(--on-dark-mute); }
+.spec td {
+  color: var(--mark-ink); font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+.dark .spec td { color: var(--mark); }
+.spec tr + tr { border-top: 1px solid var(--paper-edge); }
+.dark .spec tr + tr { border-top-color: rgba(237, 237, 236, 0.1); }
+
+/* pill list for applications / finishes */
+.pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
+.pills li {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.7rem; border-radius: var(--r);
+  border: 1px solid var(--paper-edge); color: var(--on-light-mute);
+}
+.dark .pills li { border-color: rgba(237, 237, 236, 0.16); color: var(--on-dark-mute); }
+
+/* =========================== process ==================================== */
+/* Numbered here because it genuinely is a sequence: each step gates the next. */
+.steps { counter-reset: step; display: grid; gap: 0; }
+.step {
+  counter-increment: step;
+  display: grid; gap: 0.35rem 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-top: 1px solid var(--paper-edge);
+  grid-template-columns: 3.5rem 1fr;
+  align-items: start;
+}
+.dark .step { border-top-color: rgba(237, 237, 236, 0.13); }
+.step:last-child { border-bottom: 1px solid var(--paper-edge); }
+.dark .step:last-child { border-bottom-color: rgba(237, 237, 236, 0.13); }
+.step::before {
+  content: counter(step, decimal-leading-zero);
+  grid-row: 1 / span 2;
+  font-family: var(--mono); font-size: 0.8125rem; font-weight: 500;
+  color: var(--mark-ink); letter-spacing: 0.05em; padding-top: 0.28rem;
+}
+.dark .step::before { color: var(--mark); }
+.step h3 { font-size: var(--t-h3); }
+.step p { color: var(--on-light-mute); max-width: 60ch; }
+.dark .step p { color: var(--on-dark-mute); }
+@media (min-width: 56rem) {
+  .step { grid-template-columns: 3.5rem minmax(0, 15rem) minmax(0, 1fr); align-items: baseline; }
+  .step h3 { grid-column: 2; grid-row: 1; }
+  .step p  { grid-column: 3; grid-row: 1; }
+}
+
+/* =========================== quotes ===================================== */
+.quote {
+  display: flex; flex-direction: column; gap: 1.75rem;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  border: 1px solid var(--paper-edge); border-radius: var(--r);
+  background: var(--paper-sub);
+  box-shadow: var(--lift);
+}
+.dark .quote {
+  border-color: rgba(237, 237, 236, 0.09); background: var(--ink-panel);
+  box-shadow: var(--lift-d);
+}
+/* Set in the display serif. A testimonial is the one place on the site where
+   somebody else is speaking, and the change of voice should be audible. */
+.quote blockquote {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
+  line-height: 1.38; letter-spacing: -0.011em;
+  color: var(--on-light);
+}
+.dark .quote blockquote { color: var(--on-dark); }
+.quote blockquote::before { content: '\201C'; color: var(--mark-ink); margin-right: 0.06em; }
+.quote blockquote::after  { content: '\201D'; color: var(--mark-ink); margin-left: 0.03em; }
+.dark .quote blockquote::before, .dark .quote blockquote::after { color: var(--mark); }
+.quote figcaption {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--on-light-mute); margin-top: auto;
+  padding-top: 1.1rem; border-top: 1px solid var(--paper-edge);
+  line-height: 1.7;
+}
+.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(237, 237, 236, 0.13); }
+.quote figcaption b { display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.2rem; }
+.dark .quote figcaption b { color: var(--on-dark); }
+
+/* =========================== forms ====================================== */
+.form { display: grid; gap: 1.35rem; }
+@media (min-width: 40rem) { .form .half { grid-column: span 1; } .form { grid-template-columns: 1fr 1fr; } .form .full { grid-column: 1 / -1; } }
+.field { display: flex; flex-direction: column; gap: 0.55rem; }
+.field label {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+}
+.field .req { color: var(--mark); }
+.field input, .field select, .field textarea {
+  background: rgba(237, 237, 236, 0.045);
+  border: 1px solid rgba(237, 237, 236, 0.2);
+  border-radius: var(--r); padding: 1rem 1.1rem;
+  color: var(--on-dark); font-family: var(--body); font-size: 1rem;
+  transition: border-color 200ms var(--ease), background 200ms var(--ease);
+  width: 100%;
+}
+.field textarea { min-height: 7.5rem; resize: vertical; }
+.field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--brand) 50%),
+                    linear-gradient(135deg, var(--brand) 50%, transparent 50%);
+  background-position: calc(100% - 1.15rem) 1.32rem, calc(100% - 0.8rem) 1.32rem;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem;
+}
+.field select option { background: var(--ink-panel); color: var(--on-dark); }
+.field input::placeholder, .field textarea::placeholder { color: rgba(158,150,138,0.65); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--brand); background: rgba(237, 237, 236, 0.075);
+}
+.field input:user-invalid, .field textarea:user-invalid { border-color: #B4574A; }
+.form-note { font-size: 0.875rem; color: var(--on-dark-mute); }
+.form-status {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--mark); min-height: 1.2em;
+}
+
+/* =========================== contact rows =============================== */
+.contact-list { list-style: none; padding: 0; display: grid; gap: 0; }
+.contact-list li { padding: 1.15rem 0; border-top: 1px solid rgba(237, 237, 236, 0.13); }
+.contact-list li:last-child { border-bottom: 1px solid rgba(237, 237, 236, 0.13); }
+.contact-list .k {
+  display: block; font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+  margin-bottom: 0.4rem;
+}
+.contact-list .v { font-size: 1.0625rem; text-decoration: none; }
+.contact-list a.v:hover { color: var(--brand); text-decoration: underline; text-underline-offset: 4px; }
+
+/* =========================== CTA band =================================== */
+.cta-band { position: relative; overflow: hidden; background: var(--ink); }
+.cta-band .cta-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.5; }
+.cta-band::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(96deg,
+    var(--ink) 0 30%, rgba(14, 14, 15, 0.84) 52%, rgba(14, 14, 15, 0.4) 76%, rgba(14, 14, 15, 0.18));
+}
+@media (max-width: 56rem) {
+  .cta-band::before { background: rgba(14, 14, 15, 0.86); }
+}
+.cta-band .wrap { position: relative; z-index: 3; }
+.cta-band h2 { font-size: var(--t-h1); max-width: 18ch; }
+
+/* =========================== footer ===================================== */
+.site-foot {
+  background: #080809; color: var(--on-dark-mute);
+  padding-block: clamp(4rem, 8vw, 6.5rem) 2.25rem;
+  border-top: 1px solid rgba(237, 237, 236, 0.08);
+}
+.foot-grid {
+  display: grid; gap: clamp(2rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+}
+.foot-grid > div:first-child { grid-column: 1 / -1; }
+/* Five equal columns left the brand blurb and the postal address both wrapping
+   every two or three words. The two columns that carry sentences get the room;
+   the three link lists do not need it. */
+@media (min-width: 56rem) {
+  .foot-grid {
+    grid-template-columns: 1.45fr 1fr 1fr 0.9fr 1.35fr;
+    gap: clamp(2rem, 3.5vw, 3.5rem);
+  }
+  .foot-grid > div:first-child { grid-column: span 1; }
+}
+.foot-h {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--on-dark);
+  margin-bottom: 1.35rem; padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(216, 216, 214, 0.28);
+}
+.foot-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; font-size: 0.9375rem; }
+.foot-list a { text-decoration: none; transition: color 180ms var(--ease); }
+.foot-list a:hover { color: var(--brand); }
+.foot-bar {
+  border-top: 1px solid rgba(237, 237, 236, 0.08); padding-top: 1.75rem;
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
+}
+.foot-blurb { font-size: 0.9375rem; max-width: 34ch; margin-top: 1rem; }
+
+/* =========================== page header ================================ */
+.page-head {
+  background: var(--ink); color: var(--on-dark);
+  padding-block: clamp(3.5rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
+  position: relative; overflow: hidden;
+}
+.page-head .page-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.42; }
+.page-head::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(94deg,
+    var(--ink) 0 24%, rgba(14, 14, 15, 0.86) 48%, rgba(14, 14, 15, 0.5) 74%, rgba(14, 14, 15, 0.28));
+}
+@media (max-width: 56rem) {
+  .page-head::before { background: rgba(14, 14, 15, 0.84); }
+}
+.page-head .wrap { position: relative; z-index: 3; }
+.page-head h1 { font-size: var(--t-h1); margin-block: 1rem 1.25rem; }
+.crumbs {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--on-dark-mute);
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem;
+}
+.crumbs a { text-decoration: none; }
+.crumbs a:hover { color: var(--brand); }
+.crumbs span[aria-hidden] { opacity: 0.4; }
+
+/* =========================== product detail ============================= */
+.pd-grid { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+@media (min-width: 60rem) { .pd-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 21rem); } }
+.pd-hero { aspect-ratio: 16 / 10; border-radius: var(--r); border: 1px solid var(--paper-edge); }
+.pd-aside {
+  border: 1px solid var(--paper-edge); border-radius: var(--r);
+  padding: clamp(1.5rem, 3vw, 2.25rem); background: var(--paper-sub);
+  box-shadow: var(--lift);
+  position: sticky; top: 6.75rem;
+}
+@media (max-width: 59.999rem) { .pd-aside { position: static; } }
+.pd-body h2 { font-size: var(--t-h3); margin-bottom: 0.75rem; }
+.pd-body p { color: var(--on-light-mute); max-width: var(--measure); }
+.pd-body > * + * { margin-top: 1.5rem; }
+.pd-body ul { color: var(--on-light-mute); padding-left: 1.1rem; max-width: var(--measure); }
+.pd-body li + li { margin-top: 0.5rem; }
+.pd-body li::marker { color: var(--mark-ink); }
+
+/* =========================== gallery ==================================== */
+.gal { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
+.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(237, 237, 236, 0.13); background: var(--ink-panel); }
+.gal-surface { aspect-ratio: 3 / 2; }
+.gal-cap { padding: 1rem 1.1rem 1.2rem; }
+.gal-cap h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+.gal-cap p { font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-mute); }
+
+/* =========================== filter bar ================================= */
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+.filter {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.7rem 1.15rem; border-radius: var(--r); cursor: pointer;
+  background: none; border: 1px solid var(--paper-edge); color: var(--on-light-mute);
+  transition: all 200ms var(--ease);
+}
+.filter:hover { border-color: var(--mark-ink); color: var(--on-light); }
+.filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-dark); }
+/* the filter bar sits on the dark ground on the projects page */
+.dark .filter { border-color: rgba(237,237,236,0.22); color: var(--on-dark-mute); }
+.dark .filter:hover { border-color: var(--brand); color: var(--brand); }
+.dark .filter[aria-pressed="true"] {
+  background: var(--on-dark); border-color: var(--on-dark); color: var(--ink);
+}
+
+/* =========================== utilities ================================== */
+.vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.center { text-align: center; }
+.mt-l { margin-top: clamp(2.5rem, 5vw, 4rem); }
+hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clamp(2.5rem, 5vw, 4rem); }
+.dark hr.rule { border-top-color: rgba(237, 237, 236, 0.13); }
+
+/* =========================== statement band =============================
+   One section on the homepage that breaks the eyebrow / heading / lead / grid
+   rhythm every other section keeps. Eight identical section heads in a row is
+   what made the page feel like a template; this one is just a sentence, set
+   large, with the answer underneath it. */
+.statement {
+  padding-block: clamp(5rem, 11vw, 9.5rem);
+  position: relative;
+}
+.statement::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg, var(--mark), transparent 55%);
+  opacity: 0.7;
+}
+.statement-h {
+  font-size: var(--t-h1);
+  letter-spacing: -0.028em; line-height: 0.94;
+  margin-block: 1.25rem clamp(2.5rem, 5vw, 4rem);
+  max-width: 18ch;
+}
+.statement-em { font-style: italic; color: var(--mark); }
+.statement-grid { display: grid; gap: clamp(1.75rem, 3vw, 3rem); align-items: end; }
+@media (min-width: 56rem) {
+  .statement-grid { grid-template-columns: minmax(0, 1fr) minmax(0, auto); }
+}
+
+/* =========================================================================
+   STRUCTURE
+   The page used to be one shape repeated: eyebrow + heading left, lead right,
+   then a grid of equal cards. Eight of those in a row is what made a careful
+   layout read as a template. Each block below is a different shape, chosen
+   because it suits the content rather than because it was next.
+   ========================================================================= */
+
+/* ------------------------------- diptych --------------------------------
+   Two answers to two different problems, so: two halves, full bleed, floor
+   to ceiling, split by a single hairline. The structure states the argument
+   before anybody reads a word of it. */
+.diptych {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--ink-edge);
+}
+@media (min-width: 48rem) { .diptych { grid-template-columns: 1fr 1fr; } }
+
+.dip {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: flex-end;
+  min-height: clamp(30rem, 82vh, 47rem);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background: var(--ink); color: var(--on-dark);
+  text-decoration: none;
+}
+.dip-surface { position: absolute; inset: 0; z-index: -2; }
+/* the ribs run bright enough to drop body copy under 4.5:1 on their own */
+.dip::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(14, 14, 15, 0.10) 0 18%, rgba(14, 14, 15, 0.62) 46%,
+    rgba(14, 14, 15, 0.93) 68%, rgba(14, 14, 15, 0.98));
+  transition: opacity 420ms var(--ease);
+}
+.dip-body { max-width: 34ch; }
+.dip-body h2 { font-size: var(--t-h2); margin: 1rem 0 1rem; }
+.dip-body p { color: var(--on-dark-mute); }
+.dip .tlink { margin-top: 1.75rem; color: var(--brand); }
+.dip:hover .dip-surface { transform: scale(1.03); }
+.dip-surface { transition: transform 900ms var(--ease); }
+.dip:hover .btn-arrow { transform: translateX(4px); }
+
+/* ----------------------------- room index -------------------------------
+   Ten room types were a grid of ten equal tiles, which said "gallery" when
+   the content is a specification: every room is designed to a number. It is
+   now an index — swatch, number, room, note, target — and the targets line
+   up in a column you can read straight down. */
+.roomdex { list-style: none; padding: 0; margin: 0; counter-reset: rdx; }
+.rdx { counter-increment: rdx; border-top: 1px solid rgba(237, 237, 236, 0.12); }
+.rdx:last-child { border-bottom: 1px solid rgba(237, 237, 236, 0.12); }
+.rdx > a {
+  display: grid; gap: 0.35rem 1.5rem; align-items: center;
+  grid-template-columns: 1fr auto;
+  padding: 1.35rem 0; text-decoration: none; color: inherit;
+  transition: padding 320ms var(--ease), color 320ms var(--ease);
+}
+@media (min-width: 52rem) {
+  .rdx > a {
+    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
+    gap: 1.75rem; padding: 1.5rem 0;
+  }
+}
+.rdx-swatch {
+  display: none; height: 2.75rem; border-radius: 1px;
+  border: 1px solid rgba(237, 237, 236, 0.14);
+  transition: transform 420ms var(--ease);
+}
+@media (min-width: 52rem) { .rdx-swatch { display: block; } }
+.rdx-n {
+  display: none;
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.12em;
+  color: var(--on-dark-mute);
+}
+@media (min-width: 52rem) { .rdx-n { display: block; } }
+.rdx-n::before { content: counter(rdx, decimal-leading-zero); }
+.rdx-name {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+  line-height: 1.1; letter-spacing: -0.015em;
+}
+.rdx-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-dark-mute); }
+@media (max-width: 51.99rem) { .rdx-note { grid-column: 1 / -1; } }
+.rdx-target {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--mark); white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.rdx > a:hover { color: var(--brand); }
+.rdx > a:hover .rdx-swatch { transform: scale(1.06); }
+.rdx > a:hover .rdx-note, .rdx > a:hover .rdx-n { color: var(--on-dark-mute); }
+
+/* --------------------------- sticky process -----------------------------
+   Seven steps that gate each other is a long read, and the heading used to
+   scroll away at step two. It now stays put while the steps move past it. */
+.process-grid { display: grid; gap: clamp(2.5rem, 5vw, 5rem); }
+@media (min-width: 60rem) {
+  .process-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.5fr); }
+  .process-aside { position: sticky; top: 8rem; align-self: start; }
+}
+.process-aside h2 { font-size: var(--t-h2); margin: 1rem 0 1.25rem; }
+
+/* the numeral is the point of a sequence, so it is set like one */
+.steps-spine .step::before {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  letter-spacing: 0; color: var(--mark-ink); padding-top: 0;
+  line-height: 1;
+}
+.dark .steps-spine .step::before { color: var(--mark); }
+
+/* ------------------------------- voices ---------------------------------
+   Three testimonials in three equal boxes made them look like feature cards.
+   As full-width rows the quotes get room to be read, and the attribution
+   holds a column of its own the way a citation should. */
+.voices { border-top: 1px solid var(--paper-edge); }
+.dark .voices { border-top-color: rgba(237, 237, 236, 0.12); }
+.voice {
+  display: grid; gap: 1rem 3rem;
+  padding-block: clamp(2rem, 4vw, 3.25rem);
+  border-bottom: 1px solid var(--paper-edge);
+  align-items: start;
+}
+.dark .voice { border-bottom-color: rgba(237, 237, 236, 0.12); }
+@media (min-width: 52rem) {
+  .voice { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
+}
+.voice blockquote {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.375rem, 1.1rem + 1.35vw, 2.125rem);
+  line-height: 1.28; letter-spacing: -0.014em;
+  max-width: 30ch;
+}
+.voice blockquote::before { content: '\201C'; }
+.voice blockquote::after  { content: '\201D'; }
+.voice figcaption {
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--on-light-mute); line-height: 1.7;
+  padding-top: 0.55rem;
+}
+.dark .voice figcaption { color: var(--on-dark-mute); }
+.voice figcaption b {
+  display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.35rem;
+}
+.dark .voice figcaption b { color: var(--on-dark); }
+
+/* --------------------------- catalogue grid -----------------------------
+   The first product in each family leads at double width. It gives the grid
+   a focal point instead of nine identical rectangles, and it happens to fix
+   the orphan row: a family of two now fills three columns exactly. */
+@media (min-width: 60rem) {
+  .cat-grid > :first-child { grid-column: span 2; }
+  .cat-grid > :first-child .card-surface { aspect-ratio: 16 / 9; }
+  .cat-grid > :first-child h3 { font-size: 1.625rem; }
+}
+
+/* room index swatch carries a real photo of that room type */
+.rdx-swatch { position: relative; overflow: hidden; }
+.rdx-swatch > img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 4; opacity: 0.85;
+}
+.rdx:hover .rdx-swatch > img { opacity: 1; }
+.rdx-swatch > img { transition: opacity 300ms var(--ease); }
+
+/* Eleven stacked filter buttons pushed the grid most of a screen down on a
+   phone. Below 48rem the bar becomes a single scrolling row instead. */
+@media (max-width: 48rem) {
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gut) * -1);
+    padding-inline: var(--gut);
+    padding-bottom: 0.5rem;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters .filter { flex: 0 0 auto; scroll-snap-align: start; }
+}

@@ -1,0 +1,424 @@
+/* =========================================================================
+   Silence Acoustic — motion layer
+   ---------------------------------------------------------------------------
+   Two engines, one vocabulary.
+
+   1. Native scroll-driven animations (`animation-timeline: view()/scroll()`).
+      Runs entirely off the main thread, needs no JavaScript at all, and is
+      what Chrome, Edge and Safari 26 use. Everything here is transform,
+      opacity or clip-path only — no layout, no filters, no paint churn.
+
+   2. IntersectionObserver, added by motion.js *only* when engine 1 is missing
+      (Firefox today). It reproduces the reveals; the scroll-linked pieces
+      (parallax, pinned rail) simply sit still there, which looks deliberate
+      rather than broken.
+
+   With JavaScript blocked AND no native support, no hidden state is ever
+   applied — the page is just a static page. Nothing can strand content.
+
+   The whole file is inert under `prefers-reduced-motion: reduce`.
+   ========================================================================= */
+
+:root {
+  --m-in:  var(--ease);                       /* entrances: expo-out */
+  --m-out: cubic-bezier(0.4, 0, 0.2, 1);      /* state changes */
+  --m-fast: 200ms;
+  --m-mid:  420ms;
+}
+
+/* Anchors must clear the sticky header. */
+html { scroll-padding-top: 7rem; }
+
+/* ============================ scroll progress ===========================
+   A hairline of logo cyan pinned to the top of the viewport. It is the only
+   always-visible piece of motion on the site, so it stays a hairline. */
+.progress {
+  position: fixed; left: 0; right: 0; top: 0; height: 2px; z-index: 120;
+  overflow: hidden; pointer-events: none;
+}
+.progress > i {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(90deg, var(--brand-deep), var(--brand) 60%, var(--brand-lift));
+  transform: scaleX(0); transform-origin: 0 50%;
+  will-change: transform;
+}
+
+/* ======================= header on scroll direction =====================
+   The header retracts once you commit to reading downward and comes back the
+   moment you reverse — the nav is there when you reach for it, gone when you
+   are not. */
+.site-head {
+  transition: transform 380ms var(--m-out), background-color 300ms var(--m-out);
+}
+html.head-up .site-head { transform: translate3d(0, -101%, 0); }
+html.head-solid .site-head { background: rgba(11, 11, 12, 0.94); }
+/* Never hide the header while something inside it has focus, or while the
+   mobile menu is open — both would strand a keyboard user. */
+.site-head:focus-within { transform: none !important; }
+html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
+
+/* ============================== vocabulary ==============================
+   Five moves, used consistently:
+     fade    quiet copy and small blocks            18px + opacity
+     rise    cards, tiles, panels                   34px + opacity
+     reveal  headings, lifted out of a mask         clip + 0.35em
+     frame   material surfaces, uncovered           clip + 1.04 scale
+     line    hairline rules, drawn left to right    scaleX
+   Anything that needs a different feel does not get motion at all. */
+
+@keyframes mFade   { from { opacity: 0; transform: translate3d(0, 18px, 0); } }
+@keyframes mRise   { from { opacity: 0; transform: translate3d(0, 34px, 0); } }
+@keyframes mReveal {
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.35em, 0); }
+  to   { opacity: 1; clip-path: inset(-0.3em -100% -0.35em 0); transform: none; }
+}
+@keyframes mFrame {
+  from { clip-path: inset(0 0 100% 0); transform: scale(1.045); }
+  to   { clip-path: inset(0 0 0 0);    transform: scale(1); }
+}
+@keyframes mLine   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Stagger, shared by both engines: each child starts a little further into the
+   scroll than the one before it. Cycling in threes means a row of cards
+   cascades, and a single mobile column barely notices the offset. */
+[data-stagger] > :nth-child(3n + 1) { --i: 0; }
+[data-stagger] > :nth-child(3n + 2) { --i: 1; }
+[data-stagger] > :nth-child(3n + 3) { --i: 2; }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---------------------- engine 1: native, no JS --------------------- */
+  @supports (animation-timeline: view()) {
+
+    [data-anim] {
+      animation-duration: auto;
+      animation-timing-function: var(--m-in);
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 30%;
+    }
+    [data-anim="fade"]   { animation-name: mFade; }
+    [data-anim="rise"]   { animation-name: mRise; }
+    [data-anim="reveal"] { animation-name: mReveal; }
+    [data-anim="frame"]  { animation-name: mFrame; }
+    [data-anim="line"]   { animation-name: mLine; transform-origin: 0 50%; }
+
+    [data-stagger] > * {
+      animation-range: entry calc(2% + var(--i, 0) * 4%) cover calc(28% + var(--i, 0) * 4%);
+    }
+
+    /* Progress bar — driven by the document's own scroll. */
+    .progress > i {
+      animation: mLine linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  /* -------------- engine 2: IntersectionObserver fallback ------------- */
+  html.io [data-anim] {
+    transition: opacity 700ms var(--m-in), transform 700ms var(--m-in),
+                clip-path 700ms var(--m-in);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  html.io [data-anim]:not(.in) { opacity: 0; }
+  html.io [data-anim="fade"]:not(.in)   { transform: translate3d(0, 18px, 0); }
+  html.io [data-anim="rise"]:not(.in)   { transform: translate3d(0, 34px, 0); }
+  html.io [data-anim="reveal"]:not(.in) { clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.35em, 0); }
+  html.io [data-anim="reveal"].in       { clip-path: inset(-0.3em -100% -0.35em 0); }
+  html.io [data-anim="frame"]:not(.in)  { clip-path: inset(0 0 100% 0); transform: scale(1.045); opacity: 1; }
+  html.io [data-anim="frame"].in        { clip-path: inset(0 0 0 0); }
+  html.io [data-anim="line"]            { transform-origin: 0 50%; opacity: 1; }
+  html.io [data-anim="line"]:not(.in)   { transform: scaleX(0); }
+}
+
+/* =============================== the hero ===============================
+   On load: the headline is lifted out of a mask line by line, and the last
+   word arrives with a reverb tail that settles — two ghost repeats decaying
+   into the real word. It is the one literal gesture on the site and it earns
+   its place, because the tail is exactly the thing the company removes. */
+
+.hero { view-timeline-name: --hero; view-timeline-axis: block; }
+
+.hl { display: block; clip-path: inset(-0.32em -100% -0.34em 0); }
+
+.hero-title .decay { position: relative; display: inline-block; }
+/* Real elements rather than `content: attr()` pseudo-elements, so the word is
+   announced once instead of three times. */
+.hero-title .echo {
+  position: absolute; left: 0; top: 0;
+  font-style: normal; color: var(--brand);
+  opacity: 0; pointer-events: none; white-space: nowrap;
+}
+
+@keyframes mHeroLine { from { opacity: 0; transform: translate3d(0, 105%, 0); } }
+@keyframes mHeroIn   { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
+@keyframes mTail1 {
+  0%   { opacity: 0.42; transform: translate3d(0.30em, 0, 0); }
+  100% { opacity: 0;    transform: none; }
+}
+@keyframes mTail2 {
+  0%   { opacity: 0.22; transform: translate3d(0.62em, 0, 0); }
+  100% { opacity: 0;    transform: none; }
+}
+/* Scrolling out of the hero: the wall keeps moving after the copy has gone,
+   so the section has depth rather than being one flat plate. */
+@keyframes mWall  { from { transform: translate3d(0, -5%, 0) scale(1.14); }
+                    to   { transform: translate3d(0,  7%, 0) scale(1.14); } }
+@keyframes mDrift { from { transform: none; opacity: 1; }
+                    to   { transform: translate3d(0, -52px, 0); opacity: 0.25; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero [data-in] {
+    animation: mHeroIn 780ms var(--m-in) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+  .hero .hl > span {
+    display: block;
+    animation: mHeroLine 900ms var(--m-in) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+  .hero-title .e1 { animation: mTail1 1100ms var(--m-in) 640ms both; }
+  .hero-title .e2 { animation: mTail2 1500ms var(--m-in) 640ms both; }
+
+  /* Inner page headers land the same way the hero does, without needing an
+     attribute on every one of them — they are always the first thing on the
+     page, so a plain load animation is right and a scroll trigger is not. */
+  .page-head .wrap > * {
+    animation: mHeroIn 760ms var(--m-in) both;
+  }
+  .page-head .wrap > :nth-child(1) { animation-delay:  60ms; }
+  .page-head .wrap > :nth-child(2) { animation-delay: 160ms; }
+  .page-head .wrap > :nth-child(3) { animation-delay: 260ms; }
+  .page-head .wrap > :nth-child(4) { animation-delay: 350ms; }
+  .page-head .wrap > :nth-child(5) { animation-delay: 430ms; }
+
+  @supports (animation-timeline: view()) {
+    /* The walls sit inside `overflow: hidden` sections, so they cannot resolve
+       their own `view()` timeline — they borrow the named one their section
+       publishes instead. */
+    .hero-wall {
+      animation: mWall linear both;
+      animation-timeline: --hero;
+      animation-range: cover 0% cover 100%;
+    }
+    /* The hero always sits at the top of the document, so the page's own
+       scroll offset is the hero's progress — no element timeline needed. */
+    .hero .wrap {
+      animation: mDrift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px 78vh;
+    }
+    .page-head { view-timeline-name: --phead; }
+    .page-wall {
+      animation: mWall linear both;
+      animation-timeline: --phead;
+      animation-range: cover 0% cover 100%;
+    }
+    .cta-band { view-timeline-name: --cta; }
+    .cta-wall {
+      animation: mWall linear both;
+      animation-timeline: --cta;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+/* ======================== the pinned family rail ========================
+   The homepage used to list all nineteen products. It now holds five family
+   panels that travel sideways while the section is pinned — a catalogue you
+   move through rather than scroll past. Below 48rem, without native scroll
+   timelines, or under reduced motion, the identical markup is a plain
+   snap-scrolling rail. That is the default state; the pin is layered on top. */
+
+/* `section` carries a global vertical rhythm; this one hands that job to
+   .rail-sticky, which is the box that has to fit the viewport exactly when the
+   section is pinned. Leaving both in place added 230px the pin could not see. */
+.rail-sec { background: var(--ink); color: var(--on-dark); padding-block: 0; }
+.rail-sticky { padding-block: var(--pad-y); }
+.rail-head {
+  display: grid; gap: clamp(1rem, 2.5vw, 2rem); align-items: end;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 56rem) { .rail-head { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
+.rail-head h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
+
+.rail-viewport {
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  /* Without this the snapport ignores the padding, so the first card snaps
+     flush to the screen edge and the gutter is scrolled away on load. */
+  scroll-padding-inline: var(--gut);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(237, 237, 236, 0.25) transparent;
+  padding-inline: var(--gut);
+  padding-bottom: 1rem;
+}
+.rail-track {
+  display: flex; gap: clamp(1rem, 2vw, 1.5rem);
+  width: max-content; max-width: none;
+}
+
+.fam {
+  scroll-snap-align: start;
+  flex: none; width: clamp(16rem, 60vw, 23rem);
+  display: flex; flex-direction: column;
+  background: var(--ink-panel);
+  border: 1px solid rgba(237, 237, 236, 0.13);
+  border-radius: var(--r); overflow: hidden;
+  text-decoration: none; color: inherit;
+  transition: border-color 240ms var(--m-out), transform 240ms var(--m-out);
+}
+.fam:hover { border-color: var(--brand); transform: translateY(-3px); }
+.fam-surface { aspect-ratio: 16 / 9; flex: none; }
+.fam-body { padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+.fam-n {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.14em; color: var(--mark);
+}
+.fam h3 { font-size: var(--t-h3); }
+/* Two lines held open whether the note needs them or not — three of the five
+   notes wrap and two do not, and without this the surfaces above them ended up
+   at two different heights across the rail. */
+.fam-note {
+  font-size: 0.9375rem; line-height: 1.55; color: var(--on-dark-mute);
+  min-height: calc(2 * 1.55em);
+}
+/* Reserved for four rows whatever the family holds, so every card's body is
+   the same height and every surface above them lines up across the rail. */
+.fam-items {
+  list-style: none; padding: 0; margin-top: 0.35rem;
+  display: grid; gap: 0.3rem; align-content: start;
+  min-height: calc(4 * 1.45em + 3 * 0.3rem);
+  font-family: var(--mono); font-size: var(--t-mono); line-height: 1.45;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-dark-mute);
+}
+.fam-items li { display: flex; gap: 0.55rem; }
+.fam-items li::before { content: ''; flex: none; width: 0.5rem; height: 1px; background: var(--mark); margin-top: 0.68em; opacity: 0.7; }
+.fam-more { opacity: 0.65; font-style: italic; }
+.fam-more::before { opacity: 0 !important; }
+.fam .card-foot { color: var(--brand); }
+.fam:hover .btn-arrow { transform: translateX(3px); }
+
+/* the closing panel: not a product family, the way out of the rail */
+.fam-all { background: var(--brand-deep); border-color: var(--brand-deep); }
+.fam-all .fam-body { justify-content: center; gap: 1rem; padding: 2rem 1.6rem; }
+.fam-all h3 { font-size: var(--t-h2); line-height: 0.98; }
+.fam-all .fam-note, .fam-all .card-foot { color: #fff; opacity: 0.92; }
+.fam-all:hover { border-color: #fff; }
+
+/* a hint that the rail is not the end of the row */
+.rail-hint {
+  display: flex; align-items: center; gap: 0.6rem; margin-top: 1.25rem;
+  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--on-dark-mute);
+}
+.rail-hint::after {
+  content: ''; flex: 1; max-width: 8rem; height: 1px;
+  background: linear-gradient(90deg, var(--mark), transparent);
+}
+
+@keyframes mRail {
+  to { transform: translate3d(min(0px, calc(100vw - 100% - var(--gut) * 2)), 0, 0); }
+}
+
+@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* The pin is a fixed 1200px of scroll rather than a multiple of the
+       viewport height, because the distance the track has to travel is set by
+       viewport *width*, not height. A `vh` figure that felt 1:1 on a laptop
+       turned into a long slow drag on a tall display. */
+    .rail-sec {
+      height: calc(100vh + 1200px);
+      view-timeline-name: --rail;
+      view-timeline-axis: block;
+    }
+    .rail-sticky {
+      position: sticky; top: 0;
+      height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      overflow: hidden;
+      /* the top pad clears the site header, which can come back over the pin
+         at any moment if the reader scrolls up inside it */
+      padding: 6rem 0 1.5rem;
+    }
+    .rail-sticky .rail-head { margin-bottom: clamp(1.25rem, 2.5vw, 2rem); }
+    /* the pin drives the track, so the element must stop scrolling itself */
+    .rail-viewport {
+      overflow: visible; scroll-snap-type: none; padding-bottom: 0;
+      min-height: 0; /* let this flex item actually shrink */
+    }
+    /* The height constraint has to reach the card for the surface to know it
+       must give way. On a short window the surface is what shrinks — the copy
+       is the part that has to stay readable, so it never does. */
+    .rail-track { height: 100%; }
+    .rail-sticky .fam { height: 100%; }
+    .rail-sticky .fam-body { flex-shrink: 0; }
+    .rail-sticky .fam-surface { flex: 0 1 auto; min-height: 4rem; }
+    .rail-track {
+      animation: mRail linear both;
+      animation-timeline: --rail;
+      animation-range: contain 0% contain 100%;
+      will-change: transform;
+    }
+    .rail-hint { display: none; }
+  }
+}
+
+/* ========================= the process spine ===========================
+   Seven steps that gate each other, so the rule between them is drawn as you
+   descend rather than printed all at once. */
+.steps-spine { position: relative; }
+.steps-spine::before,
+.steps-spine::after {
+  /* in the gutter between the step number and its title, not through it */
+  content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
+}
+.steps-spine::before { background: var(--paper-edge); }
+.dark .steps-spine::before { background: rgba(237, 237, 236, 0.14); }
+/* The bright overlay exists only where it can actually be drawn by scrolling.
+   Anywhere else it would be a zero-height line that never grows, so the plain
+   hairline above is left to do the job on its own. */
+.steps-spine::after { display: none; background: var(--mark-ink); }
+.dark .steps-spine::after { background: var(--mark); }
+@media (max-width: 34rem) { .steps-spine::before, .steps-spine::after { display: none; } }
+
+@media (min-width: 34.0625rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .steps-spine::after {
+      display: block;
+      transform: scaleY(0); transform-origin: 50% 0;
+      animation: mSpine linear both;
+      animation-timeline: view();
+      animation-range: entry 60% exit 40%;
+    }
+  }
+}
+@keyframes mSpine { to { transform: scaleY(1); } }
+
+/* ============================= micro-motion =============================
+   Hover and press feedback, kept to two properties so nothing here can ever
+   cost a layout pass. */
+.card, .sector, .fam, .quote { will-change: auto; }
+a.card:active, .sector:active, .fam:active { transform: translateY(-1px); }
+
+/* Cards lift their own surface a touch on hover — the panel catching light
+   as you lean toward it. */
+.card-surface, .fam-surface { transition: transform 600ms var(--m-out); }
+a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
+
+/* A quiet loading state for the sector tiles: they scale up from 97% so the
+   grid assembles rather than blinks. */
+@keyframes mTile { from { opacity: 0; transform: scale(0.965) translate3d(0, 20px, 0); } }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-anim="tile"] {
+      animation: mTile auto var(--m-in) both;
+      animation-timeline: view();
+      animation-range: entry calc(2% + var(--i, 0) * 4%) cover calc(30% + var(--i, 0) * 4%);
+    }
+  }
+  html.io [data-anim="tile"] {
+    transition: opacity 700ms var(--m-in), transform 700ms var(--m-in);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  html.io [data-anim="tile"]:not(.in) { opacity: 0; transform: scale(0.965) translate3d(0, 20px, 0); }
+}
