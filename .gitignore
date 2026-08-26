@@ -1,4 +1,9 @@
-node_modules/
+# OS
 .DS_Store
+
+# Build artefacts — regenerate with `node build.js`, then copy into dist/.
+# The site's own HTML at the repo root IS committed: hosting it needs no build
+# step, which is the whole point of the setup.
 dist/
 *.zip
+node_modules/
