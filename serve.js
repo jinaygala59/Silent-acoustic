@@ -7,6 +7,19 @@ const PORT = Number(process.argv[2]) || 4177;
 const TYPES = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.svg':'image/svg+xml', '.xml':'application/xml', '.txt':'text/plain; charset=utf-8', '.png':'image/png', '.jpg':'image/jpeg', '.webp':'image/webp', '.woff2':'font/woff2' };
 
 http.createServer((req, res) => {
+  // dev-only stub so the contact form's POST path can be exercised locally.
+  // Not present in dist/ — serve.js is never deployed.
+  if (req.url.startsWith('/__formtest')) {
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', () => {
+      const fail = req.url.indexOf('fail') !== -1;
+      res.writeHead(fail ? 500 : 200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: !fail, bytes: body.length }));
+    });
+    return;
+  }
+
   let p = decodeURIComponent(req.url.split('?')[0]);
   if (p.endsWith('/')) p += 'index.html';
   let file = path.join(ROOT, p);

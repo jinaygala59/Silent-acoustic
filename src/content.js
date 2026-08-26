@@ -16,6 +16,14 @@ const SITE = {
   addr2: 'Behind Infinity Mall, Malad West',
   addr3: 'Mumbai, Maharashtra 400064',
   hours: 'Mon–Sat, 10:00–19:00 IST',
+
+  /* ---- CONTACT FORM: the one setting that makes enquiries arrive ----
+     Paste either a Web3Forms access key (https://web3forms.com, free) or a
+     full Formspree URL (https://formspree.io/f/xxxx). Rebuild and it is live.
+     Left empty, the form opens the visitor's own mail app with everything
+     they typed pre-filled — nothing is lost, but nothing reaches an inbox
+     automatically either. */
+  formEndpoint: '',
 };
 
 const NAV = [

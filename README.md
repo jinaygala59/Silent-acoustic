@@ -113,34 +113,68 @@ sitemap.xml  robots.txt
 
 ## Connecting the contact form
 
-The form currently validates in the browser and then opens the visitor's email
-client with the enquiry pre-filled. Nothing is lost, but it is not ideal.
+**One setting.** In `src/content.js`, set `SITE.formEndpoint`:
 
-To connect a real service (Formspree, Web3Forms, Basin — any of them work):
+```js
+formEndpoint: 'YOUR_WEB3FORMS_ACCESS_KEY',       // or
+formEndpoint: 'https://formspree.io/f/xxxxxxx',
+```
 
-1. In `src/pages.js`, find the contact page and add an `action` to the form:
-   ```html
-   <form class="form" id="enquiry" action="https://formspree.io/f/YOUR_ID" method="POST">
-   ```
-2. In `assets/js/site.js`, delete the `window.location.href = 'mailto:...'` block
-   at the end of the submit handler and replace it with `form.submit();`.
-3. Remove the "not connected to a mail service yet" note from the contact page.
-4. Rebuild.
+Then `node build.js`. That is the whole job — no JavaScript to edit.
+
+- **Web3Forms** (<https://web3forms.com>) — free, no account needed, paste the
+  access key it emails you. Recommended.
+- **Formspree** (<https://formspree.io>) — free tier, paste the full form URL.
+
+Behaviour, all three paths tested:
+
+| Situation | What the visitor gets |
+|---|---|
+| Endpoint set, submission works | Form clears, "Thank you — your enquiry is in." |
+| Endpoint set, submission fails | Warning, then their mail app opens pre-filled. **Nothing they typed is lost.** |
+| No endpoint set | Mail app opens pre-filled, with everything summarised |
+
+Required fields and email format are validated before anything is sent, and the
+first offending field takes focus.
+
+## Rebuilding the deploy bundle
+
+```bash
+node build.js && rm -rf dist && mkdir dist && \
+cp -R *.html products assets robots.txt sitemap.xml dist/ && \
+git show HEAD:dist/.htaccess > dist/.htaccess 2>/dev/null || true
+```
+
+`dist/` holds only what the server needs. `src/`, `build.js`, `serve.js` and this
+README are excluded. It also carries:
+
+- **`.htaccess`** — for Apache/LiteSpeed (Hostinger). Clean URLs, 404, gzip,
+  cache headers, and **37 permanent redirects** from the old WordPress URLs
+  (`/product/<old-slug>/`, the ten sector pages, `/our-products`, `/contact-us`)
+  so existing links and search rankings survive the switch.
+- **`_redirects`** — the same redirect map for Netlify or Cloudflare Pages.
 
 ## Deploying
 
-Upload everything **except** `src/`, `serve.js`, `build.js`, `.claude/` and this
-README. Or upload the lot — the extra files are harmless, just unnecessary.
+Upload the contents of **`dist/`** — nothing else. The site is currently live on
+WordPress at Hostinger (LiteSpeed), so:
 
-- **Netlify / Vercel / Cloudflare Pages** — drag the folder in. No build command.
-- **cPanel / shared hosting** — upload to `public_html`.
-- **Point the domain** at whichever host, then confirm HTTPS is on.
+1. **Back up the WordPress site first.** Files and database. This replaces it.
+2. Upload `dist/` to `public_html`, including the dotfile `.htaccess`
+   (most FTP clients hide dotfiles by default — turn that on).
+3. Check a few old URLs redirect: `/our-products`, `/contact-us`, and
+   `/product/acoustic-wooden-slats-panels-for-auditorium-wall/`.
+4. Confirm HTTPS still resolves and the padlock is clean.
 
-`404.html` is picked up automatically by Netlify, Vercel and Cloudflare Pages.
-On Apache, add `ErrorDocument 404 /404.html` to `.htaccess`.
+**Consider a staging subdomain first** (`staging.silenceacoustic.com`, or drag
+`dist/` onto Netlify for a free preview URL). The live site keeps earning while
+the client reviews, and the switch is then a five-minute job.
 
-After launch: submit `https://silenceacoustic.com/sitemap.xml` in Google Search
-Console.
+On Netlify / Vercel / Cloudflare Pages, `dist/` deploys as-is: no build command,
+`_redirects` and `404.html` are picked up automatically.
+
+After launch, submit `https://silenceacoustic.com/sitemap.xml` in Google Search
+Console and request re-indexing.
 
 ---
 

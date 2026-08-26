@@ -1286,3 +1286,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .filters::-webkit-scrollbar { display: none; }
   .filters .filter { flex: 0 0 auto; scroll-snap-align: start; }
 }
+
+/* form status tones — set by site.js via data-tone */
+.form-status[data-tone="ok"]   { color: var(--brand); }
+.form-status[data-tone="warn"] { color: #E0A33C; }

@@ -76,43 +76,92 @@
     });
   }
 
-  /* ------------------------------- form -------------------------------- */
+  /* ------------------------------- form --------------------------------
+     The endpoint is configured once in src/content.js (SITE.formEndpoint) and
+     rendered onto the form as data-endpoint, so nobody has to edit this file
+     to make enquiries arrive. Empty endpoint = mail-client fallback. */
   var form = document.getElementById('enquiry');
   if (form) {
+    /* Read at submit time, not at init — so the attribute stays the single
+       source of truth even if something sets it after load. */
+    var endpoint = function () { return (form.getAttribute('data-endpoint') || '').trim(); };
+    var FORM_TO = form.getAttribute('data-to') || 'info@silenceacoustic.com';
     var status = document.getElementById('f-status');
+    var submit = form.querySelector('[type="submit"]');
+
+    var say = function (msg, tone) {
+      status.textContent = msg;
+      status.setAttribute('data-tone', tone || '');
+    };
+
+    var summarise = function (d) {
+      return [
+        'Name: ' + (d.get('name') || ''),
+        'Company: ' + (d.get('org') || '\u2014'),
+        'Email: ' + (d.get('email') || ''),
+        'Phone: ' + (d.get('phone') || ''),
+        'City: ' + (d.get('city') || '\u2014'),
+        'Room type: ' + (d.get('room') || '\u2014'),
+        'Room size: ' + (d.get('size') || '\u2014'),
+        '',
+        'What is wrong with the room:',
+        (d.get('message') || '')
+      ].join('\n');
+    };
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
       var missing = [].slice.call(form.querySelectorAll('[required]')).filter(function (f) { return !f.value.trim(); });
-      var email = form.querySelector('#f-email');
       if (missing.length) {
-        status.textContent = 'Fill in the required fields, then send again.';
+        say('Fill in the required fields, then send again.', 'warn');
         missing[0].focus();
         return;
       }
+      var email = form.querySelector('#f-email');
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) {
-        status.textContent = 'That email address does not look right.';
+        say('That email address does not look right.', 'warn');
         email.focus();
         return;
       }
-      /* No endpoint is wired up yet. Hand the enquiry to the mail client so
-         nothing the visitor typed is lost. See README to connect a service. */
+
       var d = new FormData(form);
-      var lines = [
-        'Name: ' + (d.get('name') || ''),
-        'Company: ' + (d.get('org') || '—'),
-        'Email: ' + (d.get('email') || ''),
-        'Phone: ' + (d.get('phone') || ''),
-        'City: ' + (d.get('city') || '—'),
-        'Room type: ' + (d.get('room') || '—'),
-        'Room size: ' + (d.get('size') || '—'),
-        '',
-        'Problem:',
-        (d.get('message') || '')
-      ].join('\n');
-      status.textContent = 'Opening your email app…';
-      window.location.href = 'mailto:info@silenceacoustic.com'
-        + '?subject=' + encodeURIComponent('Site enquiry — ' + (d.get('room') || 'acoustic treatment'))
-        + '&body=' + encodeURIComponent(lines);
+
+      /* No endpoint configured — hand it to the visitor's mail client. */
+      var FORM_ENDPOINT = endpoint();
+      if (!FORM_ENDPOINT) {
+        say('Opening your email app\u2026');
+        window.location.href = 'mailto:' + FORM_TO
+          + '?subject=' + encodeURIComponent('Site enquiry \u2014 ' + (d.get('room') || 'acoustic treatment'))
+          + '&body=' + encodeURIComponent(summarise(d));
+        return;
+      }
+
+      var url = FORM_ENDPOINT;
+      if (FORM_ENDPOINT.indexOf('http') !== 0) {          // a bare Web3Forms key
+        d.append('access_key', FORM_ENDPOINT);
+        url = 'https://api.web3forms.com/submit';
+      }
+      d.append('subject', 'Site enquiry \u2014 ' + (d.get('room') || 'acoustic treatment'));
+      d.append('from_name', 'silenceacoustic.com');
+
+      if (submit) { submit.disabled = true; }
+      say('Sending\u2026');
+
+      fetch(url, { method: 'POST', body: d, headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.ok ? r : Promise.reject(r.status); })
+        .then(function () {
+          form.reset();
+          say('Thank you \u2014 your enquiry is in. We reply within one working day.', 'ok');
+        })
+        .catch(function () {
+          /* Never strand the visitor: fall back to their mail client. */
+          say('That did not send. Opening your email app instead\u2026', 'warn');
+          window.location.href = 'mailto:' + FORM_TO
+            + '?subject=' + encodeURIComponent('Site enquiry \u2014 ' + (d.get('room') || 'acoustic treatment'))
+            + '&body=' + encodeURIComponent(summarise(d));
+        })
+        .then(function () { if (submit) { submit.disabled = false; } });
     });
   }
 })();

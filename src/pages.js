@@ -573,7 +573,7 @@ built.push(page({
       <div data-anim="fade">
         <h2 style="font-size:var(--t-h3);margin-bottom:.6rem">Send the details</h2>
         <p class="lead" style="margin-bottom:2rem">The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.</p>
-        <form class="form" id="enquiry" novalidate>
+        <form class="form" id="enquiry" data-endpoint="${esc(SITE.formEndpoint || '')}" data-to="${SITE.email}" novalidate>
           <div class="field half"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field half"><label for="f-org">Company or practice</label><input id="f-org" name="org" type="text" autocomplete="organization"></div>
           <div class="field half"><label for="f-email">Email <span class="req">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
@@ -592,7 +592,7 @@ built.push(page({
           <div class="full stack stack-m">
             <button class="btn btn-primary" type="submit" style="justify-content:center">Send enquiry ${ARROW}</button>
             <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
-            <p class="form-note">This form is not connected to a mail service yet — see the README for the two-line change that switches it on. Until then, please email or call.</p>
+            <p class="form-note">We reply within one working day. Prefer to talk? Call or WhatsApp <a href="tel:${SITE.phoneHref}" style="color:inherit">${SITE.phone}</a>.</p>
           </div>
         </form>
       </div>
