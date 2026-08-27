@@ -4,8 +4,9 @@
     {
       "name": "silence-acoustic",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["serve.js", "4177"],
-      "port": 4177
+      "runtimeArgs": ["serve.js"],
+      "port": 4177,
+      "autoPort": true
     }
   ]
 }
