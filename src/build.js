@@ -11,23 +11,23 @@ const ROOT = path.join(__dirname, '..');
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 /* Type.
-   The wordmark in the client's own logo is a serif, and the old stack answered
-   it with an extra-bold extra-wide grotesk — loud where the lockup is quiet.
-   The display face is now a high-contrast serif that sits with the logo instead
-   of shouting over it, set large and light rather than heavy and wide.
+   The display face used to be a high-contrast editorial serif — considered,
+   but it read as a fashion brand, not a fabrication shop. Archivo is a
+   geometric grotesk built for signage and technical plates; it sits next to
+   the mono labels as a colleague instead of a guest.
 
-   Instrument Serif   headlines and figures. One weight, which is the point:
-                      a display serif is sized, not bolded.
-   Instrument Sans    body and UI. Same superfamily, so the two agree.
-   IBM Plex Mono      labels, specs, buttons — the engineering register that
-                      keeps the serif from reading as a fashion brand. */
-const FONTS = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap';
+   Archivo           headlines and figures. One weight, still the point: a
+                      display face is sized, not bolded.
+   Instrument Sans    body and UI. Neutral enough to stay out of the way.
+   IBM Plex Mono      labels, specs, buttons — now the dominant register
+                      rather than a supporting one. */
+const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;1,500&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap';
 
 /* The real Silence Acoustic logo. Two lockups, each in a knockout variant:
    the header drops the tagline (it is illegible at 32px), the footer keeps it.
    Sources: silenceacoustic.com/wp-content/uploads/2026/05/for-website-01-scaled.png */
-const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}assets/img/logo-mark-light.png" alt="Silence Acoustic" width="613" height="108" fetchpriority="high">`;
-const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}assets/img/logo-full-light.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
+const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}assets/img/logo-mark.png" alt="Silence Acoustic" width="613" height="108" fetchpriority="high">`;
+const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
 
 const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -131,7 +131,7 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#16130F">
+<meta name="theme-color" content="#E6ECEF">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE.name}">
 <meta property="og:title" content="${esc(title)}">
@@ -239,7 +239,7 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
   </div>
 </section>`;
 
-const ctaBand = (up = '') => `<section class="cta-band dark">
+const ctaBand = (up = '') => `<section class="cta-band">
   <div class="cta-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <div class="section-head split">

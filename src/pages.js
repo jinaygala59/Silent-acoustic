@@ -11,7 +11,8 @@ built.push(page({
   title: 'Silence Acoustic — Acoustic Treatment & Soundproofing, Mumbai',
   desc: 'Acoustic panels, ceilings, foam and soundproofing for auditoriums, studios, offices and homes. Designed, made and installed by our own team in Mumbai.',
   body: `
-<section class="hero dark">
+<section class="hero">
+  <div class="hero-top">
   <div class="hero-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
@@ -26,6 +27,7 @@ built.push(page({
         <a class="btn btn-ghost" href="products.html">See the products ${ARROW}</a>
       </div>
     </div>
+  </div>
   </div>
   <div class="wrap hero-rail">
     <dl class="hero-specs" data-in style="--d:800">
@@ -73,7 +75,7 @@ built.push(page({
 
 ${famRail()}
 
-<section class="dark railed">
+<section class="light railed">
   <div class="wrap">
     <span class="rail-label">Rooms</span>
     <div class="section-head split">
@@ -114,7 +116,7 @@ ${famRail()}
   </div>
 </section>
 
-<section class="dark statement">
+<section class="light statement">
   <div class="wrap">
     <p class="eyebrow" data-anim="fade">Instead of a case study</p>
     <h2 class="statement-h" data-anim="reveal">Ask a client<br>who had <span class="statement-em">your problem.</span></h2>
@@ -128,7 +130,7 @@ ${famRail()}
   </div>
 </section>
 
-<section class="dark railed">
+<section class="light railed">
   <div class="wrap">
     <span class="rail-label">Work</span>
     <div class="section-head split">
@@ -181,7 +183,7 @@ built.push(page({
   title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
   desc: '19 acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Made in Mumbai.',
   body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-perf" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Catalogue</p>
@@ -220,7 +222,7 @@ built.push(page({
 </section>
 
 ${CATEGORIES.map((cat, i) => `
-<section class="${i % 2 === 0 ? 'dark' : 'light'} railed" id="${cat.id}">
+<section class="light railed" id="${cat.id}">
   <div class="wrap">
     <span class="rail-label">${esc(cat.name)}</span>
     <div class="section-head split">
@@ -246,7 +248,7 @@ PRODUCTS.forEach(p => {
     title: `${p.name} | Silence Acoustic, Mumbai`,
     desc: `${p.name}: ${p.tag}. Supplied and installed across India by Silence Acoustic, Mumbai.`,
     body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface ${p.surf}" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">${esc(cat.name)}</p>
@@ -305,7 +307,7 @@ built.push(page({
   title: 'Projects & Room Types | Silence Acoustic',
   desc: 'Acoustic treatment for auditoriums, recording studios, offices, schools, sports halls, hotels and home theatres. Each room designed to its own target.',
   body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Selected work</p>
@@ -334,7 +336,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="dark railed">
+<section class="light railed">
   <div class="wrap">
     <span class="rail-label">Gallery</span>
     <div class="section-head split">
@@ -389,7 +391,7 @@ built.push(page({
   title: 'About Silence Acoustic — Acoustics, Mumbai',
   desc: 'Over a decade in acoustics. We measure, design, manufacture and install acoustic treatment ourselves, from Malad West, Mumbai.',
   body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-wool" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">About</p>
@@ -403,9 +405,9 @@ built.push(page({
     <span class="rail-label">Company</span>
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
       <div class="stack stack-m">
-        <p class="eyebrow" data-anim="fade">Since our first hall</p>
-        <h2 data-anim="reveal" style="font-size:var(--t-h2)">Ten years of rooms that were not working.</h2>
-        <p style="color:var(--on-light-mute)">Silence Acoustic was founded by an acoustician with more than a decade in soundproofing and room treatment, after too many projects where the consultant drew one thing, the supplier shipped another, and the contractor fitted a third. Nobody was accountable for whether the room actually sounded right.</p>
+        <p class="eyebrow" data-anim="fade">Since 2006</p>
+        <h2 data-anim="reveal" style="font-size:var(--t-h2)">Twenty years of rooms that were not working.</h2>
+        <p style="color:var(--on-light-mute)">Silence Acoustic was founded by an acoustician with more than two decades in soundproofing and room treatment, after too many projects where the consultant drew one thing, the supplier shipped another, and the contractor fitted a third. Nobody was accountable for whether the room actually sounded right.</p>
         <p style="color:var(--on-light-mute)">So we took the whole chain. We survey and measure the space ourselves. We produce the acoustic design against a stated target. We manufacture the panels in our own facility in Malad West. Our own crews install them. Then we come back with the meter and check.</p>
         <p style="color:var(--on-light-mute)">That is unusual in this industry, and it is the only part of our pitch that matters. Everything else — the finishes, the cut patterns, the colour range — is downstream of being answerable for the result.</p>
       </div>
@@ -414,11 +416,13 @@ built.push(page({
         <table class="spec" data-anim="fade" style="margin-top:2rem">
           <caption>At a glance</caption>
           <tbody>
-            <tr><th>Founded on</th><td>10+ years in acoustics</td></tr>
+            <tr><th>Founded</th><td>2006 &middot; 20+ years in acoustics</td></tr>
             <tr><th>Base</th><td>Malad West, Mumbai</td></tr>
             <tr><th>Manufacturing</th><td>In-house, own facility</td></tr>
             <tr><th>Installation</th><td>Own crews, pan-India</td></tr>
             <tr><th>Products</th><td>${PRODUCTS.length} across 5 families</td></tr>
+            <tr><th>Completed projects</th><td>2035+</td></tr>
+            <tr><th>Customer satisfaction</th><td>98%</td></tr>
             <tr><th>Handover</th><td>Verified against target</td></tr>
           </tbody>
         </table>
@@ -427,7 +431,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="dark railed">
+<section class="light railed">
   <div class="wrap">
     <span class="rail-label">Principles</span>
     <div class="section-head split">
@@ -470,7 +474,7 @@ built.push(page({
   title: 'Acoustics Notes & Guides | Silence Acoustic',
   desc: 'Plain-language notes on room acoustics from Silence Acoustic, Mumbai — starting with a beginner\'s guide to acoustic polyester panels and how they work.',
   body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-emboss" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Notes</p>
@@ -515,7 +519,7 @@ POSTS.forEach(post => {
     title: `${post.t.replace(/\s*—.*$/, '')} | Silence Acoustic`.slice(0, 62),
     desc: post.d.slice(0, 158),
     body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-felt" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">${esc(post.tag)} &middot; ${esc(post.read)} read</p>
@@ -557,7 +561,7 @@ built.push(page({
   title: 'Contact & Free Site Survey | Silence Acoustic',
   desc: 'Book a free acoustic site survey in Mumbai and the MMR. Call +91 81084 00566 or send your room details and we will come and measure.',
   body: `
-<section class="page-head dark">
+<section class="page-head">
   <div class="page-wall surface s-felt" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Contact</p>
@@ -566,7 +570,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="dark railed">
+<section class="light railed">
   <div class="wrap">
     <span class="rail-label">Enquiry</span>
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2.5rem,5vw,4.5rem)">
@@ -634,7 +638,7 @@ built.push(page({
   title: 'Page not found — Silence Acoustic',
   desc: 'That page does not exist. Find acoustic panels, ceilings, foam, wood and soundproofing in the product catalogue.',
   body: `
-<section class="page-head dark" style="padding-block:clamp(5rem,12vw,9rem)">
+<section class="page-head" style="padding-block:clamp(5rem,12vw,9rem)">
   <div class="page-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">404</p>

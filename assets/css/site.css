@@ -1,42 +1,91 @@
 /* =========================================================================
    Silence Acoustic — design system
 
-   The palette is neutral. Not warm, not cool — a true greyscale from near-
-   black to off-white, with exactly one colour in the whole system.
+   The palette is the logo's. Every ground on the site is the Silence Acoustic
+   cyan (#1CABDE, ~202°) held at a different exposure: pulled right down in
+   saturation and lightness it becomes the dark slate-teal rooms, lifted almost
+   to white it becomes the paper. That is what makes the mark look native to
+   the page rather than dropped onto it — there is one hue here, not a neutral
+   scheme with a logo sitting on top of it.
 
-   Three rules hold the thing together, and most of what makes the site feel
+   Nothing large is a flat fill. Grounds are an ombre between two steps of
+   that ramp (--ombre-dark / --ombre-light), so a section reads as a lit
+   surface falling away rather than as a painted rectangle. Objects that sit
+   on a ground — cards, panels, form fields, filter pills — stay flat. That
+   split is the whole discipline: light belongs to the room, not to the things
+   standing in it, and a gradient under small text makes its contrast
+   unpredictable.
+
+   The drawn material swatches are the deliberate exception and keep their own
+   temperatures (see the surfaces block): timber and wood wool still read warm,
+   foam and proofing still read cold, because that is what those materials look
+   like. The register is otherwise technical: a drawing sheet, not a brochure —
+   machined edges, hard-cast shadows, a drafting grid under the paper sections,
+   and registration marks on anything that reads as a specimen.
+
+   Four rules hold the thing together, and most of what makes the site feel
    considered is that they are never broken:
 
      1. There is no decorative colour. Figures, rules and markers are the
-        brightest neutral in their context; labels are the dimmest. All
-        emphasis is a step in lightness, never a change in hue.
+        brightest step of the ramp in their context; labels are the dimmest.
+        All emphasis is a step in lightness, never a change in hue — the whole
+        ramp is one hue, not a set of separate colours.
      2. The logo cyan is for interactive things only — links, focus, primary
         buttons. It is the single hue on the site, which is what makes it
         read as "you can click this" rather than as decoration.
      3. Hierarchy comes from size, space and measure. The display face has one
         weight, so nothing here can be emphasised by making it bolder.
+     4. Nothing is rounded and no shadow is soft. A milled edge is a right
+        angle and a cast shadow has a hard cutoff — this is fabrication, not
+        upholstery.
    ========================================================================= */
 
 :root {
-  /* -- ground: neutral near-black, the treated room ---------------------
-     Four steps rather than one flat fill. Every dark surface on the site is
-     one of these, so a panel sitting on the page reads as a raised object
-     under the same light rather than a box drawn on top of it. */
-  --ink:        #0E0E0F;
-  --ink-panel:  #17171A;
-  --ink-raise:  #202024;
-  --ink-edge:   #2E2E33;
+  /* -- ground: deep slate-teal, the treated room ------------------------
+     Six steps rather than one flat fill. Every dark surface on the site is
+     one of these, so a panel sitting on a ground reads as a raised object
+     under the same light rather than a box drawn on top of it. Lifted off
+     near-black — a flat near-black read as a wall of ink rather than a room,
+     especially across a whole page of alternating dark sections.
 
-  /* -- paper: neutral off-white, the datasheet ------------------------- */
-  --paper:      #F2F2F1;
-  --paper-sub:  #E8E8E7;
-  --paper-edge: #D2D2D1;
+     The hue is the logo cyan's own (~202°), pulled right down in saturation.
+     That is what makes the cyan look like it belongs to the page instead of
+     being dropped onto it: the grounds are the same colour as the mark, just
+     dark and quiet. */
+  /* The ombre endpoints. Every large ground on the site is a wash between
+     two of these rather than one flat fill, so a section reads as a lit
+     surface falling away rather than as a painted rectangle. Objects that sit
+     *on* a ground (cards, panels, fields, the filter pills) stay flat — a
+     gradient on a small element reads as decoration, and it makes the
+     contrast under its text unpredictable. Keep that split. */
+  --ink-deep:   #05080A;
+  --ink:        #172127;
+  --ink-lift:   #28363E;
+  --ink-panel:  #232E34;
+  --ink-raise:  #283339;
+  --ink-edge:   #3D4A52;
+
+  /* -- paper: pale cyan-tinted bone, the datasheet ----------------------
+     Deliberately short of white. Screen-white next to real product photos
+     read as sterile — this is closer to a sheet of paper under office light
+     than to a blank browser canvas. Tinted with the same ~200° the grounds
+     use, so the light half and the dark half of the site are one colour
+     family seen at two exposures, not two different schemes. */
+  --paper-hi:   #FCFDFD;
+  --paper:      #E6ECEF;
+  --paper-lo:   #A9B4BA;   /* dropped from #C0CCD3 to take the light ombre from
+                              1.66x travel to 2.20x. What that cost is below. */
+  --paper-sub:  #CFD6DA;
+  --paper-edge: #9EA8AE;
 
   /* -- text ------------------------------------------------------------ */
-  --on-dark:      #EDEDEC;   /* 16.4:1 on --ink */
-  --on-dark-mute: #9A9A99;   /*  6.8:1 on --ink */
-  --on-light:      #131314;  /* 16.5:1 on --paper */
-  --on-light-mute: #56565A;  /*  6.5:1 on --paper */
+  --on-dark:      #EFF3F5;   /* 14.7:1 on --ink, 10.3:1 on --ink-lift */
+  --on-dark-mute: #ABB8BF;   /*  8.1:1 on --ink,  5.7:1 on --ink-lift */
+  --on-light:      #0E161B;  /* 15.3:1 on --paper, 8.6:1 on --paper-lo */
+  --on-light-mute: #36444C;  /*  8.4:1 on --paper, 4.75:1 on --paper-lo. Darkened
+                                 from #42535C: see the ombre note below — the
+                                 light-side text tokens are what cap --paper-lo,
+                                 so a deeper ombre is paid for here. */
 
   /* -- accents ---------------------------------------------------------
      --brand is the cyan lifted straight from the Silence Acoustic logo, and
@@ -44,25 +93,70 @@
      because the logo cyan is too light to hold white text or to sit on the
      paper ground at 4.5:1 — same hue, tuned for contrast.
 
-     --mark took over the job a brass accent used to do: figures, hairline rules and
-     markers. It is a neutral, so the datasheet reads as precision rather
-     than as ornament, and nothing on the page competes with the one cyan. */
-  --brand:      #2AB3DE;   /* logo cyan — links and accents on dark, 7.9:1 */
-  --brand-lift: #6BD0F0;   /* hover on dark */
-  --brand-deep: #0E6C8B;   /* solid fills carrying white text — 5.9:1 */
-  --brand-ink:  #0B6480;   /* links and labels on the paper ground — 5.9:1 */
-  --mark:       #D8D8D6;   /* figures + rules on the dark ground — 13.5:1 */
-  --mark-ink:   #4A4A4E;   /* the same role on the paper ground — 7.9:1 */
+     --mark took over the job a brass accent used to do: figures, hairline rules
+     and markers. It is the same hue washed almost all the way out, so it reads
+     as precision rather than as ornament and nothing competes with the one
+     saturated cyan. Do not saturate it to "match the logo" — the logo cyan is
+     already on the page, and a second strong cyan cancels the first. */
+  --brand:      #1CABDE;   /* the exact logo cyan — 4.7:1 on --ink-lift,
+                              which is what caps how light the dark ombre goes */
+  --brand-lift: #73C9E8;   /* hover on dark */
+  --brand-deep: #0D6382;   /* solid fills carrying white text — 5.9:1 */
+  --brand-ink:  #08485F;   /* links and labels on the paper ground — 8.4:1 on
+                              --paper, 4.72:1 at --paper-lo. This pair is the
+                              one that actually caps --paper-lo. */
+  --mark:       #D0D8DC;   /* figures + rules on the dark ground — 11.3:1 */
+  --mark-ink:   #354149;   /* same role on paper — 4.95:1 at --paper-lo. Darkened
+                              from #485861 then #3E4D56 to buy the light ombre
+                              more travel. Kept a step stronger than
+                              --on-light-mute so the marker still reads as the
+                              firmer of the two. */
+
+  /* -- the ombre --------------------------------------------------------
+     One angle for the whole site. 168deg is near-vertical with a slight lean,
+     which is what keeps it reading as light across a room rather than as a
+     diagonal graphic. Both ombres travel about 1.6x in luminance end to end.
+
+     The two ends are not equally free: pushing the dark ombre *deeper* and
+     the light ombre *lighter* costs nothing, because it only ever adds
+     contrast under the text. The other two directions bind —
+
+       --ink-lift  is capped by --brand on it (4.7:1). The logo cyan is fixed,
+                   so this is a hard ceiling, not a preference. Untouched.
+       --paper-lo  is capped by the light-side *text* tokens on it. An earlier
+                   note here named --mark-ink at 5.3:1 as the limiter; that was
+                   wrong. --brand-ink was tighter at 4.75:1, and --on-light-mute
+                   next at 4.89:1, which left --paper-lo about 2% of headroom.
+
+     So --paper-lo is not capped by anything fixed — it is capped by three text
+     colours that were all free to go darker, because darkening text only ever
+     raises contrast. Asked for a stronger light ombre, the move was to darken
+     --brand-ink, --on-light-mute and --mark-ink to hold >=4.7:1 against a
+     deeper --paper-lo, which took the light ombre from 1.66x to 2.20x travel.
+
+     What that spends, and why there is much less room next time:
+       - Muted text is now 8.4:1 on --paper where it was 6.7:1, so the step
+         down from --on-light (15.3:1) is 1.8x rather than 2.3x. Hierarchy on
+         this site is lightness only, so that gap is the hierarchy. Another
+         round of this flattens it.
+       - --paper-edge had to follow --paper-lo down to stay visible as a
+         hairline, which makes every card border a little firmer.
+
+     If you are asked for more again, push --paper-hi and --ink-deep (still
+     free) before touching this, and re-run the gradient-aware contrast check
+     rather than eyeballing it. */
+  --ombre-dark:  linear-gradient(168deg, var(--ink-lift) 0%, var(--ink) 46%, var(--ink-deep) 100%);
+  --ombre-light: linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
 
   /* -- type ------------------------------------------------------------ */
-  --display: 'Instrument Serif', 'Times New Roman', Times, serif;
+  --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
   --body:    'Instrument Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* fluid scale — 320px → 1440px.
-     Larger at the top than before: a 400-weight serif needs size to carry a
-     page the way an 800-weight grotesk did, and the extra scale is most of
-     what separates a considered layout from a cramped one. */
+     Kept large: a single-weight grotesk still carries a page on size and
+     space, not on going bolder, and the extra scale is most of what
+     separates a considered layout from a cramped one. */
   --t-hero: clamp(3rem, 1.55rem + 6.4vw, 7rem);
   --t-h1:   clamp(2.75rem, 1.5rem + 5.6vw, 6rem);
   --t-h2:   clamp(2.125rem, 1.35rem + 3.4vw, 3.75rem);
@@ -77,16 +171,21 @@
   --measure: 64ch;
   --max: 88rem;
   --pad-y: clamp(5.5rem, 11vw, 11rem);
-  --r: 2px;                   /* panels are milled, not rounded */
+  --r: 0;                      /* machined, not rounded — no radius anywhere */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* -- elevation --------------------------------------------------------
-     Long and soft. A short dark shadow reads as a drop-shadow effect; a long
-     faint one reads as an object standing slightly off the page. */
-  --lift:   0 1px 2px rgba(14, 14, 15, 0.05), 0 10px 30px -14px rgba(14, 14, 15, 0.20);
-  --lift-2: 0 2px 6px rgba(14, 14, 15, 0.06), 0 30px 70px -28px rgba(14, 14, 15, 0.32);
-  --lift-d:   0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -18px rgba(0, 0, 0, 0.7);
-  --lift-d-2: 0 2px 8px rgba(0, 0, 0, 0.45), 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+     Hard and short. No blur: an object standing off the page casts a flat
+     cast shadow with a clean edge, like a plate lifted off a drawing. */
+  --lift:   3px 3px 0 0 rgba(10, 16, 20, 0.16);
+  --lift-2: 5px 5px 0 0 rgba(10, 16, 20, 0.22);
+  --lift-d:   3px 3px 0 0 rgba(0, 0, 0, 0.55);
+  --lift-d-2: 5px 5px 0 0 rgba(0, 0, 0, 0.68);
+
+  /* -- drafting grid ------------------------------------------------------
+     A faint graph over the paper ground only — dark/atmospheric sections
+     paint their own background over it. Same low-key logic as the grain. */
+  --grid-line: rgba(10, 16, 20, 0.055);
 }
 
 /* =========================== reset ====================================== */
@@ -105,7 +204,13 @@ body {
   font-size: var(--t-body);
   line-height: 1.65;
   color: var(--on-light);
-  background: var(--paper);
+  background-color: var(--paper);
+  /* the drafting grid: a fine graph under the paper ground. Sections with
+     their own background (dark, cards, panels) simply paint over it. */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -148,16 +253,18 @@ body::after {
 .skip:focus { transform: translateY(0); }
 
 /* =========================== type =======================================
-   Instrument Serif ships one weight, and that is the discipline: hierarchy
-   comes from size, measure and space, never from making something bolder. */
+   Archivo ships this site at one weight, and that is the discipline:
+   hierarchy comes from size, measure and space, never from making
+   something bolder. A grotesk needs less negative tracking than the serif
+   it replaced — pull the letters together, don't crush them. */
 h1, h2, h3, h4 {
   font-family: var(--display);
-  font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.021em;
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
-h3, h4 { line-height: 1.08; letter-spacing: -0.012em; }
+h3, h4 { line-height: 1.1; letter-spacing: -0.008em; }
 
 p { text-wrap: pretty; }
 
@@ -173,12 +280,19 @@ p { text-wrap: pretty; }
   color: var(--on-light-mute);
   display: flex; align-items: center; gap: 0.85rem;
 }
-.dark .eyebrow { color: var(--on-dark-mute); }
+/* `.rail-sec` (the pinned family rail) is a dark section too, but it paints
+   its own ground in motion.css instead of carrying `.dark`, so it misses
+   every override scoped to that class. Without naming it here the eyebrow
+   and lead inside it keep the paper-ground muted tone and render dark-on-
+   dark at 1.8:1 — the one place on the home page where copy really was
+   invisible. Any future dark section must either carry `.dark` or be added
+   to these two selectors. */
+.dark .eyebrow, .rail-sec .eyebrow { color: var(--on-dark-mute); }
 .eyebrow::before {
   content: ''; width: 2.25rem; height: 1px; flex: none;
   background: var(--mark-ink); opacity: 0.9;
 }
-.dark .eyebrow::before { background: var(--mark); }
+.dark .eyebrow::before, .rail-sec .eyebrow::before { background: var(--mark); }
 
 .lead {
   font-size: var(--t-lead);
@@ -186,7 +300,7 @@ p { text-wrap: pretty; }
   color: var(--on-light-mute);
   max-width: var(--measure);
 }
-.dark .lead { color: var(--on-dark-mute); }
+.dark .lead, .rail-sec .lead { color: var(--on-dark-mute); }
 
 /* spec value — figures read brighter than their labels, and that is the only
    emphasis they get */
@@ -227,8 +341,35 @@ p { text-wrap: pretty; }
 @media (max-width: 61.999rem) { .rail-label { display: none; } }
 
 section { padding-block: var(--pad-y); }
-.dark { background: var(--ink); color: var(--on-dark); }
+.dark { background: var(--ombre-dark); color: var(--on-dark); }
 .dark h1, .dark h2, .dark h3 { color: var(--on-dark); }
+
+/* Every light section gets the same ombre the hero/CTA band use: a timber-
+   slat texture at 50% strength, glazed by a left-to-right paper fade so it
+   reads as a lit material sample bleeding in from the edge, not a pattern.
+   Cards and panels sit on their own opaque fill on top, so this only shows
+   in the gaps between them. */
+.light {
+  background-color: var(--paper);
+  background-image:
+    /* the glaze: paper at full strength over the type column, thinning to the
+       right so the slat wash below only ever surfaces in the outer margin */
+    linear-gradient(96deg,
+      var(--paper-hi) 0 30%, rgba(230, 236, 239, 0.84) 52%, rgba(230, 236, 239, 0.4) 76%, rgba(230, 236, 239, 0.18) 100%),
+    /* the slat wash, cooled onto the site hue. It reads as the same material
+       the dark sections are lit against, not as a second colour scheme. */
+    repeating-linear-gradient(90deg,
+      rgba(8, 13, 16, 0.5) 0px, rgba(8, 13, 16, 0.5) 3px,
+      rgba(31, 41, 47, 0.5) 3px, rgba(58, 70, 77, 0.5) 9px,
+      rgba(92, 105, 113, 0.5) 16px, rgba(66, 79, 86, 0.5) 23px,
+      rgba(28, 38, 44, 0.5) 28px, rgba(8, 13, 16, 0.5) 31px),
+    /* and the ombre underneath both */
+    var(--ombre-light);
+}
+@media (max-width: 56rem) {
+  /* the slat wash needs width to read; the ombre does not, so it stays */
+  .light { background-image: var(--ombre-light); }
+}
 
 .grid { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
 .g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
@@ -277,7 +418,7 @@ section { padding-block: var(--pad-y); }
     radial-gradient(38% 52% at var(--lx, 32%) var(--ly, 16%),
       rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.05) 44%, transparent 70%),
     radial-gradient(120% 108% at 50% 32%,
-      transparent 44%, rgba(8, 8, 9, 0.30) 82%, rgba(8, 8, 9, 0.5));
+      transparent 44%, rgba(7, 11, 14, 0.30) 82%, rgba(7, 11, 14, 0.5));
   pointer-events: none; z-index: 2;
   transition: background 220ms linear;
 }
@@ -388,9 +529,9 @@ section { padding-block: var(--pad-y); }
 /* -- wood wool: pale straw fibre, the lightest surface in the set ------- */
 .s-wool::before {
   background:
-    repeating-linear-gradient(74deg,  rgba(216,216,214,0.26) 0 1px, transparent 1px 6px),
-    repeating-linear-gradient(-64deg, rgba(200,200,198,0.20) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(21deg,  rgba(132,132,130,0.28) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(74deg,  rgba(221, 214, 201,0.26) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-64deg, rgba(206, 199, 186,0.20) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(21deg,  rgba(136, 127, 113,0.28) 0 1px, transparent 1px 8px),
     linear-gradient(140deg, #5A5856, #393837 72%);
 }
 
@@ -399,7 +540,7 @@ section { padding-block: var(--pad-y); }
   background:
     radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 0 0 / 19px 19px,
     radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 9.5px 9.5px / 19px 19px,
-    repeating-linear-gradient(96deg, rgba(104,104,102,0.16) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(96deg, rgba(107, 98, 85,0.16) 0 1px, transparent 1px 9px),
     linear-gradient(150deg, #494745, #2B2B2A 66%, #1E1E1D);
 }
 /* -- polyester batt: soft, low-density fibre, paler and cooler ---------- */
@@ -472,11 +613,11 @@ a.card:hover > .card-surface > img,
 /* =========================== header ===================================== */
 .site-head {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(14, 14, 15, 0.7);
+  background: rgba(230, 236, 239, 0.82);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid rgba(237, 237, 236, 0.08);
-  color: var(--on-dark);
+  border-bottom: 1px solid rgba(14, 22, 27, 0.08);
+  color: var(--on-light);
 }
 .site-head .wrap {
   display: flex; align-items: center; justify-content: space-between;
@@ -498,16 +639,16 @@ a.card:hover > .card-surface > img,
 .nav a {
   font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
   letter-spacing: 0.2em; text-transform: uppercase;
-  text-decoration: none; color: var(--on-dark-mute);
+  text-decoration: none; color: var(--on-light-mute);
   padding-block: 0.45rem; position: relative;
   transition: color 220ms var(--ease);
 }
 .nav a::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-  background: var(--mark); transform: scaleX(0); transform-origin: 0 50%;
+  background: var(--mark-ink); transform: scaleX(0); transform-origin: 0 50%;
   transition: transform 320ms var(--ease);
 }
-.nav a:hover, .nav a[aria-current="page"] { color: var(--on-dark); }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--on-light); }
 .nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
 /* `.nav a` (0,1,1) outranks `.btn-primary` (0,1,0), so the CTA in the nav needs
    its colour restating or the label inherits the muted link grey. */
@@ -515,8 +656,8 @@ a.card:hover > .card-surface > img,
 .nav a.btn::after { content: none; }
 
 .nav-toggle {
-  display: none; background: none; border: 1px solid rgba(237, 237, 236, 0.24);
-  color: var(--on-dark); width: 2.6rem; height: 2.6rem; border-radius: var(--r);
+  display: none; background: none; border: 1px solid rgba(14, 22, 27, 0.2);
+  color: var(--on-light); width: 2.6rem; height: 2.6rem; border-radius: var(--r);
   cursor: pointer; align-items: center; justify-content: center; flex: none;
 }
 .nav-toggle-bars { display: block; width: 1.0625rem; height: 9px; position: relative; }
@@ -532,7 +673,7 @@ a.card:hover > .card-surface > img,
   .nav-toggle { display: inline-flex; }
   .nav {
     position: fixed; inset: 5.25rem 0 auto 0;
-    background: var(--ink); border-bottom: 1px solid rgba(237, 237, 236, 0.12);
+    background: var(--paper); border-bottom: 1px solid rgba(14, 22, 27, 0.1);
     flex-direction: column; align-items: stretch; gap: 0;
     padding: 0.5rem var(--gut) 1.5rem;
     transform: translateY(-8px); opacity: 0; visibility: hidden;
@@ -540,7 +681,7 @@ a.card:hover > .card-surface > img,
     max-height: calc(100dvh - 5.25rem); overflow-y: auto;
   }
   .nav[data-open="true"] { transform: none; opacity: 1; visibility: visible; }
-  .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(237, 237, 236, 0.09); font-size: 0.8125rem; }
+  .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(14, 22, 27, 0.08); font-size: 0.8125rem; }
   .nav a::after { display: none; }
   .nav .btn { margin-top: 1.1rem; justify-content: center; }
 }
@@ -567,18 +708,22 @@ a.card:hover > .card-surface > img,
 .btn-primary { background: var(--brand-deep); color: #FFFFFF; box-shadow: var(--lift); }
 .btn-primary:hover { background: var(--brand-ink); box-shadow: var(--lift-2); }
 
-.btn-ghost { border-color: rgba(237, 237, 236, 0.24); color: var(--on-dark); }
+/* Light is the default ground now — most of the site is paper, not ink — so
+   the ghost button defaults to that reading and `.dark`/`.on-dark` is the
+   exception, for the handful of contexts still on the material-photo ground
+   (diptych, sector tiles, the family rail). */
+.btn-ghost { border-color: var(--paper-edge); color: var(--on-light); }
 .btn-ghost::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
-  background: var(--on-dark);
+  background: var(--on-light);
   transform: scaleX(0); transform-origin: 0 50%;
   transition: transform 420ms var(--ease);
 }
-.btn-ghost:hover { border-color: var(--on-dark); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--on-light); color: var(--paper); }
 .btn-ghost:hover::before { transform: scaleX(1); }
-.light .btn-ghost, .btn-ghost.on-light { border-color: var(--paper-edge); color: var(--on-light); }
-.light .btn-ghost::before, .btn-ghost.on-light::before { background: var(--on-light); }
-.light .btn-ghost:hover, .btn-ghost.on-light:hover { border-color: var(--on-light); color: var(--paper); }
+.dark .btn-ghost, .btn-ghost.on-dark { border-color: rgba(239, 243, 245, 0.24); color: var(--on-dark); }
+.dark .btn-ghost::before, .btn-ghost.on-dark::before { background: var(--on-dark); }
+.dark .btn-ghost:hover, .btn-ghost.on-dark:hover { border-color: var(--on-dark); color: var(--ink); }
 
 /* text link with a rule that draws in */
 .tlink {
@@ -606,14 +751,37 @@ a.card:hover > .card-surface > img,
    wallpaper behind it — so the type has clean ground and can be much larger.
    No mask, no diagonal scrim, no contrast risk. */
 .hero {
-  position: relative; background: var(--ink); color: var(--on-dark);
-  padding-block: clamp(4.5rem, 10vw, 9rem) clamp(2.5rem, 5vw, 4rem);
+  position: relative; color: var(--on-light);
+  padding-block: 0 clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
+
+  /* The same 168deg ombre and the same three endpoints as every other light
+     ground, with the stops pulled in. --ombre-light spreads them over
+     0/52/100%, which is right for a section you see all of. The hero is
+     ~960px tall and only its top two thirds are ever above the fold, and
+     because the gradient leans right the type column sits on the *early* part
+     of the line: at 1280x958 the visible left band travelled only
+     rgb(250,251,251) -> rgb(227,234,237), a ratio of 1.17x against the token's
+     designed 2.20x, and read as flat white.
+
+     Compressed to 0/24/50% the whole range lands inside the part of the hero
+     you actually see. 50% is where the ramp reaches the spec rail: measured in
+     the page, the rail's top-left corner sits at t=0.502 along this gradient,
+     so the ramp finishes just as the rail begins and the rail's four columns
+     all sit on one even --paper-lo ground instead of straddling a gradient.
+     If you retune these stops, re-measure that corner rather than guessing —
+     it moves with the hero's height.
+
+     No new colour enters the gradient, so the worst stop under the text is
+     still --paper-lo and the measured contrast pairs are unchanged. */
+  background-color: var(--paper);
+  background-image: linear-gradient(168deg,
+    var(--paper-hi) 0%, var(--paper) 24%, var(--paper-lo) 50%);
 }
 .hero-wall {
   position: absolute; inset: 0 0 0 auto; width: 38%; z-index: 0;
   pointer-events: none; opacity: 0.95;
-  border-left: 1px solid rgba(237, 237, 236, 0.14);
+  border-left: 1px solid rgba(14, 22, 27, 0.12);
 }
 @media (max-width: 64rem) {
   /* No room for a band beside the type — the wall goes behind it, dimmed,
@@ -622,14 +790,39 @@ a.card:hover > .card-surface > img,
   .hero::before {
     content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(180deg,
-      rgba(14, 14, 15, 0.92) 0 55%, rgba(14, 14, 15, 0.8) 78%, rgba(14, 14, 15, 0.62));
+      rgba(230, 236, 239, 0.92) 0 55%, rgba(230, 236, 239, 0.8) 78%, rgba(230, 236, 239, 0.62));
   }
 }
+.hero-top { padding-block-start: clamp(4.5rem, 10vw, 9rem); }
 .hero .wrap { position: relative; z-index: 3; }
 @media (min-width: 64rem) {
   /* keep the copy clear of the sample band */
-  .hero > .wrap { padding-right: calc(38% + var(--gut)); }
-  .hero > .wrap.hero-rail { padding-right: var(--gut); }
+  .hero-top > .wrap { padding-right: calc(38% + var(--gut)); }
+
+  /* The band is scoped to the statement, not to the whole hero. The spec rail
+     spans the full width on purpose, and the band used to run the hero's whole
+     height, so the rail's last two columns sat on the dark slat wall:
+     --mark-ink figures and --on-light-mute captions on near-black timber, about
+     1.3:1. "Free / Within Mumbai and the MMR" was not on the page at all, and
+     "CNC cutting, UV printing and assembly" was cut in half. Exactly the
+     failure mode the .rail-sec / .gal-item note describes — a dark ground does
+     not make its text light.
+
+     .hero-top is the containing block for .hero-wall, so the band now ends
+     where the statement ends and the rail sits on plain ombre below it.
+
+     An earlier attempt gave the rail its own --paper-lo plinth to cut the band
+     instead. Do not go back to that: mDrift in motion.css fades .hero .wrap to
+     opacity 0.25 as the page scrolls, the rail *is* a .hero .wrap, so the
+     plinth faded with it and the band read straight back through mid-scroll.
+     Anything that hides the wall has to live outside the drifting layer.
+
+     overflow is hidden because mWall scales the band 1.14 and translates it
+     +-7%, which would otherwise spill out of .hero-top and over the rail. That
+     is safe here even though `view()` cannot resolve inside overflow: hidden —
+     .hero-wall borrows the *named* --hero timeline published by .hero, and the
+     copy's drift is on scroll(root block). Neither needs view(). */
+  .hero-top { position: relative; overflow: hidden; }
 }
 
 h1.hero-title {
@@ -647,42 +840,42 @@ h1.hero-title {
 .hero-foot { display: grid; gap: clamp(1.75rem, 3vw, 2.5rem); justify-items: start; }
 /* the echo: the last line decays like a reverb tail. Italic rather than a
    tone shift — the word leans away instead of merely going grey. */
-.hero-title .decay { font-style: italic; color: var(--on-dark-mute); }
+.hero-title .decay { font-style: italic; color: var(--on-light-mute); }
 .hero-lead { max-width: 46ch; }
 .hero-cta { margin-top: clamp(2.25rem, 4vw, 3.25rem); gap: 0.85rem; }
 
 /* the spec strip: real, checkable claims — not vanity counters */
 .hero-specs {
   margin-top: clamp(3.5rem, 7vw, 5.5rem);
-  border-top: 1px solid rgba(237, 237, 236, 0.14);
+  border-top: 1px solid var(--paper-edge);
   display: grid; gap: 0;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
 }
 .hero-spec { padding: 1.75rem 1.5rem 0 0; position: relative; }
 @media (min-width: 48rem) {
-  .hero-spec + .hero-spec { border-left: 1px solid rgba(237, 237, 236, 0.14); padding-left: 1.75rem; }
+  .hero-spec + .hero-spec { border-left: 1px solid var(--paper-edge); padding-left: 1.75rem; }
 }
 /* a tick above each figure, on the rule — the drawing-sheet detail that
    makes the strip read as a measured scale rather than four stat boxes */
 .hero-spec::before {
   content: ''; position: absolute; left: 0; top: -1px; width: 1.5rem; height: 1px;
-  background: var(--mark);
+  background: var(--mark-ink);
 }
 @media (min-width: 48rem) { .hero-spec + .hero-spec::before { left: 1.75rem; } }
 .hero-spec dt {
   font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-light-mute);
   margin-bottom: 0.65rem;
 }
 .hero-spec dd {
-  font-family: var(--display); font-weight: 400;
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.625rem);
-  letter-spacing: -0.02em; color: var(--mark); line-height: 1;
+  font-family: var(--mono); font-weight: 500;
+  font-size: clamp(1.5rem, 1.05rem + 1.7vw, 2.25rem);
+  letter-spacing: -0.01em; color: var(--mark-ink); line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .hero-spec dd small {
   display: block; font-family: var(--body); font-weight: 400;
-  font-size: 0.875rem; letter-spacing: 0; color: var(--on-dark-mute);
+  font-size: 0.875rem; letter-spacing: 0; color: var(--on-light-mute);
   margin-top: 0.65rem; line-height: 1.5;
 }
 
@@ -700,7 +893,7 @@ h1.hero-title {
               box-shadow 320ms var(--ease);
 }
 .dark .card {
-  background: var(--ink-panel); border-color: rgba(237, 237, 236, 0.09);
+  background: var(--ink-panel); border-color: rgba(239, 243, 245, 0.09);
   box-shadow: var(--lift-d);
 }
 a.card:hover {
@@ -741,7 +934,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .panel {
   background: var(--ink-panel);
-  border-color: rgba(237, 237, 236, 0.09);
+  border-color: rgba(239, 243, 245, 0.09);
   box-shadow: var(--lift-d);
 }
 .panel-pad { padding: clamp(1.5rem, 3vw, 2.25rem); }
@@ -757,7 +950,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   color: var(--mark-ink) !important;
   padding-bottom: 0.9rem; border-bottom: 1px solid var(--paper-edge);
 }
-.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(237, 237, 236, 0.12); }
+.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(239, 243, 245, 0.12); }
 .room h3 { font-size: 1.375rem; margin: 0.9rem 0 0.5rem; }
 .room-note { font-size: 0.9375rem; line-height: 1.58; }
 
@@ -767,7 +960,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   min-height: clamp(11rem, 20vw, 14rem);
   padding: 1.25rem; text-decoration: none; color: var(--on-dark);
   border-radius: var(--r); overflow: hidden;
-  border: 1px solid rgba(237, 237, 236, 0.12);
+  border: 1px solid rgba(239, 243, 245, 0.12);
   transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 .sector { box-shadow: var(--lift-d); }
@@ -777,10 +970,10 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .sector > span::before {
   content: ''; position: absolute; z-index: -1;
   left: -1.25rem; right: -1.25rem; bottom: -1.25rem; top: -3rem;
-  background: linear-gradient(180deg, transparent, rgba(8, 8, 9, 0.62) 45%, rgba(8, 8, 9, 0.92));
+  background: linear-gradient(180deg, transparent, rgba(7, 11, 14, 0.62) 45%, rgba(7, 11, 14, 0.92));
 }
 .sector-name {
-  font-family: var(--display); font-weight: 400;
+  font-family: var(--display); font-weight: 500;
   font-size: 1.3125rem; line-height: 1.1; letter-spacing: -0.016em;
   text-shadow: 0 2px 14px rgba(0,0,0,0.8);
 }
@@ -820,7 +1013,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .spec td { color: var(--mark); }
 .spec tr + tr { border-top: 1px solid var(--paper-edge); }
-.dark .spec tr + tr { border-top-color: rgba(237, 237, 236, 0.1); }
+.dark .spec tr + tr { border-top-color: rgba(239, 243, 245, 0.1); }
 
 /* pill list for applications / finishes */
 .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
@@ -830,7 +1023,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding: 0.45rem 0.7rem; border-radius: var(--r);
   border: 1px solid var(--paper-edge); color: var(--on-light-mute);
 }
-.dark .pills li { border-color: rgba(237, 237, 236, 0.16); color: var(--on-dark-mute); }
+.dark .pills li { border-color: rgba(239, 243, 245, 0.16); color: var(--on-dark-mute); }
 
 /* =========================== process ==================================== */
 /* Numbered here because it genuinely is a sequence: each step gates the next. */
@@ -843,9 +1036,9 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   grid-template-columns: 3.5rem 1fr;
   align-items: start;
 }
-.dark .step { border-top-color: rgba(237, 237, 236, 0.13); }
+.dark .step { border-top-color: rgba(239, 243, 245, 0.13); }
 .step:last-child { border-bottom: 1px solid var(--paper-edge); }
-.dark .step:last-child { border-bottom-color: rgba(237, 237, 236, 0.13); }
+.dark .step:last-child { border-bottom-color: rgba(239, 243, 245, 0.13); }
 .step::before {
   content: counter(step, decimal-leading-zero);
   grid-row: 1 / span 2;
@@ -871,13 +1064,13 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   box-shadow: var(--lift);
 }
 .dark .quote {
-  border-color: rgba(237, 237, 236, 0.09); background: var(--ink-panel);
+  border-color: rgba(239, 243, 245, 0.09); background: var(--ink-panel);
   box-shadow: var(--lift-d);
 }
-/* Set in the display serif. A testimonial is the one place on the site where
+/* Set in the display face. A testimonial is the one place on the site where
    somebody else is speaking, and the change of voice should be audible. */
 .quote blockquote {
-  font-family: var(--display); font-weight: 400;
+  font-family: var(--display); font-weight: 500;
   font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
   line-height: 1.38; letter-spacing: -0.011em;
   color: var(--on-light);
@@ -892,7 +1085,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding-top: 1.1rem; border-top: 1px solid var(--paper-edge);
   line-height: 1.7;
 }
-.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(237, 237, 236, 0.13); }
+.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(239, 243, 245, 0.13); }
 .quote figcaption b { display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.2rem; }
 .dark .quote figcaption b { color: var(--on-dark); }
 
@@ -902,70 +1095,70 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .field { display: flex; flex-direction: column; gap: 0.55rem; }
 .field label {
   font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-light-mute);
 }
-.field .req { color: var(--mark); }
+.field .req { color: var(--mark-ink); }
 .field input, .field select, .field textarea {
-  background: rgba(237, 237, 236, 0.045);
-  border: 1px solid rgba(237, 237, 236, 0.2);
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
   border-radius: var(--r); padding: 1rem 1.1rem;
-  color: var(--on-dark); font-family: var(--body); font-size: 1rem;
+  color: var(--on-light); font-family: var(--body); font-size: 1rem;
   transition: border-color 200ms var(--ease), background 200ms var(--ease);
   width: 100%;
 }
 .field textarea { min-height: 7.5rem; resize: vertical; }
 .field select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--brand) 50%),
-                    linear-gradient(135deg, var(--brand) 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--brand-ink) 50%),
+                    linear-gradient(135deg, var(--brand-ink) 50%, transparent 50%);
   background-position: calc(100% - 1.15rem) 1.32rem, calc(100% - 0.8rem) 1.32rem;
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
   padding-right: 2.5rem;
 }
-.field select option { background: var(--ink-panel); color: var(--on-dark); }
-.field input::placeholder, .field textarea::placeholder { color: rgba(158,150,138,0.65); }
+.field select option { background: var(--paper); color: var(--on-light); }
+.field input::placeholder, .field textarea::placeholder { color: rgba(66, 83, 92,0.55); }
 .field input:focus, .field select:focus, .field textarea:focus {
-  border-color: var(--brand); background: rgba(237, 237, 236, 0.075);
+  border-color: var(--brand-ink); background: var(--paper-sub);
 }
 .field input:user-invalid, .field textarea:user-invalid { border-color: #B4574A; }
-.form-note { font-size: 0.875rem; color: var(--on-dark-mute); }
+.form-note { font-size: 0.875rem; color: var(--on-light-mute); }
 .form-status {
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--mark); min-height: 1.2em;
+  text-transform: uppercase; color: var(--mark-ink); min-height: 1.2em;
 }
 
 /* =========================== contact rows =============================== */
 .contact-list { list-style: none; padding: 0; display: grid; gap: 0; }
-.contact-list li { padding: 1.15rem 0; border-top: 1px solid rgba(237, 237, 236, 0.13); }
-.contact-list li:last-child { border-bottom: 1px solid rgba(237, 237, 236, 0.13); }
+.contact-list li { padding: 1.15rem 0; border-top: 1px solid var(--paper-edge); }
+.contact-list li:last-child { border-bottom: 1px solid var(--paper-edge); }
 .contact-list .k {
   display: block; font-family: var(--mono); font-size: var(--t-mono);
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-mute);
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-light-mute);
   margin-bottom: 0.4rem;
 }
 .contact-list .v { font-size: 1.0625rem; text-decoration: none; }
-.contact-list a.v:hover { color: var(--brand); text-decoration: underline; text-underline-offset: 4px; }
+.contact-list a.v:hover { color: var(--brand-ink); text-decoration: underline; text-underline-offset: 4px; }
 
 /* =========================== CTA band =================================== */
-.cta-band { position: relative; overflow: hidden; background: var(--ink); }
+.cta-band { position: relative; overflow: hidden; background: var(--ombre-light); color: var(--on-light); }
 .cta-band .cta-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.5; }
 .cta-band::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(96deg,
-    var(--ink) 0 30%, rgba(14, 14, 15, 0.84) 52%, rgba(14, 14, 15, 0.4) 76%, rgba(14, 14, 15, 0.18));
+    var(--paper) 0 30%, rgba(230, 236, 239, 0.84) 52%, rgba(230, 236, 239, 0.4) 76%, rgba(230, 236, 239, 0.18));
 }
 @media (max-width: 56rem) {
-  .cta-band::before { background: rgba(14, 14, 15, 0.86); }
+  .cta-band::before { background: rgba(230, 236, 239, 0.86); }
 }
 .cta-band .wrap { position: relative; z-index: 3; }
 .cta-band h2 { font-size: var(--t-h1); max-width: 18ch; }
 
 /* =========================== footer ===================================== */
 .site-foot {
-  background: #080809; color: var(--on-dark-mute);
+  background: var(--paper-sub); color: var(--on-light-mute);
   padding-block: clamp(4rem, 8vw, 6.5rem) 2.25rem;
-  border-top: 1px solid rgba(237, 237, 236, 0.08);
+  border-top: 1px solid var(--paper-edge);
 }
 .foot-grid {
   display: grid; gap: clamp(2rem, 4vw, 3rem);
@@ -985,15 +1178,15 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .foot-h {
   font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
-  letter-spacing: 0.22em; text-transform: uppercase; color: var(--on-dark);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--on-light);
   margin-bottom: 1.35rem; padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(216, 216, 214, 0.28);
+  border-bottom: 1px solid var(--paper-edge);
 }
 .foot-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; font-size: 0.9375rem; }
-.foot-list a { text-decoration: none; transition: color 180ms var(--ease); }
-.foot-list a:hover { color: var(--brand); }
+.foot-list a { text-decoration: none; transition: color 180ms var(--ease); color: inherit; }
+.foot-list a:hover { color: var(--brand-ink); }
 .foot-bar {
-  border-top: 1px solid rgba(237, 237, 236, 0.08); padding-top: 1.75rem;
+  border-top: 1px solid var(--paper-edge); padding-top: 1.75rem;
   display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
 }
@@ -1001,28 +1194,28 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 
 /* =========================== page header ================================ */
 .page-head {
-  background: var(--ink); color: var(--on-dark);
+  background: var(--ombre-light); color: var(--on-light);
   padding-block: clamp(3.5rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
   position: relative; overflow: hidden;
 }
-.page-head .page-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.42; }
+.page-head .page-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.5; }
 .page-head::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(94deg,
-    var(--ink) 0 24%, rgba(14, 14, 15, 0.86) 48%, rgba(14, 14, 15, 0.5) 74%, rgba(14, 14, 15, 0.28));
+    var(--paper) 0 24%, rgba(230, 236, 239, 0.86) 48%, rgba(230, 236, 239, 0.5) 74%, rgba(230, 236, 239, 0.28));
 }
 @media (max-width: 56rem) {
-  .page-head::before { background: rgba(14, 14, 15, 0.84); }
+  .page-head::before { background: rgba(230, 236, 239, 0.84); }
 }
 .page-head .wrap { position: relative; z-index: 3; }
 .page-head h1 { font-size: var(--t-h1); margin-block: 1rem 1.25rem; }
 .crumbs {
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--on-dark-mute);
+  text-transform: uppercase; color: var(--on-light-mute);
   display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem;
 }
 .crumbs a { text-decoration: none; }
-.crumbs a:hover { color: var(--brand); }
+.crumbs a:hover { color: var(--brand-ink); }
 .crumbs span[aria-hidden] { opacity: 0.4; }
 
 /* =========================== product detail ============================= */
@@ -1045,10 +1238,15 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 
 /* =========================== gallery ==================================== */
 .gal { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
-.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(237, 237, 236, 0.13); background: var(--ink-panel); }
+.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(239, 243, 245, 0.13); background: var(--ink-panel); }
 .gal-surface { aspect-ratio: 3 / 2; }
 .gal-cap { padding: 1rem 1.1rem 1.2rem; }
-.gal-cap h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+/* `.gal-item` is a dark card that lives inside a `.light` section, so the
+   caption has to name its colour: without this the h3 inherits the paper
+   ground's near-black onto the panel fill and the project title vanishes
+   at 1.4:1. The `p` below always set its own colour, which is why the
+   sector line stayed readable while the title did not. */
+.gal-cap h3 { font-size: 1rem; margin-bottom: 0.35rem; color: var(--on-dark); }
 .gal-cap p { font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-mute); }
 
 /* =========================== filter bar ================================= */
@@ -1063,7 +1261,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .filter:hover { border-color: var(--mark-ink); color: var(--on-light); }
 .filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-dark); }
 /* the filter bar sits on the dark ground on the projects page */
-.dark .filter { border-color: rgba(237,237,236,0.22); color: var(--on-dark-mute); }
+.dark .filter { border-color: rgba(239, 243, 245,0.22); color: var(--on-dark-mute); }
 .dark .filter:hover { border-color: var(--brand); color: var(--brand); }
 .dark .filter[aria-pressed="true"] {
   background: var(--on-dark); border-color: var(--on-dark); color: var(--ink);
@@ -1077,7 +1275,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .center { text-align: center; }
 .mt-l { margin-top: clamp(2.5rem, 5vw, 4rem); }
 hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clamp(2.5rem, 5vw, 4rem); }
-.dark hr.rule { border-top-color: rgba(237, 237, 236, 0.13); }
+.dark hr.rule { border-top-color: rgba(239, 243, 245, 0.13); }
 
 /* =========================== statement band =============================
    One section on the homepage that breaks the eyebrow / heading / lead / grid
@@ -1090,7 +1288,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .statement::before {
   content: ''; position: absolute; inset: 0 0 auto 0; height: 1px;
-  background: linear-gradient(90deg, var(--mark), transparent 55%);
+  background: linear-gradient(90deg, var(--mark-ink), transparent 55%);
   opacity: 0.7;
 }
 .statement-h {
@@ -1099,7 +1297,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   margin-block: 1.25rem clamp(2.5rem, 5vw, 4rem);
   max-width: 18ch;
 }
-.statement-em { font-style: italic; color: var(--mark); }
+.statement-em { font-style: italic; color: var(--mark-ink); }
 .statement-grid { display: grid; gap: clamp(1.75rem, 3vw, 3rem); align-items: end; }
 @media (min-width: 56rem) {
   .statement-grid { grid-template-columns: minmax(0, 1fr) minmax(0, auto); }
@@ -1128,7 +1326,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   display: flex; align-items: flex-end;
   min-height: clamp(30rem, 82vh, 47rem);
   padding: clamp(2rem, 5vw, 4.5rem);
-  background: var(--ink); color: var(--on-dark);
+  background: var(--ombre-dark); color: var(--on-dark);
   text-decoration: none;
 }
 .dip-surface { position: absolute; inset: 0; z-index: -2; }
@@ -1136,8 +1334,8 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .dip::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg,
-    rgba(14, 14, 15, 0.10) 0 18%, rgba(14, 14, 15, 0.62) 46%,
-    rgba(14, 14, 15, 0.93) 68%, rgba(14, 14, 15, 0.98));
+    rgba(23, 33, 39, 0.10) 0 18%, rgba(23, 33, 39, 0.62) 46%,
+    rgba(23, 33, 39, 0.93) 68%, rgba(23, 33, 39, 0.98));
   transition: opacity 420ms var(--ease);
 }
 .dip-body { max-width: 34ch; }
@@ -1154,8 +1352,8 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    now an index — swatch, number, room, note, target — and the targets line
    up in a column you can read straight down. */
 .roomdex { list-style: none; padding: 0; margin: 0; counter-reset: rdx; }
-.rdx { counter-increment: rdx; border-top: 1px solid rgba(237, 237, 236, 0.12); }
-.rdx:last-child { border-bottom: 1px solid rgba(237, 237, 236, 0.12); }
+.rdx { counter-increment: rdx; border-top: 1px solid var(--paper-edge); }
+.rdx:last-child { border-bottom: 1px solid var(--paper-edge); }
 .rdx > a {
   display: grid; gap: 0.35rem 1.5rem; align-items: center;
   grid-template-columns: 1fr auto;
@@ -1170,32 +1368,32 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .rdx-swatch {
   display: none; height: 2.75rem; border-radius: 1px;
-  border: 1px solid rgba(237, 237, 236, 0.14);
+  border: 1px solid var(--paper-edge);
   transition: transform 420ms var(--ease);
 }
 @media (min-width: 52rem) { .rdx-swatch { display: block; } }
 .rdx-n {
   display: none;
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.12em;
-  color: var(--on-dark-mute);
+  color: var(--on-light-mute);
 }
 @media (min-width: 52rem) { .rdx-n { display: block; } }
 .rdx-n::before { content: counter(rdx, decimal-leading-zero); }
 .rdx-name {
-  font-family: var(--display); font-weight: 400;
+  font-family: var(--display); font-weight: 500;
   font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
   line-height: 1.1; letter-spacing: -0.015em;
 }
-.rdx-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-dark-mute); }
+.rdx-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-light-mute); }
 @media (max-width: 51.99rem) { .rdx-note { grid-column: 1 / -1; } }
 .rdx-target {
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--mark); white-space: nowrap;
+  text-transform: uppercase; color: var(--mark-ink); white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.rdx > a:hover { color: var(--brand); }
+.rdx > a:hover { color: var(--brand-ink); }
 .rdx > a:hover .rdx-swatch { transform: scale(1.06); }
-.rdx > a:hover .rdx-note, .rdx > a:hover .rdx-n { color: var(--on-dark-mute); }
+.rdx > a:hover .rdx-note, .rdx > a:hover .rdx-n { color: var(--on-light-mute); }
 
 /* --------------------------- sticky process -----------------------------
    Seven steps that gate each other is a long read, and the heading used to
@@ -1209,7 +1407,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 /* the numeral is the point of a sequence, so it is set like one */
 .steps-spine .step::before {
-  font-family: var(--display); font-weight: 400;
+  font-family: var(--display); font-weight: 500;
   font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
   letter-spacing: 0; color: var(--mark-ink); padding-top: 0;
   line-height: 1;
@@ -1221,19 +1419,19 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    As full-width rows the quotes get room to be read, and the attribution
    holds a column of its own the way a citation should. */
 .voices { border-top: 1px solid var(--paper-edge); }
-.dark .voices { border-top-color: rgba(237, 237, 236, 0.12); }
+.dark .voices { border-top-color: rgba(239, 243, 245, 0.12); }
 .voice {
   display: grid; gap: 1rem 3rem;
   padding-block: clamp(2rem, 4vw, 3.25rem);
   border-bottom: 1px solid var(--paper-edge);
   align-items: start;
 }
-.dark .voice { border-bottom-color: rgba(237, 237, 236, 0.12); }
+.dark .voice { border-bottom-color: rgba(239, 243, 245, 0.12); }
 @media (min-width: 52rem) {
   .voice { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
 }
 .voice blockquote {
-  font-family: var(--display); font-weight: 400;
+  font-family: var(--display); font-weight: 500;
   font-size: clamp(1.375rem, 1.1rem + 1.35vw, 2.125rem);
   line-height: 1.28; letter-spacing: -0.014em;
   max-width: 30ch;
@@ -1288,5 +1486,36 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 
 /* form status tones — set by site.js via data-tone */
-.form-status[data-tone="ok"]   { color: var(--brand); }
+.form-status[data-tone="ok"]   { color: var(--brand-ink); }
 .form-status[data-tone="warn"] { color: #E0A33C; }
+
+/* =========================== registration marks =========================
+   Four L-brackets in `currentColor`, drawn as eight background-gradient
+   strokes on a single pseudo-element — the corner marks a print shop or a
+   drafting sheet puts on anything meant to be checked against a reference.
+   Reserved for things that read as a mounted specimen or a sealed record:
+   the card, the panel, the quote, the product aside, the sector tile. Pure
+   CSS — no markup change, so it reaches every page and every future card. */
+.card, .panel, .quote, .pd-aside, .sector { position: relative; }
+.card::before, .panel::before, .quote::before, .pd-aside::before, .sector::before {
+  content: ''; position: absolute; inset: 0.6rem; z-index: 6; pointer-events: none;
+  color: var(--mark-ink); opacity: 0.55;
+  background:
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat,
+    linear-gradient(currentColor, currentColor) no-repeat;
+  background-size:
+    1px 0.8rem, 0.8rem 1px,
+    1px 0.8rem, 0.8rem 1px,
+    1px 0.8rem, 0.8rem 1px,
+    1px 0.8rem, 0.8rem 1px;
+  background-position: top left, top left, top right, top right,
+                        bottom left, bottom left, bottom right, bottom right;
+}
+.dark .card::before, .dark .panel::before, .dark .quote::before,
+.dark .pd-aside::before, .sector::before { color: var(--mark); }

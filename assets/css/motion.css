@@ -51,7 +51,7 @@ html { scroll-padding-top: 7rem; }
   transition: transform 380ms var(--m-out), background-color 300ms var(--m-out);
 }
 html.head-up .site-head { transform: translate3d(0, -101%, 0); }
-html.head-solid .site-head { background: rgba(11, 11, 12, 0.94); }
+html.head-solid .site-head { background: rgba(230, 236, 239, 0.94); }
 /* Never hide the header while something inside it has focus, or while the
    mobile menu is open — both would strand a keyboard user. */
 .site-head:focus-within { transform: none !important; }
@@ -133,9 +133,17 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 
 /* =============================== the hero ===============================
    On load: the headline is lifted out of a mask line by line, and the last
-   word arrives with a reverb tail that settles — two ghost repeats decaying
-   into the real word. It is the one literal gesture on the site and it earns
-   its place, because the tail is exactly the thing the company removes. */
+   word throws a reverb tail that dissipates — two ghost repeats trailing off
+   to the right of the real word. It is the one literal gesture on the site
+   and it earns its place, because the tail is exactly the thing the company
+   removes.
+
+   The tails must never land on the word. An earlier version had them decay
+   *into* it (ending at `transform: none`), which meant that for most of the
+   animation two partly-opaque copies of "place." sat on top of the real one
+   and the headline read as an illegible blur — the single most common
+   "the text is not visible" report on the site. They now travel outward and
+   fade where they started from, so the word itself is never overprinted. */
 
 .hero { view-timeline-name: --hero; view-timeline-axis: block; }
 
@@ -146,7 +154,11 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
    announced once instead of three times. */
 .hero-title .echo {
   position: absolute; left: 0; top: 0;
-  font-style: normal; color: var(--brand);
+  /* A tail is the same sound quieter, not a different one — so the ghosts are
+     the same warm neutral the word is, not the cyan. The cyan is reserved for
+     interactive things (rule 2), and as decoration here it also tinted the
+     overlap blue, which is what made the blur read as a rendering fault. */
+  font-style: normal; color: var(--on-light-mute);
   opacity: 0; pointer-events: none; white-space: nowrap;
 }
 
@@ -154,11 +166,11 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 @keyframes mHeroIn   { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
 @keyframes mTail1 {
   0%   { opacity: 0.42; transform: translate3d(0.30em, 0, 0); }
-  100% { opacity: 0;    transform: none; }
+  100% { opacity: 0;    transform: translate3d(0.54em, 0, 0); }
 }
 @keyframes mTail2 {
   0%   { opacity: 0.22; transform: translate3d(0.62em, 0, 0); }
-  100% { opacity: 0;    transform: none; }
+  100% { opacity: 0;    transform: translate3d(1.02em, 0, 0); }
 }
 /* Scrolling out of the hero: the wall keeps moving after the copy has gone,
    so the section has depth rather than being one flat plate. */
@@ -177,8 +189,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     animation: mHeroLine 900ms var(--m-in) both;
     animation-delay: calc(var(--d, 0) * 1ms);
   }
-  .hero-title .e1 { animation: mTail1 1100ms var(--m-in) 640ms both; }
-  .hero-title .e2 { animation: mTail2 1500ms var(--m-in) 640ms both; }
+  /* Held until the word itself has landed. "place." is the second line
+     (--d:240) running mHeroLine for 900ms, so it is not fully opaque until
+     ~1140ms; starting the tails at 640ms put two ghosts on screen while the
+     real word was still faded out, and they read as the headline rather than
+     as its echo. */
+  .hero-title .e1 { animation: mTail1 1100ms var(--m-in) 1000ms both; }
+  .hero-title .e2 { animation: mTail2 1500ms var(--m-in) 1000ms both; }
 
   /* Inner page headers land the same way the hero does, without needing an
      attribute on every one of them — they are always the first thing on the
@@ -233,7 +250,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 /* `section` carries a global vertical rhythm; this one hands that job to
    .rail-sticky, which is the box that has to fit the viewport exactly when the
    section is pinned. Leaving both in place added 230px the pin could not see. */
-.rail-sec { background: var(--ink); color: var(--on-dark); padding-block: 0; }
+.rail-sec { background: var(--ombre-dark); color: var(--on-dark); padding-block: 0; }
 .rail-sticky { padding-block: var(--pad-y); }
 .rail-head {
   display: grid; gap: clamp(1rem, 2.5vw, 2rem); align-items: end;
@@ -249,7 +266,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      flush to the screen edge and the gutter is scrolled away on load. */
   scroll-padding-inline: var(--gut);
   scrollbar-width: thin;
-  scrollbar-color: rgba(237, 237, 236, 0.25) transparent;
+  scrollbar-color: rgba(239, 243, 245, 0.25) transparent;
   padding-inline: var(--gut);
   padding-bottom: 1rem;
 }
@@ -263,7 +280,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   flex: none; width: clamp(16rem, 60vw, 23rem);
   display: flex; flex-direction: column;
   background: var(--ink-panel);
-  border: 1px solid rgba(237, 237, 236, 0.13);
+  border: 1px solid rgba(239, 243, 245, 0.13);
   border-radius: var(--r); overflow: hidden;
   text-decoration: none; color: inherit;
   transition: border-color 240ms var(--m-out), transform 240ms var(--m-out);
@@ -373,7 +390,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
 }
 .steps-spine::before { background: var(--paper-edge); }
-.dark .steps-spine::before { background: rgba(237, 237, 236, 0.14); }
+.dark .steps-spine::before { background: rgba(239, 243, 245, 0.14); }
 /* The bright overlay exists only where it can actually be drawn by scrolling.
    Anywhere else it would be a zero-height line that never grows, so the plain
    hairline above is left to do the job on its own. */
