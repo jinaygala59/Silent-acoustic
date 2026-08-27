@@ -140,10 +140,18 @@ first offending field takes focus.
 ## Rebuilding the deploy bundle
 
 ```bash
-node build.js && rm -rf dist && mkdir dist && \
-cp -R *.html products assets robots.txt sitemap.xml dist/ && \
-git show HEAD:dist/.htaccess > dist/.htaccess 2>/dev/null || true
+node build.js && mkdir -p dist && \
+rm -rf dist/assets dist/products dist/*.html dist/robots.txt dist/sitemap.xml && \
+cp -R *.html products assets robots.txt sitemap.xml dist/
 ```
+
+This clears only the *generated* half of `dist/` and leaves `.htaccess` and
+`_redirects` in place. Do not replace it with `rm -rf dist`: `dist/` is
+gitignored, so those two files exist **only** in your working copy. An earlier
+version of this snippet did `rm -rf dist` and then tried to restore the
+`.htaccess` with `git show HEAD:dist/.htaccess`, which silently produces
+nothing for an untracked path — running it would have deleted both files, and
+with them the 37 permanent redirects that carry the old WordPress rankings.
 
 `dist/` holds only what the server needs. `src/`, `build.js`, `serve.js` and this
 README are excluded. It also carries:
