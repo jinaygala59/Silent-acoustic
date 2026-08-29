@@ -6,6 +6,17 @@
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* iOS only applies :active to elements it considers interactive, so the
+     press-pop on .review (a <figure>, which leads nowhere and so is correctly
+     not a button or a link) never fires on iPhone or iPad. A single empty
+     touch listener on the document opts the whole page into the behaviour —
+     the long-standing fix, and the reason this is here rather than in the
+     stylesheet. Passive, so it never delays a scroll.
+
+     Progressive, like the rest of this file: with the script blocked, desktop
+     hover still works and touch simply gets no pop. */
+  document.addEventListener('touchstart', function () {}, { passive: true });
+
   /* ---------------------------- mobile nav ----------------------------- */
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('nav');
