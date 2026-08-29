@@ -13,7 +13,10 @@ built.push(page({
   body: `
 <section class="hero">
   <div class="hero-top">
-  <div class="hero-wall surface s-slat" aria-hidden="true"></div>
+  <div class="hero-media" aria-hidden="true">
+    <img src="assets/img/projects/india-international-convention-expo-centre-dwarka.webp"
+         alt="" width="760" height="570" fetchpriority="high" decoding="async">
+  </div>
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
     <h1 class="hero-title">

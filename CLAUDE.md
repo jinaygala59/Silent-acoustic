@@ -211,11 +211,21 @@ against one flat value. The check in the next section does that.
   foam cold near-black, proofing cold graphite. That is what makes a page of 19
   cards read as a materials library. Do not pull them onto the site hue — a
   cyan foam swatch stops looking like foam.
-- Type: `--display` is Archivo, which ships **one weight**. Hierarchy is
-  size, space and measure — nothing here can be emphasised by making it bolder.
-  `--body` is Instrument Sans, `--mono` is IBM Plex Mono for labels and specs.
+- Type is **one superfamily, three cuts**: IBM Plex Sans carries `--display`
+  and `--body`, IBM Plex Mono carries `--mono` (every label, spec figure and
+  button). Plex was drawn as a corporate typeface for an engineering company,
+  and running the labels from the same family is what makes the spec rails
+  read as part of the page rather than as code pasted into it.
+  Everything set in the display face is held at **one weight**, `--w-display`
+  (600) — by choice, not by the family's limits. Hierarchy is size, space and
+  measure; nothing here is emphasised by making it bolder, and the rule only
+  holds while that token has a single value. Display tracking is `-0.02em`
+  (h3/h4 `-0.012em`): Plex has a wider set width and a looser default fit than
+  the condensed grotesk it replaced, so large headings need pulling together.
+  Body tracking is left at normal — Plex is fitted for text at text size.
   The families are set in `site.css`; the Google Fonts URL is `FONTS` in
-  `src/build.js`. Change both together.
+  `src/build.js`. Change both together. (Archivo + Instrument Sans were the
+  previous pairing; if you see those names, that reference is stale.)
 - A fixed 3% film grain sits over the viewport (`body::after`). It is what stops
   the large flat grounds reading as screen fill. Removing it flattens the site.
 - Dark sections and light sections alternate: dark where the page is

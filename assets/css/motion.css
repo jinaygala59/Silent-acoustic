@@ -51,7 +51,7 @@ html { scroll-padding-top: 7rem; }
   transition: transform 380ms var(--m-out), background-color 300ms var(--m-out);
 }
 html.head-up .site-head { transform: translate3d(0, -101%, 0); }
-html.head-solid .site-head { background: rgba(230, 236, 239, 0.94); }
+html.head-solid .site-head { background: rgba(237, 231, 221, 0.94); }
 /* Never hide the header while something inside it has focus, or while the
    mobile menu is open — both would strand a keyboard user. */
 .site-head:focus-within { transform: none !important; }
@@ -266,7 +266,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      flush to the screen edge and the gutter is scrolled away on load. */
   scroll-padding-inline: var(--gut);
   scrollbar-width: thin;
-  scrollbar-color: rgba(239, 243, 245, 0.25) transparent;
+  scrollbar-color: rgba(246, 242, 234, 0.25) transparent;
   padding-inline: var(--gut);
   padding-bottom: 1rem;
 }
@@ -280,7 +280,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   flex: none; width: clamp(16rem, 60vw, 23rem);
   display: flex; flex-direction: column;
   background: var(--ink-panel);
-  border: 1px solid rgba(239, 243, 245, 0.13);
+  border: 1px solid rgba(246, 242, 234, 0.13);
   border-radius: var(--r); overflow: hidden;
   text-decoration: none; color: inherit;
   transition: border-color 240ms var(--m-out), transform 240ms var(--m-out);
@@ -390,7 +390,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
 }
 .steps-spine::before { background: var(--paper-edge); }
-.dark .steps-spine::before { background: rgba(239, 243, 245, 0.14); }
+.dark .steps-spine::before { background: rgba(246, 242, 234, 0.14); }
 /* The bright overlay exists only where it can actually be drawn by scrolling.
    Anywhere else it would be a zero-height line that never grows, so the plain
    hairline above is left to do the job on its own. */
@@ -419,7 +419,7 @@ a.card:active, .sector:active, .fam:active { transform: translateY(-1px); }
 
 /* Cards lift their own surface a touch on hover — the panel catching light
    as you lean toward it. */
-.card-surface, .fam-surface { transition: transform 600ms var(--m-out); }
+.card-surface, .fam-surface { transition: transform 240ms var(--ease); }
 a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
 
 /* A quiet loading state for the sector tiles: they scale up from 97% so the

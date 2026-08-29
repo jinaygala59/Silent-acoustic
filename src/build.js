@@ -21,7 +21,7 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
    Instrument Sans    body and UI. Neutral enough to stay out of the way.
    IBM Plex Mono      labels, specs, buttons — now the dominant register
                       rather than a supporting one. */
-const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;1,500&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap';
+const FONTS = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap';
 
 /* The real Silence Acoustic logo. Two lockups, each in a knockout variant:
    the header drops the tagline (it is illegible at 32px), the footer keeps it.
