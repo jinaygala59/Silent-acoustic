@@ -213,11 +213,6 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     /* The walls sit inside `overflow: hidden` sections, so they cannot resolve
        their own `view()` timeline — they borrow the named one their section
        publishes instead. */
-    .hero-wall {
-      animation: mWall linear both;
-      animation-timeline: --hero;
-      animation-range: cover 0% cover 100%;
-    }
     /* The hero always sits at the top of the document, so the page's own
        scroll offset is the hero's progress — no element timeline needed. */
     .hero .wrap {
@@ -226,17 +221,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
       animation-range: 0px 78vh;
     }
     .page-head { view-timeline-name: --phead; }
-    .page-wall {
-      animation: mWall linear both;
-      animation-timeline: --phead;
-      animation-range: cover 0% cover 100%;
-    }
     .cta-band { view-timeline-name: --cta; }
-    .cta-wall {
-      animation: mWall linear both;
-      animation-timeline: --cta;
-      animation-range: cover 0% cover 100%;
-    }
   }
 }
 
@@ -266,7 +251,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      flush to the screen edge and the gutter is scrolled away on load. */
   scroll-padding-inline: var(--gut);
   scrollbar-width: thin;
-  scrollbar-color: rgba(246, 242, 234, 0.25) transparent;
+  scrollbar-color: rgba(25, 21, 18, 0.287) transparent;
   padding-inline: var(--gut);
   padding-bottom: 1rem;
 }
@@ -280,7 +265,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   flex: none; width: clamp(16rem, 60vw, 23rem);
   display: flex; flex-direction: column;
   background: var(--ink-panel);
-  border: 1px solid rgba(246, 242, 234, 0.13);
+  border: 1px solid rgba(25, 21, 18, 0.149);
   border-radius: var(--r); overflow: hidden;
   text-decoration: none; color: inherit;
   transition: border-color 240ms var(--m-out), transform 240ms var(--m-out);
@@ -313,15 +298,21 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 .fam-items li::before { content: ''; flex: none; width: 0.5rem; height: 1px; background: var(--mark); margin-top: 0.68em; opacity: 0.7; }
 .fam-more { opacity: 0.65; font-style: italic; }
 .fam-more::before { opacity: 0 !important; }
-.fam .card-foot { color: var(--brand); }
+.fam .card-foot { color: var(--brand-ink); }
 .fam:hover .btn-arrow { transform: translateX(3px); }
 
-/* the closing panel: not a product family, the way out of the rail */
-.fam-all { background: var(--brand-deep); border-color: var(--brand-deep); }
+/* the closing panel: not a product family, the way out of the rail.
+   This is the ONE saturated fill on the site, so every colour inside it has to
+   be named — the rail's own text tokens are dark now and would sit on cyan at
+   3.6:1. The opacity: 0.92 that used to soften the note is gone too: it
+   composited --paper-hi down to 4.02:1, under AA. */
+.fam-all { background: var(--brand-deep); border-color: var(--brand-deep); color: var(--paper-hi); }
 .fam-all .fam-body { justify-content: center; gap: 1rem; padding: 2rem 1.6rem; }
-.fam-all h3 { font-size: var(--t-h2); line-height: 0.98; }
-.fam-all .fam-note, .fam-all .card-foot { color: #fff; opacity: 0.92; }
-.fam-all:hover { border-color: #fff; }
+.fam-all h3 { font-size: var(--t-h2); line-height: 0.98; color: var(--paper-hi); }
+.fam-all .fam-n,
+.fam-all .fam-note,
+.fam-all .card-foot { color: var(--paper-hi); }
+.fam-all:hover { border-color: var(--paper-hi); }
 
 /* a hint that the rail is not the end of the row */
 .rail-hint {
@@ -380,6 +371,207 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   }
 }
 
+/* ====================== the scroll choreography =========================
+   Four finished rooms that trade places, stack, and resolve into one at full
+   bleed — the piece that introduces the Work gallery.
+
+   Read this block the way you read the family rail: what follows immediately
+   below is the DEFAULT, and it is a plain captioned 2x2 grid in a normal
+   light section. Narrow viewports, reduced motion and Firefox all stop there
+   and get something readable. The pin is layered on top further down and is
+   the only part that can fail. */
+
+/* `section` carries the global vertical rhythm; the pin needs it off, because
+   .choreo-pin is the box that has to fit the viewport exactly. Same trade the
+   family rail makes, and for the same reason. */
+.choreo { padding-block: 0; }
+.choreo-pin { padding-block: var(--pad-y); }
+
+.choreo-copy { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.choreo-copy h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
+/* This had no rule at all. .choreo-copy carries .wrap and .choreo-stage sets
+   its own padding-inline, so the foot was the one child of the pin with no
+   gutter: it sat hard against x=0, and on the desktop path — where
+   .choreo-copy goes position: absolute and leaves the flow — it rose to the
+   top of the pin and printed straight through the eyebrow. */
+.choreo-foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding-inline: var(--gut); }
+
+.choreo-stage {
+  display: grid; gap: clamp(1rem, 2vw, 1.5rem);
+  padding-inline: var(--gut);
+}
+@media (min-width: 40rem) { .choreo-stage { grid-template-columns: 1fr 1fr; } }
+
+.choreo-plate { margin: 0; display: flex; flex-direction: column; gap: 0.8rem; }
+.choreo-surface {
+  aspect-ratio: 3 / 2; border-radius: var(--r); overflow: hidden;
+}
+/* This section is `.dark`, so the figcaption would inherit --on-dark and be
+   fine. Both colours are named anyway: in the pinned variant below the hero
+   caption becomes a chip on its own fill, and a caption whose colour is
+   inherited from two different grounds is exactly the failure the family rail
+   and the gallery cards already hit once. */
+.choreo-plate figcaption {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  font-family: var(--mono); font-size: var(--t-mono); line-height: 1.45;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+.choreo-plate figcaption b {
+  font-weight: inherit; letter-spacing: 0.1em; color: var(--on-dark);
+}
+
+/* ---- the pin. Everything above still stands if this block never applies. --
+   Gated at 48rem for the same reason as the family rail: below it the stage
+   would be four postage stamps, and the 36vw plate is meaningless on a phone.
+
+   The plates take the NAMED `--choreo` timeline, never `view()`. They sit
+   inside .choreo-pin, which is `overflow: hidden` and therefore a scroll
+   container — a `view()` timeline declared in here never advances and every
+   plate would sit frozen at its start state, invisible. Same reason the hero
+   wall borrows `--hero`. */
+@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* 300vh total: 100vh of viewport plus 200vh of travel, which is exactly
+       the `contain` range the plates animate over. Unlike the family rail
+       this one IS a multiple of viewport height — the distance everything
+       moves is set in vh and vw, so it scales with the window rather than
+       fighting it. */
+    .choreo {
+      height: 300vh;
+      view-timeline-name: --choreo;
+      view-timeline-axis: block;
+    }
+    .choreo-pin {
+      position: sticky; top: 0;
+      height: 100vh; overflow: hidden;
+      /* clears the site header, which can return over the pin at any moment
+         if the reader scrolls up inside it */
+      padding: 6rem 0 0;
+    }
+
+    .choreo-stage {
+      position: absolute; inset: 0;
+      display: block; padding: 0;
+    }
+    .choreo-plate {
+      position: absolute; left: 50%; top: 50%;
+      width: 36vw; height: 24vh;
+      /* the -50%/-50% centring lives in the margins, not in a transform,
+         because `transform` is what the keyframes drive */
+      margin-left: -18vw; margin-top: -12vh;
+      display: block;
+      border-radius: var(--r); overflow: hidden;
+      box-shadow: 0 18px 40px -22px rgba(16, 23, 27, 0.34);
+      animation: linear both;
+      animation-timeline: --choreo;
+      animation-range: contain 0% contain 100%;
+      will-change: transform, opacity;
+    }
+    .choreo-plate .choreo-surface {
+      aspect-ratio: auto; height: 100%; border-radius: 0;
+    }
+    .choreo-plate .choreo-surface img { height: 100%; width: 100%; object-fit: cover; }
+
+    .choreo-copy {
+      position: absolute; left: 0; right: 0; top: 6rem;
+      z-index: 50; margin: 0;
+      animation: mChoreoCopy linear both;
+      animation-timeline: --choreo;
+      animation-range: contain 0% contain 100%;
+    }
+    /* pinned to the opposite corner from the hero plate's caption chip, which
+       sits bottom-left, so the two never meet */
+    .choreo-foot {
+      position: absolute; right: 0; bottom: 0; z-index: 60; margin: 0;
+      padding: 1rem clamp(1.5rem, 5vw, 5rem) 1.5rem;
+    }
+
+    .at-tl { z-index: 10; animation-name: mChoreoTL; }
+    .at-br { z-index: 20; animation-name: mChoreoBR; }
+    .at-bl { z-index: 30; animation-name: mChoreoBL; }
+    .at-tr { z-index: 40; animation-name: mChoreoHero; }
+
+    /* The three plates under the hero are read out by their alt text; their
+       captions would be text over a photograph, which has no measurable
+       contrast on this site. Hidden the way .vh hides things — off screen,
+       still announced — rather than with display: none. */
+    .at-tl figcaption, .at-br figcaption, .at-bl figcaption {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    /* The hero's caption is the one that stays, and it is a solid chip on
+       --ink rather than text laid over the photograph, so the pair it
+       actually measures against is the same --on-dark/--ink the rest of the
+       section uses. */
+    .at-tr figcaption {
+      position: absolute; z-index: 5; left: 0; bottom: 0;
+      gap: 0.3rem;
+      padding: 1rem clamp(1.5rem, 5vw, 5rem) 1.25rem;
+      background: var(--paper-hi);
+      border-top: 1px solid var(--paper-edge);
+      border-right: 1px solid var(--paper-edge);
+      animation: mChoreoCap linear both;
+      animation-timeline: --choreo;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+
+/* Phase 1 (0-30%): the two diagonal plates trade ends of their own column.
+   Phase 2 (35-65%): all four close on the centre and stack.
+   Phase 3 (70-90%): the top plate opens to full bleed and the rest fade. */
+@keyframes mChoreoTL {
+  0%        { transform: translate3d(-20vw, -14vh, 0); opacity: 1; }
+  30%, 35%  { transform: translate3d(-20vw,  14vh, 0); opacity: 1; }
+  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
+  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+@keyframes mChoreoBR {
+  0%        { transform: translate3d( 20vw,  14vh, 0); opacity: 1; }
+  30%, 35%  { transform: translate3d( 20vw, -14vh, 0); opacity: 1; }
+  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
+  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+@keyframes mChoreoBL {
+  0%, 35%   { transform: translate3d(-20vw,  14vh, 0); opacity: 1; }
+  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
+  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+/* The hero animates its own box rather than scaling, so the photograph is
+   never distorted. width/height are layout properties, but this element is
+   absolutely positioned — the layout it dirties is its own, and there is
+   exactly one of it. The margins carry the centring, so they have to track
+   the size: margin is always minus half. */
+@keyframes mChoreoHero {
+  0%, 35% {
+    transform: translate3d(20vw, -14vh, 0);
+    width: 36vw; height: 24vh; margin-left: -18vw; margin-top: -12vh;
+    border-radius: var(--r);
+  }
+  65%, 70% {
+    transform: translate3d(0, 0, 0);
+    width: 36vw; height: 24vh; margin-left: -18vw; margin-top: -12vh;
+    border-radius: var(--r);
+  }
+  90%, 100% {
+    transform: translate3d(0, 0, 0);
+    width: 100vw; height: 100vh; margin-left: -50vw; margin-top: -50vh;
+    border-radius: 0;
+  }
+}
+/* The heading leaves once the plates start closing on it — it would otherwise
+   sit on top of the stack, and then on top of the full-bleed photograph. */
+@keyframes mChoreoCopy {
+  0%, 30%   { opacity: 1; transform: translate3d(0, 0, 0); }
+  55%, 100% { opacity: 0; transform: translate3d(0, -2rem, 0); }
+}
+/* and the hero names itself only once it is the whole screen */
+@keyframes mChoreoCap {
+  0%, 88%   { opacity: 0; }
+  100%      { opacity: 1; }
+}
+
 /* ========================= the process spine ===========================
    Seven steps that gate each other, so the rule between them is drawn as you
    descend rather than printed all at once. */
@@ -390,7 +582,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
 }
 .steps-spine::before { background: var(--paper-edge); }
-.dark .steps-spine::before { background: rgba(246, 242, 234, 0.14); }
+.dark .steps-spine::before { background: rgba(25, 21, 18, 0.161); }
 /* The bright overlay exists only where it can actually be drawn by scrolling.
    Anywhere else it would be a zero-height line that never grows, so the plain
    hairline above is left to do the job on its own. */
@@ -415,7 +607,10 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
    Hover and press feedback, kept to two properties so nothing here can ever
    cost a layout pass. */
 .card, .sector, .fam, .quote { will-change: auto; }
-a.card:active, .sector:active, .fam:active { transform: translateY(-1px); }
+a.card:active, .sector:active, .fam:active {
+  transform: translateY(-1px);
+  transition-duration: 120ms;
+}
 
 /* Cards lift their own surface a touch on hover — the panel catching light
    as you lean toward it. */

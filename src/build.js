@@ -21,7 +21,7 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
    Instrument Sans    body and UI. Neutral enough to stay out of the way.
    IBM Plex Mono      labels, specs, buttons — now the dominant register
                       rather than a supporting one. */
-const FONTS = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Spline+Sans+Mono:ital,wght@0,400;0,500;1,400&display=swap';
 
 /* The real Silence Acoustic logo. Two lockups, each in a knockout variant:
    the header drops the tagline (it is illegible at 32px), the footer keeps it.
@@ -169,14 +169,52 @@ ${footer(depth)}
 
 /* ------------------------------- partials ------------------------------- */
 
+/* ------------------------------- the NRC bar -----------------------------
+   The one signature device on the redesigned site. NRC is a coefficient
+   between 0 and 1 that already means "this fraction of incident sound energy
+   is absorbed", so drawing it as a proportion states exactly what the number
+   states — it is not a decoration wrapped around a figure.
+
+   It is drawn ONLY from a published NRC. Eight of the nineteen products carry
+   one on the client's own product pages; the rest publish density, thickness
+   or an STC instead. Where there is no figure, `nrcOf` returns null and the
+   card shows nothing rather than a bar at an invented value. Do not "fill in"
+   the missing eleven — see the content-provenance note in CLAUDE.md.
+
+   Where a product publishes a range ("up to 0.6 (9 mm) / up to 0.85 (12 mm)")
+   the bar takes the highest published figure, which is the one the sentence
+   is about, and the caption keeps the client's own wording so the qualifier
+   ("up to") is never dropped. */
+const nrcOf = (p) => {
+  const raw = p.specs && p.specs['NRC'];
+  if (!raw) return null;
+  const nums = String(raw).match(/\d?\.\d+/g);
+  if (!nums) return null;
+  const v = Math.max(...nums.map(Number));
+  return (v > 0 && v <= 1) ? { v, raw: String(raw) } : null;
+};
+
+const MAT = { panels: 'pet', ceiling: 'cloud', foam: 'foam', wood: 'wood', proof: 'proof' };
+
+const nrcBar = (p, cls = '') => {
+  const n = nrcOf(p);
+  if (!n) return '';
+  const pct = Math.round(n.v * 100);
+  return `<div class="nrc ${cls}" data-mat="${MAT[p.cat] || 'pet'}">
+    <div class="nrc-track"><i style="--v:${pct}%"></i></div>
+    <p class="nrc-fig"><b>${n.v.toFixed(2)}</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">${esc(n.raw)}</span></p>
+  </div>`;
+};
+
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" href="${up}products/${p.slug}.html">
-  <div class="card-surface surface ${p.surf}">
+  <div class="card-surface surface s-plate">
     <img src="${up}assets/img/products/${p.slug}-card.webp" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
     <span class="card-cat">${esc(CATEGORIES.find(c => c.id === p.cat).name)}</span>
     <h3>${esc(p.name)}</h3>
     <p>${esc(p.tag)}</p>
+    ${nrcBar(p, 'nrc-sm')}
     <span class="card-foot">View spec ${ARROW}</span>
   </div>
 </a>`;
@@ -213,7 +251,7 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
           const shown = items.slice(0, 3);
           const rest = items.length - shown.length;
           return `<a class="fam" href="products.html#${cat.id}">
-          <div class="fam-surface surface ${cat.surf}">
+          <div class="fam-surface surface s-plate">
             <img src="assets/img/products/${cat.img}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="fam-body">
@@ -240,7 +278,6 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
 </section>`;
 
 const ctaBand = (up = '') => `<section class="cta-band">
-  <div class="cta-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <div class="section-head split">
       <div>
@@ -258,4 +295,4 @@ const ctaBand = (up = '') => `<section class="cta-band">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer };
+module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf };

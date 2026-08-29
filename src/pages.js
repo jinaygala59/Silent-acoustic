@@ -1,9 +1,49 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, famRail, ctaBand } = B;
+const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar } = B;
 
 const built = [];
+
+/* ----------------------------- the choreography --------------------------
+   Introduces the Work gallery: four finished rooms trade places, stack, and
+   the last one opens to full bleed. Slugs only — every name, location and
+   sector is read back out of PROJECTS, so this block cannot drift from the
+   client's data. Array order is z-order and stage position: back to front,
+   and the last entry is the one that expands. */
+const CHOREO = [
+  'action-voice-studio-khar-mumbai',
+  'accenture-vikroli',
+  '88-pictures-mumbai',
+  'ravindra-natya-mandir-prabhadevi',
+];
+
+const choreoBand = () => {
+  const picks = CHOREO.map(s => PROJECTS.find(p => p.s === s)).filter(Boolean);
+  /* A stage missing a plate reads as broken rather than shorter, and the
+     positions below are hard-coded to four. Drop the section instead. */
+  if (picks.length !== 4) return '';
+  const at = ['tl', 'br', 'bl', 'tr'];
+  return `
+<section class="light choreo" aria-labelledby="choreo-h">
+  <div class="choreo-pin">
+    <div class="wrap choreo-copy">
+      <p class="eyebrow">Selected work</p>
+      <h2 id="choreo-h">Four rooms,<br>one way of working.</h2>
+    </div>
+    <div class="choreo-stage">
+      ${picks.map((pr, i) => `<figure class="choreo-plate at-${at[i]}">
+        <div class="choreo-surface surface s-plate">
+          <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>${esc(pr.n)}</b>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</figcaption>
+      </figure>`).join('\n      ')}
+    </div>
+    <p class="choreo-foot"><a class="tlink" href="projects.html">All ${PROJECTS.length} projects ${ARROW}</a></p>
+  </div>
+</section>`;
+};
+
 
 /* =============================== HOME ==================================== */
 built.push(page({
@@ -42,7 +82,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed" style="padding-bottom:clamp(3rem,6vw,5rem)">
+<section class="light railed dip-sec">
   <div class="wrap">
     <span class="rail-label">The distinction</span>
     <div class="section-head split">
@@ -53,11 +93,8 @@ built.push(page({
       <p class="lead" data-anim="fade">Most enquiries we get ask for foam to stop noise from next door. Foam will not do that. Getting this right first is the difference between a room that works and a wall covered in wasted money.</p>
     </div>
   </div>
-</section>
-
-<div class="diptych">
+  <div class="diptych">
   <a class="dip" href="products.html#panels" data-anim="fade">
-    <div class="dip-surface surface s-felt" aria-hidden="true"></div>
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
@@ -66,7 +103,6 @@ built.push(page({
     </div>
   </a>
   <a class="dip" href="products.html#proof" data-anim="fade">
-    <div class="dip-surface surface s-mlv" aria-hidden="true"></div>
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
@@ -74,7 +110,8 @@ built.push(page({
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
-</div>
+  </div>
+</section>
 
 ${famRail()}
 
@@ -90,7 +127,7 @@ ${famRail()}
     </div>
     <ol class="roomdex" data-stagger>
       ${SECTORS.map(s => `<li class="rdx" data-anim="fade"><a href="projects.html">
-        <span class="rdx-swatch surface ${s.surf}" aria-hidden="true">${(() => {
+        <span class="rdx-swatch surface s-plate" aria-hidden="true">${(() => {
           const ex = PROJECTS.find(pr => pr.sec === s.name);
           return ex ? `<img src="assets/img/projects/${ex.s}.webp" alt="" width="760" height="507" loading="lazy" decoding="async">` : '';
         })()}</span>
@@ -103,7 +140,7 @@ ${famRail()}
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Method</span>
     <div class="process-grid">
@@ -133,19 +170,19 @@ ${famRail()}
   </div>
 </section>
 
+${choreoBand()}
+
 <section class="light railed">
   <div class="wrap">
     <span class="rail-label">Work</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">${PROJECTS.length} completed installations</p>
-        <h2 data-anim="reveal">Rooms we have finished.</h2>
-      </div>
+    <div class="section-head stack">
+      <p class="eyebrow" data-anim="fade">${PROJECTS.length} completed installations</p>
+      <h2 data-anim="reveal">Rooms we have finished.</h2>
       <p class="lead" data-anim="fade">Auditoriums and broadcast studios, corporate floors and classrooms — across Mumbai, Maharashtra and the rest of India.</p>
     </div>
     <div class="gal" data-stagger>
-      ${PROJECTS.slice(0, 8).map(pr => `<article class="gal-item" data-anim="rise">
-        <div class="gal-surface surface s-felt">
+      ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="rise">
+        <div class="gal-surface surface s-plate">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
         <div class="gal-cap">
@@ -158,14 +195,12 @@ ${famRail()}
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Clients</span>
-    <div class="section-head">
-      <div>
-        <p class="eyebrow" data-anim="fade">In their words</p>
-        <h2 data-anim="reveal">What consultants and clients say.</h2>
-      </div>
+    <div class="section-head mid">
+      <p class="eyebrow" data-anim="fade">In their words</p>
+      <h2 data-anim="reveal">What consultants and clients say.</h2>
     </div>
     <div class="voices">
       ${TESTIMONIALS.map(t => `<figure class="voice" data-anim="fade">
@@ -187,7 +222,6 @@ built.push(page({
   desc: '19 acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Made in Mumbai.',
   body: `
 <section class="page-head">
-  <div class="page-wall surface s-perf" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Catalogue</p>
     <h1>Products</h1>
@@ -252,11 +286,11 @@ PRODUCTS.forEach(p => {
     desc: `${p.name}: ${p.tag}. Supplied and installed across India by Silence Acoustic, Mumbai.`,
     body: `
 <section class="page-head">
-  <div class="page-wall surface ${p.surf}" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">${esc(cat.name)}</p>
     <h1>${esc(p.name)}</h1>
     <p class="lead">${esc(p.tag)}</p>
+    ${nrcBar(p, 'nrc-lead')}
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="../index.html">Home</a><span aria-hidden="true">/</span>
       <a href="../products.html">Products</a><span aria-hidden="true">/</span>
@@ -270,7 +304,7 @@ PRODUCTS.forEach(p => {
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface ${p.surf}" data-anim="frame">
+        <div class="pd-hero surface s-plate" data-anim="frame">
           <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
@@ -311,7 +345,6 @@ built.push(page({
   desc: 'Acoustic treatment for auditoriums, recording studios, offices, schools, sports halls, hotels and home theatres. Each room designed to its own target.',
   body: `
 <section class="page-head">
-  <div class="page-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Selected work</p>
     <h1>Projects</h1>
@@ -360,7 +393,7 @@ built.push(page({
 
     <div class="gal" id="gal">
       ${PROJECTS.map(pr => `<article class="gal-item" data-sector="${esc(pr.sec)}">
-        <div class="gal-surface surface s-felt">
+        <div class="gal-surface surface s-plate">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
         <div class="gal-cap">
@@ -395,7 +428,6 @@ built.push(page({
   desc: 'Over a decade in acoustics. We measure, design, manufacture and install acoustic treatment ourselves, from Malad West, Mumbai.',
   body: `
 <section class="page-head">
-  <div class="page-wall surface s-wool" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">About</p>
     <h1>We do the whole job,<br>so there is nobody else to blame.</h1>
@@ -415,7 +447,10 @@ built.push(page({
         <p style="color:var(--on-light-mute)">That is unusual in this industry, and it is the only part of our pitch that matters. Everything else — the finishes, the cut patterns, the colour range — is downstream of being answerable for the result.</p>
       </div>
       <div>
-        <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5" aria-hidden="true"></div>
+        <div class="surface s-plate panel" data-anim="frame" style="aspect-ratio:4/5">
+          <img src="assets/img/projects/ravindra-natya-mandir-prabhadevi.webp"
+               alt="Ravindra Natya Mandir, Prabhadevi" width="760" height="570" loading="lazy" decoding="async">
+        </div>
         <table class="spec" data-anim="fade" style="margin-top:2rem">
           <caption>At a glance</caption>
           <tbody>
@@ -478,7 +513,6 @@ built.push(page({
   desc: 'Plain-language notes on room acoustics from Silence Acoustic, Mumbai — starting with a beginner\'s guide to acoustic polyester panels and how they work.',
   body: `
 <section class="page-head">
-  <div class="page-wall surface s-emboss" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Notes</p>
     <h1>Working notes on acoustics</h1>
@@ -491,7 +525,7 @@ built.push(page({
     <span class="rail-label">Articles</span>
     <div class="grid g3">
       ${POSTS.map(post => `<a class="card rise" href="${post.slug}.html" style="background:transparent;border-color:var(--paper-edge)">
-        <div class="card-surface surface s-felt" aria-hidden="true"></div>
+        <div class="card-surface surface s-plate" aria-hidden="true"></div>
         <div class="card-body" style="padding:1.5rem">
           <span class="card-cat">${esc(post.tag)} &middot; ${esc(post.read)} &middot; ${esc(post.dateLabel)}</span>
           <h3 style="font-size:1.125rem;margin-top:.35rem">${esc(post.t)}</h3>
@@ -523,7 +557,6 @@ POSTS.forEach(post => {
     desc: post.d.slice(0, 158),
     body: `
 <section class="page-head">
-  <div class="page-wall surface s-felt" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">${esc(post.tag)} &middot; ${esc(post.read)} read</p>
     <h1>${esc(post.t)}</h1>
@@ -565,7 +598,6 @@ built.push(page({
   desc: 'Book a free acoustic site survey in Mumbai and the MMR. Call +91 81084 00566 or send your room details and we will come and measure.',
   body: `
 <section class="page-head">
-  <div class="page-wall surface s-felt" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">Contact</p>
     <h1>Tell us about the room.</h1>
@@ -642,7 +674,6 @@ built.push(page({
   desc: 'That page does not exist. Find acoustic panels, ceilings, foam, wood and soundproofing in the product catalogue.',
   body: `
 <section class="page-head" style="padding-block:clamp(5rem,12vw,9rem)">
-  <div class="page-wall surface s-slat" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow">404</p>
     <h1>Nothing here. Not even an echo.</h1>

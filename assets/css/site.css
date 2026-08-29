@@ -59,12 +59,18 @@
      *on* a ground (cards, panels, fields, the filter pills) stay flat — a
      gradient on a small element reads as decoration, and it makes the
      contrast under its text unpredictable. Keep that split. */
-  --ink-deep:   #0B0906;
-  --ink:        #221E18;
-  --ink-lift:   #3B352C;
-  --ink-panel:  #2A251E;
-  --ink-raise:  #322C24;
-  --ink-edge:   #4E4739;
+  /* THERE ARE NO DARK GROUNDS ON THIS SITE. These are still called --ink-*
+     because ~200 call sites and the .dark class name depend on them, but they
+     are now the *deep* end of one continuous light range: warm greige, not
+     near-black. A section that opts into .dark gets the deeper of two light
+     ombres, and its text stays dark. See the note on --on-dark below.
+     If you are about to set a near-black background anywhere: don't. */
+  --ink-deep:   #E8EDEF;   /* deepest ground on the site — 7.15:1 under --on-light */
+  --ink:        #FAFBFB;
+  --ink-lift:   #FFFFFF;
+  --ink-panel:  #F1F4F5;
+  --ink-raise:  #F7F9FA;
+  --ink-edge:   #C3CCD0;
 
   /* -- paper: warm bone, the datasheet ----------------------------------
      Deliberately short of white. Screen-white next to real product photos
@@ -73,20 +79,29 @@
      ~200deg cyan tint: with the accent retired there is no logo hue left to
      agree with, and a warm neutral sits better under the project photography,
      which is nearly all timber, felt and daylight. */
-  --paper-hi:   #FCFAF6;
-  --paper:      #EDE7DD;
-  --paper-lo:   #BCB1A0;   /* end-to-end 2.03:1, matching the 2.08:1 the cool
-                              ramp reached — same ombre strength, warm. */
-  --paper-sub:  #E6E0D6;
-  --paper-edge: #AFA595;
+  --paper-hi:   #FFFFFF;
+  --paper:      #FAFBFB;
+  --paper-lo:   #E8EDEF;   /* 1.60:1 end to end. Shallower than the 2.03:1 the
+                              two-tone version ran, because with no dark
+                              sections left the ombre is decoration again
+                              rather than the thing carrying section rhythm —
+                              that job moved to the .light/.dark tone step. */
+  --paper-sub:  #F1F4F5;
+  --paper-edge: #C3CCD0;
 
   /* -- text ------------------------------------------------------------ */
-  --on-dark:      #F6F2EA;   /* 14.9:1 on --ink, 10.9:1 on --ink-lift */
-  --on-dark-mute: #A7A198;   /*  6.5:1 on --ink,  4.73:1 on --ink-lift */
-  --on-light:      #171310;  /* 15.0:1 on --paper, 8.7:1 on --paper-lo */
-  --on-light-mute: #484139;  /*  8.2:1 on --paper, 4.75:1 on --paper-lo. The
-                                 light-side text tokens are what cap --paper-lo,
-                                 so a deeper ombre is paid for here. */
+  /* --on-dark* no longer means "light text". With the dark grounds gone it is
+     dark text on the deep ombre, so it resolves to the same values as
+     --on-light*. The names survive only so .dark call sites keep working. */
+  --on-dark:      #10171B;   /* 13.2:1 on --ink-lift, 7.15:1 on --ink-deep */
+  --on-dark-mute: #4A565C;   /*  8.7:1 on --ink-lift, 4.70:1 on --ink-deep */
+  /* The banner photograph is the only surface left that needs light text.
+     These two are fixed paper tones for that one job — never use them where a
+     CSS ground is involved, they are not part of the ramp. */
+  --on-dark-fixed: #F2F6F7;
+  --mark-fixed:    #C9C3B8;
+  --on-light:      #10171B;  /* 15.9:1 on --paper, 11.0:1 on --paper-lo */
+  --on-light-mute: #4A565C;  /* 10.4:1 on --paper,  7.2:1 on --paper-lo */
 
   /* -- accents: there are none -----------------------------------------
      THE PAGE HAS NO ACCENT COLOUR. There is exactly one piece of colour on
@@ -101,17 +116,42 @@
      The --brand-* names are kept only so the ~30 existing call sites do not
      all have to change. They now resolve to the neutral ramp. Treat them as
      "the interactive token", not as "the coloured token". */
-  --brand:      var(--on-dark);    /* interactive on a dark ground */
-  --brand-lift: var(--paper-hi);   /* its hover */
-  --brand-deep: var(--on-light);   /* solid fill carrying paper text */
-  --brand-ink:  var(--on-light);   /* links and labels on the paper ground */
+  --brand:      #0C6483;   /* THE LOGO CYAN, AND IT CANNOT CARRY TEXT: 2.65:1
+                              on white, 2.24:1 on --paper-lo. It is for the
+                              mark and for borders only. Six rules used it as a
+                              text colour and all six failed AA; they now use
+                              --brand-ink. If you write `color: var(--brand)`,
+                              you have introduced a contrast failure. */
+  --brand-lift: #0A5570;   /* hover */
+  --brand-deep: #10789C;   /* solid pill fill carrying --paper-hi — 4.84:1 */
+  --brand-ink:  #0C6483;   /* links and labels on any ground — 4.74:1 worst */
 
   /* --mark carries figures, hairline rules and markers: the neutral washed
      back, so it reads as precision rather than as ornament. */
-  --mark:       #C2BDB7;   /* on the dark ground — 6.5:1 at --ink-lift */
-  --mark-ink:   #453E36;   /* same role on paper — 4.98:1 at --paper-lo, kept a
-                              step stronger than --on-light-mute so the marker
-                              still reads as the firmer of the two. */
+  /* The pure logo cyan. It is 2.24:1 on paper and can therefore never carry
+     text — only fills, focus rings, underlines and markers. --brand above is
+     the same hue at an exposure that can. Reach for --brand-mark only when
+     nothing has to be read against it. */
+  --brand-mark: #1CABDE;
+
+  --mark:       #5C6A71;   /* figures + rules on the deep ombre — 4.98:1 worst */
+  --mark-ink:   #5C6A71;   /* same role on paper — one value now, because both
+                              grounds are light. Kept a step stronger than
+                              --on-light-mute so the marker reads as the firmer
+                              of the two. */
+
+  /* -- the materials --------------------------------------------------
+     Direction "Coefficient": colour on this site means one thing only —
+     which material you are looking at. These five are the product families'
+     own temperatures, and they appear as the NRC bar fill and the family
+     marker, never as a ground under text. Do not add a sixth for a non-
+     material purpose, and do not pull them onto the logo hue: a cyan foam
+     swatch stops looking like foam. */
+  --mat-pet:   #7C8380;   /* PET felt — warm neutral */
+  --mat-cloud: #93A1A6;   /* suspended PET — the same board, lifted */
+  --mat-foam:  #33383C;   /* profiled PU foam — cold near-black */
+  --mat-wood:  #8A6A44;   /* timber and wood wool — warm brown */
+  --mat-proof: #5A646E;   /* soundproofing — cold graphite */
 
   /* -- the ombre --------------------------------------------------------
      One angle for the whole site. 168deg is near-vertical with a slight lean,
@@ -146,13 +186,13 @@
      If you are asked for more again, push --paper-hi and --ink-deep (still
      free) before touching this, and re-run the gradient-aware contrast check
      rather than eyeballing it. */
-  --ombre-dark:  linear-gradient(168deg, var(--ink-lift) 0%, var(--ink) 46%, var(--ink-deep) 100%);
+  --ombre-dark:  linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
   --ombre-light: linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
 
   /* -- type ------------------------------------------------------------ */
-  --display: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-  --body:    'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --body:    'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:    'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* One weight for everything set in the display face — headings, the two
      pull-quotes, the sector and roomdex names, the step numerals. It is a
@@ -160,6 +200,17 @@
      moment two display weights are in play, hierarchy stops being size and
      space and starts being an argument. */
   --w-display: 600;
+
+  /* Hierarchy on this site is WIDTH, not weight. Bricolage Grotesque carries
+     a `wdth` axis and an `opsz` axis; the display face stays at one weight
+     (above) and steps in width instead. Width tracks size deliberately —
+     large type runs wide, small labels run narrow — which is the one type
+     idea on the page that is about the subject: long wavelength, wide mark.
+     If you add a heading level, give it a width here, not a bolder weight. */
+  --wd-hero:  100;
+  --wd-h2:     96;
+  --wd-h3:     88;
+  --wd-label:  75;
 
   /* fluid scale — 320px → 1440px.
      Kept large: a single-weight neo-grotesk still carries a page on size and
@@ -197,8 +248,10 @@
      on the page rather than stamped onto it. */
   --lift:   0 2px 10px rgba(24, 18, 10, 0.10);
   --lift-2: 0 8px 26px rgba(24, 18, 10, 0.16);
-  --lift-d:   0 8px 26px rgba(0, 0, 0, 0.45);
-  --lift-d-2: 5px 5px 0 0 rgba(0, 0, 0, 0.68);
+  /* These used to be black, for objects standing on a near-black ground.
+     Nothing on the site has a dark ground now, so they match --lift. */
+  --lift-d:   0 2px 10px rgba(24, 18, 10, 0.10);
+  --lift-d-2: 0 8px 26px rgba(24, 18, 10, 0.16);
 
   /* -- drafting grid ------------------------------------------------------
      A faint graph over the paper ground only — dark/atmospheric sections
@@ -273,25 +326,33 @@ body::after {
 /* =========================== type =======================================
    One superfamily, three cuts: IBM Plex Sans carries the display and the
    body, IBM Plex Mono carries every label, spec figure and button. Plex was
-   drawn as a corporate typeface for an engineering company, which is exactly
-   this brief — and running the mono from the same family is what makes the
-   spec rails read as part of the page rather than as code pasted into it.
+   Bricolage Grotesque carries the display, Public Sans the body and Spline
+   Sans Mono every label, spec figure and button. Bricolage is the only one
+   with a personality; the other two are deliberately quiet under it.
 
-   The site holds it at one display weight (`--w-display`, 600): hierarchy
-   comes from size, measure and space, never from making something bolder.
-   Plex has a wider set width and a looser default fit than the condensed
-   grotesk it replaced, so the display tracking is pulled tighter here
-   (-0.02em against the old -0.012em) to stop large headings drifting apart.
-   Body tracking is left alone — Plex is fitted for text at text size, and
-   negative tracking on 17px only costs legibility. */
+   The site holds it at one display weight (`--w-display`, 600) and moves
+   hierarchy onto Bricolage Grotesque's `wdth` axis instead: large type runs
+   wide, small labels run narrow. That is the one type decision here that is
+   about acoustics rather than about taste — a long wavelength is a wide
+   mark — and it is what replaces the tonal step the site gave up when the
+   dark grounds went. Never reach for a bolder weight; reach for a width.
+
+   `opsz` is set alongside it because Bricolage is optically sized: left on
+   auto the large sizes keep the thicker joins and looser fit drawn for text,
+   and the headings look soft. Track and optical size move together. */
 h1, h2, h3, h4 {
   font-family: var(--display);
   font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h2), 'opsz' 40;
   line-height: 0.98;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.018em;
   text-wrap: balance;
 }
-h3, h4 { line-height: 1.12; letter-spacing: -0.012em; }
+h1 { font-variation-settings: 'wdth' var(--wd-hero), 'opsz' 96; letter-spacing: -0.026em; }
+h3, h4 {
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 20;
+  line-height: 1.12; letter-spacing: -0.008em;
+}
 
 p { text-wrap: pretty; }
 
@@ -376,26 +437,20 @@ section { padding-block: var(--pad-y); }
    reads as a lit material sample bleeding in from the edge, not a pattern.
    Cards and panels sit on their own opaque fill on top, so this only shows
    in the gaps between them. */
+/* Every light section used to layer a timber-slat repeating-gradient under a
+   paper glaze, so the ribbing surfaced in the outer margin. That was another
+   drawn panel texture — the same one, on every section of every page — and it
+   went with the rest of them. The ground is the ombre alone now.
+
+   Removing it also retired a long-standing wart in the contrast check: the
+   glaze and the slat wash together made the checker pair the darkest slat stop
+   with the most transparent glaze stop, a combination that only ever existed
+   in the outer margin where no text sits, and it reported ~43 phantom failures
+   against a background (#878584) that never rendered. Sweeps no longer need
+   the `.light{background-image:var(--ombre-light)}` override. */
 .light {
   background-color: var(--paper);
-  background-image:
-    /* the glaze: paper at full strength over the type column, thinning to the
-       right so the slat wash below only ever surfaces in the outer margin */
-    linear-gradient(96deg,
-      var(--paper-hi) 0 30%, rgba(237, 231, 221, 0.84) 52%, rgba(237, 231, 221, 0.4) 76%, rgba(237, 231, 221, 0.18) 100%),
-    /* the slat wash, cooled onto the site hue. It reads as the same material
-       the dark sections are lit against, not as a second colour scheme. */
-    repeating-linear-gradient(90deg,
-      rgba(14, 11, 8, 0.5) 0px, rgba(14, 11, 8, 0.5) 3px,
-      rgba(44, 38, 30, 0.5) 3px, rgba(74, 66, 55, 0.5) 9px,
-      rgba(110, 101, 88, 0.5) 16px, rgba(84, 75, 64, 0.5) 23px,
-      rgba(40, 34, 27, 0.5) 28px, rgba(14, 11, 8, 0.5) 31px),
-    /* and the ombre underneath both */
-    var(--ombre-light);
-}
-@media (max-width: 56rem) {
-  /* the slat wash needs width to read; the ombre does not, so it stays */
-  .light { background-image: var(--ombre-light); }
+  background-image: var(--ombre-light);
 }
 
 .grid { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
@@ -417,6 +472,24 @@ section { padding-block: var(--pad-y); }
 }
 .section-head h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
 
+/* Three head shapes, because five sections opening with the same
+   eyebrow-left / lead-right split read as a template even when the bodies
+   below them differ. .split is the default pair; .stack runs the whole head
+   down the left at full measure; .mid centres it and is used once, on Voices,
+   where the content below is full-width quote rows. */
+.section-head.stack { grid-template-columns: 1fr; gap: 0; }
+.section-head.stack .lead { margin-top: 1.25rem; max-width: 52ch; }
+.section-head.mid {
+  grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 0;
+}
+.section-head.mid h2 { max-width: 22ch; }
+.section-head.mid .eyebrow::before { display: none; }
+
+/* The diptych is full-bleed inside its section, so the section supplies the
+   head and then lets the panels run edge to edge under it. */
+.dip-sec { padding-bottom: 0; }
+.dip-sec .wrap { padding-bottom: clamp(3rem, 6vw, 5rem); }
+
 /* =========================== SIGNATURE ==================================
    Acoustic surfaces, drawn in CSS. Every image on this site is the surface of
    a product — there is no stock photography anywhere. Each family keeps its
@@ -433,6 +506,23 @@ section { padding-block: var(--pad-y); }
   overflow: hidden;
   background: var(--ink-panel);
   isolation: isolate;
+}
+
+/* A PHOTO surface is not a material specimen. The drawn swatches are the
+   deliberate exception to the site hue and several of them are near-black —
+   which is right on a product card, where the swatch IS the product, and
+   wrong in the project gallery and the choreography, where it is only what
+   you see until the photograph loads. On a light-only site that placeholder
+   printed big black rectangles down the page on every slow load.
+   `.s-plate` is the light stand-in for those. Photos still sit at z-index 4,
+   above this, so nothing changes once they arrive. */
+.s-plate { background: var(--paper-sub); }
+.s-plate::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(25, 21, 18, 0.05) 0 1px, transparent 1px 14px),
+    linear-gradient(150deg, var(--paper-hi), var(--paper) 58%, var(--paper-lo));
 }
 /* Light source. A tighter, brighter key that follows the pointer, plus a fixed
    vignette underneath it — a panel photographed under one lamp rather than an
@@ -451,153 +541,20 @@ section { padding-block: var(--pad-y); }
 }
 .surface > * { position: relative; z-index: 3; }
 .surface::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+/* The twenty drawn panel-type swatches that used to live here — .s-felt,
+   .s-slat, .s-perf, .s-foam, .s-mlv, .s-wool and the rest, one per product
+   family — have been removed. They were the site's most distinctive idea and
+   also its most repeated one: the same ribbed texture stood behind every page
+   head, the hero, the CTA band and every card, which is a lot of wallpaper for
+   a page you are meant to read.
 
-/* -- PET felt: a fine woven tooth, warm neutral -------------------------- */
-.s-felt::before {
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 30% 25%, #3D3D3C, #272625 60%, #1C1B1A);
-}
-/* -- felt tiles: the same board, with the module joints showing ---------- */
-.s-tile::before {
-  background:
-    linear-gradient(90deg, rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 25% 100%,
-    linear-gradient(0deg,  rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 100% 33.33%,
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(0deg,  rgba(0,0,0,0.24) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 62% 30%, #3B3B3A, #252423 62%, #1A1918);
-}
-/* -- desk screen: felt board inside an aluminium edge -------------------- */
-.s-screen::before {
-  background:
-    linear-gradient(90deg, #646362 0 4px, transparent 4px calc(100% - 4px), #646362 calc(100% - 4px)),
-    linear-gradient(0deg,  #646362 0 4px, transparent 4px calc(100% - 4px), #51504E calc(100% - 4px)),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 40% 30%, #3B3B3A, #252423 62%, #1A1A1A);
-}
-/* -- micro-perforation: a precise sub-millimetre dot grid ---------------- */
-.s-perf::before {
-  background:
-    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 0 0 / 11px 11px,
-    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 5.5px 5.5px / 11px 11px,
-    linear-gradient(158deg, #353433, #1F1F1E 58%, #151514);
-}
-/* -- CNC grooves: V-cut lines with a lit face and a shadow face ---------- */
-.s-groove::before {
-  background:
-    repeating-linear-gradient(90deg,
-      #131313 0px, #131313 2px,
-      #5E5D5B 3px, #403F3D 13px,
-      #232322 21px, #131313 23px);
-}
-/* -- 3D embossed: offset raised blocks catching light on one corner ------ */
-.s-emboss::before {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.15) 0 45%, transparent 45%) 0 0 / 26px 26px,
-    linear-gradient(-45deg, rgba(0,0,0,0.52) 0 45%, transparent 45%) 13px 13px / 26px 26px,
-    linear-gradient(160deg, #353433, #1D1D1C);
-}
-/* -- parametric: flowing contour ribs ------------------------------------ */
-.s-param::before {
-  background:
-    repeating-radial-gradient(ellipse 150% 46% at 22% 122%,
-      #0A0A0A 0 5px, #3A3937 6px 11px, #0A0A0A 12px 17px);
-}
-/* -- printed: the one surface whose job is to carry colour ---------------
-   Held to darkened, desaturated versions of the palette's own hues. At full
-   saturation this tile read as a rendering fault in a grid of eighteen
-   monochrome ones — the point is "this panel takes print", not "look here". */
-.s-print::before {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(0,0,0,0.42) 1.2px, transparent 1.4px) 0 0 / 9px 9px,
-    linear-gradient(118deg, #17627A 0 26%, #6E7276 26% 52%, #3C4044 52% 74%, #23252A 74%);
-}
+   What replaced them: decorative walls (.hero-wall, .page-wall, .cta-wall,
+   .dip-surface) are gone outright, and every surface that actually carries a
+   photograph now falls back to .s-plate, the neutral light placeholder defined
+   above. Photographs still sit at z-index 4, so nothing changes once they load.
 
-/* -- ceiling cloud: a flat board seen from below, edge lit --------------- */
-.s-cloud::before {
-  background:
-    linear-gradient(0deg, rgba(0,0,0,0.6) 0 6%, transparent 6% 94%, rgba(255,240,214,0.14) 94%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px),
-    linear-gradient(168deg, #3C3B3A, #252423 65%, #181817);
-}
-/* -- baffles: fins on edge, deep shadow between ------------------------- */
-.s-baffle::before {
-  background:
-    repeating-linear-gradient(90deg,
-      #040404 0px, #040404 13px,
-      #232322 15px, #55534F 27px, #232322 39px,
-      #040404 41px, #040404 54px);
-}
-
-/* -- foam: colder and darker than felt; foam is charcoal ---------------- */
-.s-wedge::before {
-  background:
-    repeating-linear-gradient(90deg, #070708 0px, #2E2E30 13px, #070708 26px),
-    repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0px, rgba(0,0,0,0) 14px, rgba(0,0,0,0.5) 28px);
-}
-.s-pyramid::before {
-  background:
-    repeating-linear-gradient(45deg,  #070708 0, #2F2F31 11px, #070708 22px),
-    repeating-linear-gradient(-45deg, rgba(20, 17, 13,0.7) 0, rgba(100, 92, 80,0.22) 11px, rgba(20, 17, 13,0.7) 22px);
-  background-blend-mode: overlay;
-}
-
-/* -- timber slats: warm brown, rounded ribs, shadow valley -------------- */
-.s-slat::before {
-  background:
-    repeating-linear-gradient(90deg,
-      #0C0C0B 0px, #0C0C0B 3px,
-      #2A2A28 3px, #454340 9px,
-      #6B6862 16px, #4E4C48 23px,
-      #262624 28px, #0C0C0B 31px);
-}
-/* -- wood wool: pale straw fibre, the lightest surface in the set ------- */
-.s-wool::before {
-  background:
-    repeating-linear-gradient(74deg,  rgba(221, 214, 201,0.26) 0 1px, transparent 1px 6px),
-    repeating-linear-gradient(-64deg, rgba(206, 199, 186,0.20) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(21deg,  rgba(136, 127, 113,0.28) 0 1px, transparent 1px 8px),
-    linear-gradient(140deg, #5A5856, #393837 72%);
-}
-
-/* -- perforated timber: larger holes on a warm veneer ground ------------ */
-.s-woodperf::before {
-  background:
-    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 0 0 / 19px 19px,
-    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 9.5px 9.5px / 19px 19px,
-    repeating-linear-gradient(96deg, rgba(107, 98, 85,0.16) 0 1px, transparent 1px 9px),
-    linear-gradient(150deg, #494745, #2B2B2A 66%, #1E1E1D);
-}
-/* -- polyester batt: soft, low-density fibre, paler and cooler ---------- */
-.s-batt::before {
-  background:
-    repeating-linear-gradient(82deg,  rgba(226,226,232,0.14) 0 2px, transparent 2px 9px),
-    repeating-linear-gradient(-72deg, rgba(210,212,220,0.10) 0 2px, transparent 2px 7px),
-    radial-gradient(ellipse 70% 50% at 30% 30%, #505152, #323232 62%, #242425);
-}
-/* -- acoustic glazing: offset laminated panes, edge-lit ----------------- */
-.s-glass::before {
-  background:
-    linear-gradient(104deg, transparent 0 38%, rgba(198,204,208,0.16) 38% 46%, transparent 46%),
-    linear-gradient(104deg, transparent 0 58%, rgba(198,204,208,0.10) 58% 63%, transparent 63%),
-    linear-gradient(0deg, #464748 0 5%, transparent 5% 95%, #404142 95%),
-    linear-gradient(150deg, #2C2D2E, #181919);
-}
-
-/* -- proofing: cold graphite, dense and near-flat ----------------------- */
-.s-mlv::before {
-  background:
-    repeating-linear-gradient(112deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 5px),
-    linear-gradient(150deg, #2B2B2C, #141415);
-}
-.s-door::before {
-  background:
-    linear-gradient(90deg, #505051 0 8%, transparent 8% 92%, #414243 92%),
-    linear-gradient(0deg,  #505051 0 6%, transparent 6% 94%, #383838 94%),
-    linear-gradient(150deg, #2B2B2C, #171717);
-}
+   They are recoverable from git history if the drawn-material direction ever
+   comes back. Do not reintroduce them one at a time. */
 
 /* -- photographs -------------------------------------------------------
    Real product and project photography sits on top of the drawn texture, so
@@ -617,7 +574,7 @@ section { padding-block: var(--pad-y); }
 .dark .card-surface::after,
 .dark .gal-surface::after {
   content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(232,228,219,0.10),
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255,0.10),
               inset 0 -40px 48px -32px rgba(9,7,5,0.55);
 }
 .gal-item:hover > .gal-surface > img { transform: scale(1.035); }
@@ -639,7 +596,7 @@ section { padding-block: var(--pad-y); }
 /* =========================== header ===================================== */
 .site-head {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(237, 231, 221, 0.82);
+  background: rgba(250, 251, 251, 0.82);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border-bottom: 1px solid rgba(23, 19, 16, 0.08);
@@ -727,7 +684,7 @@ section { padding-block: var(--pad-y); }
               box-shadow 260ms var(--ease);
 }
 .btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+.btn:active { transform: translateY(0); transition-duration: 120ms; }
 .btn-arrow { transition: transform 260ms var(--ease); }
 .btn:hover .btn-arrow { transform: translateX(4px); }
 
@@ -747,9 +704,9 @@ section { padding-block: var(--pad-y); }
 }
 .btn-ghost:hover { border-color: var(--on-light); color: var(--paper); }
 .btn-ghost:hover::before { transform: scaleX(1); }
-.dark .btn-ghost, .btn-ghost.on-dark { border-color: rgba(246, 242, 234, 0.24); color: var(--on-dark); }
+.dark .btn-ghost, .btn-ghost.on-dark { border-color: rgba(25, 21, 18, 0.276); color: var(--on-dark); }
 .dark .btn-ghost::before, .btn-ghost.on-dark::before { background: var(--on-dark); }
-.dark .btn-ghost:hover, .btn-ghost.on-dark:hover { border-color: var(--on-dark); color: var(--ink); }
+.dark .btn-ghost:hover, .btn-ghost.on-dark:hover { border-color: var(--on-dark); color: var(--paper-hi); }
 
 /* text link with a rule that draws in */
 .tlink {
@@ -759,7 +716,7 @@ section { padding-block: var(--pad-y); }
   text-decoration: none; color: var(--brand-ink);
   padding-bottom: 0.3rem; position: relative;
 }
-.dark .tlink { color: var(--brand); }
+.dark .tlink { color: var(--brand-ink); }
 .tlink::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
   background: currentColor; opacity: 0.35;
@@ -770,29 +727,23 @@ section { padding-block: var(--pad-y); }
 .tlink:hover .btn-arrow { transform: translateX(3px); }
 
 /* =========================== hero =======================================
-   The hero is now a full-bleed photograph of a finished room, not a drawn
-   material sample. The old composition — a hard-edged slat band down the
-   right with the type on clean paper beside it — solved a contrast problem by
-   keeping type off the texture entirely. A photo hero cannot do that, so the
-   contrast is bought with a scrim whose floor is designed, not eyeballed.
+   A full-bleed banner photograph of a finished room. This replaced the drawn
+   slat band, which went when the panel-type textures came out.
 
-   THE SCRIM FLOOR. Two stacked gradients multiply, so the effective alpha at
-   any point is 1-(1-a1)(1-a2). Across the left half, where all the type sits,
-   that never drops below ~0.74. Composited over the worst case a photograph
-   can present — pure white — 0.74 of --ink-deep gives about #494949, and
-   --on-dark on that is 6.3:1. The guarantee therefore holds for ANY image
-   dropped in here, which is the point: the photo is swappable content and the
-   contrast must not depend on which one is in.
+   THE SCRIM FLOOR IS DESIGNED, NOT EYEBALLED. Two stacked gradients multiply,
+   so the effective alpha at a point is 1-(1-a1)(1-a2). Across the left half,
+   where all the type sits, it never drops below 0.72. Composited over the
+   worst case a photograph can present — pure white — that gives about
+   rgb(78,76,74), and --on-dark-fixed on it is 7.6:1. The guarantee therefore
+   holds for ANY image put here, which is the point: the banner is swappable
+   content and its contrast must not depend on which photograph is in.
 
-   That is also why nothing in the hero uses --on-dark-mute. At the scrim's
-   floor the mute token is only ~3.4:1, so hierarchy here is size and measure
-   alone, as everywhere else on the site. --mark is fine on the headline's
-   italic tail because 112px clears the large-text bar at 3.0.
+   Nothing in the banner uses a muted tone: at the scrim floor the mute is
+   ~3.4:1. Hierarchy here is size and measure, as everywhere else on the site.
 
-   The photography is 760x570 — see README. On a 1440 viewport that is a ~1.9x
-   upscale, ~3.8x on retina. The grain over the viewport and the scrim hide a
-   surprising amount of it, but higher-resolution originals are the real fix
-   and the hero is the one place it shows. */
+   The photography is 760x570 — see README. At 1440 that is a ~1.9x upscale.
+   The scrim and the viewport grain hide much of it, but higher-resolution
+   originals are the real fix and this is the one place it shows. */
 .hero {
   position: relative; color: var(--on-light);
   padding-block: 0 clamp(2.5rem, 5vw, 4rem);
@@ -801,10 +752,10 @@ section { padding-block: var(--pad-y); }
 }
 .hero-top {
   position: relative; overflow: hidden;
-  min-height: min(86vh, 940px);
+  min-height: min(84vh, 920px);
   display: flex; align-items: flex-end;
   padding-block: clamp(7rem, 14vw, 11rem) clamp(3rem, 6vw, 5rem);
-  color: var(--on-dark);
+  color: var(--on-dark-fixed);
 }
 .hero-media { position: absolute; inset: 0; z-index: 0; }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -817,18 +768,22 @@ section { padding-block: var(--pad-y); }
     linear-gradient(180deg,
       rgba(11, 9, 6, 0.35) 0%, rgba(11, 9, 6, 0.15) 42%, rgba(11, 9, 6, 0.45) 100%);
 }
-/* A dark ground does not make its text light — name every inherited colour. */
+/* The banner is the ONE place on this light-only site with light text, because
+   it is text on a photograph rather than on a ground. --on-dark is a
+   near-black now, so it cannot be used here. Name every colour: a scrim no
+   more makes inherited text light than a dark ground did. */
 .hero-top .eyebrow,
 .hero-top .lead,
-.hero-top .hero-lead { color: var(--on-dark); }
-.hero-title .decay { font-style: italic; color: var(--mark); }
-/* On a photograph the primary button inverts: a paper pill reads as the one
-   solid object in the frame, where a near-black pill would sink into it. */
+.hero-top .hero-lead,
+.hero-top h1 { color: var(--on-dark-fixed); }
+.hero-title .decay { font-style: italic; color: var(--mark-fixed); }
+.hero-top .eyebrow::before { background: var(--mark-fixed); }
+/* a paper pill reads as the one solid object in the frame */
 .hero .btn-primary { background: var(--paper-hi); color: var(--on-light); }
 .hero .btn-primary:hover { background: #FFFFFF; }
-.hero .btn-ghost { border-color: rgba(246, 242, 234, 0.45); color: var(--on-dark); }
-.hero .btn-ghost:hover { border-color: var(--on-dark); color: var(--on-light); }
-.hero .btn-ghost::before { background: var(--on-dark); }
+.hero .btn-ghost { border-color: rgba(242, 246, 247, 0.45); color: var(--on-dark-fixed); }
+.hero .btn-ghost:hover { border-color: var(--on-dark-fixed); color: var(--on-light); }
+.hero .btn-ghost::before { background: var(--on-dark-fixed); }
 
 .hero .wrap { position: relative; z-index: 3; }
 .hero-top > .wrap { width: 100%; }
@@ -905,7 +860,7 @@ h1.hero-title {
               box-shadow 320ms var(--ease);
 }
 .dark .card {
-  background: var(--ink-panel); border-color: rgba(246, 242, 234, 0.09);
+  background: var(--ink-panel); border-color: rgba(25, 21, 18, 0.103);
   box-shadow: var(--lift-d);
 }
 a.card:hover {
@@ -931,7 +886,7 @@ a.card:hover {
   text-transform: uppercase; color: var(--brand-ink);
   display: flex; align-items: center; gap: 0.5rem;
 }
-.dark .card-foot { color: var(--brand); }
+.dark .card-foot { color: var(--brand-ink); }
 a.card:hover .btn-arrow { transform: translateX(4px); }
 
 /* A panel is a card that is not a link: same mounted-sample treatment, no
@@ -946,7 +901,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .panel {
   background: var(--ink-panel);
-  border-color: rgba(246, 242, 234, 0.09);
+  border-color: rgba(25, 21, 18, 0.103);
   box-shadow: var(--lift-d);
 }
 .panel-pad { padding: clamp(1.5rem, 3vw, 2.25rem); }
@@ -962,7 +917,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   color: var(--mark-ink) !important;
   padding-bottom: 0.9rem; border-bottom: 1px solid var(--paper-edge);
 }
-.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(246, 242, 234, 0.12); }
+.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(25, 21, 18, 0.138); }
 .room h3 { font-size: 1.375rem; margin: 0.9rem 0 0.5rem; }
 .room-note { font-size: 0.9375rem; line-height: 1.58; }
 
@@ -972,7 +927,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   min-height: clamp(11rem, 20vw, 14rem);
   padding: 1.25rem; text-decoration: none; color: var(--on-dark);
   border-radius: var(--r); overflow: hidden;
-  border: 1px solid rgba(246, 242, 234, 0.12);
+  border: 1px solid rgba(25, 21, 18, 0.138);
   transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 .sector { box-shadow: var(--lift-d); }
@@ -1025,7 +980,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .spec td { color: var(--mark); }
 .spec tr + tr { border-top: 1px solid var(--paper-edge); }
-.dark .spec tr + tr { border-top-color: rgba(246, 242, 234, 0.1); }
+.dark .spec tr + tr { border-top-color: rgba(25, 21, 18, 0.115); }
 
 /* pill list for applications / finishes */
 .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
@@ -1035,7 +990,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding: 0.45rem 0.95rem; border-radius: var(--r-pill);
   border: 1px solid var(--paper-edge); color: var(--on-light-mute);
 }
-.dark .pills li { border-color: rgba(246, 242, 234, 0.16); color: var(--on-dark-mute); }
+.dark .pills li { border-color: rgba(25, 21, 18, 0.184); color: var(--on-dark-mute); }
 
 /* =========================== process ==================================== */
 /* Numbered here because it genuinely is a sequence: each step gates the next. */
@@ -1048,9 +1003,9 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   grid-template-columns: 3.5rem 1fr;
   align-items: start;
 }
-.dark .step { border-top-color: rgba(246, 242, 234, 0.13); }
+.dark .step { border-top-color: rgba(25, 21, 18, 0.149); }
 .step:last-child { border-bottom: 1px solid var(--paper-edge); }
-.dark .step:last-child { border-bottom-color: rgba(246, 242, 234, 0.13); }
+.dark .step:last-child { border-bottom-color: rgba(25, 21, 18, 0.149); }
 .step::before {
   content: counter(step, decimal-leading-zero);
   grid-row: 1 / span 2;
@@ -1076,7 +1031,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   box-shadow: var(--lift);
 }
 .dark .quote {
-  border-color: rgba(246, 242, 234, 0.09); background: var(--ink-panel);
+  border-color: rgba(25, 21, 18, 0.103); background: var(--ink-panel);
   box-shadow: var(--lift-d);
 }
 /* Set in the display face. A testimonial is the one place on the site where
@@ -1097,7 +1052,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding-top: 1.1rem; border-top: 1px solid var(--paper-edge);
   line-height: 1.7;
 }
-.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(246, 242, 234, 0.13); }
+.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(25, 21, 18, 0.149); }
 .quote figcaption b { display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.2rem; }
 .dark .quote figcaption b { color: var(--on-dark); }
 
@@ -1154,14 +1109,13 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 
 /* =========================== CTA band =================================== */
 .cta-band { position: relative; overflow: hidden; background: var(--ombre-light); color: var(--on-light); }
-.cta-band .cta-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.5; }
 .cta-band::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(96deg,
-    var(--paper) 0 30%, rgba(237, 231, 221, 0.84) 52%, rgba(237, 231, 221, 0.4) 76%, rgba(237, 231, 221, 0.18));
+    var(--paper) 0 30%, rgba(250, 251, 251, 0.84) 52%, rgba(250, 251, 251, 0.4) 76%, rgba(250, 251, 251, 0.18));
 }
 @media (max-width: 56rem) {
-  .cta-band::before { background: rgba(237, 231, 221, 0.86); }
+  .cta-band::before { background: rgba(250, 251, 251, 0.86); }
 }
 .cta-band .wrap { position: relative; z-index: 3; }
 .cta-band h2 { font-size: var(--t-h1); max-width: 18ch; }
@@ -1210,14 +1164,13 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding-block: clamp(3.5rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
   position: relative; overflow: hidden;
 }
-.page-head .page-wall { position: absolute; inset: 0; z-index: 0; opacity: 0.5; }
 .page-head::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(94deg,
-    var(--paper) 0 24%, rgba(237, 231, 221, 0.86) 48%, rgba(237, 231, 221, 0.5) 74%, rgba(237, 231, 221, 0.28));
+    var(--paper) 0 24%, rgba(250, 251, 251, 0.86) 48%, rgba(250, 251, 251, 0.5) 74%, rgba(250, 251, 251, 0.28));
 }
 @media (max-width: 56rem) {
-  .page-head::before { background: rgba(237, 231, 221, 0.84); }
+  .page-head::before { background: rgba(250, 251, 251, 0.84); }
 }
 .page-head .wrap { position: relative; z-index: 3; }
 .page-head h1 { font-size: var(--t-h1); margin-block: 1rem 1.25rem; }
@@ -1249,8 +1202,20 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .pd-body li::marker { color: var(--mark-ink); }
 
 /* =========================== gallery ==================================== */
+/* Six tiles on a 3x3 grid, the first spanning two columns and two rows. An
+   even grid of eight made every project look equally weighted and leaned hard
+   on photography that cannot carry that much repetition; one feature plus five
+   supporting tiles fills the grid exactly and gives the block a focal point. */
 .gal { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
-.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(246, 242, 234, 0.13); background: var(--ink-panel); }
+@media (min-width: 64rem) {
+  .gal { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; }
+  .gal-item:first-child { grid-column: span 2; grid-row: span 2; }
+  .gal-item:first-child .gal-surface { aspect-ratio: auto; height: 100%; }
+  .gal-item:first-child .gal-cap h3 { font-size: 1.25rem; }
+  .gal-item { display: flex; flex-direction: column; }
+  .gal-item > .gal-surface { flex: 1; }
+}
+.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(25, 21, 18, 0.149); background: var(--ink-panel); }
 .gal-surface { aspect-ratio: 3 / 2; }
 .gal-cap { padding: 1rem 1.1rem 1.2rem; }
 /* `.gal-item` is a dark card that lives inside a `.light` section, so the
@@ -1273,8 +1238,8 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .filter:hover { border-color: var(--mark-ink); color: var(--on-light); }
 .filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-dark); }
 /* the filter bar sits on the dark ground on the projects page */
-.dark .filter { border-color: rgba(246, 242, 234,0.22); color: var(--on-dark-mute); }
-.dark .filter:hover { border-color: var(--brand); color: var(--brand); }
+.dark .filter { border-color: rgba(25, 21, 18, 0.253); color: var(--on-dark-mute); }
+.dark .filter:hover { border-color: var(--brand); color: var(--brand-ink); }
 .dark .filter[aria-pressed="true"] {
   background: var(--on-dark); border-color: var(--on-dark); color: var(--ink);
 }
@@ -1287,7 +1252,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .center { text-align: center; }
 .mt-l { margin-top: clamp(2.5rem, 5vw, 4rem); }
 hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clamp(2.5rem, 5vw, 4rem); }
-.dark hr.rule { border-top-color: rgba(246, 242, 234, 0.13); }
+.dark hr.rule { border-top-color: rgba(25, 21, 18, 0.149); }
 
 /* =========================== statement band =============================
    One section on the homepage that breaks the eyebrow / heading / lead / grid
@@ -1338,24 +1303,27 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   display: flex; align-items: flex-end;
   min-height: clamp(30rem, 82vh, 47rem);
   padding: clamp(2rem, 5vw, 4.5rem);
-  background: var(--ombre-dark); color: var(--on-dark);
+  background: var(--ombre-light); color: var(--on-light);
   text-decoration: none;
 }
-.dip-surface { position: absolute; inset: 0; z-index: -2; }
-/* the ribs run bright enough to drop body copy under 4.5:1 on their own */
+/* The panel shows bare material at the top and fades to a paper ground under
+   the copy. The scrim used to run the other way — near-opaque cool ink, with
+   light text on it — which is why it survived the warm remap looking correct
+   and then went dark-on-dark the moment --on-dark became a near-black. It
+   reaches 0.985 where the text sits, so the copy is effectively on --paper-hi
+   whatever the material swatch underneath is doing. */
 .dip::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg,
-    rgba(23, 33, 39, 0.10) 0 18%, rgba(23, 33, 39, 0.62) 46%,
-    rgba(23, 33, 39, 0.93) 68%, rgba(23, 33, 39, 0.98));
+    rgba(255, 255, 255, 0.06) 0 16%, rgba(255, 255, 255, 0.62) 44%,
+    rgba(255, 255, 255, 0.94) 66%, rgba(255, 255, 255, 0.985));
   transition: opacity 420ms var(--ease);
 }
 .dip-body { max-width: 34ch; }
 .dip-body h2 { font-size: var(--t-h2); margin: 1rem 0 1rem; }
 .dip-body p { color: var(--on-dark-mute); }
-.dip .tlink { margin-top: 1.75rem; color: var(--brand); }
-.dip:hover .dip-surface { transform: scale(1.03); }
-.dip-surface { transition: transform 900ms var(--ease); }
+.dip .tlink { margin-top: 1.75rem; color: var(--brand-ink); }
+
 .dip:hover .btn-arrow { transform: translateX(4px); }
 
 /* ----------------------------- room index -------------------------------
@@ -1431,14 +1399,14 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    As full-width rows the quotes get room to be read, and the attribution
    holds a column of its own the way a citation should. */
 .voices { border-top: 1px solid var(--paper-edge); }
-.dark .voices { border-top-color: rgba(246, 242, 234, 0.12); }
+.dark .voices { border-top-color: rgba(25, 21, 18, 0.138); }
 .voice {
   display: grid; gap: 1rem 3rem;
   padding-block: clamp(2rem, 4vw, 3.25rem);
   border-bottom: 1px solid var(--paper-edge);
   align-items: start;
 }
-.dark .voice { border-bottom-color: rgba(246, 242, 234, 0.12); }
+.dark .voice { border-bottom-color: rgba(25, 21, 18, 0.138); }
 @media (min-width: 52rem) {
   .voice { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
 }
@@ -1499,7 +1467,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 /* form status tones — set by site.js via data-tone */
 .form-status[data-tone="ok"]   { color: var(--brand-ink); }
-.form-status[data-tone="warn"] { color: #E0A33C; }
+.form-status[data-tone="warn"] { color: #8A5B12; }  /* 5.1:1 on --paper; the old #E0A33C was 2.1:1 */
 
 /* =========================== registration marks =========================
    Four L-brackets in `currentColor`, drawn as eight background-gradient
@@ -1531,3 +1499,89 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .dark .card::before, .dark .panel::before, .dark .quote::before,
 .dark .pd-aside::before, .sector::before { color: var(--mark); }
+
+
+/* =========================== the NRC bar ================================
+   The signature of the "Coefficient" direction, and the only place besides
+   the logo where colour appears on this site.
+
+   NRC is already a proportion — 0.85 means 85% of incident sound energy is
+   absorbed — so the bar states the number rather than illustrating it. The
+   filled run is the absorbed share in the material's own colour; the empty
+   run is the paper, i.e. what comes back off the wall. That reading only
+   holds if the track stays the page ground, so do not tint it.
+
+   Only products with a published NRC get one. `nrcOf` in src/build.js
+   returns null otherwise and the component renders nothing — see the
+   content-provenance note in CLAUDE.md before adding a figure here. */
+.nrc { display: grid; gap: 0.5rem; margin: 0.15rem 0 0.1rem; }
+
+.nrc-track {
+  position: relative; height: 8px;
+  background: var(--paper-lo);
+  border: 1px solid var(--paper-edge);
+}
+.nrc-track > i {
+  display: block; height: 100%; width: var(--v, 0%);
+  background: var(--mat, var(--mat-pet));
+}
+/* the 0.5 gridline: where half the energy would be absorbed, so the eye has
+   something to measure the fill against rather than judging a bare bar */
+.nrc-track::after {
+  content: ''; position: absolute; top: -3px; bottom: -3px; left: 50%;
+  width: 1px; background: var(--paper-edge);
+}
+
+.nrc-fig {
+  display: flex; align-items: baseline; gap: 0.5rem;
+  font-family: var(--mono); font-size: var(--t-mono); line-height: 1.35;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--on-light-mute); margin: 0;
+}
+/* the qualifier the client publishes ("up to …") travels with the figure and
+   is never dropped — on the product page it is spelled out, on a card it is
+   hidden rather than truncated, because a clipped "up to 0.6 (9 mm) / up…"
+   reads as a different claim than the one they make. */
+.nrc-raw::before { content: '\00b7'; margin: 0 0.4em; opacity: 0.75; }
+
+.nrc-fig b {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 20;
+  font-size: 1.25rem; letter-spacing: -0.01em; line-height: 1;
+  color: var(--on-light); font-feature-settings: 'tnum' 1;
+}
+
+/* which material this is. The five families keep their own temperatures —
+   a cyan foam swatch stops looking like foam. */
+.nrc[data-mat="pet"]   { --mat: var(--mat-pet); }
+.nrc[data-mat="cloud"] { --mat: var(--mat-cloud); }
+.nrc[data-mat="foam"]  { --mat: var(--mat-foam); }
+.nrc[data-mat="wood"]  { --mat: var(--mat-wood); }
+.nrc[data-mat="proof"] { --mat: var(--mat-proof); }
+
+/* on a card the caption drops to the figure alone — the client's full
+   wording is on the product page, and two lines of mono in a card body
+   crowds out the product name */
+.nrc-sm { gap: 0.4rem; }
+.nrc-sm .nrc-track { height: 6px; }
+.nrc-sm /* the qualifier the client publishes ("up to …") travels with the figure and
+   is never dropped — on the product page it is spelled out, on a card it is
+   hidden rather than truncated, because a clipped "up to 0.6 (9 mm) / up…"
+   reads as a different claim than the one they make. */
+.nrc-raw::before { content: '\00b7'; margin: 0 0.4em; opacity: 0.75; }
+
+.nrc-fig b { font-size: 1.05rem; }
+.nrc-sm .nrc-raw { display: none; }   /* the full published string is on the product page */
+
+/* On the product page the bar is the headline figure, so it runs at the
+   measure of the lead rather than the full column and keeps the client's
+   own wording ("up to 0.85 (12 mm)") beside it. */
+.nrc-lead { max-width: 26rem; margin: 1.5rem 0 0; gap: 0.65rem; }
+.nrc-lead .nrc-track { height: 12px; }
+.nrc-lead /* the qualifier the client publishes ("up to …") travels with the figure and
+   is never dropped — on the product page it is spelled out, on a card it is
+   hidden rather than truncated, because a clipped "up to 0.6 (9 mm) / up…"
+   reads as a different claim than the one they make. */
+.nrc-raw::before { content: '\00b7'; margin: 0 0.4em; opacity: 0.75; }
+
+.nrc-fig b { font-size: 1.75rem; }

@@ -63,6 +63,29 @@ arrives and sets `documentElement.dataset.mo`. A blocked, failed or slow script
 therefore leaves a plain readable page, never an empty one. Do not "simplify"
 this into a CSS-only hidden state.
 
+**The scroll choreography is a second pin, and it is measured in the page.**
+`.choreo` (homepage, immediately before the Work gallery) is a 300vh section
+with a sticky 100vh child: four project photographs trade places, stack at the
+centre, and the last opens to full bleed. It is a port of a framer-motion
+component to the site's own engine — no library, no dependency.
+
+Two things about it are load-bearing. The plates take the **named** `--choreo`
+timeline, never `view()`, because `.choreo-pin` is `overflow: hidden` (see the
+next note). And the hero plate animates its own `width`/`height`/`margin`
+rather than scaling, so the photograph is never distorted — the margins carry
+the centring, so they must track the size at every keyframe: margin is always
+minus half. Below 48rem, under reduced motion, or without native scroll
+timelines, the identical markup is a plain captioned 2×2 grid. That is the
+default; the pin is layered on top, exactly like the family rail.
+
+**You cannot verify either pin from a hidden browser pane.** Scroll-driven
+animations are not sampled when the pane is not painting: `currentTime` reads
+`null`, transforms read `none`, and `requestAnimationFrame` never fires, so
+every rAF-based probe times out. The pre-existing `.rail-sec` behaves
+identically, which is the control to check before concluding new code is
+broken. Screenshots only capture the paint at load, so a scrolled screenshot
+comes back blank — move the section to the top of `<main>` instead.
+
 **`view()` cannot resolve inside `overflow: hidden`.** An `overflow: hidden`
 ancestor is a scroll container, so a `view()` timeline on anything inside one
 never advances and the element stays stuck at its start state — invisible. This
@@ -71,16 +94,14 @@ is why the hero/CTA/page-head walls borrow a *named* timeline
 directly, and why `[data-anim]` goes on the `.card` itself and never on
 `.card-surface`.
 
-**A dark ground does not make its text light.** Section colour on this site is
-opt-in via the `.dark` class, and two dark surfaces do not carry it: `.rail-sec`
-paints `var(--ink)` itself in `motion.css`, and `.gal-item` is a dark card
-sitting inside a `.light` section. Anything inheriting a colour inside those —
-`.eyebrow`, `.lead`, a bare `h3` — gets the *paper* ground's near-black on an
-espresso fill and disappears at 1.4–1.8:1. Both were live bugs; the fixes name
-those selectors explicitly next to the `.dark` rules in `site.css`. If you add a
-dark section, either give it `.dark` or add it to those selectors, then re-run
-the contrast check — this failure is invisible in code review and obvious on
-screen.
+**Section colour is opt-in, and there are no dark grounds any more.** `.dark`
+now means "the deeper of two light ombres", not "near-black". The old failure
+mode here — `.rail-sec` and `.gal-item` painting a dark fill while their text
+inherited the paper ground's near-black — is gone with the dark grounds. What
+replaced it is the same bug on the one saturated fill: see the `.fam-all` note
+in the design system section. Any element that sets its own background must
+name the colour of every piece of text inside it.
+
 
 **The hero's spec rail spans the full width, and the sample band must not.**
 The band (`.hero-wall`) used to run the whole height of the hero, so the rail's
@@ -108,10 +129,12 @@ against the rail's `top` — a static screenshot at scroll 0 will not show it.
 **`.nav a` outranks `.btn-primary`** on specificity. Any button placed in the
 nav needs its colour restated or it inherits the muted link grey.
 
-**Photos sit above the light wash.** `.surface > img` is `z-index: 4`, above the
-`::after` light gradient at 2. The drawn texture underneath is the intentional
-loading/fallback state — every product family has one, so a missing image shows
-material rather than a broken icon.
+**Photos sit above the light wash.** `.surface > img` is `z-index: 4`, above
+the `::after` light gradient at 2. What shows underneath while an image loads
+is now `.s-plate`, a neutral light placeholder, rather than a per-family
+material swatch. Decorative walls that carried no photograph at all
+(`.hero-wall`, `.page-wall`, `.cta-wall`, `.dip-surface`) were deleted outright
+along with their `mWall` animations in `motion.css`.
 
 ## Content provenance — important
 
@@ -133,125 +156,129 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
-**The palette is the logo, at different exposures.** The whole ramp is the
-Silence Acoustic cyan — `#1CABDE`, hue ~202° — held at different saturations
-and lightnesses. Desaturated and darkened it becomes `--ink` `#172127`, the
-slate-teal rooms; lifted almost to white it becomes `--paper` `#E6ECEF`. One
-hue, top to bottom. That is what makes the mark read as native to the page.
+**The direction is "Coefficient": one ground, and colour means material.**
+There is exactly one ground on this site — a cool near-white ramp
+(`--paper-hi` `#FFFFFF` → `--paper` `#FAFBFB` → `--paper-lo` `#E8EDEF`). There
+are **no dark sections at all**. Section rhythm is carried by rule, space and
+type, not by alternating grounds, and that is the point of the direction
+rather than a thing left undone.
 
-Take the exact logo colours from the asset, not from memory. `logo-full.png`
-is `#1CABDE` cyan, `#292A27` wordmark, `#676969` headphones.
+`.dark` and `.light` now resolve to the same ramp. The `.dark` class and the
+`--ink-*` / `--on-dark*` token names survive only because ~200 call sites use
+them; `--ombre-dark` is an alias of `--ombre-light`. Do not "restore" a dark
+section — if you want emphasis, use space and width.
 
-(This replaced two earlier schemes: a neutral greyscale, then a warm espresso
-ramp. If you see `#2A2A2E`, `#E4E4E2`, `#2E2822`, `#E9E4DA`, or any
-`rgba(46, 40, 34, …)` / `rgba(233, 228, 218, …)` scrim, that reference is
-stale.)
+(This replaced a cyan-ramp scheme with alternating dark/light ombres, and
+before that a warm-espresso and a neutral-greyscale one. If you see `#172127`,
+`#E6ECEF`, `#2E2822`, `#E9E4DA`, `#2A2A2E`, or a warm greige `#F4EFE7` /
+`rgba(237, 231, 221, …)` scrim, that reference is stale.)
 
-**Nothing large is a flat fill.** Grounds are an ombre between two steps of the
-ramp:
+**Colour on this site means one thing: which material you are looking at.**
+The five product families keep their own temperatures, and they appear as the
+NRC bar fill and family markers — never as a ground under text:
 
-| token | ramp | used by |
+| token | material | family |
 |---|---|---|
-| `--ombre-dark` | `#28363E` → `#172127` → `#05080A` | `.dark`, `.rail-sec`, `.dip` |
-| `--ombre-light` | `#FCFDFD` → `#E6ECEF` → `#A9B4BA` | `.light`, `.hero`, `.page-head`, `.cta-band` |
+| `--mat-pet` `#7C8380` | PET felt, warm neutral | panels |
+| `--mat-cloud` `#93A1A6` | the same board, lifted | ceilings |
+| `--mat-foam` `#33383C` | profiled PU foam, cold near-black | foam |
+| `--mat-wood` `#8A6A44` | timber and wood wool, warm brown | wood |
+| `--mat-proof` `#5A646E` | cold graphite | soundproofing |
 
-Both run at `168deg` — near-vertical with a slight lean. The dark ombre
-travels about **1.6x in luminance** end to end; the light one **2.2x**.
+Do not add a sixth for a non-material purpose, and do not pull them onto the
+logo hue: a cyan foam swatch stops looking like foam.
 
-`.hero` is the one exception to the shared stop positions. It keeps the same
-angle and the same three endpoints but compresses them to `0/24/50%`, because
-the hero is ~960px tall and only its top two thirds are ever seen — at the
-site-wide `0/52/100%` the visible left band travelled only 1.17x and read as
-flat white. The 50% end stop is also where the spec rail's plinth joins. Both
-numbers are measured in the page; the long comment on `.hero` in `site.css`
-says how to re-measure them if the hero's height changes.
+**The logo cyan is the interaction colour, but it cannot carry text.**
+`--brand-mark` `#1CABDE` is the exact logo cyan and measures **2.24:1** on
+paper — it is for fills, focus rings, underlines and markers only. `--brand`
+`#0C6483` is the same hue at an exposure that can be read (5.6:1 worst case)
+and is what links, buttons and labels actually use. Getting these two the
+wrong way round was a live bug: it put raw cyan on `.tlink` and `.card-foot`
+at 2.24:1 and 2.40:1.
 
-**The two ends of each ombre are not equally free.** Pushing the dark ombre
-deeper and the light ombre lighter costs nothing: it only adds contrast under
-the text. The other two directions bind, and each has exactly one limiter:
+**The hero is the one place text does not sit on a token ground**, and it must
+not follow the palette. `--on-dark-fixed` `#F2F6F7` is *fixed light* because
+the hero type sits on a swappable banner **photograph** behind a designed
+two-gradient scrim whose floor is 0.72 alpha — that guarantees ~7.6:1 over
+even a pure-white image. Setting it to a dark value to "match the light
+palette" makes the hero illegible, and the automated check below cannot see
+it. This was a live bug in this pass.
 
-- `--ink-lift` (top of the dark ombre) is capped by `--brand` on it, at 4.7:1.
-  The logo cyan is fixed, so that is a hard ceiling, not a preference.
-- `--paper-lo` (bottom of the light ombre) is capped by the light-side **text**
-  tokens sitting on it. An earlier version of this file named `--mark-ink` at
-  5.3:1 as the limiter; that was wrong — `--brand-ink` bound first at 4.75:1,
-  then `--on-light-mute` at 4.89:1.
+**Type is three families, and hierarchy is width, not weight.**
+IBM Plex is gone. Bricolage Grotesque carries `--display`, Public Sans
+`--body`, Spline Sans Mono `--mono` (every label, spec figure and button).
+The families are set in `site.css`; the Google Fonts URL is `FONTS` in
+`src/build.js`. **Change both together.** (Archivo + Instrument Sans, and then
+IBM Plex Sans + Mono, were the previous pairings; both references are stale.)
 
-That distinction matters, because it means `--paper-lo` was never capped by
-anything fixed. Asked for a stronger light ombre, the move was to darken
-`--brand-ink`, `--on-light-mute` and `--mark-ink` (darkening text only ever
-*raises* contrast) so they hold ≥4.7:1 against a deeper `--paper-lo`. That took
-the light ombre from 1.66x to 2.20x.
+Everything in the display face is held at one weight, `--w-display` (600).
+Hierarchy moves along Bricolage's `wdth` axis instead — `--wd-hero` 100,
+`--wd-h2` 96, `--wd-h3` 88, `--wd-label` 75. Width tracks size deliberately:
+a long wavelength is a wide mark. **Never reach for a bolder weight; reach for
+a width.** `opsz` is set alongside it because Bricolage is optically sized —
+left on auto, large headings keep the thicker joins drawn for text and look
+soft.
 
-**There is much less room for a third round of that.** It spends two things:
-muted text is now 8.4:1 on `--paper` where it was 6.7:1, so the step down from
-`--on-light` (15.3:1) is 1.8x rather than 2.3x — and on this site that gap *is*
-the hierarchy, since nothing can be emphasised by weight. `--paper-edge` also
-had to follow `--paper-lo` down to stay visible as a hairline, which makes
-every card border slightly firmer. Push `--paper-hi` and `--ink-deep` (both
-still free) before touching this again, and re-run the gradient check. **Objects that sit on a ground stay flat** — cards, panels, form
-fields, filter pills. Light belongs to the room, not to the things standing in
-it, and a gradient under small text makes its contrast unpredictable. Do not
-"finish the job" by gradient-ing the cards.
+**The NRC bar is the signature.** NRC is already a proportion — 0.85 means 85%
+of incident sound energy is absorbed — so the bar states the number rather
+than illustrating it. Filled run = absorbed, in the material's colour; empty
+run = the paper, i.e. what comes back off the wall. That reading only holds
+while the track stays the page ground, so do not tint it.
 
-Because text now sits on gradients, contrast must hold at **every stop**, not
-against one flat value. The check in the next section does that.
+`nrcOf` / `nrcBar` live in `src/build.js`. **13 of the 19 products publish an
+NRC**; the other six (Parametric Design, Micro-Perforated Panel and the four
+soundproofing products) do not, and for the soundproofing family NRC is the
+wrong metric anyway — it blocks rather than absorbs. `nrcOf` returns null and
+the component renders nothing. **Do not fill in the missing six.** Where a
+product publishes a range, the bar takes the highest figure and the caption
+keeps the client's own wording, so the "up to" qualifier is never dropped —
+on cards `.nrc-raw` is hidden rather than truncated, because a clipped
+"up to 0.6 (9 mm) / up…" reads as a different claim than the one they make.
 
-- `--brand` is the exact logo cyan and is the **only** saturated colour,
-  reserved for interactive things — links, focus, primary buttons. Do not spend
-  it on decoration. `--brand-deep` / `--brand-ink` are the same hue tuned for
-  contrast.
-- `--mark` / `--mark-ink` are the same hue washed almost out — they carry
-  figures, hairline rules and markers. Do not saturate them "to match the
-  logo": a second strong cyan cancels the first. (They replaced `--brass` /
-  `--brass-ink`; if you see those names, that reference is stale.)
-- All emphasis is a step in **lightness**, never a change in hue.
-- **The drawn material swatches are the deliberate exception** and keep their
-  own temperatures: PET felt warm neutral, timber warm brown, wood wool straw,
-  foam cold near-black, proofing cold graphite. That is what makes a page of 19
-  cards read as a materials library. Do not pull them onto the site hue — a
-  cyan foam swatch stops looking like foam.
-- Type is **one superfamily, three cuts**: IBM Plex Sans carries `--display`
-  and `--body`, IBM Plex Mono carries `--mono` (every label, spec figure and
-  button). Plex was drawn as a corporate typeface for an engineering company,
-  and running the labels from the same family is what makes the spec rails
-  read as part of the page rather than as code pasted into it.
-  Everything set in the display face is held at **one weight**, `--w-display`
-  (600) — by choice, not by the family's limits. Hierarchy is size, space and
-  measure; nothing here is emphasised by making it bolder, and the rule only
-  holds while that token has a single value. Display tracking is `-0.02em`
-  (h3/h4 `-0.012em`): Plex has a wider set width and a looser default fit than
-  the condensed grotesk it replaced, so large headings need pulling together.
-  Body tracking is left at normal — Plex is fitted for text at text size.
-  The families are set in `site.css`; the Google Fonts URL is `FONTS` in
-  `src/build.js`. Change both together. (Archivo + Instrument Sans were the
-  previous pairing; if you see those names, that reference is stale.)
-- A fixed 3% film grain sits over the viewport (`body::after`). It is what stops
-  the large flat grounds reading as screen fill. Removing it flattens the site.
-- Dark sections and light sections alternate: dark where the page is
-  atmospheric, light where it is informational.
+**Objects that sit on a ground stay flat** — cards, panels, form fields,
+filter pills. A gradient under small text makes its contrast unpredictable.
+
+- All emphasis is a step in lightness or width, never a change in hue.
+- A fixed 3% film grain sits over the viewport (`body::after`). It is what
+  stops the large flat ground reading as screen fill. Removing it flattens
+  the site.
 - The logo is the client's asset. Scale it, never restyle or recolour it.
 
 **Section shapes are deliberately varied.** The page used to be one shape
-repeated — eyebrow + heading left, lead right, then a grid of equal cards — and
-eight of those in a row read as a template. Each block now has its own shape:
-`.diptych` (full-bleed 50/50 split), the pinned `.rail-sec` family rail,
-`.roomdex` (an index, not a tile grid), `.process-grid` (sticky aside),
-`.voices` (full-width quote rows), `.statement`, and `.cat-grid` (first product
-in each family spans two columns). Reach for an existing shape before adding a
-grid of equal cards.
+repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
+family rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
+`.cat-grid`, and the pinned `.choreo` scroll choreography. Reach for an
+existing shape before adding a grid of equal cards.
 
-Every rendered text/background pair measures at or above 4.5:1; the lowest on
-any page is 4.7:1 — the brand-cyan link on the lightest stop of the dark ombre.
-The light side now runs it close at 4.72:1 (`--brand-ink` on `--paper-lo`).
-That margin is thin by design: it is the price of the current ombre strength,
-and it means a token nudge can push the site under AA. That is measured, not assumed — the check walks every
-element with a text node, composites the real background down the ancestor
-chain, and applies the WCAG large-text allowance. **Where the ground is a
-gradient it parses the stops out of the computed `background-image` and scores
-against the worst one**, which is the only way a gradient ground can be
-verified. About a third of the site's text sits on one. If you change a token
-or an ombre, re-run it rather than eyeballing.
+### The contrast check, and what it cannot see
+
+Every rendered text/background pair measures at or above 4.5:1. Across the
+eight page templates the lowest is **4.74:1** on the homepage and 5.01:1
+elsewhere — 1,115 elements checked, zero failures. That is measured, not
+assumed: the check walks every element with a text node, composites the real
+background down the ancestor chain, parses the stops out of a gradient ground
+and **scores against the worst one**, and applies the WCAG large-text
+allowance.
+
+Two things will make it lie to you, and both bit during this pass:
+
+1. **It cannot see photographs.** It scores CSS grounds only, so text over the
+   hero banner, gallery surfaces, product heroes and the choreography plates
+   must be excluded — their contrast is guaranteed by a designed scrim
+   instead. Score them and you get false failures; "fix" those and you break
+   the hero.
+2. **It skips `opacity: 0` elements**, which below the fold is most of the
+   page. Force the reveals off first, or you are checking the hero and
+   nothing else:
+
+```js
+document.querySelectorAll('[data-anim],[data-in]').forEach(e => {
+  e.style.cssText += ';animation:none!important;opacity:1!important;' +
+                     'transform:none!important;clip-path:none!important;';
+});
+```
+
+If you change a token, re-run it rather than eyeballing.
 
 ## Still outstanding
 
