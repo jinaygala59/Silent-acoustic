@@ -183,6 +183,14 @@ replaced. If a figure is not published, leave the row out.
 - `specs` on each product — transcribed from their product pages
 - `PROJECTS` — their projects gallery, with their captions and sector labels
 - `TESTIMONIALS` — verbatim, original grammar intact. Do not edit these.
+  **The reviewers are real, identifiable people** named with their
+  organisations. Synthetic headshots have been asked for three times and
+  declined three times: a generated face published as one of their portraits
+  is a fabricated likeness presented as genuine, and none of them consented.
+  The cards carry a monogram of the initial, which impersonates nobody. Real
+  client-supplied photographs, with permission, are the only thing that may
+  replace it. The full reasoning sits next to `.review-avatar` in `site.css`,
+  where whoever next edits that block will find it.
 - `assets/img/**` — 265 of their own photographs, converted to WebP
 
 Four spec figures carry `(as published)` because their units are wrong on the
@@ -324,7 +332,22 @@ on cards `.nrc-raw` is hidden rather than truncated, because a clipped
 "up to 0.6 (9 mm) / up…" reads as a different claim than the one they make.
 
 **Objects that sit on a ground stay flat** — cards, panels, form fields,
-filter pills. A gradient under small text makes its contrast unpredictable.
+filter pills. A gradient under small text makes its contrast depend on where
+the text lands, which is why the rule exists.
+
+**`.review` is the one sanctioned exception**, added by request. It carries
+`linear-gradient(168deg, --paper-hi 0%, --paper-sub 62%, --paper-lo 100%)` —
+the site-wide ombre angle, so it reads as the same light. The cost is paid
+rather than waived: every text colour in the card is measured against the
+**deepest** stop, not the white it starts from. At `#FFFFFF / #F1F5F9 /
+#CBD5E1` the name runs 17.85 / 16.30 / 12.02, the quote 10.35 / 9.45 / 6.97
+and the role 7.58 / 6.92 / 5.10. The right-hand column is the one that
+matters, and deepening the end stop moves all three together.
+
+If you add a second gradient-bearing object, do the same thing: score it at
+every stop. The walker already parses `background-image` stops and scores
+against the worst, so this is verifiable rather than a matter of taste — but
+only if you actually run it.
 
 - All emphasis is a step in lightness or width, never a change in hue.
 - A fixed 3% film grain sits over the viewport (`body::after`). It is what

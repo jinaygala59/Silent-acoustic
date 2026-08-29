@@ -201,7 +201,10 @@ ${choreoBand()}
     </div>
     <div class="reviews" data-stagger>
       ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
-        <div class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></div>
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
+          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
+        </div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>
@@ -402,7 +405,10 @@ built.push(page({
     <span class="rail-label">Clients</span>
     <div class="reviews" data-stagger>
       ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
-        <div class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></div>
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
+          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
+        </div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>

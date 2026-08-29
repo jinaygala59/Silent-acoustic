@@ -1713,13 +1713,23 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 .review {
   margin: 0;
-  background: var(--paper-hi);
+  /* A GRADIENT ON A CARD IS A DELIBERATE EXCEPTION HERE. The rule elsewhere
+     on this site is that objects standing on a ground stay flat, because a
+     gradient under small text makes its contrast depend on where the text
+     lands. That rule is relaxed for this one component by request, and the
+     cost is paid rather than ignored: the ramp ends on --paper-lo, and every
+     text colour in the card is measured against THAT stop, not against the
+     white it starts from. Measured at all three stops --
+     #FFFFFF / #F1F5F9 / #CBD5E1 -- name 17.85 / 16.30 / 12.02, quote
+     10.35 / 9.45 / 6.97, role 7.58 / 6.92 / 5.10. The worst column is the
+     one that matters. Deepen the end stop and all three move together.
+     168deg is the site-wide ombre angle; this is the same light. */
+  background: linear-gradient(168deg,
+    var(--paper-hi) 0%, var(--paper-sub) 62%, var(--paper-lo) 100%);
   border: 1px solid var(--paper-edge);
   border-radius: var(--r);
   box-shadow: var(--lift);
-  /* Block padding is a step under the inline: it was tuned with a 3.25rem
-     avatar in the card, and without one the top read empty. */
-  padding: clamp(1.4rem, 2.5vw, 1.9rem) clamp(1.65rem, 3vw, 2.25rem);
+  padding: clamp(1.65rem, 3vw, 2.25rem);
   display: flex; flex-direction: column; gap: 1.25rem;
   /* relative so the raised card can out-stack its neighbours; without it the
      next card's border draws over the lifted one's edge. */
@@ -1761,26 +1771,30 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .review { transition: box-shadow 160ms linear, border-color 160ms linear; }
   .review:hover, .review:active { transform: none; }
 }
-/* THERE IS NO AVATAR ON A REVIEW, AND THAT IS A DECISION, NOT AN OMISSION.
-   The card opened with a round monogram; before that, synthetic headshots were
-   proposed for the three named reviewers. All three are real, identifiable
-   people — Urmil Vaidhya, Jatin Patel and Hudson Taylor, each named with their
-   organisation — so a generated face published as their portrait would be a
-   fabricated likeness presented as genuine, and none of them consented to one.
-   That is the failure the content-provenance rule in CLAUDE.md exists to
+/* The initial in a ring, not a face. This is the settled answer to "put
+   photos on the testimonials", which has now been asked twice.
+
+   Synthetic headshots were declined both times. Urmil Vaidhya, Jatin Patel
+   and Hudson Taylor are real, identifiable people named here with their
+   organisations, so a generated face published as one of their portraits is
+   a fabricated likeness presented as genuine, and none of them consented to
+   one. That is the failure the content-provenance rule in CLAUDE.md exists to
    prevent: these quotes are transcribed verbatim because an earlier pass
    invented content and all of it had to be replaced.
 
-   The monogram impersonated nobody and was a legitimate option. It went
-   because the site uses no portraiture anywhere — everything here is carried
-   by type and material — and because the name, role and organisation are
-   stronger attribution than a decorative initial. If faces are ever asked for
-   again: real client-supplied photographs, with permission, are the only
-   honest version of this.
-
-   `.review-head` went with it. It was a flex row existing only to sit the
-   avatar beside the name block; with one child left, its gap and align-items
-   did nothing, so the name block is now a plain child of the card. */
+   A monogram impersonates nobody, which is why it is here and a portrait is
+   not. If real photographs ever arrive from the client, with permission, they
+   can replace it. Nothing else may. */
+.review-head { display: flex; align-items: center; gap: 0.85rem; }
+/* One fill, not the reference's six. Coloured avatars are a lot of the charm
+   there, but this site allows exactly one saturated colour and spending it on
+   six random hues would cost the logo its status as the only one. */
+.review-avatar {
+  flex: none; width: 3.25rem; height: 3.25rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--brand-deep); color: var(--paper-hi);
+  font-family: var(--display); font-size: 1.35rem; line-height: 1;
+}
 .review-who { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
 .review-who b { font-weight: 500; color: var(--on-light); }
 .review-who > span {
