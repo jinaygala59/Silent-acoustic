@@ -154,8 +154,19 @@ CSS is a `<style>` block in that same patch rather than a section of
 stylesheet. And a token in its lists that no longer resolves renders as a
 dashed **"not defined"** cell instead of vanishing — the board's job is to
 surface drift between the stylesheet and this file, so a silent gap would
-defeat it. `--on-dark-fixed` currently shows that way: the hero note below
-still describes it, but it has been removed from `site.css`.
+defeat it. It earned that already: `--on-dark-fixed` showed as *not defined*
+after the hero was inverted and the token became `--on-banner`, which is how
+the stale reference was found.
+
+The same applies to the material textures. The board reads the `.s-*` rules
+straight out of `site.css` and lists, for each, the products, families and
+room types that reference it — so a texture nothing uses shows as an orphan,
+and a texture that has been deleted stops appearing at all. A pass once
+removed all nineteen and hard-coded `s-plate` across the templates; every
+surface on the site went blank and nothing caught it. This section is what
+catches that. `.s-plate` itself is labelled *fallback, held in reserve*
+rather than orphaned — it is referenced from code, as the `|| 's-plate'`
+default in `src/pages.js`, not from data.
 
 Its contrast table is **not the authority** — it can only state pairs
 derivable from tokens alone. The DOM walker described below composites real

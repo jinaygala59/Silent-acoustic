@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const { SITE } = require('./src/content.js');
 const built = require('./src/pages.js');
+/* The design board writes itself but deliberately stays out of `built`,
+   so it never reaches the sitemap. It is an internal reference page. */
+const board = require('./src/designboard.js');
 
 const today = new Date().toISOString().slice(0, 10);
 const priority = f =>
@@ -38,4 +41,5 @@ Sitemap: ${SITE.url}/sitemap.xml
 
 console.log(`Built ${built.length} pages`);
 built.forEach(f => console.log('  ' + f));
+console.log('  ' + board + '  (internal, not in sitemap)');
 console.log('  sitemap.xml\n  robots.txt');

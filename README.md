@@ -142,8 +142,14 @@ first offending field takes focus.
 ```bash
 node build.js && mkdir -p dist && \
 rm -rf dist/assets dist/products dist/*.html dist/robots.txt dist/sitemap.xml && \
-cp -R *.html products assets robots.txt sitemap.xml dist/
+cp -R *.html products assets robots.txt sitemap.xml dist/ && \
+rm -f dist/design.html
 ```
+
+The last line drops the internal type-and-palette board. `cp -R *.html` would
+otherwise sweep it into the bundle: it carries `noindex` and nothing links to
+it, so it would do no real harm, but it is a working reference for whoever is
+editing the design system and does not belong on the client's server.
 
 This clears only the *generated* half of `dist/` and leaves `.htaccess` and
 `_redirects` in place. Do not replace it with `rm -rf dist`: `dist/` is

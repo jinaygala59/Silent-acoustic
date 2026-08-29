@@ -192,8 +192,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 }
 /* Scrolling out of the hero: the wall keeps moving after the copy has gone,
    so the section has depth rather than being one flat plate. */
-@keyframes mWall  { from { transform: translate3d(0, -5%, 0) scale(1.14); }
-                    to   { transform: translate3d(0,  7%, 0) scale(1.14); } }
+/* scale 1.16 gives 8% of overflow on each edge against a 7% end translate, so
+   the photograph keeps ~1% of headroom instead of landing exactly flush. At
+   1.14 the two figures were identical by construction and the top edge met the
+   container's at 0.00px — covered, but with nothing left for sub-pixel
+   rounding to eat. */
+@keyframes mWall  { from { transform: translate3d(0, -5%, 0) scale(1.16); }
+                    to   { transform: translate3d(0,  7%, 0) scale(1.16); } }
 @keyframes mDrift { from { transform: none; opacity: 1; }
                     to   { transform: translate3d(0, -52px, 0); opacity: 0.25; } }
 
@@ -231,6 +236,21 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     /* The walls sit inside `overflow: hidden` sections, so they cannot resolve
        their own `view()` timeline — they borrow the named one their section
        publishes instead. */
+
+    /* The banner keeps moving after the copy has gone, so the hero has depth
+       rather than being one flat plate. `.hero-top` is `overflow: hidden`, so
+       this takes the named `--hero` timeline; `view()` would never advance
+       inside a scroll container. Only the photograph moves — the scrim is
+       `.hero-media::after` and stays put, so the banner's contrast guarantee
+       is untouched by the drift. That guarantee is now 7.1:1 over a pure-black
+       image (the white scrim inverted it; it was 7.6:1 over pure white when
+       the scrim was dark), and the drift cannot change it either way. */
+    .hero-media img {
+      animation: mWall linear both;
+      animation-timeline: --hero;
+      animation-range: cover 0% cover 100%;
+      will-change: transform;
+    }
     /* The hero always sits at the top of the document, so the page's own
        scroll offset is the hero's progress — no element timeline needed. */
     .hero .wrap {
