@@ -202,7 +202,21 @@
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
   --body:    'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono:    'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* NOT MONOSPACE ANY MORE, AND THE NAME IS A LIE KEPT ON PURPOSE. The
+     typewriter register is gone from the site: --mono now resolves to the body
+     face. The token keeps its name only because 46 rules consume it (32 here,
+     4 in motion.css, 10 in src/designboard.js) and renaming it across three
+     files is a wide edit for no rendering change — the same reason --ink-* and
+     --brand-* kept their names after their meanings turned over. Read it as
+     "the label register", not as "the monospace face".
+
+     What it still has to do is hold a line of small uppercase letter-spaced
+     text and a column of figures. Public Sans does the first natively. For the
+     second see the tabular-figures rule below: proportional digits in this
+     face vary from 16.27px to 25.91px at 40px, a 9.64px spread, which is what
+     would otherwise have made the spec columns ragged once the fixed-width
+     face went. */
+  --mono:    'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* One weight for everything set in the display face — headings, the two
      pull-quotes, the sector and roomdex names, the step numerals. It is a
@@ -1188,6 +1202,23 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
    gets the same care as the headlines: a bright rule under the caption, room
    between the rows, and the label in sentence case rather than shouting in
    tracked-out caps at a line that was already wrapping. */
+/* Tabular figures, now that the fixed-width face is gone.
+   A monospace kept these columns aligned for free: every glyph was one width,
+   so decimal points stacked and a column of thicknesses read as a column.
+   Public Sans is proportional — measured at 40px its digits run 16.27px (the
+   1) to 25.91px (the 8), a 9.64px spread — so without this the spec tables,
+   the NRC figures and the room counts would go visibly ragged. tabular-nums
+   switches on the face's own fixed-width digit set: measured again with it on,
+   all ten digits are exactly 28px.
+
+   This is the whole reason removing the typewriter face cost nothing in the
+   one place it was genuinely doing work. .val already did this; these are the
+   rest of the roles where a number sits above another number. */
+.spec, .spec th, .spec td,
+.hero-spec dd, .nrc-fig, .rdx-count, .room-target, .sector-rt {
+  font-variant-numeric: tabular-nums;
+}
+
 .spec {
   width: 100%; border-collapse: collapse;
   font-family: var(--mono); font-size: 0.8125rem;

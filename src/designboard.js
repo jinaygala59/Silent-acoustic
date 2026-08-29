@@ -103,7 +103,7 @@ const FALLBACK = 's-plate';
 const FAMILIES = [
   ['--display', 'display', 'Bricolage Grotesque', 'Headings, pull-quotes, sector and roomdex names, step numerals.'],
   ['--body', 'body', 'Public Sans', 'Running copy, leads, table cells.'],
-  ['--mono', 'mono', 'Spline Sans Mono', 'Every label, spec figure, button and filter pill.'],
+  ['--mono', 'label', 'Public Sans', 'Every label, spec figure, button and filter pill \u2014 no longer monospace; the token name is kept only because 46 rules consume it.'],
 ];
 
 const SCALE = ['t-hero', 't-h1', 't-h2', 't-h3', 't-lead', 't-body', 't-mono'];
