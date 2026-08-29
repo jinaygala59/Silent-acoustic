@@ -999,13 +999,42 @@ h1.hero-title {
 .hero-cta { margin-top: clamp(2.25rem, 4vw, 3.25rem); gap: 0.85rem; }
 
 /* the spec strip: real, checkable claims — not vanity counters */
+/* This strip sits between the banner photograph and the first big heading, and
+   it used to do nothing with that position: four equal columns of small mono
+   set on the same ground as everything around it, reading as a dead band.
+
+   Three changes. The figures moved from mono to the display face and roughly
+   doubled in size, so they read as claims rather than as a data table — mono
+   is right for a spec table on a product page, wrong for the four things this
+   company most wants believed. The first column is wider than the other three
+   at desktop, so the row has a lead rather than four equal weights, the same
+   move .cat-grid makes for the first product in a family. And the strip has
+   its own ground now, a step deeper than the hero, so it reads as a plinth
+   under the banner instead of more of the same paper.
+
+   It cannot overlap the banner, which is the more obvious version of this
+   idea: mDrift fades .hero .wrap to opacity 0.25 across the first 78vh and
+   the rail IS a .hero .wrap, so an opaque panel straddling the photograph
+   would turn transparent on scroll and show the image through. Its own ground
+   is safe because what sits behind it is the hero's ombre, not the photo. */
+.hero-rail { position: relative; }
+.hero-rail::before {
+  content: ''; position: absolute; z-index: -1;
+  top: clamp(2rem, 4.5vw, 3.5rem); bottom: -100vh;
+  left: 50%; margin-left: -50vw; width: 100vw;
+  background: linear-gradient(180deg, var(--paper-sub), var(--paper));
+}
 .hero-specs {
   margin-top: clamp(3.5rem, 7vw, 5.5rem);
   border-top: 1px solid var(--paper-edge);
   display: grid; gap: 0;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
-.hero-spec { padding: 1.75rem 1.5rem 0 0; position: relative; }
+@media (min-width: 64rem) {
+  .hero-specs { grid-template-columns: 1.35fr 1fr 1fr 1fr; }
+}
+.hero-spec { padding: 2.25rem 1.5rem 0 0; position: relative; }
 @media (min-width: 48rem) {
   .hero-spec + .hero-spec { border-left: 1px solid var(--paper-edge); padding-left: 1.75rem; }
 }
@@ -1022,10 +1051,10 @@ h1.hero-title {
   margin-bottom: 0.65rem;
 }
 .hero-spec dd {
-  font-family: var(--mono); font-weight: 700;
-  font-size: clamp(1.5rem, 1.05rem + 1.7vw, 2.25rem);
-  letter-spacing: -0.01em; color: var(--brand); line-height: 1;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 32;
+  font-size: clamp(1.875rem, 1.1rem + 2.6vw, 3rem);
+  letter-spacing: -0.022em; color: var(--brand); line-height: 0.94;
 }
 .hero-spec dd small {
   display: block; font-family: var(--body); font-weight: 400;
@@ -1688,7 +1717,9 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   border: 1px solid var(--paper-edge);
   border-radius: var(--r);
   box-shadow: var(--lift);
-  padding: clamp(1.65rem, 3vw, 2.25rem);
+  /* Block padding is a step under the inline: it was tuned with a 3.25rem
+     avatar in the card, and without one the top read empty. */
+  padding: clamp(1.4rem, 2.5vw, 1.9rem) clamp(1.65rem, 3vw, 2.25rem);
   display: flex; flex-direction: column; gap: 1.25rem;
   /* relative so the raised card can out-stack its neighbours; without it the
      next card's border draws over the lifted one's edge. */
@@ -1730,16 +1761,26 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .review { transition: box-shadow 160ms linear, border-color 160ms linear; }
   .review:hover, .review:active { transform: none; }
 }
-.review-head { display: flex; align-items: center; gap: 0.85rem; }
-/* One fill, not the reference's six. Coloured avatars are a lot of the charm
-   there, but this site allows exactly one saturated colour and spending it on
-   six random hues would cost the logo its status as the only one. */
-.review-avatar {
-  flex: none; width: 3.25rem; height: 3.25rem; border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--brand-deep); color: var(--paper-hi);
-  font-family: var(--display); font-size: 1.35rem; line-height: 1;
-}
+/* THERE IS NO AVATAR ON A REVIEW, AND THAT IS A DECISION, NOT AN OMISSION.
+   The card opened with a round monogram; before that, synthetic headshots were
+   proposed for the three named reviewers. All three are real, identifiable
+   people — Urmil Vaidhya, Jatin Patel and Hudson Taylor, each named with their
+   organisation — so a generated face published as their portrait would be a
+   fabricated likeness presented as genuine, and none of them consented to one.
+   That is the failure the content-provenance rule in CLAUDE.md exists to
+   prevent: these quotes are transcribed verbatim because an earlier pass
+   invented content and all of it had to be replaced.
+
+   The monogram impersonated nobody and was a legitimate option. It went
+   because the site uses no portraiture anywhere — everything here is carried
+   by type and material — and because the name, role and organisation are
+   stronger attribution than a decorative initial. If faces are ever asked for
+   again: real client-supplied photographs, with permission, are the only
+   honest version of this.
+
+   `.review-head` went with it. It was a flex row existing only to sit the
+   avatar beside the name block; with one child left, its gap and align-items
+   did nothing, so the name block is now a plain child of the card. */
 .review-who { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
 .review-who b { font-weight: 500; color: var(--on-light); }
 .review-who > span {

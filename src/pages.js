@@ -95,6 +95,10 @@ built.push(page({
   </div>
   <div class="diptych">
   <a class="dip" href="products.html#panels" data-anim="fade">
+    <div class="dip-surface" aria-hidden="true">
+      <img src="assets/img/projects/88-pictures-mumbai.webp" alt=""
+           width="760" height="570" loading="lazy" decoding="async">
+    </div>
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
@@ -103,6 +107,10 @@ built.push(page({
     </div>
   </a>
   <a class="dip" href="products.html#proof" data-anim="fade">
+    <div class="dip-surface" aria-hidden="true">
+      <img src="assets/img/projects/action-voice-studio-khar-mumbai.webp" alt=""
+           width="760" height="570" loading="lazy" decoding="async">
+    </div>
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
@@ -193,10 +201,7 @@ ${choreoBand()}
     </div>
     <div class="reviews" data-stagger>
       ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
-          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
-        </div>
+        <div class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>
@@ -397,10 +402,7 @@ built.push(page({
     <span class="rail-label">Clients</span>
     <div class="reviews" data-stagger>
       ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
-          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
-        </div>
+        <div class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>
