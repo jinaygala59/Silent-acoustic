@@ -25,6 +25,7 @@ the repo root or in `products/` — `node build.js` overwrites them.**
 | `src/pages.js` | One entry per page. Builds the body HTML for each. |
 | `src/build.js` | Page shell (`<head>`, header, footer), shared partials, `page()` writer. |
 | `build.js` | Entry point. Requires `src/pages.js` (which writes as a side effect), then emits sitemap + robots. |
+| `src/designboard.js` | Writes `design.html`, the internal type-and-palette board. Reads the tokens back out of `site.css` and computes the contrast ratios itself. Never enters the `built` array, so it stays out of the sitemap. |
 | `assets/css/site.css` | Design system: tokens, components, the drawn material textures. |
 | `assets/css/motion.css` | Scroll animation, and the structural sections that depend on it (the pinned family rail). Native CSS scroll timelines first; `html.io` is only the Firefox fallback. |
 | `assets/js/site.js` | Nav, filters, contact form, light source. |
@@ -136,6 +137,31 @@ material swatch. Decorative walls that carried no photograph at all
 (`.hero-wall`, `.page-wall`, `.cta-wall`, `.dip-surface`) were deleted outright
 along with their `mWall` animations in `motion.css`.
 
+**`design.html` is generated from the stylesheet, not written.** The board
+(`src/designboard.js`) parses the `:root` block of `assets/css/site.css` at
+build time — strips comments first, because several of them contain
+`--token:` in prose — resolves `var(--x)` aliases, and computes every
+contrast ratio in Node. Nothing on that page is a transcribed hex, so it
+cannot drift the way a hand-written swatch sheet does; `node build.js` after
+a token change is the whole maintenance story.
+
+Three things about it are deliberate. It is **not** in `NAV` and **not** in
+the sitemap (the module never pushes into `built`), and it carries a
+`noindex` tag patched into the head after `page()` returns — the shared shell
+has no noindex hook and one page did not justify widening its signature. Its
+CSS is a `<style>` block in that same patch rather than a section of
+`site.css`, because a one-page reference block does not belong in the shared
+stylesheet. And a token in its lists that no longer resolves renders as a
+dashed **"not defined"** cell instead of vanishing — the board's job is to
+surface drift between the stylesheet and this file, so a silent gap would
+defeat it. `--on-dark-fixed` currently shows that way: the hero note below
+still describes it, but it has been removed from `site.css`.
+
+Its contrast table is **not the authority** — it can only state pairs
+derivable from tokens alone. The DOM walker described below composites real
+rendered grounds, reads gradient stops and applies the large-text allowance.
+Run that after a token change; the board is the quick read.
+
 ## Content provenance — important
 
 Everything factual on this site came from the client's own live site, crawled
@@ -223,13 +249,37 @@ non-interactive is what made an earlier palette's eyebrows read as wallpaper.
 brand colour. There is no orange on this site; if you see those values, the
 reference is stale.
 
-**The hero is the one place text does not sit on a token ground**, and it must
-not follow the palette. `--on-dark-fixed` `#F2F6F7` is *fixed light* because
-the hero type sits on a swappable banner **photograph** behind a designed
-two-gradient scrim whose floor is 0.72 alpha — that guarantees ~7.6:1 over
-even a pure-white image. Setting it to a dark value to "match the light
-palette" makes the hero illegible, and the automated check below cannot see
-it. This was a live bug in this pass.
+**The hero is the one place text does not sit on a token ground.** Its type
+sits on a swappable banner **photograph** behind a designed two-gradient
+scrim, so its colours are named separately — `--on-banner` `#0F172A` and
+`--mark-banner` `#3A4759` — and are the banner's, not the palette's.
+
+The scrim is **white**, and the type on it is **dark**. It used to be the
+reverse: a dark scrim carrying light text, which made the hero the one dark
+surface left on a light-only site and read exactly that way. Inverting it put
+the hero on the same single ground as everything else.
+
+Two stacked gradients multiply, so the effective alpha is 1-(1-a1)(1-a2), and
+across the left half where the type sits it never drops below 0.643. Over the
+worst case a photograph can now present — pure **black** — that is ~7.1:1 for
+`--on-banner`. The guarantee holds for any image, which is the point: the
+banner is swappable and its contrast must not depend on which photograph is
+in. If you lower those alphas to show more of the picture, redo the
+arithmetic against black, not against the image you happen to like.
+
+**Pick a light photograph anyway**, and measure rather than eyeball it — the
+guarantee means a dark image is legible, not that it looks right; under a
+white scrim a dark one goes grey and muddy. Draw candidates to a small canvas
+and take the mean relative luminance. The current banner
+(`adani-bkc-mumbai`) is 0.396 overall and 0.472 across the left half; the
+darkest images in the set are around 0.05. Measured against the real
+composite, the banner's text is 8.99:1 and its mute 4.75:1.
+
+The automated check below **cannot see any of this** — it scores CSS grounds
+only — so `.hero-top` is excluded from it and verified separately. Setting
+these tokens to follow the palette without redoing the scrim was a live bug
+in an earlier pass: it made the hero illegible while the checker stayed
+green.
 
 **Type is three families, and hierarchy is width, not weight.**
 IBM Plex is gone. Bricolage Grotesque carries `--display`, Public Sans
