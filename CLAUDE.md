@@ -157,9 +157,10 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
 **The direction is "Coefficient": one ground, and colour means material.**
-There is exactly one ground on this site — a cool near-white ramp
-(`--paper-hi` `#FFFFFF` → `--paper` `#FAFBFB` → `--paper-lo` `#E8EDEF`). There
-are **no dark sections at all**. Section rhythm is carried by rule, space and
+There is exactly one ground on this site — a cool near-white slate ramp
+(`--paper-hi` `#FFFFFF` → `--paper` `#F8FAFC` → `--paper-lo` `#CBD5E1`), with
+text at `--on-light` `#0F172A` and muted at `#475569`. There are **no dark
+sections at all**. Section rhythm is carried by rule, space and
 type, not by alternating grounds, and that is the point of the direction
 rather than a thing left undone.
 
@@ -186,15 +187,38 @@ NRC bar fill and family markers — never as a ground under text:
 | `--mat-proof` `#5A646E` | cold graphite | soundproofing |
 
 Do not add a sixth for a non-material purpose, and do not pull them onto the
-logo hue: a cyan foam swatch stops looking like foam.
+accent hue: a tinted foam swatch stops looking like foam. The marker is
+scoped to `.card[data-mat]` and `.fam[data-mat]`, so it appears on products
+and product families only — a blog post is not a material and must not carry
+one.
 
-**The logo cyan is the interaction colour, but it cannot carry text.**
-`--brand-mark` `#1CABDE` is the exact logo cyan and measures **2.24:1** on
-paper — it is for fills, focus rings, underlines and markers only. `--brand`
-`#0C6483` is the same hue at an exposure that can be read (5.6:1 worst case)
-and is what links, buttons and labels actually use. Getting these two the
-wrong way round was a live bug: it put raw cyan on `.tlink` and `.card-foot`
-at 2.24:1 and 2.40:1.
+**The nineteen drawn material swatches are load-bearing, not decoration.**
+`.s-felt`, `.s-slat`, `.s-wedge` and the rest are the `::before` of
+`.surface`, and `.surface > img` sits *above* them — so the drawn material is
+what shows while a photograph loads and what stays if one ever 404s. Every
+product family has its own, which is what makes nineteen cards read as a
+materials library rather than a grid of failed images. Each item's class
+comes from its own data (`PRODUCTS[].surf`, `CATEGORIES[].surf`,
+`SECTORS[].surf`) — never hard-code `s-plate` across the templates, which a
+pass did once and which silently blanked every surface on the site.
+
+**The accent is a burnt orange, and it is NOT the logo hue.**
+`--brand` `#9A3412` carries links, labels and `.tlink`; `--brand-lift`
+`#7C2D12` is hover (always a step darker, never lighter); `--brand-deep`
+`#C2410C` is a **solid pill fill only**, carrying `#FFFFFF` at 5.18:1 — it is
+not text-safe on paper, so never set it as a `color`.
+
+`--brand-mark` `#1CABDE` is the exact logo cyan. It measures **2.24:1** on
+paper and can therefore never carry text; it exists so the logo asset keeps
+its own colour and nothing else uses it. The site therefore runs two hues:
+the orange that means "interactive" and the cyan that means "this is the
+mark". Do not merge them, and do not spend the orange on decoration —
+putting `--brand` on something non-interactive is what made the earlier
+palette's eyebrows read as wallpaper.
+
+An earlier pass in this same file ran the accent as a darkened logo cyan
+(`--brand: #0C6483`). If you see that value, or `#10789C`, the reference is
+stale.
 
 **The hero is the one place text does not sit on a token ground**, and it must
 not follow the palette. `--on-dark-fixed` `#F2F6F7` is *fixed light* because
@@ -247,14 +271,39 @@ filter pills. A gradient under small text makes its contrast unpredictable.
 **Section shapes are deliberately varied.** The page used to be one shape
 repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
 family rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
-`.cat-grid`, and the pinned `.choreo` scroll choreography. Reach for an
-existing shape before adding a grid of equal cards.
+`.cat-grid`, `.notes`, and the pinned `.choreo` scroll choreography. Reach
+for an existing shape before adding a grid of equal cards — two of the three
+most recent fixes were removing one.
+
+**`.roomdex` is shared, and its counts are computed.** The ten room types
+appear on both the homepage and the projects page from one `roomdex()`
+partial in `src/build.js`, so they cannot drift. Each row carries the number
+of projects actually completed in that room type, counted from `PROJECTS` at
+build time — never typed. That figure is the reason the index earns its place
+over ten equal cards, and it is also why the projects page stopped using a
+`grid g3` for the same content. Rows link in as `#room=<sector>`, which
+`site.js` reads on load and on `hashchange` and turns into a click on the
+matching `.filter` — the index and the filter buttons therefore cannot
+disagree about what is on screen.
+
+**`.notes` has to survive one article and twenty.** There is exactly one blog
+post today. It was a three-column grid, which at one item left two thirds of
+the row empty. The first note now runs wide with its material swatch beside
+it and any note after it is a compact index row — the move `.cat-grid` makes
+for the first product in a family. Adding posts needs no layout change.
+
+**Headings inside a column use `.sub-h`, not an inline font-size.** "Send the
+details", "Direct", "Others in Acoustic Wood" are `h2` for the document
+outline but sit at h3 in the visual scale. That distinction is real, so it
+lives in a class; seven inline `font-size:var(--t-h3)` declarations were
+removed to get there. The class sets the width axis too, because hierarchy
+here is width.
 
 ### The contrast check, and what it cannot see
 
 Every rendered text/background pair measures at or above 4.5:1. Across the
-eight page templates the lowest is **4.74:1** on the homepage and 5.01:1
-elsewhere — 1,115 elements checked, zero failures. That is measured, not
+nine page templates the lowest is **4.92:1** on the homepage and 5.10:1
+elsewhere — 1,355 elements checked, zero failures. That is measured, not
 assumed: the check walks every element with a text node, composites the real
 background down the ancestor chain, parses the stops out of a gradient ground
 and **scores against the worst one**, and applies the WCAG large-text

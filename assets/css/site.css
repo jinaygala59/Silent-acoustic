@@ -65,66 +65,67 @@
      near-black. A section that opts into .dark gets the deeper of two light
      ombres, and its text stays dark. See the note on --on-dark below.
      If you are about to set a near-black background anywhere: don't. */
-  --ink-deep:   #E8EDEF;   /* deepest ground on the site — 7.15:1 under --on-light */
-  --ink:        #FAFBFB;
+  --ink-deep:   #CBD5E1;   /* deepest ground on the site — 12.02:1 under --on-light */
+  --ink:        #F8FAFC;
   --ink-lift:   #FFFFFF;
-  --ink-panel:  #F1F4F5;
-  --ink-raise:  #F7F9FA;
-  --ink-edge:   #C3CCD0;
+  --ink-panel:  #F1F5F9;
+  --ink-raise:  #F8FAFC;
+  --ink-edge:   #94A3B8;
 
-  /* -- paper: warm bone, the datasheet ----------------------------------
+  /* -- paper: cool slate, the datasheet ---------------------------------
      Deliberately short of white. Screen-white next to real product photos
      reads as sterile — this is closer to a sheet of paper under office light
-     than to a blank browser canvas. Warm now (~35deg) rather than the old
-     ~200deg cyan tint: with the accent retired there is no logo hue left to
-     agree with, and a warm neutral sits better under the project photography,
-     which is nearly all timber, felt and daylight. */
+     than to a blank browser canvas. Cool (~215deg) rather than the warm bone
+     that preceded it: the ground is now a desaturated slate so the one warm
+     accent below has something to be warm *against*. A warm ground under a
+     warm accent flattens both. */
   --paper-hi:   #FFFFFF;
-  --paper:      #FAFBFB;
-  --paper-lo:   #E8EDEF;   /* 1.60:1 end to end. Shallower than the 2.03:1 the
-                              two-tone version ran, because with no dark
-                              sections left the ombre is decoration again
-                              rather than the thing carrying section rhythm —
-                              that job moved to the .light/.dark tone step. */
-  --paper-sub:  #F1F4F5;
-  --paper-edge: #C3CCD0;
+  --paper:      #F8FAFC;
+  --paper-lo:   #CBD5E1;   /* 1.48:1 end to end. Shallower than the 1.60:1 the
+                              cyan ramp ran. The ombre is decoration, not the
+                              thing carrying section rhythm — that job belongs
+                              to the .light/.dark tone step. */
+  --paper-sub:  #F1F5F9;
+  --paper-edge: #94A3B8;
 
   /* -- text ------------------------------------------------------------ */
   /* --on-dark* no longer means "light text". With the dark grounds gone it is
      dark text on the deep ombre, so it resolves to the same values as
      --on-light*. The names survive only so .dark call sites keep working. */
-  --on-dark:      #10171B;   /* 13.2:1 on --ink-lift, 7.15:1 on --ink-deep */
-  --on-dark-mute: #4A565C;   /*  8.7:1 on --ink-lift, 4.70:1 on --ink-deep */
+  --on-dark:      #0F172A;   /* 17.85:1 on --ink-lift, 12.02:1 on --ink-deep */
+  --on-dark-mute: #475569;   /*  7.58:1 on --ink-lift,  5.10:1 on --ink-deep */
   /* The banner photograph is the only surface left that needs light text.
      These two are fixed paper tones for that one job — never use them where a
      CSS ground is involved, they are not part of the ramp. */
-  --on-dark-fixed: #F2F6F7;
-  --mark-fixed:    #C9C3B8;
-  --on-light:      #10171B;  /* 15.9:1 on --paper, 11.0:1 on --paper-lo */
-  --on-light-mute: #4A565C;  /* 10.4:1 on --paper,  7.2:1 on --paper-lo */
+  --on-dark-fixed: #F8FAFC;
+  --mark-fixed:    #CBD5E1;
+  --on-light:      #0F172A;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
+  --on-light-mute: #475569;  /*  7.24:1 on --paper,  5.10:1 on --paper-lo */
 
-  /* -- accents: there are none -----------------------------------------
-     THE PAGE HAS NO ACCENT COLOUR. There is exactly one piece of colour on
-     this site and it is the logo itself, which stays the client's cyan and is
-     never restyled. Everything else — links, focus, primary buttons, the
-     active nav item — is distinguished by shape, fill, underline and position
-     instead of by hue. If you are about to introduce a coloured state
-     (a blue link, a green success message, a red error), don't: use weight of
-     fill and an underline. A second colour anywhere on the page immediately
-     costs the logo its status as the only one.
+  /* -- the accent: burnt orange ----------------------------------------
+     NOTE FOR ANYONE READING AN OLDER VERSION OF THIS FILE: this block used to
+     say "THE PAGE HAS NO ACCENT COLOUR", and that rule is retired. The site
+     now runs one warm accent against the cool slate ground.
 
-     The --brand-* names are kept only so the ~30 existing call sites do not
-     all have to change. They now resolve to the neutral ramp. Treat them as
-     "the interactive token", not as "the coloured token". */
-  --brand:      #0C6483;   /* THE LOGO CYAN, AND IT CANNOT CARRY TEXT: 2.65:1
-                              on white, 2.24:1 on --paper-lo. It is for the
-                              mark and for borders only. Six rules used it as a
-                              text colour and all six failed AA; they now use
-                              --brand-ink. If you write `color: var(--brand)`,
-                              you have introduced a contrast failure. */
-  --brand-lift: #0A5570;   /* hover */
-  --brand-deep: #10789C;   /* solid pill fill carrying --paper-hi — 4.84:1 */
-  --brand-ink:  #0C6483;   /* links and labels on any ground — 4.74:1 worst */
+     It is deliberately NOT the logo hue. The mark is cyan (--brand-mark), and
+     an accent at the same hue competes with it — you get two cyans, one of
+     which is slightly wrong. Orange sits opposite cyan, so the mark stays the
+     coolest thing on the page and the accent stays the warmest, and neither
+     is mistaken for the other.
+
+     Every --brand-* value here is a *text-safe* exposure of that orange. The
+     raw safety orange the palette is drawn from (#EA580C) is 3.56:1 on white
+     and is NOT in this file: it cannot carry text and there is no role left
+     for it. Do not reintroduce it. */
+  --brand:      #9A3412;   /* the interactive token, text-safe everywhere —
+                              7.31:1 on --paper-hi, 4.92:1 on --paper-lo. This
+                              is the one to reach for by default. */
+  --brand-lift: #7C2D12;   /* hover — a step darker, never lighter */
+  --brand-deep: #C2410C;   /* solid pill FILL ONLY, carries #FFFFFF at 5.18:1.
+                              It is 3.49:1 on --paper-lo, so it must never be
+                              used as a text colour. Fill and white text, or
+                              nothing. */
+  --brand-ink:  #9A3412;   /* links and labels on any ground — 4.92:1 worst */
 
   /* --mark carries figures, hairline rules and markers: the neutral washed
      back, so it reads as precision rather than as ornament. */
@@ -134,11 +135,11 @@
      nothing has to be read against it. */
   --brand-mark: #1CABDE;
 
-  --mark:       #5C6A71;   /* figures + rules on the deep ombre — 4.98:1 worst */
-  --mark-ink:   #5C6A71;   /* same role on paper — one value now, because both
+  --mark:       #334155;   /* figures + rules on the deep ombre — 6.97:1 worst */
+  --mark-ink:   #334155;   /* same role on paper — one value now, because both
                               grounds are light. Kept a step stronger than
-                              --on-light-mute so the marker reads as the firmer
-                              of the two. */
+                              --on-light-mute (#475569) so the marker reads as
+                              the firmer of the two. */
 
   /* -- the materials --------------------------------------------------
      Direction "Coefficient": colour on this site means one thing only —
@@ -246,17 +247,17 @@
      geometry: a pill with a hard 3px offset shadow looks misprinted rather
      than lifted. They are now soft and close, so a control reads as resting
      on the page rather than stamped onto it. */
-  --lift:   0 2px 10px rgba(24, 18, 10, 0.10);
-  --lift-2: 0 8px 26px rgba(24, 18, 10, 0.16);
+  --lift:   0 2px 10px rgba(16, 23, 27, 0.10);
+  --lift-2: 0 8px 26px rgba(16, 23, 27, 0.16);
   /* These used to be black, for objects standing on a near-black ground.
      Nothing on the site has a dark ground now, so they match --lift. */
-  --lift-d:   0 2px 10px rgba(24, 18, 10, 0.10);
-  --lift-d-2: 0 8px 26px rgba(24, 18, 10, 0.16);
+  --lift-d:   0 2px 10px rgba(16, 23, 27, 0.10);
+  --lift-d-2: 0 8px 26px rgba(16, 23, 27, 0.16);
 
   /* -- drafting grid ------------------------------------------------------
      A faint graph over the paper ground only — dark/atmospheric sections
      paint their own background over it. Same low-key logic as the grain. */
-  --grid-line: rgba(24, 18, 10, 0.055);
+  --grid-line: rgba(16, 23, 27, 0.055);
 }
 
 /* =========================== reset ====================================== */
@@ -521,7 +522,7 @@ section { padding-block: var(--pad-y); }
   content: ''; position: absolute; inset: 0; z-index: 1;
   background:
     repeating-linear-gradient(90deg,
-      rgba(25, 21, 18, 0.05) 0 1px, transparent 1px 14px),
+      rgba(16, 23, 27, 0.05) 0 1px, transparent 1px 14px),
     linear-gradient(150deg, var(--paper-hi), var(--paper) 58%, var(--paper-lo));
 }
 /* Light source. A tighter, brighter key that follows the pointer, plus a fixed
@@ -535,12 +536,170 @@ section { padding-block: var(--pad-y); }
     radial-gradient(38% 52% at var(--lx, 32%) var(--ly, 16%),
       rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.05) 44%, transparent 70%),
     radial-gradient(120% 108% at 50% 32%,
-      transparent 44%, rgba(11, 9, 6, 0.30) 82%, rgba(11, 9, 6, 0.5));
+      transparent 44%, rgba(6, 10, 13, 0.30) 82%, rgba(6, 10, 13, 0.5));
   pointer-events: none; z-index: 2;
   transition: background 220ms linear;
 }
 .surface > * { position: relative; z-index: 3; }
 .surface::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+
+/* -- the drawn material swatches ---------------------------------------
+   Restored from HEAD~1 after a pass removed them. They are NOT decoration:
+   `.surface > img` sits above them, so the drawn material is what shows
+   while a photograph loads and what stays if one ever 404s. Every product
+   family has its own, which is what makes a page of nineteen cards read as
+   a materials library rather than a grid of failed images.
+
+   They are the one deliberate exception to the site's colour rule and keep
+   their own temperatures — felt warm neutral, timber warm brown, wood wool
+   straw, foam cold near-black, proofing cold graphite. Do not pull them onto
+   the accent hue: a tinted foam swatch stops looking like foam. */
+/* -- PET felt: a fine woven tooth, warm neutral -------------------------- */
+.s-felt::before {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 30% 25%, #3D3D3C, #272625 60%, #1C1B1A);
+}
+/* -- felt tiles: the same board, with the module joints showing ---------- */
+.s-tile::before {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 25% 100%,
+    linear-gradient(0deg,  rgba(0,0,0,0.55) 0 2px, transparent 2px) 0 0 / 100% 33.33%,
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.24) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 62% 30%, #3B3B3A, #252423 62%, #1A1918);
+}
+/* -- desk screen: felt board inside an aluminium edge -------------------- */
+.s-screen::before {
+  background:
+    linear-gradient(90deg, #646362 0 4px, transparent 4px calc(100% - 4px), #646362 calc(100% - 4px)),
+    linear-gradient(0deg,  #646362 0 4px, transparent 4px calc(100% - 4px), #51504E calc(100% - 4px)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.26) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 40% 30%, #3B3B3A, #252423 62%, #1A1A1A);
+}
+/* -- micro-perforation: a precise sub-millimetre dot grid ---------------- */
+.s-perf::before {
+  background:
+    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 0 0 / 11px 11px,
+    radial-gradient(circle at 50% 50%, #06060600 1.3px, #080808 1.5px, #08080800 2.8px) 5.5px 5.5px / 11px 11px,
+    linear-gradient(158deg, #353433, #1F1F1E 58%, #151514);
+}
+/* -- CNC grooves: V-cut lines with a lit face and a shadow face ---------- */
+.s-groove::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #131313 0px, #131313 2px,
+      #5E5D5B 3px, #403F3D 13px,
+      #232322 21px, #131313 23px);
+}
+/* -- 3D embossed: offset raised blocks catching light on one corner ------ */
+.s-emboss::before {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.15) 0 45%, transparent 45%) 0 0 / 26px 26px,
+    linear-gradient(-45deg, rgba(0,0,0,0.52) 0 45%, transparent 45%) 13px 13px / 26px 26px,
+    linear-gradient(160deg, #353433, #1D1D1C);
+}
+/* -- parametric: flowing contour ribs ------------------------------------ */
+.s-param::before {
+  background:
+    repeating-radial-gradient(ellipse 150% 46% at 22% 122%,
+      #0A0A0A 0 5px, #3A3937 6px 11px, #0A0A0A 12px 17px);
+}
+/* -- printed: the one surface whose job is to carry colour ---------------
+   Held to darkened, desaturated versions of the palette's own hues. At full
+   saturation this tile read as a rendering fault in a grid of eighteen
+   monochrome ones — the point is "this panel takes print", not "look here". */
+.s-print::before {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,0.42) 1.2px, transparent 1.4px) 0 0 / 9px 9px,
+    linear-gradient(118deg, #17627A 0 26%, #6E7276 26% 52%, #3C4044 52% 74%, #23252A 74%);
+}
+
+/* -- ceiling cloud: a flat board seen from below, edge lit --------------- */
+.s-cloud::before {
+  background:
+    linear-gradient(0deg, rgba(0,0,0,0.6) 0 6%, transparent 6% 94%, rgba(255,240,214,0.14) 94%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px),
+    linear-gradient(168deg, #3C3B3A, #252423 65%, #181817);
+}
+/* -- baffles: fins on edge, deep shadow between ------------------------- */
+.s-baffle::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #040404 0px, #040404 13px,
+      #232322 15px, #55534F 27px, #232322 39px,
+      #040404 41px, #040404 54px);
+}
+
+/* -- foam: colder and darker than felt; foam is charcoal ---------------- */
+.s-wedge::before {
+  background:
+    repeating-linear-gradient(90deg, #070708 0px, #2E2E30 13px, #070708 26px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0px, rgba(0,0,0,0) 14px, rgba(0,0,0,0.5) 28px);
+}
+.s-pyramid::before {
+  background:
+    repeating-linear-gradient(45deg,  #070708 0, #2F2F31 11px, #070708 22px),
+    repeating-linear-gradient(-45deg, rgba(20, 17, 13,0.7) 0, rgba(100, 92, 80,0.22) 11px, rgba(20, 17, 13,0.7) 22px);
+  background-blend-mode: overlay;
+}
+
+/* -- timber slats: warm brown, rounded ribs, shadow valley -------------- */
+.s-slat::before {
+  background:
+    repeating-linear-gradient(90deg,
+      #0C0C0B 0px, #0C0C0B 3px,
+      #2A2A28 3px, #454340 9px,
+      #6B6862 16px, #4E4C48 23px,
+      #262624 28px, #0C0C0B 31px);
+}
+/* -- wood wool: pale straw fibre, the lightest surface in the set ------- */
+.s-wool::before {
+  background:
+    repeating-linear-gradient(74deg,  rgba(221, 214, 201,0.26) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-64deg, rgba(206, 199, 186,0.20) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(21deg,  rgba(136, 127, 113,0.28) 0 1px, transparent 1px 8px),
+    linear-gradient(140deg, #5A5856, #393837 72%);
+}
+
+/* -- perforated timber: larger holes on a warm veneer ground ------------ */
+.s-woodperf::before {
+  background:
+    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 0 0 / 19px 19px,
+    radial-gradient(circle at 50% 50%, #08080800 3.1px, #080808 3.4px, #08080800 4.6px) 9.5px 9.5px / 19px 19px,
+    repeating-linear-gradient(96deg, rgba(107, 98, 85,0.16) 0 1px, transparent 1px 9px),
+    linear-gradient(150deg, #494745, #2B2B2A 66%, #1E1E1D);
+}
+/* -- polyester batt: soft, low-density fibre, paler and cooler ---------- */
+.s-batt::before {
+  background:
+    repeating-linear-gradient(82deg,  rgba(226,226,232,0.14) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-72deg, rgba(210,212,220,0.10) 0 2px, transparent 2px 7px),
+    radial-gradient(ellipse 70% 50% at 30% 30%, #505152, #323232 62%, #242425);
+}
+/* -- acoustic glazing: offset laminated panes, edge-lit ----------------- */
+.s-glass::before {
+  background:
+    linear-gradient(104deg, transparent 0 38%, rgba(198,204,208,0.16) 38% 46%, transparent 46%),
+    linear-gradient(104deg, transparent 0 58%, rgba(198,204,208,0.10) 58% 63%, transparent 63%),
+    linear-gradient(0deg, #464748 0 5%, transparent 5% 95%, #404142 95%),
+    linear-gradient(150deg, #2C2D2E, #181919);
+}
+
+/* -- proofing: cold graphite, dense and near-flat ----------------------- */
+.s-mlv::before {
+  background:
+    repeating-linear-gradient(112deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 5px),
+    linear-gradient(150deg, #2B2B2C, #141415);
+}
+.s-door::before {
+  background:
+    linear-gradient(90deg, #505051 0 8%, transparent 8% 92%, #414243 92%),
+    linear-gradient(0deg,  #505051 0 6%, transparent 6% 94%, #383838 94%),
+    linear-gradient(150deg, #2B2B2C, #171717);
+}
 /* The twenty drawn panel-type swatches that used to live here — .s-felt,
    .s-slat, .s-perf, .s-foam, .s-mlv, .s-wool and the rest, one per product
    family — have been removed. They were the site's most distinctive idea and
@@ -599,7 +758,7 @@ section { padding-block: var(--pad-y); }
   background: rgba(250, 251, 251, 0.82);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid rgba(23, 19, 16, 0.08);
+  border-bottom: 1px solid rgba(16, 23, 27, 0.08);
   color: var(--on-light);
 }
 .site-head .wrap {
@@ -639,7 +798,7 @@ section { padding-block: var(--pad-y); }
 .nav a.btn::after { content: none; }
 
 .nav-toggle {
-  display: none; background: none; border: 1px solid rgba(23, 19, 16, 0.2);
+  display: none; background: none; border: 1px solid rgba(16, 23, 27, 0.2);
   color: var(--on-light); width: 2.6rem; height: 2.6rem; border-radius: 50%;
   cursor: pointer; align-items: center; justify-content: center; flex: none;
 }
@@ -656,7 +815,7 @@ section { padding-block: var(--pad-y); }
   .nav-toggle { display: inline-flex; }
   .nav {
     position: fixed; inset: 5.25rem 0 auto 0;
-    background: var(--paper); border-bottom: 1px solid rgba(23, 19, 16, 0.1);
+    background: var(--paper); border-bottom: 1px solid rgba(16, 23, 27, 0.1);
     flex-direction: column; align-items: stretch; gap: 0;
     padding: 0.5rem var(--gut) 1.5rem;
     transform: translateY(-8px); opacity: 0; visibility: hidden;
@@ -664,7 +823,7 @@ section { padding-block: var(--pad-y); }
     max-height: calc(100dvh - 5.25rem); overflow-y: auto;
   }
   .nav[data-open="true"] { transform: none; opacity: 1; visibility: visible; }
-  .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(23, 19, 16, 0.08); font-size: 0.8125rem; }
+  .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(16, 23, 27, 0.08); font-size: 0.8125rem; }
   .nav a::after { display: none; }
   .nav .btn { margin-top: 1.1rem; justify-content: center; }
 }
@@ -704,7 +863,7 @@ section { padding-block: var(--pad-y); }
 }
 .btn-ghost:hover { border-color: var(--on-light); color: var(--paper); }
 .btn-ghost:hover::before { transform: scaleX(1); }
-.dark .btn-ghost, .btn-ghost.on-dark { border-color: rgba(25, 21, 18, 0.276); color: var(--on-dark); }
+.dark .btn-ghost, .btn-ghost.on-dark { border-color: rgba(16, 23, 27, 0.276); color: var(--on-dark); }
 .dark .btn-ghost::before, .btn-ghost.on-dark::before { background: var(--on-dark); }
 .dark .btn-ghost:hover, .btn-ghost.on-dark:hover { border-color: var(--on-dark); color: var(--paper-hi); }
 
@@ -763,10 +922,10 @@ section { padding-block: var(--pad-y); }
   content: ''; position: absolute; inset: 0;
   background:
     linear-gradient(102deg,
-      rgba(11, 9, 6, 0.86) 0%, rgba(11, 9, 6, 0.78) 34%,
-      rgba(11, 9, 6, 0.70) 50%, rgba(11, 9, 6, 0.25) 100%),
+      rgba(6, 10, 13, 0.86) 0%, rgba(6, 10, 13, 0.78) 34%,
+      rgba(6, 10, 13, 0.70) 50%, rgba(6, 10, 13, 0.25) 100%),
     linear-gradient(180deg,
-      rgba(11, 9, 6, 0.35) 0%, rgba(11, 9, 6, 0.15) 42%, rgba(11, 9, 6, 0.45) 100%);
+      rgba(6, 10, 13, 0.35) 0%, rgba(6, 10, 13, 0.15) 42%, rgba(6, 10, 13, 0.45) 100%);
 }
 /* The banner is the ONE place on this light-only site with light text, because
    it is text on a photograph rather than on a ground. --on-dark is a
@@ -860,7 +1019,7 @@ h1.hero-title {
               box-shadow 320ms var(--ease);
 }
 .dark .card {
-  background: var(--ink-panel); border-color: rgba(25, 21, 18, 0.103);
+  background: var(--ink-panel); border-color: rgba(16, 23, 27, 0.103);
   box-shadow: var(--lift-d);
 }
 a.card:hover {
@@ -877,6 +1036,23 @@ a.card:hover {
   letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-light-mute);
 }
 .dark .card-cat { color: var(--on-dark-mute); }
+
+/* The family marker. Colour on this site identifies material and nothing
+   else, so the category label carries a short rule in its family's own
+   temperature — the same five values the NRC bar fills with. It is a 2px
+   mark, not a tint behind text: these colours are chosen to look like felt,
+   foam and timber, and none of them is guaranteed to hold 4.5:1 under a
+   label. Keep them off grounds that carry type. */
+.card[data-mat] .card-cat::before, .fam[data-mat] .fam-n::before {
+  content: ''; display: inline-block; vertical-align: 0.22em;
+  width: 1.15rem; height: 2px; margin-right: 0.55rem;
+  background: var(--mat, var(--mat-pet));
+}
+[data-mat="pet"]   { --mat: var(--mat-pet); }
+[data-mat="cloud"] { --mat: var(--mat-cloud); }
+[data-mat="foam"]  { --mat: var(--mat-foam); }
+[data-mat="wood"]  { --mat: var(--mat-wood); }
+[data-mat="proof"] { --mat: var(--mat-proof); }
 .card h3 { font-size: 1.3125rem; letter-spacing: -0.014em; }
 .card p { font-size: 0.9375rem; line-height: 1.58; color: var(--on-light-mute); }
 .dark .card p { color: var(--on-dark-mute); }
@@ -901,7 +1077,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .panel {
   background: var(--ink-panel);
-  border-color: rgba(25, 21, 18, 0.103);
+  border-color: rgba(16, 23, 27, 0.103);
   box-shadow: var(--lift-d);
 }
 .panel-pad { padding: clamp(1.5rem, 3vw, 2.25rem); }
@@ -917,7 +1093,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   color: var(--mark-ink) !important;
   padding-bottom: 0.9rem; border-bottom: 1px solid var(--paper-edge);
 }
-.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(25, 21, 18, 0.138); }
+.dark .room-target { color: var(--mark) !important; border-bottom-color: rgba(16, 23, 27, 0.138); }
 .room h3 { font-size: 1.375rem; margin: 0.9rem 0 0.5rem; }
 .room-note { font-size: 0.9375rem; line-height: 1.58; }
 
@@ -927,7 +1103,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   min-height: clamp(11rem, 20vw, 14rem);
   padding: 1.25rem; text-decoration: none; color: var(--on-dark);
   border-radius: var(--r); overflow: hidden;
-  border: 1px solid rgba(25, 21, 18, 0.138);
+  border: 1px solid rgba(16, 23, 27, 0.138);
   transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 .sector { box-shadow: var(--lift-d); }
@@ -937,7 +1113,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .sector > span::before {
   content: ''; position: absolute; z-index: -1;
   left: -1.25rem; right: -1.25rem; bottom: -1.25rem; top: -3rem;
-  background: linear-gradient(180deg, transparent, rgba(11, 9, 6, 0.62) 45%, rgba(11, 9, 6, 0.92));
+  background: linear-gradient(180deg, transparent, rgba(6, 10, 13, 0.62) 45%, rgba(6, 10, 13, 0.92));
 }
 .sector-name {
   font-family: var(--display); font-weight: var(--w-display);
@@ -980,7 +1156,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .spec td { color: var(--mark); }
 .spec tr + tr { border-top: 1px solid var(--paper-edge); }
-.dark .spec tr + tr { border-top-color: rgba(25, 21, 18, 0.115); }
+.dark .spec tr + tr { border-top-color: rgba(16, 23, 27, 0.115); }
 
 /* pill list for applications / finishes */
 .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
@@ -990,7 +1166,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding: 0.45rem 0.95rem; border-radius: var(--r-pill);
   border: 1px solid var(--paper-edge); color: var(--on-light-mute);
 }
-.dark .pills li { border-color: rgba(25, 21, 18, 0.184); color: var(--on-dark-mute); }
+.dark .pills li { border-color: rgba(16, 23, 27, 0.184); color: var(--on-dark-mute); }
 
 /* =========================== process ==================================== */
 /* Numbered here because it genuinely is a sequence: each step gates the next. */
@@ -1003,9 +1179,9 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   grid-template-columns: 3.5rem 1fr;
   align-items: start;
 }
-.dark .step { border-top-color: rgba(25, 21, 18, 0.149); }
+.dark .step { border-top-color: rgba(16, 23, 27, 0.149); }
 .step:last-child { border-bottom: 1px solid var(--paper-edge); }
-.dark .step:last-child { border-bottom-color: rgba(25, 21, 18, 0.149); }
+.dark .step:last-child { border-bottom-color: rgba(16, 23, 27, 0.149); }
 .step::before {
   content: counter(step, decimal-leading-zero);
   grid-row: 1 / span 2;
@@ -1031,7 +1207,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   box-shadow: var(--lift);
 }
 .dark .quote {
-  border-color: rgba(25, 21, 18, 0.103); background: var(--ink-panel);
+  border-color: rgba(16, 23, 27, 0.103); background: var(--ink-panel);
   box-shadow: var(--lift-d);
 }
 /* Set in the display face. A testimonial is the one place on the site where
@@ -1052,7 +1228,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   padding-top: 1.1rem; border-top: 1px solid var(--paper-edge);
   line-height: 1.7;
 }
-.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(25, 21, 18, 0.149); }
+.dark .quote figcaption { color: var(--on-dark-mute); border-top-color: rgba(16, 23, 27, 0.149); }
 .quote figcaption b { display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.2rem; }
 .dark .quote figcaption b { color: var(--on-dark); }
 
@@ -1215,7 +1391,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   .gal-item { display: flex; flex-direction: column; }
   .gal-item > .gal-surface { flex: 1; }
 }
-.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(25, 21, 18, 0.149); background: var(--ink-panel); }
+.gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(16, 23, 27, 0.149); background: var(--ink-panel); }
 .gal-surface { aspect-ratio: 3 / 2; }
 .gal-cap { padding: 1rem 1.1rem 1.2rem; }
 /* `.gal-item` is a dark card that lives inside a `.light` section, so the
@@ -1238,7 +1414,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .filter:hover { border-color: var(--mark-ink); color: var(--on-light); }
 .filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-dark); }
 /* the filter bar sits on the dark ground on the projects page */
-.dark .filter { border-color: rgba(25, 21, 18, 0.253); color: var(--on-dark-mute); }
+.dark .filter { border-color: rgba(16, 23, 27, 0.253); color: var(--on-dark-mute); }
 .dark .filter:hover { border-color: var(--brand); color: var(--brand-ink); }
 .dark .filter[aria-pressed="true"] {
   background: var(--on-dark); border-color: var(--on-dark); color: var(--ink);
@@ -1252,7 +1428,7 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .center { text-align: center; }
 .mt-l { margin-top: clamp(2.5rem, 5vw, 4rem); }
 hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clamp(2.5rem, 5vw, 4rem); }
-.dark hr.rule { border-top-color: rgba(25, 21, 18, 0.149); }
+.dark hr.rule { border-top-color: rgba(16, 23, 27, 0.149); }
 
 /* =========================== statement band =============================
    One section on the homepage that breaks the eyebrow / heading / lead / grid
@@ -1342,7 +1518,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 @media (min-width: 52rem) {
   .rdx > a {
-    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
+    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.05fr) auto auto;
     gap: 1.75rem; padding: 1.5rem 0;
   }
 }
@@ -1366,6 +1542,26 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .rdx-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-light-mute); }
 @media (max-width: 51.99rem) { .rdx-note { grid-column: 1 / -1; } }
+/* How many rooms of this type they have actually finished. Counted from
+   PROJECTS in src/build.js, never typed — the figure is the reason the index
+   earns its place over a grid of ten equal cards. Tabular figures so the
+   column stays a column. */
+.rdx-count {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 20;
+  font-size: 1.5rem; line-height: 1; letter-spacing: -0.01em;
+  font-feature-settings: 'tnum' 1; color: var(--on-light);
+  white-space: nowrap;
+}
+.rdx-count small {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--on-light-mute);
+}
+@media (max-width: 51.99rem) {
+  .rdx-count { font-size: 1.15rem; grid-column: 1; }
+}
+
 .rdx-target {
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--mark-ink); white-space: nowrap;
@@ -1394,80 +1590,78 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .dark .steps-spine .step::before { color: var(--mark); }
 
-/* ------------------------------- voices ---------------------------------
-   Three testimonials in three equal boxes made them look like feature cards.
-   As full-width rows the quotes get room to be read, and the attribution
-   holds a column of its own the way a citation should. */
-.voices { border-top: 1px solid var(--paper-edge); }
-.dark .voices { border-top-color: rgba(25, 21, 18, 0.138); }
-.voice {
-  display: grid; gap: 1rem 3rem;
-  padding-block: clamp(2rem, 4vw, 3.25rem);
-  border-bottom: 1px solid var(--paper-edge);
-  align-items: start;
-}
-.dark .voice { border-bottom-color: rgba(25, 21, 18, 0.138); }
-@media (min-width: 52rem) {
-  .voice { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); }
-}
-.voice blockquote {
-  font-family: var(--display); font-weight: var(--w-display);
-  font-size: clamp(1.375rem, 1.1rem + 1.35vw, 2.125rem);
-  line-height: 1.28; letter-spacing: -0.014em;
-  max-width: 30ch;
-}
-.voice blockquote::before { content: '\201C'; }
-.voice blockquote::after  { content: '\201D'; }
-.voice figcaption {
-  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--on-light-mute); line-height: 1.7;
-  padding-top: 0.55rem;
-}
-.dark .voice figcaption { color: var(--on-dark-mute); }
-.voice figcaption b {
-  display: block; color: var(--on-light); font-weight: 500; margin-bottom: 0.35rem;
-}
-.dark .voice figcaption b { color: var(--on-dark); }
+/* ------------------------------- reviews --------------------------------
+   Modelled on a Google-reviews block: centred head, then a row of white cards
+   on a deeper ground, each opening with a round avatar, a name and a role.
 
-/* --------------------------- catalogue grid -----------------------------
-   The first product in each family leads at double width. It gives the grid
-   a focal point instead of nine identical rectangles, and it happens to fix
-   the orphan row: a family of two now fills three columns exactly. */
-@media (min-width: 60rem) {
-  .cat-grid > :first-child { grid-column: span 2; }
-  .cat-grid > :first-child .card-surface { aspect-ratio: 16 / 9; }
-  .cat-grid > :first-child h3 { font-size: 1.625rem; }
-}
+   WHAT IS DELIBERATELY MISSING, and why. The reference carries a Google mark,
+   an aggregate score, per-card star ratings, dates, review counts and
+   Helpful/Share actions. This site has three testimonials with exactly three
+   fields each — quote, name, role. Everything else in that reference would
+   have to be invented, and inventing star ratings or a Google score would not
+   be a design shortcut, it would be presenting fabricated content as verified
+   third-party reviews. So the layout and the card language are here and the
+   trust signals are not. If the client connects a real review source, the
+   ratings row goes above the quote and the marquee below becomes worth having.
 
-/* room index swatch carries a real photo of that room type */
-.rdx-swatch { position: relative; overflow: hidden; }
-.rdx-swatch > img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 4; opacity: 0.85;
+   Three cards is also why this is a grid rather than the reference's two
+   scrolling rows: a marquee looping three items reads as padding. It already
+   scroll-snaps horizontally under 60rem, which is where a row of three stops
+   fitting; raise the item count and the same markup can become a real
+   carousel. */
+.reviews {
+  display: grid; gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
 }
-.rdx:hover .rdx-swatch > img { opacity: 1; }
-.rdx-swatch > img { transition: opacity 300ms var(--ease); }
-
-/* Eleven stacked filter buttons pushed the grid most of a screen down on a
-   phone. Below 48rem the bar becomes a single scrolling row instead. */
-@media (max-width: 48rem) {
-  .filters {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin-inline: calc(var(--gut) * -1);
-    padding-inline: var(--gut);
+@media (max-width: 60rem) {
+  .reviews {
+    grid-auto-flow: column; grid-auto-columns: min(82vw, 22rem);
+    grid-template-columns: none;
+    overflow-x: auto; scroll-snap-type: x mandatory;
     padding-bottom: 0.5rem;
+    scrollbar-width: thin;
   }
-  .filters::-webkit-scrollbar { display: none; }
-  .filters .filter { flex: 0 0 auto; scroll-snap-align: start; }
+  .review { scroll-snap-align: start; }
 }
 
-/* form status tones — set by site.js via data-tone */
-.form-status[data-tone="ok"]   { color: var(--brand-ink); }
-.form-status[data-tone="warn"] { color: #8A5B12; }  /* 5.1:1 on --paper; the old #E0A33C was 2.1:1 */
+.review {
+  margin: 0;
+  background: var(--paper-hi);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r);
+  box-shadow: var(--lift);
+  padding: clamp(1.35rem, 2.4vw, 1.75rem);
+  display: flex; flex-direction: column; gap: 1.1rem;
+}
+.review-head { display: flex; align-items: center; gap: 0.85rem; }
+/* One fill, not the reference's six. Coloured avatars are a lot of the charm
+   there, but this site allows exactly one saturated colour and spending it on
+   six random hues would cost the logo its status as the only one. */
+.review-avatar {
+  flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--brand-deep); color: var(--paper-hi);
+  font-family: var(--display); font-size: 1.15rem; line-height: 1;
+}
+.review-who { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.review-who b { font-weight: 500; color: var(--on-light); }
+.review-who > span {
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--on-light-mute); line-height: 1.4;
+}
+.review blockquote {
+  margin: 0; padding-top: 1.1rem;
+  border-top: 1px solid var(--paper-edge);
+  font-size: 0.9375rem; line-height: 1.62; color: var(--on-light-mute);
+}
+.review blockquote::before { content: '\201C'; }
+.review blockquote::after  { content: '\201D'; }
+
+/* The cards carry their own paper fill, so they are opaque objects on whatever
+   ground the section uses and none of the .dark text tokens reach inside. */
+.dark .review-who b { color: var(--on-light); }
+.dark .review blockquote { color: var(--on-light-mute); }
 
 /* =========================== registration marks =========================
    Four L-brackets in `currentColor`, drawn as eight background-gradient
@@ -1585,3 +1779,71 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .nrc-raw::before { content: '\00b7'; margin: 0 0.4em; opacity: 0.75; }
 
 .nrc-fig b { font-size: 1.75rem; }
+
+/* ============================ the notes list ============================
+   One article today, and the shape has to survive both that and twenty.
+   A three-column grid could do neither: at one post it left two thirds of
+   the row empty, and it is the grid-of-equal-cards the rest of the site
+   avoids.
+
+   The first note runs wide with its surface beside it; any note after it is
+   a compact index row, the same move `.cat-grid` makes for the first product
+   in a family. Adding posts needs no layout change. */
+.notes { list-style: none; margin: 0; padding: 0; }
+.note { border-top: 1px solid var(--paper-edge); }
+.note:last-child { border-bottom: 1px solid var(--paper-edge); }
+.note > a {
+  display: grid; gap: 1.25rem; align-items: start;
+  padding: 1.75rem 0; text-decoration: none; color: inherit;
+  transition: color 320ms var(--ease);
+}
+.note-surface { display: none; border-radius: var(--r-sm); }
+.note-body { display: grid; gap: 0.6rem; }
+
+.note-meta {
+  display: flex; flex-wrap: wrap; gap: 0.55rem;
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-light-mute);
+}
+.note-meta i, .note-meta time { font-style: normal; }
+.note-meta i::before, .note-meta time::before { content: '\00b7'; margin-right: 0.55rem; }
+
+.note-t {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 24;
+  font-size: var(--t-h3); line-height: 1.1; letter-spacing: -0.012em;
+  color: var(--on-light); text-wrap: balance;
+}
+.note-d { font-size: 0.9375rem; line-height: 1.6; color: var(--on-light-mute); max-width: 54ch; }
+.note-go {
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-ink);
+  display: inline-flex; align-items: center; gap: 0.45rem;
+}
+.note > a:hover .note-t { color: var(--brand-ink); }
+.note > a:hover .btn-arrow { transform: translateX(3px); }
+
+/* the lead note: the surface joins it, and the title steps up a size */
+@media (min-width: 46rem) {
+  .note-lead > a { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 2rem; padding: 2.25rem 0; }
+  .note-lead .note-surface { display: block; aspect-ratio: 4 / 3; }
+  .note-lead .note-t {
+    font-size: var(--t-h2); font-variation-settings: 'wdth' var(--wd-h2), 'opsz' 40;
+    letter-spacing: -0.018em;
+  }
+  .note-lead .note-body { gap: 0.75rem; }
+}
+
+/* A second-level heading inside a column or panel — "Send the details",
+   "Direct", "Others in Acoustic Wood". These are h2 for the document
+   outline but sit at h3 in the visual scale, which is a real distinction
+   and so belongs in a class rather than in seven inline font-sizes. The
+   width follows the scale step, because on this site hierarchy is width. */
+.sub-h {
+  font-size: var(--t-h3);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 20;
+}
+.mb-s { margin-bottom: 0.6rem; }
+.mb-m { margin-bottom: 1rem; }
+.mb-l { margin-bottom: 1.5rem; }

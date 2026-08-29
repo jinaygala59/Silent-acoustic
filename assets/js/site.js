@@ -74,6 +74,25 @@
         }
       });
     });
+
+    /* The room index links in as `#room=<sector>`. Reading the hash here
+       rather than duplicating the show/hide logic means the index and the
+       filter buttons can never disagree about what is on screen. Runs on
+       load and on hashchange, because a same-page hash link does not
+       reload. */
+    var applyHash = function () {
+      var m = /^#room=(.+)$/.exec(location.hash || '');
+      if (!m) return;
+      var want = decodeURIComponent(m[1]);
+      var btn = filters.filter(function (b) {
+        return b.getAttribute('data-filter') === want;
+      })[0];
+      if (!btn) return;
+      btn.click();
+      gal.scrollIntoView({ block: 'start' });
+    };
+    applyHash();
+    window.addEventListener('hashchange', applyHash);
   }
 
   /* ------------------------------- form --------------------------------

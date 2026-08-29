@@ -51,7 +51,7 @@ html { scroll-padding-top: 7rem; }
   transition: transform 380ms var(--m-out), background-color 300ms var(--m-out);
 }
 html.head-up .site-head { transform: translate3d(0, -101%, 0); }
-html.head-solid .site-head { background: rgba(237, 231, 221, 0.94); }
+html.head-solid .site-head { background: rgba(250, 251, 251, 0.94); }
 /* Never hide the header while something inside it has focus, or while the
    mobile menu is open — both would strand a keyboard user. */
 .site-head:focus-within { transform: none !important; }
@@ -84,6 +84,24 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 [data-stagger] > :nth-child(3n + 1) { --i: 0; }
 [data-stagger] > :nth-child(3n + 2) { --i: 1; }
 [data-stagger] > :nth-child(3n + 3) { --i: 2; }
+
+/* The long variant, for a single column that reads top to bottom rather than
+   as a grid — a spec table's rows, an index's entries. Cycling in threes is
+   wrong there: rows 1 and 4 would start together and the table would appear
+   in three chunks instead of filling in. This runs a true sequence and then
+   holds at 9, so an unusually long table finishes rather than trailing off.
+   Values stay small: at 2% of the scroll range each, ten rows span 18%, which
+   is still well inside the element's own pass through the viewport. */
+[data-stagger="long"] > :nth-child(1) { --i: 0; }
+[data-stagger="long"] > :nth-child(2) { --i: 1; }
+[data-stagger="long"] > :nth-child(3) { --i: 2; }
+[data-stagger="long"] > :nth-child(4) { --i: 3; }
+[data-stagger="long"] > :nth-child(5) { --i: 4; }
+[data-stagger="long"] > :nth-child(6) { --i: 5; }
+[data-stagger="long"] > :nth-child(7) { --i: 6; }
+[data-stagger="long"] > :nth-child(8) { --i: 7; }
+[data-stagger="long"] > :nth-child(9) { --i: 8; }
+[data-stagger="long"] > :nth-child(n + 10) { --i: 9; }
 
 @media (prefers-reduced-motion: no-preference) {
 
@@ -251,7 +269,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      flush to the screen edge and the gutter is scrolled away on load. */
   scroll-padding-inline: var(--gut);
   scrollbar-width: thin;
-  scrollbar-color: rgba(25, 21, 18, 0.287) transparent;
+  scrollbar-color: rgba(16, 23, 27, 0.287) transparent;
   padding-inline: var(--gut);
   padding-bottom: 1rem;
 }
@@ -265,7 +283,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   flex: none; width: clamp(16rem, 60vw, 23rem);
   display: flex; flex-direction: column;
   background: var(--ink-panel);
-  border: 1px solid rgba(25, 21, 18, 0.149);
+  border: 1px solid rgba(16, 23, 27, 0.149);
   border-radius: var(--r); overflow: hidden;
   text-decoration: none; color: inherit;
   transition: border-color 240ms var(--m-out), transform 240ms var(--m-out);
@@ -582,7 +600,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
 }
 .steps-spine::before { background: var(--paper-edge); }
-.dark .steps-spine::before { background: rgba(25, 21, 18, 0.161); }
+.dark .steps-spine::before { background: rgba(16, 23, 27, 0.161); }
 /* The bright overlay exists only where it can actually be drawn by scrolling.
    Anywhere else it would be a zero-height line that never grows, so the plain
    hairline above is left to do the job on its own. */

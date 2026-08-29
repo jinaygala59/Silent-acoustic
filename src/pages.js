@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar } = B;
+const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
 
 const built = [];
 
@@ -33,7 +33,7 @@ const choreoBand = () => {
     </div>
     <div class="choreo-stage">
       ${picks.map((pr, i) => `<figure class="choreo-plate at-${at[i]}">
-        <div class="choreo-surface surface s-plate">
+        <div class="choreo-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
         <figcaption><b>${esc(pr.n)}</b>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</figcaption>
@@ -125,18 +125,7 @@ ${famRail()}
       </div>
       <p class="lead" data-anim="fade">A studio and a sports hall both need treating, but they need opposite things. We design to the target for the room's actual use, not to a coverage percentage.</p>
     </div>
-    <ol class="roomdex" data-stagger>
-      ${SECTORS.map(s => `<li class="rdx" data-anim="fade"><a href="projects.html">
-        <span class="rdx-swatch surface s-plate" aria-hidden="true">${(() => {
-          const ex = PROJECTS.find(pr => pr.sec === s.name);
-          return ex ? `<img src="assets/img/projects/${ex.s}.webp" alt="" width="760" height="507" loading="lazy" decoding="async">` : '';
-        })()}</span>
-        <span class="rdx-n" aria-hidden="true"></span>
-        <span class="rdx-name">${esc(s.name)}</span>
-        <span class="rdx-note">${esc(s.note)}</span>
-        <span class="rdx-target">${esc(s.metric)}</span>
-      </a></li>`).join('\n      ')}
-    </ol>
+    ${roomdex()}
   </div>
 </section>
 
@@ -182,7 +171,7 @@ ${choreoBand()}
     </div>
     <div class="gal" data-stagger>
       ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="rise">
-        <div class="gal-surface surface s-plate">
+        <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
         <div class="gal-cap">
@@ -202,9 +191,12 @@ ${choreoBand()}
       <p class="eyebrow" data-anim="fade">In their words</p>
       <h2 data-anim="reveal">What consultants and clients say.</h2>
     </div>
-    <div class="voices">
-      ${TESTIMONIALS.map(t => `<figure class="voice" data-anim="fade">
-        <figcaption><b>${esc(t.n)}</b>${esc(t.r)}</figcaption>
+    <div class="reviews" data-stagger>
+      ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
+          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
+        </div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>
@@ -238,7 +230,7 @@ built.push(page({
     <div class="grid g2" data-stagger style="align-items:start">
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Which family do you need</p>
-        <h2 data-anim="reveal" style="font-size:var(--t-h3)">Absorb, block, or both</h2>
+        <h2 class="sub-h" data-anim="reveal">Absorb, block, or both</h2>
         <p style="color:var(--on-light-mute);max-width:var(--measure)">Panels, ceilings, foam and wood all <em>absorb</em> — they change how the room you are standing in sounds. Membranes, doors and windows <em>block</em> — they stop sound moving between two rooms. Most real projects need some of each, and the split is the first thing our survey settles.</p>
       </div>
       <div>
@@ -304,7 +296,7 @@ PRODUCTS.forEach(p => {
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-plate" data-anim="frame">
+        <div class="pd-hero surface ${p.surf}" data-anim="frame">
           <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
@@ -318,8 +310,8 @@ PRODUCTS.forEach(p => {
       <aside class="pd-aside">
         <table class="spec">
           <caption>Specification</caption>
-          <tbody>
-            ${Object.entries(p.specs).map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('\n            ')}
+          <tbody data-stagger="long">
+            ${Object.entries(p.specs).map(([k, v]) => `<tr data-anim="fade"><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('\n            ')}
           </tbody>
         </table>
         <p style="font-size:.8125rem;color:var(--on-light-mute);margin-top:1.25rem;line-height:1.5">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
@@ -329,7 +321,7 @@ PRODUCTS.forEach(p => {
     </div>
 
     ${related.length ? `<hr class="rule">
-    <h2 style="font-size:var(--t-h3);margin-bottom:1.5rem">Others in ${esc(cat.name)}</h2>
+    <h2 class="sub-h mb-l">Others in ${esc(cat.name)}</h2>
     <div class="grid g3" data-stagger>${related.map(r => productCard(r, '../')).join('\n')}</div>` : ''}
   </div>
 </section>
@@ -362,13 +354,7 @@ built.push(page({
       </div>
       <p class="lead" data-anim="fade">Reverberation time, background noise level and sound transmission between spaces — the three numbers that decide whether a room works. Which one leads depends entirely on what happens in the room.</p>
     </div>
-    <div class="grid g3" data-stagger>
-      ${SECTORS.map(s => `<article class="panel panel-pad room" data-anim="rise">
-        <p class="room-target">${esc(s.metric)}</p>
-        <h3>${esc(s.name)}</h3>
-        <p class="room-note">${esc(s.note)}</p>
-      </article>`).join('\n      ')}
-    </div>
+    ${roomdex('')}
   </div>
 </section>
 
@@ -393,7 +379,7 @@ built.push(page({
 
     <div class="gal" id="gal">
       ${PROJECTS.map(pr => `<article class="gal-item" data-sector="${esc(pr.sec)}">
-        <div class="gal-surface surface s-plate">
+        <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
         <div class="gal-cap">
@@ -409,9 +395,12 @@ built.push(page({
 <section class="light railed">
   <div class="wrap">
     <span class="rail-label">Clients</span>
-    <div class="voices">
-      ${TESTIMONIALS.map(t => `<figure class="voice" data-anim="fade">
-        <figcaption><b>${esc(t.n)}</b>${esc(t.r)}</figcaption>
+    <div class="reviews" data-stagger>
+      ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
+          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
+        </div>
         <blockquote>${esc(t.q)}</blockquote>
       </figure>`).join('\n      ')}
     </div>
@@ -441,13 +430,13 @@ built.push(page({
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Since 2006</p>
-        <h2 data-anim="reveal" style="font-size:var(--t-h2)">Twenty years of rooms that were not working.</h2>
+        <h2 data-anim="reveal">Twenty years of rooms that were not working.</h2>
         <p style="color:var(--on-light-mute)">Silence Acoustic was founded by an acoustician with more than two decades in soundproofing and room treatment, after too many projects where the consultant drew one thing, the supplier shipped another, and the contractor fitted a third. Nobody was accountable for whether the room actually sounded right.</p>
         <p style="color:var(--on-light-mute)">So we took the whole chain. We survey and measure the space ourselves. We produce the acoustic design against a stated target. We manufacture the panels in our own facility in Malad West. Our own crews install them. Then we come back with the meter and check.</p>
         <p style="color:var(--on-light-mute)">That is unusual in this industry, and it is the only part of our pitch that matters. Everything else — the finishes, the cut patterns, the colour range — is downstream of being answerable for the result.</p>
       </div>
       <div>
-        <div class="surface s-plate panel" data-anim="frame" style="aspect-ratio:4/5">
+        <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
           <img src="assets/img/projects/ravindra-natya-mandir-prabhadevi.webp"
                alt="Ravindra Natya Mandir, Prabhadevi" width="760" height="570" loading="lazy" decoding="async">
         </div>
@@ -479,7 +468,7 @@ built.push(page({
       </div>
       <p class="lead" data-anim="fade">Stated plainly, because each one is something the industry does routinely and we think it is why clients end up disappointed.</p>
     </div>
-    <div class="steps">
+    <div class="steps" data-stagger="long">
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Sell foam as soundproofing</h3><p style="grid-column:1;grid-row:2;max-width:70ch">If your problem is the neighbour, we will tell you that panels will not fix it — even when panels are the cheaper order and the easier sale.</p></div>
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Quote a lump sum</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Subcontract the install</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Our own crews travel to site. A local team hired for the week has no stake in the finish, and the finish is where acoustic work is usually let down.</p></div>
@@ -497,7 +486,7 @@ built.push(page({
         <h2 data-anim="reveal">The things clients ask first.</h2>
       </div>
     </div>
-    <div class="steps">
+    <div class="steps" data-stagger="long">
       ${FAQ.map(f => `<div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1;font-size:1.125rem">${esc(f.q)}</h3><p style="grid-column:1;grid-row:2;max-width:70ch">${esc(f.a)}</p></div>`).join('\n      ')}
     </div>
   </div>
@@ -523,17 +512,19 @@ built.push(page({
 <section class="light railed">
   <div class="wrap">
     <span class="rail-label">Articles</span>
-    <div class="grid g3">
-      ${POSTS.map(post => `<a class="card rise" href="${post.slug}.html" style="background:transparent;border-color:var(--paper-edge)">
-        <div class="card-surface surface s-plate" aria-hidden="true"></div>
-        <div class="card-body" style="padding:1.5rem">
-          <span class="card-cat">${esc(post.tag)} &middot; ${esc(post.read)} &middot; ${esc(post.dateLabel)}</span>
-          <h3 style="font-size:1.125rem;margin-top:.35rem">${esc(post.t)}</h3>
-          <p>${esc(post.d)}</p>
-          <span class="card-foot">Read the guide ${ARROW}</span>
-        </div>
-      </a>`).join('\n      ')}
-    </div>
+    <ol class="notes">
+      ${POSTS.map((post, i) => `<li class="note${i === 0 ? ' note-lead' : ''}" data-anim="fade">
+        <a href="${post.slug}.html">
+          <span class="note-surface surface s-felt" aria-hidden="true"></span>
+          <span class="note-body">
+            <span class="note-meta">${esc(post.tag)}<i>${esc(post.read)}</i><time datetime="${esc(post.date)}">${esc(post.dateLabel)}</time></span>
+            <span class="note-t">${esc(post.t)}</span>
+            <span class="note-d">${esc(post.d)}</span>
+            <span class="note-go">Read the guide ${ARROW}</span>
+          </span>
+        </a>
+      </li>`).join('\n      ')}
+    </ol>
     <p class="mt-l lead">More notes are being written. If you have a question today, call us and we will answer it on the phone rather than make you wait for the post.</p>
   </div>
 </section>
@@ -577,7 +568,7 @@ POSTS.forEach(post => {
       </article>
       <aside class="pd-aside">
         <p class="eyebrow">The product</p>
-        <h2 style="font-size:var(--t-h3);margin:.8rem 0 .6rem">Acoustic Polyester Panel</h2>
+        <h2 class="sub-h mb-s" style="margin-top:.8rem">Acoustic Polyester Panel</h2>
         <p style="font-size:.9375rem;color:var(--on-light-mute)">The panel this guide describes, with published sizes, densities and NRC figures.</p>
         <a class="btn btn-ghost on-light" style="margin-top:1.25rem;width:100%;justify-content:center" href="products/acoustic-polyester-panel.html">See the spec ${ARROW}</a>
         <a class="btn btn-primary" style="margin-top:.6rem;width:100%;justify-content:center" href="contact.html">Book a free survey ${ARROW}</a>
@@ -610,7 +601,7 @@ built.push(page({
     <span class="rail-label">Enquiry</span>
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2.5rem,5vw,4.5rem)">
       <div data-anim="fade">
-        <h2 style="font-size:var(--t-h3);margin-bottom:.6rem">Send the details</h2>
+        <h2 class="sub-h mb-s">Send the details</h2>
         <p class="lead" style="margin-bottom:2rem">The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.</p>
         <form class="form" id="enquiry" data-endpoint="${esc(SITE.formEndpoint || '')}" data-to="${SITE.email}" novalidate>
           <div class="field half"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
@@ -638,7 +629,7 @@ built.push(page({
 
       <div class="stack stack-l" data-stagger>
         <div data-anim="fade">
-          <h2 style="font-size:var(--t-h3);margin-bottom:1rem">Direct</h2>
+          <h2 class="sub-h mb-m">Direct</h2>
           <ul class="contact-list">
             <li><span class="k">Phone &amp; WhatsApp</span><a class="v" href="tel:${SITE.phoneHref}">${SITE.phone}</a></li>
             <li><span class="k">General enquiries</span><a class="v" href="mailto:${SITE.email}">${SITE.email}</a></li>
@@ -652,7 +643,7 @@ built.push(page({
           </div>
         </div>
         <div data-anim="fade">
-          <h2 style="font-size:var(--t-h3);margin-bottom:1rem">Helps us quote faster</h2>
+          <h2 class="sub-h mb-m">Helps us quote faster</h2>
           <ul class="pills" style="flex-direction:column;align-items:flex-start">
             <li>A floor plan or a section, any format</li>
             <li>Ceiling height and finishes already fixed</li>

@@ -131,7 +131,7 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#E6ECEF">
+<meta name="theme-color" content="#F8FAFC">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE.name}">
 <meta property="og:title" content="${esc(title)}">
@@ -206,8 +206,31 @@ const nrcBar = (p, cls = '') => {
   </div>`;
 };
 
-const productCard = (p, up = '') => `<a class="card" data-anim="rise" href="${up}products/${p.slug}.html">
-  <div class="card-surface surface s-plate">
+/* ------------------------------ the room index ---------------------------
+   Ten room types as an index rather than a grid of ten equal cards. Each row
+   carries the number of projects actually completed in that room type —
+   counted from PROJECTS, never typed by hand, so it cannot drift — and links
+   into the gallery with that filter already applied.
+
+   `base` is '' on the projects page (a same-page hash) and 'projects.html' on
+   the homepage. The hash is read by site.js on load and on hashchange. */
+const roomdex = (base = 'projects.html') => `<ol class="roomdex" data-stagger="long">
+      ${SECTORS.map(s => {
+        const n = PROJECTS.filter(pr => pr.sec === s.name).length;
+        const ex = PROJECTS.find(pr => pr.sec === s.name);
+        return `<li class="rdx" data-anim="fade"><a href="${base}#room=${encodeURIComponent(s.name)}">
+        <span class="rdx-swatch surface ${s.surf}" aria-hidden="true">${ex ? `<img src="assets/img/projects/${ex.s}.webp" alt="" width="760" height="507" loading="lazy" decoding="async">` : ''}</span>
+        <span class="rdx-n" aria-hidden="true"></span>
+        <span class="rdx-name">${esc(s.name)}</span>
+        <span class="rdx-note">${esc(s.note)}</span>
+        <span class="rdx-count">${n}<small> ${n === 1 ? 'room' : 'rooms'}</small></span>
+        <span class="rdx-target">${esc(s.metric)}</span>
+      </a></li>`;
+      }).join('\n      ')}
+    </ol>`;
+
+const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
+  <div class="card-surface surface ${p.surf}">
     <img src="${up}assets/img/products/${p.slug}-card.webp" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -250,8 +273,8 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
              surface out of alignment with it. */
           const shown = items.slice(0, 3);
           const rest = items.length - shown.length;
-          return `<a class="fam" href="products.html#${cat.id}">
-          <div class="fam-surface surface s-plate">
+          return `<a class="fam" data-mat="${MAT[cat.id] || 'pet'}" href="products.html#${cat.id}">
+          <div class="fam-surface surface ${cat.surf}">
             <img src="assets/img/products/${cat.img}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="fam-body">
@@ -295,4 +318,4 @@ const ctaBand = (up = '') => `<section class="cta-band">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf };
+module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf, roomdex };
