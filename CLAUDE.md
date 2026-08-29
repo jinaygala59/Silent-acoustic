@@ -301,8 +301,13 @@ in an earlier pass: it made the hero illegible while the checker stayed
 green.
 
 **Type is three families, and hierarchy is width, not weight.**
-IBM Plex is gone. Bricolage Grotesque carries `--display`, Public Sans
-`--body`, Spline Sans Mono `--mono` (every label, spec figure and button).
+IBM Plex is gone, and so is the typewriter face. **The site is two families:**
+Bricolage Grotesque carries `--display`, Public Sans carries `--body` *and*
+`--mono`. `--mono` survives as a token name only because 46 call sites depend
+on it — it resolves to the Public Sans stack, so labels, spec figures and
+buttons are all Public Sans. Where digits must line up in a column, the work
+is done by `font-variant-numeric: tabular-nums`, not by a monospaced face.
+(Spline Sans Mono was the previous label register; that reference is stale.)
 The families are set in `site.css`; the Google Fonts URL is `FONTS` in
 `src/build.js`. **Change both together.** (Archivo + Instrument Sans, and then
 IBM Plex Sans + Mono, were the previous pairings; both references are stale.)

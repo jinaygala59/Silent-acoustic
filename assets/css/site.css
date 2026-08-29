@@ -350,8 +350,10 @@ body::after {
 /* =========================== type =======================================
    One superfamily, three cuts: IBM Plex Sans carries the display and the
    body, IBM Plex Mono carries every label, spec figure and button. Plex was
-   Bricolage Grotesque carries the display, Public Sans the body and Spline
-   Sans Mono every label, spec figure and button. Bricolage is the only one
+   Bricolage Grotesque carries the display and Public Sans everything else.
+   --mono is kept as a token name because 46 call sites depend on it, but it
+   now resolves to the Public Sans stack: there is no typewriter face on this
+   site. Numeric columns rely on font-variant-numeric: tabular-nums. Bricolage is the only one
    with a personality; the other two are deliberately quiet under it.
 
    The site holds it at one display weight (`--w-display`, 600) and moves
@@ -1022,22 +1024,10 @@ h1.hero-title {
    is right for a spec table on a product page, wrong for the four things this
    company most wants believed. The first column is wider than the other three
    at desktop, so the row has a lead rather than four equal weights, the same
-   move .cat-grid makes for the first product in a family. And the strip has
-   its own ground now, a step deeper than the hero, so it reads as a plinth
-   under the banner instead of more of the same paper.
-
-   It cannot overlap the banner, which is the more obvious version of this
-   idea: mDrift fades .hero .wrap to opacity 0.25 across the first 78vh and
-   the rail IS a .hero .wrap, so an opaque panel straddling the photograph
-   would turn transparent on scroll and show the image through. Its own ground
-   is safe because what sits behind it is the hero's ombre, not the photo. */
-.hero-rail { position: relative; }
-.hero-rail::before {
-  content: ''; position: absolute; z-index: -1;
-  top: clamp(2rem, 4.5vw, 3.5rem); bottom: -100vh;
-  left: 50%; margin-left: -50vw; width: 100vw;
-  background: linear-gradient(180deg, var(--paper-sub), var(--paper));
-}
+   move .cat-grid makes for the first product in a family. It sits directly on
+   the hero's own ombre rather than a plinth of its own — a separate fill here
+   read as a flat pale slab with nothing in it, and section rhythm on this site
+   is carried by rule, space and type, not by stacking grounds. */
 .hero-specs {
   margin-top: clamp(3.5rem, 7vw, 5.5rem);
   border-top: 1px solid var(--paper-edge);
@@ -1721,12 +1711,25 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    carousel. */
 .reviews {
   display: grid; gap: clamp(1rem, 2vw, 1.5rem);
-  /* 20rem, not more. There are exactly three testimonials, and the usable
-     .wrap at a 1280px viewport is ~1017px: three columns need <=20.2rem each
-     once the gap is taken out. At 23rem the row broke to two-up and left the
-     third quote orphaned on a line of its own. The cards still grow past
-     20rem on wider screens, because the track is 1fr. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  /* THREE COLUMNS, EXPLICITLY, BECAUSE THERE ARE EXACTLY THREE TESTIMONIALS.
+     This was auto-fit with a minmax floor, and the floor is what decided
+     whether the row wrapped: at 23rem it broke to two-up and orphaned the
+     third quote, so it was pinned to 20rem — three columns need <=20.2rem
+     each once the gap is out of the ~1017px usable .wrap at 1280.
+
+     That held at 1280 and still wrapped below about 1200, which is a
+     wrong-looking row rather than a contrast bug but is the thing people
+     actually notice. An explicit track cannot wrap at all, so the orphan case
+     stops being reachable instead of being kept just out of reach by a number
+     that has to be re-derived every time the gutter or the measure moves.
+
+     The cost is real and deliberate: between 60rem and ~76rem the cards are
+     NARROWER than the old 20rem floor — about 17rem at 960px — so each quote
+     sets to a tighter measure than it would like. Three-up was chosen over
+     ideal measure. Below 60rem none of this applies: the block below turns
+     the row into a horizontal snap rail, which is why this rule needs no
+     breakpoint of its own. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 @media (max-width: 60rem) {
   .reviews {
@@ -1758,7 +1761,14 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   background: linear-gradient(168deg,
     var(--paper-hi) 0%, var(--paper-sub) 62%, var(--paper-lo) 100%);
   border: 1px solid var(--paper-edge);
-  border-radius: var(--r);
+  /* Square, not var(--r). Asked for directly, and it happens to move back
+     toward the founding rule this file states up top — "nothing is rounded
+     and no shadow is soft; a milled edge is a right angle". That rule drifted
+     when --r arrived at 22px. The review cards are square again; the rest of
+     the site still rounds, so this is now the inconsistent one. If the whole
+     site should follow, set --r to 0 rather than squaring call sites one at a
+     time — every rounded object on the page reads from that token. */
+  border-radius: 0;
   box-shadow: var(--lift);
   padding: clamp(1.65rem, 3vw, 2.25rem);
   display: flex; flex-direction: column; gap: 1.25rem;
@@ -1816,7 +1826,20 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    A monogram impersonates nobody, which is why it is here and a portrait is
    not. If real photographs ever arrive from the client, with permission, they
    can replace it. Nothing else may. */
-.review-head { display: flex; align-items: center; gap: 0.85rem; }
+/* The head wraps rather than crushes. Forcing three columns takes the card
+   down to ~249px at a 1024 viewport, and the monogram is a fixed 3.25rem that
+   does not yield — so the name block took the whole loss and fell to 114px,
+   which broke "Hudson Taylor" over two lines and ran the role to five. The
+   min-width makes the name block refuse to go below 9rem; when it no longer
+   fits beside the monogram the row wraps and the monogram sits above instead,
+   giving the text the full card width.
+
+   This is deliberately not a breakpoint. The card's width depends on the
+   viewport, the --rail margin and the gutter clamp all at once, so any pixel
+   value picked here would be right at one size and wrong after the next
+   change to any of the three. Measured: the row holds at 1180 (156px
+   available) and 1280 (185px), and wraps at 1024 (123px). */
+.review-head { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; }
 /* One fill, not the reference's six. Coloured avatars are a lot of the charm
    there, but this site allows exactly one saturated colour and spending it on
    six random hues would cost the logo its status as the only one. */
@@ -1826,7 +1849,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   background: var(--brand-deep); color: var(--paper-hi);
   font-family: var(--display); font-size: 1.35rem; line-height: 1;
 }
-.review-who { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.review-who { display: flex; flex-direction: column; gap: 0.15rem; min-width: 9rem; flex: 1; }
 .review-who b { font-weight: 500; color: var(--on-light); }
 .review-who > span {
   font-family: var(--mono); font-size: var(--t-mono);
