@@ -102,30 +102,38 @@
   --on-light:      #0F172A;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
   --on-light-mute: #475569;  /*  7.24:1 on --paper,  5.10:1 on --paper-lo */
 
-  /* -- the accent: burnt orange ----------------------------------------
-     NOTE FOR ANYONE READING AN OLDER VERSION OF THIS FILE: this block used to
-     say "THE PAGE HAS NO ACCENT COLOUR", and that rule is retired. The site
-     now runs one warm accent against the cool slate ground.
+  /* -- the accent: the client's blue -----------------------------------
+     NOTE FOR ANYONE READING AN OLDER VERSION OF THIS FILE: this block has
+     said two different things before. It once said "THE PAGE HAS NO ACCENT
+     COLOUR"; then it ran a burnt orange, on the argument that an accent at
+     the logo hue competes with the mark and gives you "two cyans, one of
+     which is slightly wrong".
 
-     It is deliberately NOT the logo hue. The mark is cyan (--brand-mark), and
-     an accent at the same hue competes with it — you get two cyans, one of
-     which is slightly wrong. Orange sits opposite cyan, so the mark stays the
-     coolest thing on the page and the accent stays the warmest, and neither
-     is mistaken for the other.
+     Both are retired. The client's brand colour is the blue, and the site
+     uses it. The competing-cyans problem is real but it is solved by
+     exposure rather than by hue: --brand-mark is the raw #1CABDE and is only
+     ever the mark, while everything interactive is that same hue darkened
+     far enough that the two never read as the same colour.
 
-     Every --brand-* value here is a *text-safe* exposure of that orange. The
-     raw safety orange the palette is drawn from (#EA580C) is 3.56:1 on white
-     and is NOT in this file: it cannot carry text and there is no role left
-     for it. Do not reintroduce it. */
-  --brand:      #9A3412;   /* the interactive token, text-safe everywhere —
-                              7.31:1 on --paper-hi, 4.92:1 on --paper-lo. This
-                              is the one to reach for by default. */
-  --brand-lift: #7C2D12;   /* hover — a step darker, never lighter */
-  --brand-deep: #C2410C;   /* solid pill FILL ONLY, carries #FFFFFF at 5.18:1.
-                              It is 3.49:1 on --paper-lo, so it must never be
+     The accent is the CLIENT'S BLUE. Every --brand-* value here is a
+     text-safe exposure of the logo cyan #1CABDE (hue ~202deg), darkened
+     until it can carry text on the slate ground — the raw cyan is 2.24:1 on
+     paper and can never be type. Emphasis is a step in lightness within that
+     one hue, never a jump to another.
+
+     (An earlier pass ran this as a burnt orange, #9A3412 / #C2410C, drawn
+     from a safety-orange #EA580C. That was not the brand colour. If you see
+     any of those three, the reference is stale — there is no orange on this
+     site.) */
+  --brand:      #0B5578;   /* the interactive token, text-safe everywhere —
+                              8.86:1 on --paper-hi, 5.48:1 on --paper-lo.
+                              This is the one to reach for by default. */
+  --brand-lift: #083E58;   /* hover — a step darker, never lighter */
+  --brand-deep: #10789C;   /* solid pill FILL ONLY, carries #FFFFFF at 5.01:1.
+                              It is 3.13:1 on --paper-lo, so it must never be
                               used as a text colour. Fill and white text, or
                               nothing. */
-  --brand-ink:  #9A3412;   /* links and labels on any ground — 4.92:1 worst */
+  --brand-ink:  #0B5578;   /* links and labels on any ground — 5.48:1 worst */
 
   /* --mark carries figures, hairline rules and markers: the neutral washed
      back, so it reads as precision rather than as ornament. */

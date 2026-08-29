@@ -202,23 +202,26 @@ comes from its own data (`PRODUCTS[].surf`, `CATEGORIES[].surf`,
 `SECTORS[].surf`) — never hard-code `s-plate` across the templates, which a
 pass did once and which silently blanked every surface on the site.
 
-**The accent is a burnt orange, and it is NOT the logo hue.**
-`--brand` `#9A3412` carries links, labels and `.tlink`; `--brand-lift`
-`#7C2D12` is hover (always a step darker, never lighter); `--brand-deep`
-`#C2410C` is a **solid pill fill only**, carrying `#FFFFFF` at 5.18:1 — it is
-not text-safe on paper, so never set it as a `color`.
+**The accent is the client's blue — one hue, at three exposures.**
+The whole `--brand-*` ramp is the logo cyan `#1CABDE` (hue ~202°) darkened
+until it can carry text. `--brand` `#0B5578` carries links, labels and
+`.tlink` (5.48:1 worst); `--brand-lift` `#083E58` is hover, always a step
+darker and never lighter; `--brand-deep` `#10789C` is a **solid pill fill
+only**, carrying `#FFFFFF` at 5.01:1 — at 3.13:1 on `--paper-lo` it is not
+text-safe, so never set it as a `color`.
 
-`--brand-mark` `#1CABDE` is the exact logo cyan. It measures **2.24:1** on
-paper and can therefore never carry text; it exists so the logo asset keeps
-its own colour and nothing else uses it. The site therefore runs two hues:
-the orange that means "interactive" and the cyan that means "this is the
-mark". Do not merge them, and do not spend the orange on decoration —
-putting `--brand` on something non-interactive is what made the earlier
-palette's eyebrows read as wallpaper.
+`--brand-mark` `#1CABDE` is the raw logo cyan. It measures **2.24:1** on
+paper and can therefore never be type; it exists so the logo asset keeps its
+own colour and nothing else reaches for it. Emphasis moves in lightness
+within this one hue — never to a second colour.
 
-An earlier pass in this same file ran the accent as a darkened logo cyan
-(`--brand: #0C6483`). If you see that value, or `#10789C`, the reference is
-stale.
+Do not spend the blue on decoration. Putting `--brand` on something
+non-interactive is what made an earlier palette's eyebrows read as wallpaper.
+
+**An earlier pass ran this as a burnt orange** (`--brand: #9A3412`,
+`--brand-deep: #C2410C`, from a safety-orange `#EA580C`). That was not the
+brand colour. There is no orange on this site; if you see those values, the
+reference is stale.
 
 **The hero is the one place text does not sit on a token ground**, and it must
 not follow the palette. `--on-dark-fixed` `#F2F6F7` is *fixed light* because
@@ -302,8 +305,10 @@ here is width.
 ### The contrast check, and what it cannot see
 
 Every rendered text/background pair measures at or above 4.5:1. Across the
-nine page templates the lowest is **4.92:1** on the homepage and 5.10:1
-elsewhere — 1,355 elements checked, zero failures. That is measured, not
+nine page templates the lowest is **5.01:1**, which is the primary pill —
+`#FFFFFF` on `--brand-deep`. 1,281 elements checked, zero failures. The
+walker scores a pill's label against its *section* ground rather than its
+fill, so the fill pair is measured explicitly alongside it. That is measured, not
 assumed: the check walks every element with a text node, composites the real
 background down the ancestor chain, parses the stops out of a gradient ground
 and **scores against the worst one**, and applies the WCAG large-text
