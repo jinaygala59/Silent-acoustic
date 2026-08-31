@@ -253,7 +253,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     }
     /* The hero always sits at the top of the document, so the page's own
        scroll offset is the hero's progress — no element timeline needed. */
-    .hero .wrap {
+    /* The STATEMENT drifts. The spec rail does not.
+       .hero-rail is also a .hero .wrap, so an unscoped rule faded it to
+       opacity 0.25 across the first 78vh — which is exactly the scroll
+       position at which the reader arrives at it. The four figures and both
+       call-to-action buttons ghosted out at the moment they were being read.
+       Whatever drifts here has to be the copy above the rail, never the rail. */
+    .hero .wrap:not(.hero-rail) {
       animation: mDrift linear both;
       animation-timeline: scroll(root block);
       animation-range: 0px 78vh;
