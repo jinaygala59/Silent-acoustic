@@ -603,8 +603,21 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 .steps-spine { position: relative; }
 .steps-spine::before,
 .steps-spine::after {
-  /* in the gutter between the step number and its title, not through it */
-  content: ''; position: absolute; left: 2.4rem; top: 0; bottom: 0; width: 1px;
+  /* IN THE GUTTER BETWEEN THE NUMBER AND THE TITLE, NOT THROUGH THE NUMBER.
+     4.25rem is derived, not chosen: .step is a 3.5rem numeral column and a
+     1.5rem gap, so the gutter runs 3.5rem to 5rem and this is its centre.
+
+     It was 2.4rem, which was correct while the numeral was 0.8125rem mono.
+     The restyle that set the numeral in the display face at
+     clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem) did not move the line with it: at
+     a 1280 viewport the numeral renders 34.56px and "05" measures 42.7px
+     wide, so it crossed the rule by 4.3px and the line struck through the
+     figures.
+
+     If the numeral grows again, this value does not need to change -- but the
+     3.5rem column does. Check the numeral still fits its column rather than
+     nudging the line. */
+  content: ''; position: absolute; left: 4.25rem; top: 0; bottom: 0; width: 1px;
 }
 .steps-spine::before { background: var(--paper-edge); }
 .dark .steps-spine::before { background: rgba(16, 23, 27, 0.161); }
