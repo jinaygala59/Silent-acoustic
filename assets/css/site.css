@@ -1681,14 +1681,27 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .process-aside h2 { font-size: var(--t-h2); margin: 1rem 0 1.25rem; }
 
-/* the numeral is the point of a sequence, so it is set like one */
+/* The numeral is the point of a sequence, so it is set like one — and it is
+   non-interactive and carrying --brand, by request. So is the hero spec
+   rail's dd. That makes TWO exceptions to the rule stated in CLAUDE.md: the
+   blue normally means "you can click this", and spending it on decoration is
+   what made an earlier palette's eyebrows read as wallpaper.
+
+   Both survive the same argument — they are figures, and in each case the
+   figure IS the content rather than an ornament on it. That argument does not
+   extend to a third thing. Colour one more non-interactive element and the
+   blue stops distinguishing anything, at which point the honest move is to
+   drop it from all of them rather than keep adding.
+
+   Contrast is not the constraint: these render 24-36px, so the large-text
+   threshold is 3:1 and --brand is 5.48:1 against even the deepest ground. */
 .steps-spine .step::before {
   font-family: var(--display); font-weight: var(--w-display);
   font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
-  letter-spacing: 0; color: var(--mark-ink); padding-top: 0;
+  letter-spacing: 0; color: var(--brand); padding-top: 0;
   line-height: 1;
 }
-.dark .steps-spine .step::before { color: var(--mark); }
+.dark .steps-spine .step::before { color: var(--brand); }
 
 /* ------------------------------- reviews --------------------------------
    Modelled on a Google-reviews block: centred head, then a row of white cards
