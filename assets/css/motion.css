@@ -323,7 +323,23 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   font-size: 0.9375rem; line-height: 1.55; color: var(--on-dark-mute);
   min-height: calc(2 * 1.55em);
 }
-.fam .card-foot { color: var(--brand-ink); }
+/* Pinned to the bottom of the body, so the five "See the family" links line
+   up across the rail whatever is above them.
+
+   This is prevention, not a fix: measured at 500, 820 and 1280 the five cards
+   are currently identical to the pixel, because the .fam-items list that was
+   removed was removed from all of them equally. But what used to guarantee
+   that alignment was a reservation — four rows held open whether the family
+   needed them or not — and nothing replaced it. Today every family name fits
+   one line and every note fits the two that --fam-note reserves, so the rows
+   happen to agree. Add a family whose name wraps, or whose note runs to three
+   lines, and the note and the link below it drop out of step with the other
+   four, with nothing absorbing the difference.
+
+   margin-top: auto costs nothing now (the foot is already last, and every
+   body is the same height) and means a longer name can only ever push the
+   note, never the link. */
+.fam .card-foot { color: var(--brand-ink); margin-top: auto; }
 .fam:hover .btn-arrow { transform: translateX(3px); }
 
 /* the closing panel: not a product family, the way out of the rail.
