@@ -316,26 +316,39 @@ sits on a swappable banner **photograph** behind a designed two-gradient
 scrim, so its colours are named separately — `--on-banner` `#0F172A` and
 `--mark-banner` `#3A4759` — and are the banner's, not the palette's.
 
-The scrim is **white**, and the type on it is **dark**. It used to be the
-reverse: a dark scrim carrying light text, which made the hero the one dark
-surface left on a light-only site and read exactly that way. Inverting it put
-the hero on the same single ground as everything else.
+The scrim is **the page's own light** — `rgb(237,241,245)`, the top stop of
+`--ombre-light` — and the type on it is **dark**. It was white until the
+landing page was still reported as too white after the grounds were deepened:
+the hero is the first full screen and the largest surface on the site, and a
+white scrim was washing the photograph toward 1.000 while everything below it
+had come down to 0.875–0.596.
 
-Two stacked gradients multiply, so the effective alpha is 1-(1-a1)(1-a2), and
-across the left half where the type sits it never drops below 0.643. Over the
-worst case a photograph can now present — pure **black** — that is ~7.1:1 for
-`--on-banner`. The guarantee holds for any image, which is the point: the
-banner is swappable and its contrast must not depend on which photograph is
-in. If you lower those alphas to show more of the picture, redo the
-arithmetic against black, not against the image you happen to like.
+**THE SCRIM NO LONGER GUARANTEES ANY PHOTOGRAPH.** It used to — an effective
+alpha that never dropped below 0.643 across the type column, holding ~7:1
+over even a pure-black image, so the banner could be swapped freely. That was
+given up deliberately, by request, because at 0.82 alpha the wash rather than
+the picture was what you saw. The alphas are now 0.60 / 0.52 / 0.40 across
+the type column, falling to 0 at the right edge so the photograph carries
+that half outright.
 
-**Pick a light photograph anyway**, and measure rather than eyeball it — the
-guarantee means a dark image is legible, not that it looks right; under a
-white scrim a dark one goes grey and muddy. Draw candidates to a small canvas
-and take the mean relative luminance. The current banner
-(`adani-bkc-mumbai`) is 0.396 overall and 0.472 across the left half; the
-darkest images in the set are around 0.05. Measured against the real
-composite, the banner's text is 8.99:1 and its mute 4.75:1.
+The cost, stated plainly: the effective floor is now ~0.418, so over a
+pure-black image the title would sit at about 3.1:1 and the lead would fail.
+**The banner's contrast is a property of the current photograph, not of the
+scrim.** Measured against the real composite — both gradients replicated on a
+canvas over the actual image, sampled inside the eyebrow, h1 and lead boxes —
+text is **5.32:1** and the mute **3.23:1**, with the mean ground under the
+type at 0.65.
+
+So the old advice has inverted. It used to be "pick a light photograph
+anyway"; a pale one is now what makes the hero look washed. **Pick a mid-tone
+image, and re-run the canvas measurement whenever you change it** — do not
+assume it holds. The current banner (`upl-metro-juinagar-navi-mumbai`) is
+0.310 overall and 0.381 across the left half; the darkest images in the set
+are around 0.05, and the pale one this replaced was 0.396/0.472.
+
+`--mark-banner` at 3.23:1 now clears the **large-text threshold only**, which
+`.decay` satisfies at hero size. Do not put it on anything body-sized in the
+banner.
 
 The automated check below **cannot see any of this** — it scores CSS grounds
 only — so `.hero-top` is excluded from it and verified separately. Setting
