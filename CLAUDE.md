@@ -95,8 +95,9 @@ is why the hero/CTA/page-head walls borrow a *named* timeline
 directly, and why `[data-anim]` goes on the `.card` itself and never on
 `.card-surface`.
 
-**Section colour is opt-in, and there are no dark grounds any more.** `.dark`
-now means "the deeper of two light ombres", not "near-black". The old failure
+**Section colour is opt-in, and `.dark` is a real second ground again.**
+`.dark` means "the deeper of two light ombres", not "near-black" — it is still
+a light ramp, just a visibly lower one. The old failure
 mode here — `.rail-sec` and `.gal-item` painting a dark fill while their text
 inherited the paper ground's near-black — is gone with the dark grounds. What
 replaced it is the same bug on the one saturated fill: see the `.fam-all` note
@@ -201,18 +202,60 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
-**The direction is "Coefficient": one ground, and colour means material.**
-There is exactly one ground on this site — a cool near-white slate ramp
-(`--paper-hi` `#FFFFFF` → `--paper` `#F8FAFC` → `--paper-lo` `#CBD5E1`), with
-text at `--on-light` `#0F172A` and muted at `#475569`. There are **no dark
-sections at all**. Section rhythm is carried by rule, space and
-type, not by alternating grounds, and that is the point of the direction
-rather than a thing left undone.
+**The direction is "Coefficient": two light grounds, and colour means
+material.** The ground is a cool slate ramp with text at `--on-light`
+`#0F172A` and muted at `--on-light-mute` `#3F4C5E`. There are **two ombres,
+and they are not the same**:
 
-`.dark` and `.light` now resolve to the same ramp. The `.dark` class and the
-`--ink-*` / `--on-dark*` token names survive only because ~200 call sites use
-them; `--ombre-dark` is an alias of `--ombre-light`. Do not "restore" a dark
-section — if you want emphasis, use space and width.
+| token | stops | luminance |
+|---|---|---|
+| `--ombre-light` | `#FBFCFD` → `#EEF3F8` → `#CBD5E1` | 0.972 / 0.891 / 0.657 |
+| `--ombre-dark`  | `#E4EAF1` → `#D5DEE8` → `#BAC6D6` | 0.817 / 0.722 / 0.557 |
+
+**This was the "too white" bug, and it is worth understanding before you
+undo it.** `--ombre-dark` used to be a byte-for-byte alias of
+`--ombre-light`, so `.dark` and `.light` rendered identically. Measured on
+the homepage, all nine sections below the hero read 1.000 / 0.954 / 0.657 —
+the same gradient nine times — and because it started at `#FFFFFF` you met
+pure white nine times scrolling down. Every contrast check passed the whole
+time. A floor check cannot see sameness, which is exactly why it survived.
+
+So `.dark` is load-bearing now. Every template alternates; no page has two
+adjacent `.dark` sections, and none starts a section at pure white. Sequences
+(P=page-head, L=light, D=dark, C=cta):
+
+```
+index     H L D L D L L L D C      products  P D L D L D L C
+projects  P D L D C                about     P D L D C
+blog      P D C                    contact   P L
+```
+
+Read that sequence from the *rendered* grounds, not from the markup.
+`.rail-sec` takes `--ombre-dark` from its own CSS rule rather than from a
+`.dark` class, so counting `class="dark"` in the built HTML reports index as
+`H L L L D L L L D C` and understates the rhythm by one section. Measure
+`getComputedStyle(section).backgroundImage`; do not grep the class.
+
+`contact` and the article are deliberately single-ground: two or three
+sections carry no rhythm, and a form's labels and helper text are the last
+thing that should sit on the deepest ground.
+
+The stops are literals rather than `var(--paper-*)` on purpose. Those tokens
+are still the flat fills for cards, panels and fields — a card reads white
+*because* the section under it does not — so wiring the ombres through them
+would drag the cards down with the grounds and cancel the effect.
+
+How deep the grounds can go is capped by the text on them, not by taste.
+`--on-light-mute` was darkened `#475569` → `#3F4C5E` to buy the current
+depth; it measured 4.38:1 against the new deep end otherwise. Darkening text
+only ever raises contrast, so that is the free side of the trade — but it is
+not free forever: `--on-light` and the mute are now **2.05:1 apart**, and
+another round of darkening starts flattening body copy against secondary
+copy. Past that, the answer is a lighter ground, not darker text.
+
+The `.dark` class and the `--ink-*` / `--on-dark*` token names still cover
+~200 call sites. Do not restore a *near-black* section — that is a different
+thing and it is not coming back.
 
 (This replaced a cyan-ramp scheme with alternating dark/light ombres, and
 before that a warm-espresso and a neutral-greyscale one. If you see `#172127`,
@@ -393,9 +436,21 @@ here is width.
 
 ### The contrast check, and what it cannot see
 
-Every rendered text/background pair measures at or above 4.5:1. Across the
-nine page templates the lowest is **5.01:1**, which is the primary pill —
-`#FFFFFF` on `--brand-deep`. 1,281 elements checked, zero failures. The
+Every rendered text/background pair measures at or above 4.5:1. The lowest
+on the site is **4.70:1** — `.note-go`, the "Read the guide" link on the blog
+index, `--brand` `#0B5578` on `#BAC6D6`, the deepest stop of `--ombre-dark`.
+It is tighter than the primary pill (`#FFFFFF` on `--brand-deep`, **5.01:1**),
+which is the floor everywhere else. Both were re-measured after the two
+ombres were separated, by two independent walkers that agreed to the
+hundredth: products 0 failures, projects 0, about 0, blog 0, contact 0,
+404 0, article 0.
+
+**Do not exclude `.page-head` from the sweep.** It was excluded for a while
+on the assumption it carried a photograph like the hero. It does not — it is
+`--ombre-light` plus a CSS scrim, with zero `<img>` and zero `url()`
+backgrounds on all seven templates, verified. Excluding it silently skipped
+the largest text on every page. `.hero-top` is the *only* genuine subtree
+exclusion on this site. The
 walker scores a pill's label against its *section* ground rather than its
 fill, so the fill pair is measured explicitly alongside it. That is measured, not
 assumed: the check walks every element with a text node, composites the real
