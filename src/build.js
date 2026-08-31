@@ -268,11 +268,6 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
       <div class="rail-track">
         ${CATEGORIES.map((cat, i) => {
           const items = PRODUCTS.filter(p => p.cat === cat.id);
-          /* Three names, then a count. Listing all eight panels made that one
-             card taller than the pinned frame and pushed every other card's
-             surface out of alignment with it. */
-          const shown = items.slice(0, 3);
-          const rest = items.length - shown.length;
           return `<a class="fam" data-mat="${MAT[cat.id] || 'pet'}" href="products.html#${cat.id}">
           <div class="fam-surface surface ${cat.surf}">
             <img src="assets/img/products/${cat.img}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
@@ -281,7 +276,6 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
             <span class="fam-n">${String(i + 1).padStart(2, '0')} &middot; ${items.length} products</span>
             <h3>${esc(cat.name)}</h3>
             <p class="fam-note">${esc(cat.note)}.</p>
-            <ul class="fam-items">${shown.map(p => `<li>${esc(p.name)}</li>`).join('')}${rest ? `<li class="fam-more">and ${rest} more</li>` : ''}</ul>
             <span class="card-foot">See the family ${ARROW}</span>
           </div>
         </a>`;
