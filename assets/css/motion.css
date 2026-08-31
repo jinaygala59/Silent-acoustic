@@ -203,7 +203,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
                     to   { transform: translate3d(0, -52px, 0); opacity: 0.25; } }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero [data-in] {
+  /* Load-time entrance, NOT a scroll reveal. Both the hero and the page-head
+     are above the fold, so there is no scroll for a view() timeline to run
+     against — and .page-head is overflow: hidden, where view() never advances
+     at all and a [data-anim] would leave its h1 invisible for good. This is a
+     plain timed animation, so it is safe inside the clip. */
+  .hero [data-in],
+  .page-head [data-in] {
     animation: mHeroIn 780ms var(--m-in) both;
     animation-delay: calc(var(--d, 0) * 1ms);
   }

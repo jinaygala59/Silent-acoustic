@@ -223,10 +223,10 @@ built.push(page({
   body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Catalogue</p>
-    <h1>Products</h1>
-    <p class="lead">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our facility in Malad, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
-    <nav class="crumbs" aria-label="Product families">
+    <p class="eyebrow" data-in style="--d:60">Catalogue</p>
+    <h1 data-in style="--d:170">Products</h1>
+    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our facility in Malad, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
+    <nav class="crumbs" data-in style="--d:390" aria-label="Product families">
       ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)}</a>`).join('<span aria-hidden="true">/</span>\n      ')}
     </nav>
   </div>
@@ -287,11 +287,11 @@ PRODUCTS.forEach(p => {
     body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">${esc(cat.name)}</p>
-    <h1>${esc(p.name)}</h1>
-    <p class="lead">${esc(p.tag)}</p>
+    <p class="eyebrow" data-in style="--d:60">${esc(cat.name)}</p>
+    <h1 data-in style="--d:170">${esc(p.name)}</h1>
+    <p class="lead" data-in style="--d:280">${esc(p.tag)}</p>
     ${nrcBar(p, 'nrc-lead')}
-    <nav class="crumbs" aria-label="Breadcrumb">
+    <nav class="crumbs" data-in style="--d:390" aria-label="Breadcrumb">
       <a href="../index.html">Home</a><span aria-hidden="true">/</span>
       <a href="../products.html">Products</a><span aria-hidden="true">/</span>
       <a href="../products.html#${cat.id}">${esc(cat.name)}</a><span aria-hidden="true">/</span>
@@ -346,9 +346,9 @@ built.push(page({
   body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Selected work</p>
-    <h1>Projects</h1>
-    <p class="lead">${PROJECTS.length} completed installations across ten room types — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.</p>
+    <p class="eyebrow" data-in style="--d:60">Selected work</p>
+    <h1 data-in style="--d:170">Projects</h1>
+    <p class="lead" data-in style="--d:280">${PROJECTS.length} completed installations across ten room types — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.</p>
   </div>
 </section>
 
@@ -385,8 +385,8 @@ built.push(page({
       }).filter(Boolean).join('\n      ')}
     </div>
 
-    <div class="gal" id="gal">
-      ${PROJECTS.map(pr => `<article class="gal-item" data-sector="${esc(pr.sec)}">
+    <div class="gal" id="gal" data-stagger>
+      ${PROJECTS.map(pr => `<article class="gal-item" data-anim="rise" data-sector="${esc(pr.sec)}">
         <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
@@ -426,9 +426,9 @@ built.push(page({
   body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">About</p>
-    <h1>We do the whole job,<br>so there is nobody else to blame.</h1>
-    <p class="lead">Measurement, design, manufacture and installation under one roof. When a room misses its target there is exactly one company to call, and it is the one that built it.</p>
+    <p class="eyebrow" data-in style="--d:60">About</p>
+    <h1 data-in style="--d:170">We do the whole job,<br>so there is nobody else to blame.</h1>
+    <p class="lead" data-in style="--d:280">Measurement, design, manufacture and installation under one roof. When a room misses its target there is exactly one company to call, and it is the one that built it.</p>
   </div>
 </section>
 
@@ -511,9 +511,9 @@ built.push(page({
   body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Notes</p>
-    <h1>Working notes on acoustics</h1>
-    <p class="lead">What we find ourselves explaining on site, written down. No product pitches — if a note ends with "and that is why you need us", we have not written it properly.</p>
+    <p class="eyebrow" data-in style="--d:60">Notes</p>
+    <h1 data-in style="--d:170">Working notes on acoustics</h1>
+    <p class="lead" data-in style="--d:280">What we find ourselves explaining on site, written down. No product pitches — if a note ends with "and that is why you need us", we have not written it properly.</p>
   </div>
 </section>
 
@@ -541,11 +541,16 @@ ${ctaBand()}`
 }));
 
 /* ----------------------------- ARTICLE PAGES ---------------------------- */
+/* Every block reveals on scroll. The article was the one page on the site
+   with no motion at all -- 75 elements, none of them animated -- which read
+   as a different site once you arrived from anywhere else. Headings take
+   `reveal` (the clip-wipe) and prose takes `fade`, so the structure of the
+   piece is what moves rather than every paragraph doing the same thing. */
 const blocks = (body) => body.map(b => {
-  if (b[0] === 'h2') return `<h2>${esc(b[1])}</h2>`;
-  if (b[0] === 'p')  return `<p>${esc(b[1])}</p>`;
-  if (b[0] === 'ul') return `<ul>${b[1].map(li => `<li>${esc(li)}</li>`).join('')}</ul>`;
-  if (b[0] === 'qa') return `<h3 style="font-size:1.0625rem;margin-top:1.5rem">${esc(b[1])}</h3><p>${esc(b[2])}</p>`;
+  if (b[0] === 'h2') return `<h2 data-anim="reveal">${esc(b[1])}</h2>`;
+  if (b[0] === 'p')  return `<p data-anim="fade">${esc(b[1])}</p>`;
+  if (b[0] === 'ul') return `<ul data-anim="fade">${b[1].map(li => `<li>${esc(li)}</li>`).join('')}</ul>`;
+  if (b[0] === 'qa') return `<h3 data-anim="reveal" style="font-size:1.0625rem;margin-top:1.5rem">${esc(b[1])}</h3><p data-anim="fade">${esc(b[2])}</p>`;
   return '';
 }).join('\n          ');
 
@@ -557,9 +562,9 @@ POSTS.forEach(post => {
     body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">${esc(post.tag)} &middot; ${esc(post.read)} read</p>
-    <h1>${esc(post.t)}</h1>
-    <nav class="crumbs" aria-label="Breadcrumb">
+    <p class="eyebrow" data-in style="--d:60">${esc(post.tag)} &middot; ${esc(post.read)} read</p>
+    <h1 data-in style="--d:170">${esc(post.t)}</h1>
+    <nav class="crumbs" data-in style="--d:280" aria-label="Breadcrumb">
       <a href="index.html">Home</a><span aria-hidden="true">/</span>
       <a href="blog.html">Notes</a><span aria-hidden="true">/</span>
       <span>Published ${esc(post.dateLabel)}</span>
@@ -598,9 +603,9 @@ built.push(page({
   body: `
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h1>Tell us about the room.</h1>
-    <p class="lead">Survey is free within Mumbai and the MMR, and chargeable against travel elsewhere in India — refunded if the project proceeds.</p>
+    <p class="eyebrow" data-in style="--d:60">Contact</p>
+    <h1 data-in style="--d:170">Tell us about the room.</h1>
+    <p class="lead" data-in style="--d:280">Survey is free within Mumbai and the MMR, and chargeable against travel elsewhere in India — refunded if the project proceeds.</p>
   </div>
 </section>
 
@@ -674,9 +679,9 @@ built.push(page({
   body: `
 <section class="page-head" style="padding-block:clamp(5rem,12vw,9rem)">
   <div class="wrap">
-    <p class="eyebrow">404</p>
-    <h1>Nothing here. Not even an echo.</h1>
-    <p class="lead">That page has moved or never existed. The catalogue and the contact page are both one click away.</p>
+    <p class="eyebrow" data-in style="--d:60">404</p>
+    <h1 data-in style="--d:170">Nothing here. Not even an echo.</h1>
+    <p class="lead" data-in style="--d:280">That page has moved or never existed. The catalogue and the contact page are both one click away.</p>
     <div class="row" style="margin-top:2.5rem">
       <a class="btn btn-primary" href="products.html">Browse products ${ARROW}</a>
       <a class="btn btn-ghost" href="index.html">Back to home ${ARROW}</a>
