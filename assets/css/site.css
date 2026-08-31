@@ -93,7 +93,7 @@
      dark text on the deep ombre, so it resolves to the same values as
      --on-light*. The names survive only so .dark call sites keep working. */
   --on-dark:      #0F172A;   /* 17.85:1 on --ink-lift, 12.02:1 on --ink-deep */
-  --on-dark-mute: #475569;   /*  7.58:1 on --ink-lift,  5.10:1 on --ink-deep */
+  --on-dark-mute: #3F4C5E;   /* darkened with --on-light-mute; see its note */
   /* The banner photograph is the only surface left that needs light text.
      These two are fixed paper tones for that one job — never use them where a
      CSS ground is involved, they are not part of the ramp. */
@@ -101,7 +101,16 @@
   --mark-banner: #3A4759;   /* 4.75:1 at the scrim floor, so it is safe at body
                               size too — not only on the display-size .decay */
   --on-light:      #0F172A;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
-  --on-light-mute: #475569;  /*  7.24:1 on --paper,  5.10:1 on --paper-lo */
+  /* Darkened from #475569. It was the single thing capping how deep the
+     grounds could go: against the new deep ombre's end stop it measured
+     4.38:1, below the 4.5 floor, so either the ground stayed pale or this
+     moved. Darkening text only ever raises contrast, so this was the free
+     side of the trade — the same move the ombre note describes.
+     Measured across all six stops of both ramps: 8.49 / 7.96 / 6.74 on the
+     light ramp, 7.41 / 6.61 / 5.04 on the dark one. Still a clear step
+     lighter than --mark (#334155), so the marker stays the firmer of the
+     two. */
+  --on-light-mute: #3F4C5E;
 
   /* -- the accent: the client's blue -----------------------------------
      NOTE FOR ANYONE READING AN OLDER VERSION OF THIS FILE: this block has
@@ -196,8 +205,27 @@
      If you are asked for more again, push --paper-hi and --ink-deep (still
      free) before touching this, and re-run the gradient-aware contrast check
      rather than eyeballing it. */
-  --ombre-dark:  linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
-  --ombre-light: linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
+  /* TWO RAMPS AGAIN, AND THEY ARE NOT THE SAME. These were byte-identical
+     aliases, which meant .dark and .light rendered exactly alike and the page
+     was one gradient repeated nine times. Measured on index.html before this
+     change, every section below the hero read 1.000 / 0.954 / 0.657 in
+     luminance — the two carrying .dark included. That is what "too white"
+     actually was: not a pale palette, but no variation at all in it, plus a
+     reset to pure #FFFFFF at the top of all nine.
+
+     The stops are literals rather than var(--paper-*) on purpose. Those tokens
+     still have to be the flat fills for cards, panels and fields — a card is
+     white BECAUSE the section under it no longer is, and that is where the new
+     depth comes from. Rewiring the ombres through them would have dragged the
+     cards down with the grounds and cancelled the whole effect.
+
+     Deepening these is capped by the text on them, not by taste. --paper-lo is
+     the deepest LIGHT stop and --on-light-mute is the binding pair; see its
+     note below for why it moved. If you want more depth, darken the text first
+     and re-run the gradient-aware sweep — it scores every stop, not just the
+     one you are looking at. */
+  --ombre-light: linear-gradient(168deg, #FBFCFD 0%, #EEF3F8 52%, #CBD5E1 100%);
+  --ombre-dark:  linear-gradient(168deg, #E4EAF1 0%, #D5DEE8 52%, #BAC6D6 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
