@@ -327,26 +327,27 @@ had come down to 0.875–0.596.
 alpha that never dropped below 0.643 across the type column, holding ~7:1
 over even a pure-black image, so the banner could be swapped freely. That was
 given up deliberately, by request, because at 0.82 alpha the wash rather than
-the picture was what you saw. The alphas are now 0.60 / 0.52 / 0.40 across
-the type column, falling to 0 at the right edge so the photograph carries
-that half outright.
+the picture was what you saw. The alphas are now 0.60 / 0.56 / 0.50 held across
+the type column, then falling to 0 by the right edge so the photograph
+carries that half outright.
 
-The cost, stated plainly: the effective floor is now ~0.418, so over a
-pure-black image the title would sit at about 3.1:1 and the lead would fail.
+The cost, stated plainly: the effective floor is now ~0.53, so over a
+pure-black image the title would sit near 3.6:1 and the lead would be
+marginal.
 **The banner's contrast is a property of the current photograph, not of the
 scrim.** Measured against the real composite — both gradients replicated on a
 canvas over the actual image, sampled inside the eyebrow, h1 and lead boxes —
-text is **5.32:1** and the mute **3.23:1**, with the mean ground under the
-type at 0.65.
+text is **5.34:1** — eyebrow 9.06, h1 5.34, lead 5.70 — and the mute
+**3.24:1**.
 
-So the old advice has inverted. It used to be "pick a light photograph
-anyway"; a pale one is now what makes the hero look washed. **Pick a mid-tone
-image, and re-run the canvas measurement whenever you change it** — do not
-assume it holds. The current banner (`upl-metro-juinagar-navi-mumbai`) is
-0.310 overall and 0.381 across the left half; the darkest images in the set
-are around 0.05, and the pale one this replaced was 0.396/0.472.
+**Re-run the canvas measurement whenever you change the image** — do not
+assume it holds. The current banner (`adani-bkc-mumbai`) is 0.396 overall and
+0.472 across the left half; the darkest in the set are around 0.05. It is a
+pale image and that is fine, but only because the falloff is shaped around
+the type column rather than the whole frame. A darker image would also work;
+a paler one would not.
 
-`--mark-banner` at 3.23:1 now clears the **large-text threshold only**, which
+`--mark-banner` at 3.24:1 now clears the **large-text threshold only**, which
 `.decay` satisfies at hero size. Do not put it on anything body-sized in the
 banner.
 

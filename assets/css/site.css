@@ -98,7 +98,7 @@
      These two are fixed paper tones for that one job — never use them where a
      CSS ground is involved, they are not part of the ramp. */
   --on-banner:  #0F172A;   /* see the banner note — fixed DARK, not a ground token */
-  --mark-banner: #333E4E;   /* 3.23:1 on the real composite — LARGE TEXT ONLY.
+  --mark-banner: #333E4E;   /* 3.24:1 on the real composite — LARGE TEXT ONLY.
                               See the banner note before using it anywhere else. */
   --on-light:      #0F172A;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
   /* Darkened from #475569. It was the single thing capping how deep the
@@ -959,25 +959,33 @@ section { padding-block: var(--pad-y); }
 
    Two changes. The scrim is the page's own light rgb(237,241,245) rather than
    #FFFFFF, and its alphas are roughly two thirds of what they were: 0.60 /
-   0.52 / 0.40 across the type column, falling to 0 at the right edge so the
-   photograph carries that half outright.
+   0.56 / 0.50 held across the type column, then falling to 0 by the right
+   edge so the photograph carries that half outright.
 
    What that costs, stated plainly: the effective floor across the type column
-   is now ~0.418, so over the worst case a photograph can present — pure black
-   — the title would sit at about 3.1:1 and the lead would fail outright. The
+   is now ~0.53, so over the worst case a photograph can present — pure black
+   — the title would sit near 3.6:1 and the lead would be marginal. The
    banner's contrast is therefore a property of THIS photograph, not of the
    scrim. Measured against the real composite by replicating both gradients on
    a canvas over the actual image and sampling inside the eyebrow, h1 and lead
-   boxes: text 5.32:1, mute 3.23:1, mean ground under the type 0.65.
+   boxes: text 5.34:1 (eyebrow 9.06, h1 5.34, lead 5.70) and mute 3.24:1.
 
-   So: if you change assets/img/projects/upl-metro-juinagar-navi-mumbai.webp
-   for anything else, re-run that canvas measurement. Do not assume it holds.
-   A mid-tone image is now required, not merely preferred — the old advice to
-   "pick a light photograph anyway" has inverted, because a pale one is what
-   made this look washed in the first place.
+   So: if you change assets/img/projects/adani-bkc-mumbai.webp for anything
+   else, re-run that canvas measurement. Do not assume it holds, in either
+   direction — a first attempt at this dropped the alphas evenly across the
+   whole frame and the h1 and lead fell to 4.01 and 3.98 against this same
+   photograph, because the text column reaches the 50% mark exactly where the
+   falloff was steepest and the desk behind it is dark.
+
+   The shape matters more than the strength. Coverage is held flat to 55%,
+   which is where the type ends, and only then collapses; the vertical
+   gradient is weighted to the foot because both failures were at the bottom
+   of their blocks. That is why a pale banner still works here: the coverage
+   is spent on the left 55% and nowhere else. A darker image would also be
+   fine. A paler one would not.
 
    The one muted tone in the banner is --mark-banner, on the italic .decay in
-   the headline and on the eyebrow's rule. At 3.23:1 it now clears the
+   the headline and on the eyebrow's rule. At 3.24:1 it now clears the
    LARGE-TEXT threshold only, which .decay satisfies at hero size. Do not use
    --mark-banner on anything body-sized in the banner; there is no headroom
    left for it, and darkening it far enough to earn 4.5 would collapse the
@@ -1030,11 +1038,11 @@ section { padding-block: var(--pad-y); }
      the hero drifts back to being the whitest thing on the page. */
   background:
     linear-gradient(102deg,
-      rgba(237, 241, 245, 0.60) 0%, rgba(237, 241, 245, 0.52) 34%,
-      rgba(237, 241, 245, 0.40) 50%, rgba(237, 241, 245, 0.14) 72%,
+      rgba(237, 241, 245, 0.60) 0%, rgba(237, 241, 245, 0.56) 34%,
+      rgba(237, 241, 245, 0.50) 55%, rgba(237, 241, 245, 0.12) 78%,
       rgba(237, 241, 245, 0.00) 100%),
     linear-gradient(180deg,
-      rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.03) 42%, rgba(237, 241, 245, 0.14) 100%);
+      rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.06) 42%, rgba(237, 241, 245, 0.26) 100%);
 }
 /* The banner is the ONE place on this light-only site with light text, because
    it is text on a photograph rather than on a ground. --on-dark is a
