@@ -275,7 +275,12 @@
   --t-h3:   clamp(1.375rem, 1.15rem + 1.1vw, 1.9375rem);
   --t-lead: clamp(1.0625rem, 1rem + 0.42vw, 1.25rem);
   --t-body: clamp(1rem, 0.97rem + 0.16vw, 1.0625rem);
-  --t-mono: clamp(0.6875rem, 0.655rem + 0.16vw, 0.75rem);
+  /* Floors at 12px, not 11px. The clamp minimum is what a phone actually
+     gets, and 80 elements on the homepage were landing on it — every eyebrow,
+     button label and spec caption at 11.1px. It is uppercase with generous
+     tracking, which carries it, but 11px is the bottom of comfortable on a
+     handset and this is the token 46 call sites read from. */
+  --t-mono: clamp(0.75rem, 0.7rem + 0.16vw, 0.8125rem);
 
   /* -- structure ------------------------------------------------------- */
   --rail: 7.5rem;             /* left spec-margin on desktop */
@@ -860,7 +865,11 @@ section { padding-block: var(--pad-y); }
 
 .nav-toggle {
   display: none; background: none; border: 1px solid rgba(16, 23, 27, 0.2);
-  color: var(--on-light); width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  /* 2.75rem, not 2.6rem. At 2.6 it rendered 42px — two pixels under the 44px
+     both platform guidelines ask for, on the one control every mobile visitor
+     has to hit before they can go anywhere. The drawn circle is unchanged to
+     the eye; it is the hit area that moved. */
+  color: var(--on-light); width: 2.75rem; height: 2.75rem; border-radius: 50%;
   cursor: pointer; align-items: center; justify-content: center; flex: none;
 }
 .nav-toggle-bars { display: block; width: 1.0625rem; height: 9px; position: relative; }
@@ -1480,6 +1489,22 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .foot-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; font-size: 0.9375rem; }
 .foot-list a { text-decoration: none; transition: color 180ms var(--ease); color: inherit; }
+
+/* A footer link is an 18px line of text, which is a fine mouse target and a
+   poor thumb one: 18px tall with 0.6rem between them puts adjacent links
+   about 34px apart, against the 44px both platform guidelines ask for. The
+   links already span the column, so only vertical accuracy is at stake.
+
+   Padding rather than a min-height, because the target has to grow around the
+   text rather than leave it sitting at the top of a taller box. Scoped to
+   coarse pointers and narrow screens: a mouse does not need 44px, and
+   applying it everywhere would add ~200px to the desktop footer for nothing.
+   The list gap goes to 0 in the same breath, so the padding IS the rhythm
+   instead of stacking on top of it. */
+@media (max-width: 56rem), (pointer: coarse) {
+  .foot-list { gap: 0; }
+  .foot-list a { display: block; padding-block: 0.85rem; }
+}
 .foot-list a:hover { color: var(--brand-ink); }
 .foot-bar {
   border-top: 1px solid var(--paper-edge); padding-top: 1.75rem;
