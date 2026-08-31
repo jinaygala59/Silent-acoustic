@@ -232,7 +232,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Selecting</span>
     <div class="grid g2" data-stagger style="align-items:start">
@@ -259,7 +259,7 @@ built.push(page({
 </section>
 
 ${CATEGORIES.map((cat, i) => `
-<section class="light railed" id="${cat.id}">
+<section class="${i % 2 ? 'dark' : 'light'} railed" id="${cat.id}">
   <div class="wrap">
     <span class="rail-label">${esc(cat.name)}</span>
     <div class="section-head split">
@@ -352,7 +352,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Room types</span>
     <div class="section-head split">
@@ -400,7 +400,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Clients</span>
     <div class="reviews" data-stagger>
@@ -432,7 +432,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Company</span>
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
@@ -485,7 +485,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Questions</span>
     <div class="section-head split">
@@ -517,7 +517,7 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark railed">
   <div class="wrap">
     <span class="rail-label">Articles</span>
     <ol class="notes">
