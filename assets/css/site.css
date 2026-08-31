@@ -135,15 +135,16 @@
      from a safety-orange #EA580C. That was not the brand colour. If you see
      any of those three, the reference is stale — there is no orange on this
      site.) */
-  --brand:      #0B5578;   /* the interactive token, text-safe everywhere —
+  --brand:      #094A68;   /* the interactive token, text-safe everywhere —
                               8.86:1 on --paper-hi, 5.48:1 on --paper-lo.
                               This is the one to reach for by default. */
-  --brand-lift: #083E58;   /* hover — a step darker, never lighter */
+  --brand-lift: #073349;   /* hover — a step darker, never lighter */
   --brand-deep: #10789C;   /* solid pill FILL ONLY, carries #FFFFFF at 5.01:1.
                               It is 3.13:1 on --paper-lo, so it must never be
                               used as a text colour. Fill and white text, or
                               nothing. */
-  --brand-ink:  #0B5578;   /* links and labels on any ground — 5.48:1 worst */
+  --brand-ink:  #094A68;   /* links and labels on any ground — 4.98:1 worst,
+                              on #B0BCCB, the deepest stop of --ombre-dark */
 
   /* --mark carries figures, hairline rules and markers: the neutral washed
      back, so it reads as precision rather than as ornament. */
@@ -224,8 +225,8 @@
      note below for why it moved. If you want more depth, darken the text first
      and re-run the gradient-aware sweep — it scores every stop, not just the
      one you are looking at. */
-  --ombre-light: linear-gradient(168deg, #FBFCFD 0%, #EEF3F8 52%, #CBD5E1 100%);
-  --ombre-dark:  linear-gradient(168deg, #E4EAF1 0%, #D5DEE8 52%, #BAC6D6 100%);
+  --ombre-light: linear-gradient(168deg, #EDF1F5 0%, #DFE6ED 52%, #C2CCD8 100%);
+  --ombre-dark:  linear-gradient(168deg, #DDE4EC 0%, #CED7E1 52%, #B0BCCB 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -327,7 +328,12 @@ body {
   font-size: var(--t-body);
   line-height: 1.65;
   color: var(--on-light);
-  background-color: var(--paper);
+  /* Matches the light ramp's midpoint, not --paper. The grounds are deeper
+     than the flat paper tokens now, and those tokens still have to be the
+     near-white fills for cards, fields and the NRC track — so the body
+     cannot borrow one of them or every scroll gap, overscroll bounce and
+     uncovered strip flashes lighter than the section above it. */
+  background-color: #DFE6ED;
   /* the drafting grid: a fine graph under the paper ground. Sections with
      their own background (dark, cards, panels) simply paint over it. */
   background-image:
