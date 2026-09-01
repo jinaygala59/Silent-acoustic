@@ -217,7 +217,12 @@ const PRODUCTS = [
       'A cloud absorbs on both faces, which is why partial coverage works so well. The gap between clouds is not wasted area — sound reaches the top face through it.',
       'Hung on cable with adjustable grips, so they level quickly and re-level after the ceiling contractor has been back through. Cut to size from the full board.',
     ],
-    specs: { ...PET, 'Suspension': 'Cable with adjustable grips', 'Absorption': 'Both faces exposed' },
+    /* Suspension detail transcribed from the client's installation steps, not
+       summarised: GI/SS hanging wire at 2.5-3 mm, run to anchor fasteners,
+       with eye bolts or clips on the panel frame and wire lengths trimmed to
+       level. An earlier pass said "cable with adjustable grips", which is the
+       right mechanism described in the wrong words and with no figure. */
+    specs: { ...PET, 'Suspension': 'GI / SS wire, 2.5–3 mm, to eye bolts on the panel frame', 'Absorption': 'Horizontal, both faces exposed' },
     apps: ['Open-plan offices', 'Restaurants', 'Classrooms', 'Atriums'],
   },
   {
@@ -229,7 +234,9 @@ const PRODUCTS = [
       'Running the rows perpendicular to the long axis of the room breaks up the flutter that develops between parallel end walls.',
       'Spacing is the variable that matters most. Tight rows absorb more but cost more and block more light; we set the spacing against a target reverberation time rather than a look.',
     ],
-    specs: { ...PET, 'Suspension': 'Cable or track', 'Orientation': 'Hung on edge, both faces exposed' },
+    /* Same correction as the cloud above. The published method is threaded
+       rod to a carrier channel, not "cable or track". */
+    specs: { ...PET, 'Suspension': 'GI threaded rod, 6–8 mm, to a carrier channel', 'Orientation': 'Suspended vertically, clipped at the top edge' },
     apps: ['Indoor sports halls', 'Gyms', 'Warehouse offices', 'Canteens', 'Auditoriums'],
   },
 
