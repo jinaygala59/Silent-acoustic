@@ -213,8 +213,14 @@ const nrcBar = (p, cls = '') => {
    Theirs carries customer logos. We have no logo assets and inventing them is
    out of the question, so it carries what the client does publish — the names
    and cities of rooms they have finished, read out of PROJECTS. The slice is
-   24 of 170; the count beside it is the real total, computed, and it links to
-   the gallery where all of them are listed.
+   24 of 170, and it links to the gallery where all of them are listed.
+
+   THE LABEL ON THE FIGURE IS LOAD-BEARING. `PROJECTS.length` is how many rooms
+   are PHOTOGRAPHED here. Completed installations is `SITE.projectsCompleted`,
+   which is 2035+. This footer read "170 rooms finished" for one commit, which
+   is the same claim the "stop passing 170 off as the project count" pass had
+   just removed from the rest of the site. If you want the completed figure
+   here, use `SITE.projectsCompleted` — do not relabel this one.
 
    `aria-hidden` on the track is deliberate: it is a decorative repetition of
    content that the projects page presents properly, and a screen reader
@@ -230,7 +236,7 @@ const ticker = (base = '') => {
           <ul class="ticker-run">${run}</ul>
         </div>
       </div>
-      <p class="ticker-foot">${PROJECTS.length} rooms finished <a class="tlink" href="${base}projects.html">See the gallery ${ARROW}</a></p>
+      <p class="ticker-foot">${PROJECTS.length} rooms photographed <a class="tlink" href="${base}projects.html">See the gallery ${ARROW}</a></p>
     </div>`;
 };
 

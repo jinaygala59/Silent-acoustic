@@ -542,8 +542,13 @@ port of replit.com's `LogoBlock` marquee (see the motion section): two
 identical runs in a flex track, each translating -100% of its own width, so
 the loop is seamless with no JS measurement. Theirs carries customer logos.
 We have no logo assets and inventing them is out of the question, so it
-carries 24 of the client's own `PROJECTS` names and cities, with the real
-total beside it counted from the data. Never type that figure. The edge mask
+carries 24 of the client's own `PROJECTS` names and cities, with
+`PROJECTS.length` beside it labelled **"photographed"**. Never type that
+figure, and never label it "finished": `PROJECTS.length` is how many rooms
+are photographed on the site, while completed installations is
+`SITE.projectsCompleted` (2035+). The footer said "170 rooms finished" for one
+commit — the same claim the "stop passing 170 off as the project count" pass
+had just removed everywhere else. The edge mask
 lives on `.ticker-rail`, NOT on `.ticker` — it was on the outer block first
 and faded the footer line along with the ribbon, rendering "170 rooms
 finished" as "70 rooms finished". Anything carrying a number stays outside
