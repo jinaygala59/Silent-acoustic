@@ -1719,7 +1719,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 @media (min-width: 52rem) {
   .rdx > a {
-    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.05fr) auto auto;
+    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
     gap: 1.75rem; padding: 1.5rem 0;
   }
 }
@@ -1763,11 +1763,6 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .rdx-count { font-size: 1.15rem; grid-column: 1; }
 }
 
-.rdx-target {
-  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--mark-ink); white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
 .rdx > a:hover { color: var(--brand-ink); }
 .rdx > a:hover .rdx-swatch { transform: scale(1.06); }
 .rdx > a:hover .rdx-note, .rdx > a:hover .rdx-n { color: var(--on-light-mute); }

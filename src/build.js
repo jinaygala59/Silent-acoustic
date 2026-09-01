@@ -223,7 +223,6 @@ const roomdex = (base = 'projects.html') => `<ol class="roomdex" data-stagger="l
         <span class="rdx-name">${esc(s.name)}</span>
         <span class="rdx-note">${esc(s.note)}</span>
         <span class="rdx-count">${n}<small> photographed</small></span>
-        <span class="rdx-target">${esc(s.metric)}</span>
       </a></li>`;
       }).join('\n      ')}
     </ol>`;

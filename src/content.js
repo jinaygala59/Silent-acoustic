@@ -426,20 +426,31 @@ const PRODUCTS = [
   },
 ];
 
+/* NO RT / STC / NC TARGETS HERE. Each sector used to carry one — "RT 1.2-1.6 s
+   target", "RT < 0.3 s target", "STC 50+ between rooms", "NC 20-25 target" —
+   and all ten were invented. Checked against eight of the ten live room-type
+   pages: none publishes a target figure. The auditorium page mentions RT60
+   only as something measured during a site survey, and the TV/radio and
+   hotel pages carry no NC or STC figure at all.
+
+   They were the worst of the fabrications on this site because they read as
+   design targets the company commits to, in a column of their own, on two
+   pages. Do not reintroduce a performance figure here unless the client
+   supplies it. */
 const SECTORS = [
-  { name: 'Auditorium & Halls', surf: 's-slat', metric: 'RT 1.2–1.6 s target', note: 'Speech clarity front to back, with enough life for music.' },
-  { name: 'Recording Studio', surf: 's-wedge', metric: 'RT < 0.3 s target', note: 'Dead enough to hear the source, not the room.' },
-  { name: 'Home Theatres', surf: 's-emboss', metric: 'RT 0.3–0.4 s target', note: 'Controlled early reflections and a clean centre image.' },
-  { name: 'Office Space', surf: 's-felt', metric: 'RT < 0.6 s target', note: 'Fewer overheard conversations across an open floor.' },
-  { name: 'Classroom & Training Rooms', surf: 's-perf', metric: 'RT < 0.6 s target', note: 'Every seat hears the teacher without strain.' },
-  { name: 'Conference Room & Cabin', surf: 's-param', metric: 'RT < 0.5 s target', note: 'Video calls that do not sound like a stairwell.' },
-  { name: 'Multiplex & Cinema', surf: 's-baffle', metric: 'RT 0.4–0.6 s target', note: 'Dialogue intelligibility and isolation between screens.' },
+  { name: 'Auditorium & Halls', surf: 's-slat', note: 'Speech clarity front to back, with enough life for music.' },
+  { name: 'Recording Studio', surf: 's-wedge', note: 'Dead enough to hear the source, not the room.' },
+  { name: 'Home Theatres', surf: 's-emboss', note: 'Controlled early reflections and a clean centre image.' },
+  { name: 'Office Space', surf: 's-felt', note: 'Fewer overheard conversations across an open floor.' },
+  { name: 'Classroom & Training Rooms', surf: 's-perf', note: 'Every seat hears the teacher without strain.' },
+  { name: 'Conference Room & Cabin', surf: 's-param', note: 'Video calls that do not sound like a stairwell.' },
+  { name: 'Multiplex & Cinema', surf: 's-baffle', note: 'Dialogue intelligibility and isolation between screens.' },
   /* Deliberately not `s-print`: the printed panel is the one saturated surface
      in the set, and next to nine monochrome tiles it reads as an error rather
      than as a room type. Hotels are a soundproofing job — show the door. */
-  { name: 'Hotels & Clubs', surf: 's-door', metric: 'STC 50+ between rooms', note: 'Music contained, guest rooms quiet.' },
-  { name: 'Indoor Sports', surf: 's-baffle', metric: 'RT < 1.5 s target', note: 'Whistles and shouting that do not turn to noise.' },
-  { name: 'TV Channels & Radio Station', surf: 's-pyramid', metric: 'NC 20–25 target', note: 'Studios quiet enough for an open mic.' },
+  { name: 'Hotels & Clubs', surf: 's-door', note: 'Music contained, guest rooms quiet.' },
+  { name: 'Indoor Sports', surf: 's-baffle', note: 'Whistles and shouting that do not turn to noise.' },
+  { name: 'TV Channels & Radio Station', surf: 's-pyramid', note: 'Studios quiet enough for an open mic.' },
 ];
 
 const PROCESS = [
