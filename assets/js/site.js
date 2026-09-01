@@ -106,6 +106,43 @@
     window.addEventListener('hashchange', applyHash);
   }
 
+  /* --------------------------- floating controls ------------------------
+     Reveal both once the reader is a screen down, and send the top button
+     home. Lives here rather than in motion.js because motion.js returns early
+     under prefers-reduced-motion — a way back to the top of a long page has
+     to work for everyone, so only its transition is motion, not its function.
+
+     One rAF-throttled passive listener, matching the two already in
+     motion.js. It reads scrollY and writes one class; the threshold is a
+     viewport height, with a 40px hysteresis band so the pair cannot flicker
+     when a scroll settles right on the line. */
+  var floats = document.querySelector('.floats');
+  if (floats) {
+    var shown = false, queued = false;
+    var settle = function () {
+      var y = window.scrollY;
+      var on = shown ? y > window.innerHeight - 40 : y > window.innerHeight + 40;
+      if (on !== shown) { shown = on; floats.classList.toggle('on', on); }
+      queued = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; window.requestAnimationFrame(settle); }
+    }, { passive: true });
+    settle();
+
+    var top = floats.querySelector('.float-top');
+    if (top) {
+      top.addEventListener('click', function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        /* Send focus back to the top of the document as well as the viewport,
+           or a keyboard user is returned visually and left where they were. */
+        var skip = document.querySelector('.skip');
+        if (skip) skip.focus({ preventScroll: true });
+      });
+    }
+  }
+
   /* ------------------------------- form --------------------------------
      The endpoint is configured once in src/content.js (SITE.formEndpoint) and
      rendered onto the form as data-endpoint, so nobody has to edit this file

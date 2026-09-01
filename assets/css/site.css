@@ -2250,3 +2250,64 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .mb-m { margin-bottom: 1rem; }
 .mb-l { margin-bottom: 1.5rem; }
 
+/* ========================= the floating controls ========================
+   Back-to-top on the left, WhatsApp on the right, both revealed once the
+   reader is a screen down. Split to opposite corners deliberately: stacked in
+   one corner, a thumb reaching for one lands on the other.
+
+   The wrapper is the full width of the viewport and does not take pointer
+   events; only the two controls do. That is what puts one hard left and one
+   hard right without either needing its own fixed offset, and it keeps the
+   safe-area inset in one place for iPhone home-indicator clearance.
+
+   z-index 120 sits above the page and below the mobile nav overlay at 150,
+   so an open menu covers them rather than the reverse.
+
+   Visibility is toggled by site.js, not motion.css: a way back to the top of
+   a 15,000px page is a control, not an ornament, and motion.js returns early
+   under prefers-reduced-motion — putting it there would leave it dead for the
+   readers most likely to want it. */
+.floats {
+  position: fixed;
+  /* BELOW the header, not above it. .site-head is z-index 100 and the mobile
+     nav panel lives inside it, so at 120 these two buttons painted over an
+     open menu. They sit at the bottom of the viewport and the header at the
+     top, so nothing is lost by yielding the stack — and an open full-screen
+     menu now covers them for free, with no :has() guard and no JS. */
+  z-index: 90;
+  left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  padding-bottom: calc(clamp(1rem, 3vw, 1.75rem) + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+.float {
+  pointer-events: auto;
+  width: 3rem; height: 3rem;          /* 48px — over the 44px tap floor */
+  display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid transparent;
+  background: var(--brand-deep); color: #FFFFFF;
+  box-shadow: var(--lift);
+  cursor: pointer;
+  /* hidden until scrolled: visibility as well as opacity, so a hidden
+     control is not reachable by keyboard */
+  opacity: 0; visibility: hidden; transform: translateY(0.5rem);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease),
+              visibility 0s linear 260ms, background 200ms var(--ease);
+}
+.floats.on .float {
+  opacity: 1; visibility: visible; transform: none;
+  transition-delay: 0s;
+}
+.float svg { width: 1.35rem; height: 1.35rem; display: block; }
+.float:hover { background: var(--brand-lift); }
+.float:active { transform: translateY(1px); transition-duration: 120ms; }
+.float-top { border: 0; }
+
+/* The reveal is the only animated part, and it is the part that can go. The
+   controls still appear and disappear, they just do it without travelling. */
+@media (prefers-reduced-motion: reduce) {
+  .float { transform: none; transition: opacity 120ms linear, visibility 0s linear 120ms; }
+  .floats.on .float { transform: none; transition-delay: 0s; }
+  .float:active { transform: none; }
+}

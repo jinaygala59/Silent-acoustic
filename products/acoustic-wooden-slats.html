@@ -196,6 +196,28 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove('io')},6000)}}catch(e)
       </div>
     </div>
   </footer>
+
+<!-- Floating controls. Both appear together once the reader is a screen down;
+     neither is in the way at the top, where the hero already has its own two
+     calls to action. Left/right split so neither can sit under a thumb
+     reaching for the other. -->
+<div class="floats" aria-hidden="false">
+  <button class="float float-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <a class="float float-wa" href="https://wa.me/919004408289" target="_blank" rel="noopener"
+     aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.4-1.2A9 9 0 1 0 12 3Z" fill="none"
+            stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>
+      <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5.6 0 1-.5 1-1l-1.4-.7-1 .8a5 5 0 0 1-2.2-2.2l.8-1L11 9.5c0-.5-.4-1-1-1s-1 .4-1 1Z"
+            fill="currentColor"/>
+    </svg>
+  </a>
+</div>
 <script src="../assets/js/motion.js" defer></script>
 <script src="../assets/js/site.js" defer></script>
 </body>
