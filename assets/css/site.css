@@ -1294,6 +1294,17 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   font-variant-numeric: tabular-nums;
 }
 
+/* A figure that counts up to itself changes digit count on the way — 0 to 20
+   goes one glyph to two — so the "+" beside it would step sideways as it
+   ran. `2ch` on the tabular figures above is exactly two digit widths, and
+   `min-width` rather than `width` so a three-digit figure still fits. Right
+   alignment keeps the growth on the left, where there is nothing to push. */
+.tick {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
+}
+
 .spec {
   width: 100%; border-collapse: collapse;
   font-family: var(--mono); font-size: 0.8125rem;
@@ -1731,17 +1742,31 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 /* ONE LINE PER ROW — in two stages, because only one of them fits everywhere.
 
-   MEASURED FIRST, and the numbers are why this is split. The row's content box
-   is 901px at a 1134 viewport. At the sizes above, the widest row needs 1202px
-   of content ("TV Channels & Radio Station" at 28px is 359px; "Speech clarity
-   front to back, with enough life for music." at 15px is 384px). Tightening
-   the gutters, the swatch and both type sizes brings the requirement down to
-   1039px — still 139px more than there is. **A row of ten cannot be one line
-   below about 1273px** without either dropping the note to 13px, under this
-   site's floor for body copy, or truncating it. An ellipsis is not on the
-   table: it would turn a room's description into a different, shorter
-   sentence, which is exactly what the `.nrc-raw` note in the NRC section
-   warns about.
+   MEASURED FIRST, AND RE-MEASURED WHEN THE ROW CHANGED. The requirement is a
+   property of what the row carries, so it moves when the row does. With the
+   `RT … TARGET` column still present, the widest row needed 1039px of content
+   even at the reduced sizes below, against 901px available at a 1134
+   viewport — 139px short, so single-line rows could not start below ~1273px.
+   Removing that column (it carried invented targets) took ~210px out, and the
+   floor came down with it — to **1201px**, so the breakpoint is 76rem rather
+   than 80rem.
+
+   MEASURE THE OVERFLOW, NOT A CLONE. Both earlier figures here came from
+   cloning each cell with `white-space: nowrap` and copying `font`, and both
+   were wrong — the `font` shorthand does not carry `letter-spacing`, and this
+   row has plenty of it (the count's `<small>` is letter-spaced uppercase).
+   That method said 1109px; the rows still collided at 1134, with the note
+   running under the count. The number that is actually true is
+   `scrollWidth - clientWidth` on `.rdx-note` with the single-line rules
+   applied: 67px of overflow at 1134, worst row "Classroom & Training Rooms",
+   so 1201px. Use that check if this ever needs re-deriving.
+
+   What was NOT done to make it fit, at either width: dropping the note to
+   13px, under this site's floor for body copy, or truncating it. An ellipsis
+   is not on the table — it would turn a room's description into a different,
+   shorter sentence, which is exactly what the `.nrc-raw` note in the NRC
+   section warns about. If a column is ever added back to this row, re-run the
+   measurement rather than assuming 70rem still holds.
 
    So: stage one is the ALIGNMENT, and it costs nothing, so it applies from
    52rem up. Before it the six cells were each centred in their own track, so
@@ -1751,8 +1776,8 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    typographic sense, which is the half of "one line" that is free. The swatch
    opts back out: it is a 2.75rem photograph with no baseline to share.
 
-   Stage two is the actual single-line row, and it starts at 80rem — above the
-   1273px the measurement asked for, not at a round number chosen first. Below
+   Stage two is the actual single-line row, and it starts at 76rem — just above
+   the 1201px the measurement asked for, not at a round number chosen first. Below
    that the rows keep wrapping, which is correct: `nowrap` in a column too
    narrow for it overflows the row and rides over the next column, so forcing
    it lower would not produce one line, it would produce overlap.
@@ -1762,15 +1787,16 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
      name     28px    -> 22px     still the display face, still the h3 width axis
      note     15px    -> 14px     the floor for body copy here
 
-   If single-line rows are wanted at laptop width too, the note is the cell
-   that decides it — the ten `SECTORS[].note` strings run 35-56 characters and
-   they are written copy, not the client's. Shortening them to ~40 is the one
-   change that buys it without shrinking type or cutting a sentence short. */
+   The note is still the cell that decides the floor — the ten `SECTORS[].note`
+   strings run 35-57 characters. If single-line rows are ever wanted below
+   76rem, shortening those to ~40 is the one change that buys it without
+   shrinking type or cutting a sentence short. They are written copy, not the
+   client's. */
 @media (min-width: 52rem) {
   .rdx > a { align-items: baseline; }
   .rdx-swatch { align-self: center; }
 }
-@media (min-width: 80rem) {
+@media (min-width: 76rem) {
   .rdx > a {
     grid-template-columns: 3.5rem 2.5rem auto minmax(0, 1fr) auto auto;
     gap: 0.9rem;

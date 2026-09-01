@@ -3,6 +3,14 @@ const B = require('./build.js');
 const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
 const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex, ticker } = B;
 
+/* "20+ yrs" was typed, next to "since 2006" which is the client's published
+   fact. Two ways of saying the same thing, one of which goes stale on its own:
+   in 2027 the sentence is still right and the figure is not. It is derived
+   now, so a rebuild is all it takes. Same arithmetic, no new claim — 2006 is
+   theirs, the subtraction is ours. */
+const FOUNDED = 2006;
+const YEARS = new Date().getFullYear() - FOUNDED;
+
 const built = [];
 
 /* ----------------------------- the choreography --------------------------
@@ -74,7 +82,7 @@ built.push(page({
   </div>
   <div class="wrap hero-rail">
     <dl class="hero-specs" data-in style="--d:800">
-      <div class="hero-spec"><dt>Experience</dt><dd>20+ yrs<small>Designing and installing acoustic systems since 2006</small></dd></div>
+      <div class="hero-spec"><dt>Experience</dt><dd><span class="tick" data-count-to="${YEARS}">${YEARS}</span>+ yrs<small>Designing and installing acoustic systems since ${FOUNDED}</small></dd></div>
       <div class="hero-spec"><dt>Coverage</dt><dd>Pan-India<small>Our own crews, not local subcontractors</small></dd></div>
       <div class="hero-spec"><dt>Manufacturing</dt><dd>In-house<small>CNC cutting, UV printing and assembly</small></dd></div>
       <div class="hero-spec"><dt>Site survey</dt><dd>Free<small>Within Mumbai and the MMR</small></dd></div>

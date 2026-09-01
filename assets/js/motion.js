@@ -77,6 +77,87 @@
   window.setTimeout(showAll, 4000);
   window.addEventListener('beforeprint', showAll);
 
+  /* ------------------------------ live figures --------------------------
+     A figure that counts up to itself. One element on the site uses it — the
+     hero's years-in-business — and it is here rather than in CSS on purpose.
+
+     The CSS-only version of this animates a registered `<integer>` custom
+     property and prints it with `counter()`, which means the number stops
+     being real text: a screen reader and a crawler both get nothing, because
+     generated content is not content. The figure stays in the markup and this
+     overwrites it, so with JavaScript blocked, failed or slow the published
+     number is simply what renders.
+
+     A wrong number is worse than a still one, so the digits are not touched
+     until a frame has proved it can arrive, and they are only ever blanked
+     while the rail is still held at `opacity: 0` by its own 800ms `[data-in]`
+     delay. A guard timer covers frames that start and then stop.
+
+     `data-count-to` carries the target, so the target is the markup's, never
+     parsed back out of the rendered text. */
+  var ticks = document.querySelectorAll('[data-count-to]');
+  if (ticks.length && !reduce) {
+    [].forEach.call(ticks, function (el) {
+      var to = parseInt(el.getAttribute('data-count-to'), 10);
+      if (!(to > 0)) { return; }
+
+      var DELAY = 850;    /* the rail is invisible until 800ms */
+      var DUR   = 1000;
+      var start = null;
+      var done  = false;
+
+      var land = function () {
+        if (done) { return; }
+        done = true;
+        el.textContent = String(to);
+      };
+
+      var frame = function (t) {
+        if (start === null) { start = t; }
+        var p = Math.min(1, (t - start) / DUR);
+        /* Ease-out QUADRATIC, not cubic, and the exponent was measured rather
+           than picked. An ease-in is wrong outright — it would hold the number
+           near zero through the half anyone actually watches. But cubic
+           overshoots the other way when the range is this short: rounding to
+           whole years, 20 * (1 - (1-p)^3) already reads 20 at p = 0.708, so a
+           1200ms run spent its last 350ms showing a number that had stopped
+           moving. Quadratic reaches 20 at p = 0.842, so the count fills its
+           own duration. If the target figure ever gets much larger, cubic
+           becomes the better curve again — the flat tail is a function of
+           having only twenty distinct values to show. */
+        var e = 1 - Math.pow(1 - p, 2);
+        if (p < 1) {
+          el.textContent = String(Math.round(to * e));
+          window.requestAnimationFrame(frame);
+        } else {
+          land();
+        }
+      };
+
+      /* NOTHING IS BLANKED UNTIL A FRAME HAS ACTUALLY ARRIVED. This probe is
+         the same contract the reveal fallback keeps above — prove you can
+         finish before you start.
+
+         The first version blanked the digits the moment this file ran and
+         relied on a guard timer to put the figure back. That is a real bad
+         state, not a theoretical one: `requestAnimationFrame` does not fire
+         at all in a tab that is not painting (a background tab, and every
+         automated browser pane — measured at zero frames in 2.5s), so the
+         rail would fade in at 1580ms reading "0" and sit there until the
+         guard fired. Now, if frames never come, the published figure is never
+         touched.
+
+         The guard still exists for the case frames start and then stop —
+         switching tabs mid-count — and it is tight, because by then the
+         digits are already on screen. */
+      window.requestAnimationFrame(function () {
+        el.textContent = '0';
+        window.setTimeout(land, DELAY + DUR + 400);
+        window.setTimeout(function () { window.requestAnimationFrame(frame); }, DELAY);
+      });
+    });
+  }
+
   /* The progress bar is CSS-driven natively; here it needs a hand. One rAF
      per scroll burst, one style write, no reads. */
   var bar = document.querySelector('.progress > i');
