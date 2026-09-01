@@ -1978,6 +1978,50 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    Hover is scoped to devices that actually hover. Unscoped, a tap on a phone
    latches the hover state and the card stays popped until you tap elsewhere —
    the single most common way this effect breaks on iOS. */
+/* ------------------------- touch target sizes ---------------------------
+   Audited at 375px across all nine templates. The site was already sound on
+   the things that usually break — no horizontal overflow anywhere, 16px form
+   inputs so iOS does not zoom the page on focus, a 44x44 nav toggle, and both
+   pinned sections degrading to static. What it did NOT have was tappable
+   inline links: the tel: and mailto: links in the contact list rendered 17-20px
+   tall, and on a phone tapping the phone number is the single most likely
+   thing anyone does on that page.
+
+   Two techniques, because these links are not all the same kind of box:
+
+   Inline links take vertical padding. On an inline box, padding-block grows
+   the hit area WITHOUT growing the line box, so the target reaches 44px and
+   nothing on the page moves. The contact rows are ~110px apart, so the
+   enlarged areas cannot overlap into each other.
+
+   Flex and inline-flex items are atomic, so padding would shift layout —
+   they get an explicit min-height instead and centre their own text.
+
+   The gate is `(pointer: coarse), (max-width: 48rem)`, not `pointer: coarse`
+   alone. A touchscreen laptop is coarse at desktop width and needs this; a
+   narrow window on a mouse machine is not coarse but is still a phone-shaped
+   layout where these links are equally cramped. Either arm is sufficient.
+   (It also makes the rule testable: `pointer: coarse` cannot be exercised by
+   resizing a desktop browser, which is how the first version of this block
+   silently did nothing.) */
+@media (pointer: coarse), (max-width: 48rem) {
+  /* Every tel:/mailto: on the site, not just the ones in .contact-list —
+     one of them lives inline in a form-note paragraph and was 17px tall.
+     Matching on the href is what makes this hold for links added later. */
+  .contact-list a,
+  a[href^="tel:"],
+  a[href^="mailto:"] { padding-block: 0.85rem; }
+
+  .crumbs a,
+  .tlink {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .brand { min-height: 44px; }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .review:hover {
     transform: translateY(-8px) scale(1.035);

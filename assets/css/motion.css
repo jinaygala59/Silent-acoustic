@@ -1338,3 +1338,89 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
     }
   }
 }
+
+/* =========================================================================
+   ENGINE 2, THE REST OF IT
+   ---------------------------------------------------------------------------
+   Everything added to this file after the original reveals went inside
+   `@supports (animation-timeline: view())` and stopped there. That is correct
+   for a scroll-LINKED effect and wrong for a one-shot one, and nobody noticed
+   because the browser this was built in supports scroll timelines.
+
+   The result on an iPhone running anything before iOS 26: `html.io` is
+   applied, `motion.js` drives the core reveals with an IntersectionObserver,
+   and the eyebrow dashes, gallery captions and photographs all sit still. The
+   page reads as "no animations" because the only motion left is a fade.
+
+   What can be reproduced here is anything that happens ONCE, on arrival.
+   `motion.js` puts `.in` on every `[data-anim]` element, so any of those can
+   hang a transition off it. What cannot be reproduced is anything linked to
+   scroll POSITION — parallax, the statement drift, the page-head drift —
+   because there is no scroll loop in `motion.js` and adding one for 180
+   photographs on a phone would cost more than the effect is worth. Those
+   three degrade to nothing, which is their designed fallback: no transform,
+   natural size, no missing content.
+
+   Deliberately NOT reproduced, beyond those three:
+
+     the NRC bar   It is the one fail-unsafe animation on the site. Not
+                   animating it renders it full, which is the true figure.
+                   A fallback here could only make it wrong.
+     the sweep     It animates `--sweep-pos`, which needs `@property` to be
+                   animatable at all. There is no clean `@supports` test for a
+                   registered property, and on a browser that lacks it the
+                   gradient referencing that value is invalid — so the safe
+                   move is to leave the sweep on the native path only.
+     the CTA glow  `.cta-band` is the one element here with no `[data-anim]`
+                   to hang off. It is shown outright instead of animated.
+   ========================================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* The eyebrow dash. `.eyebrow[data-anim]` is itself a revealed element, so
+     it gets `.in` directly — the same selector the native path uses. */
+  html.io .eyebrow[data-anim]::before {
+    transform-origin: 0 50%;
+    transition: transform 700ms var(--m-in) 120ms;
+  }
+  html.io .eyebrow[data-anim]:not(.in)::before { transform: scaleX(0); }
+
+  /* The gallery caption, a beat after its frame. The delay is what makes it a
+     second event rather than part of the photograph. */
+  html.io .gal-cap {
+    transition: opacity 600ms var(--m-in) 170ms, transform 600ms var(--m-in) 170ms;
+  }
+  html.io .gal-item:not(.in) .gal-cap {
+    opacity: 0; transform: translate3d(0, 14px, 0);
+  }
+
+  /* Photographs settle instead of drifting. Parallax needs a scroll position;
+     this needs only the moment of arrival, and it is the same idea — the
+     picture moving inside a frame that is not moving. 1.06 rather than the
+     native 1.09/1.14, because this one comes to rest at 1 and any overdraw
+     left at the end would show as a crop. */
+  html.io .card-surface > img,
+  html.io .gal-surface > img,
+  html.io .note-surface > img,
+  html.io .rdx-swatch > img,
+  html.io .pd-hero > img,
+  html.io .dip-surface img {
+    transition: transform 900ms var(--m-in);
+  }
+  html.io .card:not(.in) .card-surface > img,
+  html.io .gal-item:not(.in) .gal-surface > img,
+  html.io .note:not(.in) .note-surface > img,
+  html.io .rdx:not(.in) .rdx-swatch > img,
+  html.io .pd-hero:not(.in) > img,
+  html.io .dip:not(.in) .dip-surface img {
+    transform: scale(1.06);
+  }
+
+  /* No `[data-anim]` on the band, so the bloom is simply present. */
+  html.io .cta-band::after {
+    content: ''; position: absolute; inset: -30% -12% auto -12%; height: 150%;
+    background: radial-gradient(44% 56% at 50% 8%,
+      rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.24) 46%, transparent 72%);
+    pointer-events: none; z-index: 2;
+  }
+}
