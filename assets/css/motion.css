@@ -58,25 +58,42 @@ html.head-solid .site-head { background: rgba(250, 251, 251, 0.94); }
 html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 
 /* ============================== vocabulary ==============================
-   Five moves, used consistently:
-     fade    quiet copy and small blocks            18px + opacity
-     rise    cards, tiles, panels                   34px + opacity
-     reveal  headings, lifted out of a mask         clip + 0.35em
-     frame   material surfaces, uncovered           clip + 1.04 scale
-     line    hairline rules, drawn left to right    scaleX
-   Anything that needs a different feel does not get motion at all. */
+   Seven moves, used consistently:
+     fade     quiet copy and small blocks           34px + opacity
+     rise     cards and panels                      68px + 0.972 scale
+     reveal   headings, lifted out of a mask        clip + 0.5em
+     frame    material surfaces, uncovered          clip + 1.055 scale
+     line     hairline rules, drawn left to right   scaleX
+     tile     grid items that assemble              20px + 0.965 scale
+     slide-l  a half that enters from the left      -72px + opacity
+     slide-r  a half that enters from the right     +72px + opacity
+   Anything that needs a different feel does not get motion at all.
 
-@keyframes mFade   { from { opacity: 0; transform: translate3d(0, 28px, 0); } }
-@keyframes mRise   { from { opacity: 0; transform: translate3d(0, 52px, 0); } }
+   The travels were all raised once. The originals (18/34px, and a range that
+   finished by cover 30%) were tuned to be barely perceptible, and the reveals
+   read as a page that simply appeared rather than one that moved. `fade` and
+   `rise` carry most of the site, so they are where depth is worth spending;
+   `reveal` stays a mask because a heading that also travels far reads as
+   sliding rather than being uncovered. */
+
+@keyframes mFade   { from { opacity: 0; transform: translate3d(0, 34px, 0); } }
+@keyframes mRise   { from { opacity: 0; transform: translate3d(0, 68px, 0) scale(0.972); } }
 @keyframes mReveal {
-  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.35em, 0); }
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.5em, 0); }
   to   { opacity: 1; clip-path: inset(-0.3em -100% -0.35em 0); transform: none; }
 }
 @keyframes mFrame {
-  from { clip-path: inset(0 0 100% 0); transform: scale(1.045); }
+  from { clip-path: inset(0 0 100% 0); transform: scale(1.055); }
   to   { clip-path: inset(0 0 0 0);    transform: scale(1); }
 }
 @keyframes mLine   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* The two halves of a diptych arrive from the outside in, so the pair reads as
+   one gesture closing rather than two blocks appearing. Horizontal travel is
+   only ever used on something that is genuinely a half of a two-up — on a
+   single column it fights the reading direction. */
+@keyframes mSlideL { from { opacity: 0; transform: translate3d(-72px, 0, 0); } }
+@keyframes mSlideR { from { opacity: 0; transform: translate3d( 72px, 0, 0); } }
 
 /* Stagger, shared by both engines: each child starts a little further into the
    scroll than the one before it. Cycling in threes means a row of cards
@@ -120,17 +137,44 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
          the screen, below where anyone is reading, and the element was already
          static by the time it reached the middle. Starting later keeps it at
          opacity 0 for longer (fill-mode: both holds the from-state), so it
-         reveals in the lower-middle of the screen instead of at the edge. */
-      animation-range: entry 25% cover 48%;
-    }
-    [data-anim="fade"]   { animation-name: mFade; }
-    [data-anim="rise"]   { animation-name: mRise; }
-    [data-anim="reveal"] { animation-name: mReveal; }
-    [data-anim="frame"]  { animation-name: mFrame; }
-    [data-anim="line"]   { animation-name: mLine; transform-origin: 0 50%; }
+         reveals in the lower-middle of the screen instead of at the edge.
 
+         The end was then pushed from cover 48% to cover 56%. The start is
+         where the reader is, and that was already right; the end is how long
+         the movement lasts, and finishing at 48% meant the travel was over
+         before the element reached the middle of the screen. Later gives the
+         same distance more scroll to cross, which is what makes it read as
+         motion rather than as a state change. */
+      animation-range: entry 25% cover 56%;
+    }
+    [data-anim="fade"]    { animation-name: mFade; }
+    [data-anim="rise"]    { animation-name: mRise; }
+    [data-anim="reveal"]  { animation-name: mReveal; }
+    [data-anim="frame"]   { animation-name: mFrame; }
+    [data-anim="line"]    { animation-name: mLine; transform-origin: 0 50%; }
+    [data-anim="slide-l"] { animation-name: mSlideL; }
+    [data-anim="slide-r"] { animation-name: mSlideR; }
+    /* `.diptych` is two columns only from 48rem. Below that it is a single
+       stacked column, where two blocks arriving from opposite sides is not a
+       pair closing — it is one column jittering sideways against the reading
+       direction. So the horizontal travel is desktop-only and the halves fall
+       back to the vertical word everything else uses. 72px of horizontal
+       travel on a 375px viewport would also be the one reveal on the site
+       that leans on `body { overflow-x: hidden }` to not show a scrollbar. */
+    @media (max-width: 47.9375rem) {
+      [data-anim="slide-l"],
+      [data-anim="slide-r"] { animation-name: mFade; }
+    }
+
+    /* 7% a step rather than 5%: three cards across now span 14% of the range
+       between first and last instead of 10%, so the row cascades visibly
+       instead of arriving almost together. The long variant keeps its own
+       smaller step below, because ten rows at 7% would span 63%. */
     [data-stagger] > * {
-      animation-range: entry calc(22% + var(--i, 0) * 5%) cover calc(45% + var(--i, 0) * 5%);
+      animation-range: entry calc(22% + var(--i, 0) * 7%) cover calc(48% + var(--i, 0) * 7%);
+    }
+    [data-stagger="long"] > * {
+      animation-range: entry calc(22% + var(--i, 0) * 3%) cover calc(48% + var(--i, 0) * 3%);
     }
 
     /* Progress bar — driven by the document's own scroll. */
@@ -147,11 +191,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     transition-delay: calc(var(--i, 0) * 90ms);
   }
   html.io [data-anim]:not(.in) { opacity: 0; }
-  html.io [data-anim="fade"]:not(.in)   { transform: translate3d(0, 18px, 0); }
-  html.io [data-anim="rise"]:not(.in)   { transform: translate3d(0, 34px, 0); }
-  html.io [data-anim="reveal"]:not(.in) { clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.35em, 0); }
+  html.io [data-anim="fade"]:not(.in)    { transform: translate3d(0, 34px, 0); }
+  html.io [data-anim="rise"]:not(.in)    { transform: translate3d(0, 68px, 0) scale(0.972); }
+  html.io [data-anim="slide-l"]:not(.in) { transform: translate3d(-72px, 0, 0); }
+  html.io [data-anim="slide-r"]:not(.in) { transform: translate3d( 72px, 0, 0); }
+  html.io [data-anim="reveal"]:not(.in) { clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.5em, 0); }
   html.io [data-anim="reveal"].in       { clip-path: inset(-0.3em -100% -0.35em 0); }
-  html.io [data-anim="frame"]:not(.in)  { clip-path: inset(0 0 100% 0); transform: scale(1.045); opacity: 1; }
+  html.io [data-anim="frame"]:not(.in)  { clip-path: inset(0 0 100% 0); transform: scale(1.055); opacity: 1; }
   html.io [data-anim="frame"].in        { clip-path: inset(0 0 0 0); }
   html.io [data-anim="line"]            { transform-origin: 0 50%; opacity: 1; }
   html.io [data-anim="line"]:not(.in)   { transform: scaleX(0); }
@@ -278,8 +324,8 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
       animation-timeline: scroll(root block);
       animation-range: 0px 78vh;
     }
-    .page-head { view-timeline-name: --phead; }
-    .cta-band { view-timeline-name: --cta; }
+    .page-head { view-timeline-name: --phead, --box; }
+    .cta-band { view-timeline-name: --cta, --box; }
   }
 }
 
@@ -398,7 +444,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
        turned into a long slow drag on a tall display. */
     .rail-sec {
       height: calc(100vh + 1200px);
-      view-timeline-name: --rail;
+      view-timeline-name: --rail, --box;
       view-timeline-axis: block;
     }
     .rail-sticky {
@@ -707,4 +753,528 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
     transition-delay: calc(var(--i, 0) * 90ms);
   }
   html.io [data-anim="tile"]:not(.in) { opacity: 0; transform: scale(0.965) translate3d(0, 20px, 0); }
+}
+
+/* =========================================================================
+   PORTED FROM replit.com
+   ---------------------------------------------------------------------------
+   Read off their own stylesheets rather than guessed at. What they actually
+   run on the landing page is:
+
+     LogoBlock__scroll        an infinite logo marquee, translateX(0 → -100%),
+                              linear, four duplicated tracks
+     landing-page__sweep-*    a light sweep across a surface, animating a
+                              registered custom property, --sweep-pos: -30% → 100%
+     landing-page__glow-fade-in   a soft bloom behind the hero input
+     PlatformCards__blink     a typing caret, steps(1), 50% { opacity: 0 }
+     MarketingHeader__header  sticky head, transition: all .3s (.4, 0, .2, 1)
+     SimpleIntro__stickyCta   a sticky bottom CTA under a gradient-to-ground mask
+
+   The lesson from that list is the opposite of what it looks like: their
+   entrance travels are TINY — 4px, 16px, 20px. What makes their page feel
+   alive is CONTINUOUS ambient motion (marquee, sweep, blinking caret), not
+   large scroll reveals. So what is ported here is the ambient layer, not
+   bigger reveals.
+
+   Two of their six are deliberately not ported. The caret has nothing to type
+   on this site, so it would be decoration pretending to be an interface. And
+   the sticky bottom CTA is a layout and consent decision, not a motion one —
+   it belongs in a conversation about the page, not in a motion pass.
+
+   Their reveals below the fold are rAF-driven, which is why every scrolled
+   screenshot of replit.com taken during this pass came back blank: no paint,
+   no rAF, no reveal, no content. This site's CSS-first path is what avoids
+   that, and nothing here moves it back onto JavaScript.
+   ========================================================================= */
+
+/* ---------------------------- the --box timeline -------------------------
+   Most of what follows animates something INSIDE an `overflow: hidden` box —
+   a photograph inside `.surface`, a dash inside `.dip`. `view()` cannot
+   resolve there (an overflow: hidden ancestor is a scroll container, so the
+   timeline never advances and the element stays at its start state), which is
+   the trap documented in CLAUDE.md. The fix is the one the hero already uses:
+   the enclosing box publishes a NAMED timeline and the descendant borrows it.
+
+   `--box` is that name, published broadly and looked up by nearest ancestor,
+   so a consumer inside a card gets the card's own pass through the viewport
+   and a consumer loose in a section gets the section's. Sections that already
+   publish a name take `--box` as a second entry in the list rather than
+   losing the first. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    section, footer,
+    .card, .gal-item, .rdx, .note, .dip, .pd-hero, .panel, .review {
+      view-timeline-name: --box;
+      view-timeline-axis: block;
+    }
+  }
+}
+
+/* ------------------------------- the ticker ------------------------------
+   Their LogoBlock, mechanism for mechanism: two identical runs in a flex
+   track, each translating -100% of its own width. Because the runs are the
+   same width and sit flush, run 2 is exactly where run 1 was when the cycle
+   restarts, so the loop is seamless with no measuring step.
+
+   The edges are a mask rather than a pair of gradient overlays. The section
+   ground here is an ombre, so a solid-colour fade would only match at one
+   scroll position; a mask is ground-agnostic and cannot fall out of step with
+   a token change. */
+.ticker { margin: clamp(2rem, 4vw, 3rem) 0 clamp(1.75rem, 3vw, 2.5rem); }
+/* The mask is on the RAIL, not on `.ticker`. It was on the outer block first,
+   which faded the footer line along with the ribbon and rendered the real
+   project count "170 rooms finished" as "70 rooms finished" — a mask turning a
+   computed figure into a different, wrong figure. Anything carrying a number
+   stays outside the masked box. */
+.ticker-rail {
+  border-block: 1px solid var(--paper-edge);
+  padding-block: 0.95rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.ticker-track { display: flex; width: max-content; }
+.ticker-run {
+  display: flex; align-items: center;
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  padding-right: clamp(1.75rem, 3.5vw, 3rem);
+  margin: 0; padding-left: 0; list-style: none; flex: none;
+}
+.ticker-run li {
+  display: flex; align-items: baseline; gap: 0.5rem; white-space: nowrap;
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-light-mute);
+}
+/* The same dash the eyebrows carry, so the ribbon reads as part of the
+   labelling system rather than as a widget. */
+.ticker-run li::before {
+  content: ''; width: 1.25rem; height: 1px; flex: none;
+  background: var(--mark-ink); opacity: 0.9;
+  align-self: center;
+}
+.ticker-run li span { color: var(--on-light); }
+.ticker-foot {
+  display: flex; align-items: baseline; gap: 0.85rem; flex-wrap: wrap;
+  margin: 0.95rem 0 0;
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-light-mute);
+}
+/* It sits in a `.light` section today, and it sets explicit colours, so by the
+   rule that any element naming its own colours must name them on every ground
+   it can land on, here are the deep-ombre values. Same pairs the eyebrows use. */
+.dark .ticker-run li,
+.rail-sec .ticker-run li,
+.dark .ticker-foot,
+.rail-sec .ticker-foot { color: var(--on-dark-mute); }
+.dark .ticker-run li span,
+.rail-sec .ticker-run li span { color: var(--on-dark); }
+.dark .ticker-run li::before,
+.rail-sec .ticker-run li::before { background: var(--mark); }
+
+@keyframes mTicker { to { transform: translate3d(-100%, 0, 0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 64s for 24 names is about 2.7s a name — slow enough to read one in
+     passing, which is the point of putting real client names on a ribbon
+     rather than a row of shapes. */
+  .ticker-run { animation: mTicker 64s linear infinite; }
+  /* Stop it under the pointer. A moving line of text you are trying to read
+     is the one place a marquee turns hostile. */
+  .ticker:hover .ticker-run,
+  .ticker:focus-within .ticker-run { animation-play-state: paused; }
+}
+/* Under reduced motion the runs simply sit still and the mask clips them —
+   the first several names stay legible, and the count and the gallery link
+   below carry the rest. Nothing is stranded. */
+
+/* -------------------------------- the sweep ------------------------------
+   Their `--sweep-pos`, driven by scroll position instead of by a timer, so
+   the light rakes across a panel as you pass it rather than pulsing at it.
+
+   Where it is allowed to go is constrained by two existing rules. It never
+   goes on a photograph — `.surface::after` is the light wash and it sits at
+   z-index 2, BELOW `.surface > img` at 4, precisely so a moving highlight
+   lands on a drawn material and not on someone's photograph.
+
+   That rule is why this ends up on exactly ONE object. The roomdex rows were
+   tried and dropped: `.rdx-swatch` is a `.surface` carrying a project
+   photograph, and because it isolates, an overlay on the row above it paints
+   straight over the picture. `.panel` was in the list behind a
+   `:not(.surface)` guard until the templates were checked — the only `.panel`
+   on the site is `class="surface s-slat panel"`, so the guard excluded the
+   sole match and the selector was dead. It is gone rather than left in
+   looking load-bearing.
+
+   So: `.review`, and nothing else. It is the right one anyway — it is already
+   the site's one sanctioned gradient-bearing object, so a moving highlight is
+   the same idea it is already built on. And on `.review`,
+   whose text is scored against the deepest stop of its gradient, the sweep
+   only ever ADDS white — it raises the local luminance under dark text, so it
+   moves contrast the safe way. It cannot lower any measured pair.
+
+   This is the one thing in this file that repaints a gradient per frame
+   rather than moving a compositor layer. Thirteen review cards on one page is
+   the whole budget for it. Do not spread it. */
+@property --sweep-pos {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -30%;
+}
+@keyframes mSweep { from { --sweep-pos: -30%; } to { --sweep-pos: 130%; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .review { position: relative; }
+    .review::after {
+      content: ''; position: absolute; inset: 0;
+      pointer-events: none; z-index: 6;
+      background: linear-gradient(100deg,
+        transparent calc(var(--sweep-pos) - 20%),
+        rgba(255, 255, 255, 0.40) var(--sweep-pos),
+        transparent calc(var(--sweep-pos) + 20%));
+      animation: mSweep linear both;
+      animation-timeline: --box;
+      animation-range: entry 28% cover 72%;
+    }
+  }
+}
+
+/* --------------------------------- the glow ------------------------------
+   Their `glow-fade-in`, on the one block that is asking for an action. It is
+   NEUTRAL, not tinted: the accent is the client's blue and CLAUDE.md is
+   explicit that it is not to be spent on decoration, so this is a white bloom
+   in the band's own light. It sits at z-index 2 under `.cta-band .wrap` at 3,
+   and being white under dark text it raises contrast rather than lowering it. */
+@keyframes mGlow { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cta-band::after {
+      content: ''; position: absolute; inset: -30% -12% auto -12%; height: 150%;
+      background: radial-gradient(44% 56% at 50% 8%,
+        rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.24) 46%, transparent 72%);
+      pointer-events: none; z-index: 2; opacity: 0;
+      animation: mGlow linear both;
+      animation-timeline: --cta;
+      animation-range: entry 8% cover 55%;
+    }
+  }
+}
+
+/* ------------------------------ photo parallax ---------------------------
+   The hero banner has drifted against its frame since `mWall`. This gives
+   every other photograph on the site the same depth, on the same mechanism:
+   the surface's enclosing box publishes `--box`, the image borrows it.
+
+   Both endpoints are FAIL-SAFE, which is the whole reason for the numbers.
+   At scale 1.14 there is 7% of overflow on each edge against a 5% end
+   translate, so the frame is fully covered at every point in the range — and
+   also at the start state, which is what an unresolved or inactive timeline
+   holds. A dead timeline here costs a little depth; it can never uncover an
+   edge or strand an image.
+
+   `.fam-surface` and `.choreo-surface` are excluded on purpose: the first
+   lives in a horizontally-scrolling rail where vertical drift means nothing,
+   and the second already animates its own size on the `--choreo` timeline. */
+@keyframes mPara {
+  from { transform: translate3d(0, -5%, 0) scale(1.14); }
+  to   { transform: translate3d(0,  5%, 0) scale(1.14); }
+}
+
+@media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .card-surface > img,
+    .gal-surface > img,
+    .note-surface > img,
+    .rdx-swatch > img,
+    .pd-hero > img {
+      animation: mPara linear both;
+      animation-timeline: --box;
+      animation-range: cover 0% cover 100%;
+      /* NO `will-change` here. It was set once and measured: the projects page
+         matches 180 of these, and will-change would promote all 180
+         photographs to their own compositor layer at once. A scroll-driven
+         transform is composited anyway, so the hint bought nothing and cost
+         memory on the longest page on the site. The micro-motion section at
+         the top of this file resets `will-change: auto` for the same reason. */
+    }
+    /* `.gal-item:hover > .gal-surface > img` scales the IMAGE, and an
+       animation beats a transition on the same property — so the gallery's
+       hover would silently stop working. Move that hover onto the frame,
+       where the card and family panels already put theirs. */
+    .gal-item:hover > .gal-surface > img { transform: none; }
+    .gal-surface { transition: transform 240ms var(--ease); }
+    .gal-item:hover > .gal-surface { transform: scale(1.035); }
+  }
+}
+
+/* ------------------------- the two orphaned words ------------------------
+   `line` and `tile` were both defined in the vocabulary above and never used
+   by a single template — dead motion. `tile` now belongs to the project
+   gallery, which is what its own comment said it was for. `line` is wired up
+   here instead of through an attribute, because the thing it should draw is
+   already a pseudo-element: the 2.25rem dash every eyebrow on the site
+   carries. That is one rule for roughly fifty call sites.
+
+   The attribute selector is doing real work. `.eyebrow[data-anim]` matches
+   only eyebrows that are themselves scroll-revealed, which excludes the two
+   that are not: the hero's and the page-head's, both of which are animated on
+   LOAD by `mHeroIn` and sit inside `overflow: hidden` boxes where this could
+   not resolve anyway. Widen this selector and those two dashes disappear. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .eyebrow[data-anim]::before {
+      transform-origin: 0 50%;
+      animation: mLine linear both;
+      animation-timeline: --box;
+      animation-range: entry 30% cover 58%;
+    }
+  }
+}
+
+/* ------------------------------- the NRC bar -----------------------------
+   The signature, and the one place on the site where a bar states a measured
+   proportion. Drawing the absorbed run left to right as you arrive is the
+   reading the component already wants: filled = absorbed, empty = what comes
+   back off the wall.
+
+   `scaleX` on the fill, NOT `width` — the width is `var(--v)` from the data
+   and animating it would be a layout pass per frame on up to nineteen cards.
+   The transform scales the fill inside the width the figure sets, so the
+   published number is still what determines where the bar ends.
+
+   If this ever renders empty, the cause is `--box` failing to resolve, and
+   the bar would then be understating a real published figure. That is the one
+   fail-unsafe animation on the site, which is why the range closes early — by
+   cover 52% the bar is full and stays full for the rest of the scroll. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .nrc-track > i {
+      transform-origin: 0 50%;
+      animation: mLine linear both;
+      animation-timeline: --box;
+      animation-range: entry 32% cover 52%;
+    }
+  }
+}
+
+/* =========================================================================
+   A SECOND SCROLL PASS
+   ---------------------------------------------------------------------------
+   Five places that still had no scroll motion at all. Each one is transform
+   and opacity only, and none of them fades anything while it is being read —
+   see the `mDrift` note in the hero section, where a drift to opacity 0.25
+   ghosted out the spec figures at exactly the scroll position a reader
+   arrives at them. That is the failure mode to design against here.
+   ========================================================================= */
+
+/* ------------------------ 1. the diptych photographs ---------------------
+   The two largest photographs on the homepage were the only ones left out of
+   `mPara`, and for a real reason: `.dip:hover .dip-surface img` scales the
+   IMAGE, and an animation beats a transition on the same property, so adding
+   parallax would have silently killed the hover.
+
+   Same fix the gallery got — the hover moves to the frame. `.dip-surface` is
+   the clipping box at `inset: 0`, and `.dip` is itself `overflow: hidden`, so
+   scaling the frame is clipped by the panel exactly as scaling the image was. */
+@media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .dip:hover .dip-surface img { transform: none; }
+    .dip-surface { transition: transform 900ms var(--ease); }
+    .dip:hover .dip-surface { transform: scale(1.03); }
+    .dip-surface img {
+      animation: mPara linear both;
+      animation-timeline: --box;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+/* ---------------------- 2. inner page heads drift away -------------------
+   The hero's copy drifts up and dims as you leave it; the seven inner page
+   heads landed on load and then sat still. This gives them the same exit.
+
+   It is on `.page-head .wrap`, not on its children: those already carry the
+   `mHeroIn` load animation and a second `animation` shorthand on the same
+   element would replace it.
+
+   THERE IS NO OPACITY IN THIS ONE, AND THAT IS A MEASURED DECISION.
+
+   It was written as a fade first, to match the hero. At a 0.45 floor the head
+   measured 0.478 opacity at 400px of scroll while 135px of it was still on
+   screen. Delaying the fade to `exit 20%` and raising the floor to 0.6 fixed
+   the timing but not the arithmetic — text at 0.6 alpha composites toward its
+   own ground, and against `--ombre-light`'s deepest stop `#C2CCD8` that
+   measures:
+
+     h1      96px   10.99:1 -> 3.93:1   passes, but only on the large-text allowance
+     lead    20px    5.37:1 -> 2.50:1   FAILS 4.5
+     eyebrow 13px    5.37:1 -> 2.50:1   FAILS 4.5
+
+   An opacity fade is a contrast change wearing a costume: it cannot be
+   verified by the DOM walker, which reads declared colours and never sees the
+   composite. So the fade is gone and the drift stays. A transform cannot move
+   a contrast ratio, so this animation is free.
+
+   (The hero's `mDrift` does fade its copy, to 0.25, and the same arithmetic
+   applies to it. That one is pre-existing, deliberate and documented — the
+   hero is content you have already left, and it is excluded from the
+   automated sweep and verified separately. It is not a precedent for
+   introducing a fade anywhere new.) */
+@keyframes mHeadOut {
+  from { transform: none; }
+  to   { transform: translate3d(0, -12%, 0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .page-head .wrap {
+      animation: mHeadOut linear both;
+      animation-timeline: --phead;
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+
+/* ------------------------ 3. the vertical rail labels --------------------
+   "ROOMS", "WORK", "METHOD" — the rotated labels down the left rail. They
+   were the one piece of the section furniture that never moved.
+
+   The base transform is `rotate(90deg) translateX(0.1rem) translateY(-0.62rem)`
+   with `transform-origin: 0 0`, so the entry translate is PREPENDED. Order is
+   load-bearing: after the rotate, a translate moves along the rotated axis, so
+   the same value appended would slide the label sideways across the rule
+   instead of up along it. And the rest of the base transform has to be
+   repeated verbatim in both keyframes — an animation replaces the property,
+   it does not add to it, so dropping the tail would un-rotate the label.
+
+   Resting opacity is 0.5, not 1, which is why the keyframe ends there. */
+@keyframes mLabel {
+  from { opacity: 0;
+         transform: translateY(1.6rem) rotate(90deg) translateX(0.1rem) translateY(-0.62rem); }
+  to   { opacity: 0.5;
+         transform: rotate(90deg) translateX(0.1rem) translateY(-0.62rem); }
+}
+
+@media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .rail-label {
+      animation: mLabel var(--m-in) both;
+      animation-timeline: --box;
+      animation-range: entry 20% entry 95%;
+    }
+  }
+}
+
+/* ----------------------- 4. the statement drifts slowly ------------------
+   The one section that is a single sentence at h1 size. Its heading already
+   arrives on `reveal`; this is the block continuing to move after it has
+   arrived, so the largest type on the page is not the stillest thing on it.
+
+   TRANSFORM ONLY. No opacity anywhere in this one. It is mid-page, so it is
+   on screen and being read for its entire range — the hero can afford to dim
+   because you have already left it, and this cannot. ±26px across the whole
+   pass, which is slow enough to read as depth rather than as movement.
+
+   It goes on `.statement .wrap`, whose children carry their own reveals; a
+   transform on the parent composes with those, and `.wrap` is not a scroll
+   container, so the children's own `view()` timelines still resolve. */
+@keyframes mSettle {
+  from { transform: translate3d(0,  26px, 0); }
+  to   { transform: translate3d(0, -26px, 0); }
+}
+
+@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .statement .wrap {
+      animation: mSettle linear both;
+      animation-timeline: --box;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+/* --------------------- 5. the gallery captions, a beat later -------------
+   `.gal-item` arrives on `tile`. The caption inside it arrived at the same
+   instant, so a project's picture and its name were one event. This gives the
+   name its own beat just after the frame settles — the caption of a
+   photograph, not part of the photograph.
+
+   It takes `--box` because `.gal-item` is `overflow: hidden`; `view()` on
+   anything inside it would never advance. The range starts after `tile`'s
+   ends (`cover 30%` at worst) so the two never overlap. */
+@keyframes mCap { from { opacity: 0; transform: translate3d(0, 14px, 0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .gal-cap {
+      animation: mCap var(--m-in) both;
+      animation-timeline: --box;
+      animation-range: entry 45% cover 40%;
+    }
+  }
+}
+
+
+/* =========================================================================
+   HOVER IS FOR DEVICES THAT HOVER
+   ---------------------------------------------------------------------------
+   The reasoning was already written on `.review` above, and then applied to
+   `.review` alone: unscoped, a tap on a phone latches `:hover` and the element
+   stays in its hovered state until you tap something else. Eighteen other
+   rules on this site move something on hover and none of them were scoped, so
+   on a phone a tapped card stays lifted, a tapped panel stays zoomed and a
+   tapped link keeps its underline after you have navigated away and come back.
+
+   This resets the MOVEMENT only. Colour, border and shadow feedback stays —
+   those do not read as broken when they persist, and dropping them would take
+   away the only confirmation a tap got through. Same division the
+   reduced-motion variant of `.review` makes.
+
+   One block rather than eighteen relocated rules: moving them into a gated
+   block would reorder the cascade in a 2200-line stylesheet, and several of
+   these share a selector list with a non-hover state (`.nav a:hover::after`
+   sits with `[aria-current="page"]::after`, which must keep its underline).
+   A reset at the end of the last-loaded file cannot disturb either.
+
+   IT HAS TO BE THIS FILE, and that was a live bug for one revision. The block
+   was written at the end of `site.css` first, which reads correctly and is
+   wrong: the shell links `site.css` and then `motion.css`, and five of these
+   hover rules live in `motion.css` — `.fam:hover`, `.fam:hover .btn-arrow`,
+   `a.card:hover .card-surface, .fam:hover .fam-surface`,
+   `.gal-item:hover > .gal-surface` and `.dip:hover .dip-surface`. At equal
+   specificity the later sheet wins, so the five product-family and gallery
+   hovers went on latching on touch while the other thirteen were fixed. If
+   this block ever moves back, check the link order in `src/build.js` first.
+
+   The gate is `(hover: hover) and (pointer: fine)`, so its complement is
+   `(hover: none), (pointer: coarse)` — a laptop with a touchscreen keeps its
+   hovers, because its primary pointer is still the mouse. */
+@media (hover: none), (pointer: coarse) {
+  .btn:hover,
+  .btn:hover .btn-arrow,
+  .btn-ghost:hover::before,
+  .nav a:hover::after,
+  .tlink:hover::after,
+  .tlink:hover .btn-arrow,
+  a.card:hover .btn-arrow,
+  a.card:hover .card-surface,
+  .sector:hover,
+  .fam:hover,
+  .fam:hover .btn-arrow,
+  .fam:hover .fam-surface,
+  .gal-item:hover > .gal-surface,
+  .gal-item:hover > .gal-surface > img,
+  .dip:hover .dip-surface,
+  .dip:hover .dip-surface img,
+  .dip:hover .btn-arrow,
+  .rdx > a:hover .rdx-swatch,
+  .note > a:hover .btn-arrow {
+    transform: none;
+  }
+  /* `.tlink`'s underline fades as well as draws, so resetting the transform
+     alone would leave a full-opacity zero-width rule behind. */
+  .tlink:hover::after { opacity: 0; }
 }

@@ -37,6 +37,35 @@ cards, detail pages, filters, counts and the sitemap all follow automatically.
 
 ## Non-obvious things that will bite you
 
+**The motion vocabulary is seven words, and two of them were dead.** `fade`,
+`rise`, `reveal`, `frame`, `line`, `tile` and the `slide-l` / `slide-r` pair.
+`line` and `tile` were defined in `motion.css` and referenced by *zero*
+templates — dead motion that read as a complete system. `tile` now belongs to
+the project gallery, which is what its own comment always said it was for.
+`line` is wired through CSS rather than an attribute, because the thing it
+draws is already a pseudo-element: the 2.25rem dash every eyebrow carries, so
+one rule covers ~50 call sites. That rule is `.eyebrow[data-anim]::before`
+and the attribute selector is load-bearing — it matches only eyebrows that are
+themselves scroll-revealed, which excludes the hero's and the page-head's,
+both animated on *load* by `mHeroIn` and both inside `overflow: hidden` boxes
+where it could not resolve anyway. Widen that selector and those two dashes
+vanish.
+
+**The ambient layer is ported from replit.com, read off their stylesheets.**
+What they actually run is a `LogoBlock__scroll` logo marquee, a
+`--sweep-pos` light sweep, a `glow-fade-in` bloom, a `steps(1)` typing caret,
+a sticky header and a sticky bottom CTA. The lesson from that list is the
+opposite of how it looks: **their entrance travels are tiny — 4px, 16px,
+20px.** What makes their page feel alive is continuous ambient motion, not
+large scroll reveals. So the marquee, the sweep and the glow are ported and
+the reveals were not made to imitate theirs. Two of the six are deliberately
+not ported: the caret has nothing to type on this site, and the sticky bottom
+CTA is a layout and consent decision rather than a motion one. Their
+below-fold reveals are rAF-driven, which is why every scrolled screenshot of
+replit.com taken during that pass came back blank — no paint, no rAF, no
+reveal, no content. This site's CSS-first path is what avoids that. Do not
+move it back onto JavaScript.
+
 **Animation gates visibility, and there are two engines doing it.** Chrome,
 Edge and Safari 26 run the reveals entirely in CSS via `animation-timeline:
 view()` — `motion.js` is not involved at all. Firefox has no support, so
@@ -55,6 +84,79 @@ document.querySelectorAll('[data-anim]').forEach(e => {
                      'transform:none!important;clip-path:none!important;';
 });
 ```
+
+**Hover motion is gated once, at the end of `motion.css`, and it has to stay
+there.** Unscoped `:hover` latches on touch — a tapped card stays lifted until
+you tap elsewhere. `.review` was the only component scoped for it; the other
+eighteen moving hover rules were not. They are now neutralised together by one
+`@media (hover: none), (pointer: coarse)` block that resets `transform` only,
+leaving colour, border and shadow feedback intact — the same division
+`.review`'s reduced-motion variant already made.
+
+That block must live in **`motion.css`**, not `site.css`. The shell links
+`site.css` first, so a reset at the end of `site.css` loses at equal
+specificity to the five hover rules that live in `motion.css` — `.fam:hover`,
+`.fam:hover .btn-arrow`, `a.card:hover .card-surface, .fam:hover
+.fam-surface`, `.gal-item:hover > .gal-surface` and `.dip:hover
+.dip-surface`. That was a real one-revision bug: thirteen hovers fixed, five
+still latching. Verify by walking the CSSOM for `:hover` rules with a
+non-`none` transform and checking none of them sorts after the reset.
+
+Related: **no `transition: all` on this site.** `.filter` had it, which meant
+`aria-pressed` state changes and any future property joined the same 200ms —
+including layout properties. Name the properties.
+
+**An opacity fade is a contrast change wearing a costume, and the walker
+cannot see it.** The DOM walker reads *declared* colours; it never sees what
+text at `opacity: 0.6` actually composites to. A scroll fade was written for
+the inner page heads to match the hero and had to be removed: at a 0.6 floor
+over `--ombre-light`'s deepest stop `#C2CCD8`, the h1 went 10.99:1 → 3.93:1
+(passing only on the large-text allowance) and the lead and eyebrow both went
+5.37:1 → **2.50:1**, well under the floor, while the head was still on screen.
+`.page-head .wrap` therefore drifts on transform only. Before adding a fade
+anywhere, composite the text against its ground at the floor alpha and score
+it — and note that the hero's `mDrift` to 0.25 is *not* a precedent for it:
+that one is pre-existing, deliberate, on content you have already left, and
+excluded from the automated sweep.
+
+**`--box` is the timeline that gets around `overflow: hidden`.** Most of the
+newer motion animates something *inside* a clipped box — a photograph inside
+`.surface`, the dash inside `.dip`. `view()` cannot resolve there (see the
+`overflow: hidden` note below), so the enclosing box publishes a named
+timeline and the descendant borrows it, exactly as the hero does with
+`--hero`. `--box` is published on `section, footer, .card, .gal-item, .rdx,
+.note, .dip, .pd-hero, .panel, .review` and found by nearest ancestor, so a
+consumer in a card gets the card's pass through the viewport and a loose one
+gets the section's. Sections that already publish a name take `--box` as a
+second entry in the list (`view-timeline-name: --rail, --box`) rather than
+losing the first — drop that second entry and the dashes and bars inside
+`.rail-sec`, `.page-head` and `.cta-band` silently stop.
+
+**The NRC bar is the one fail-UNSAFE animation on the site.** Everything else
+degrades to "visible and static". The bar's fill draws with `scaleX(0 → 1)`
+on `--box`, so if that timeline ever fails to resolve, the fill holds
+`scaleX(0)` and the bar renders EMPTY — understating a real published
+absorption figure, which is a content error, not a visual one. It is
+`scaleX` and not `width` because `width` is `var(--v)` from the data and
+animating it would be a layout pass per frame on up to nineteen cards; the
+transform scales the fill inside the width the figure sets, so the published
+number still decides where the bar ends. The range closes early (`cover 52%`)
+so the bar is full and stays full for most of the scroll. If you touch
+`--box`, re-check the bars on `products.html` and a product detail page
+specifically — 13 on the first, 4 on the second, all of which must reach
+`matrix(1, 0, 0, 1, 0, 0)`.
+
+**Verifying any of this from the browser pane needs paint between the scroll
+and the read.** Two separate traps, on top of the pinned-section one below.
+`scroll-behavior` is smooth and rAF is starved in a non-painting pane, so
+`window.scrollTo(0, y)` crawls a few pixels and every probe reads the top of
+the page — set `document.documentElement.style.scrollBehavior = 'auto'` and
+pass `behavior: 'instant'`. And a scroll-driven animation is not re-sampled
+until the pane paints, so scrolling and reading `getComputedStyle` in the
+*same* `javascript_tool` call returns stale values. It reported three of four
+NRC bars stuck at zero during this pass, which was the probe, not the CSS.
+The sequence that works is: scroll → screenshot → read, as three separate
+calls.
 
 **Scroll reveal is deliberately fail-safe.** Nothing in the stylesheet hides
 content on its own. The hidden state comes from `html.io`, which the inline
@@ -411,6 +513,17 @@ every stop. The walker already parses `background-image` stops and scores
 against the worst, so this is verifiable rather than a matter of taste — but
 only if you actually run it.
 
+`.review` now also carries the scroll-driven **sweep** ported from
+replit.com — a narrow white band raked across it by `--sweep-pos` on the
+`--box` timeline. It is safe on top of the figures above for one reason worth
+stating: it only ever *adds* white under dark text, so it raises the local
+luminance and moves every measured pair the safe way. It cannot lower one. A
+sweep that darkened, or one on light text, would have to be scored frame by
+frame. It is also the only thing in `motion.css` that repaints a gradient per
+frame rather than moving a compositor layer, which is why it is on exactly one
+selector. Do not spread it — and if you do, read the note beside it first,
+because `.panel` and the roomdex rows were both tried and both removed.
+
 - All emphasis is a step in lightness or width, never a change in hue.
 - A fixed 3% film grain sits over the viewport (`body::after`). It is what
   stops the large flat ground reading as screen fill. Removing it flattens
@@ -420,9 +533,21 @@ only if you actually run it.
 **Section shapes are deliberately varied.** The page used to be one shape
 repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
 family rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
-`.cat-grid`, `.notes`, and the pinned `.choreo` scroll choreography. Reach
-for an existing shape before adding a grid of equal cards — two of the three
-most recent fixes were removing one.
+`.cat-grid`, `.notes`, the `.ticker` ribbon, and the pinned `.choreo` scroll
+choreography. Reach for an existing shape before adding a grid of equal cards
+— two of the three most recent fixes were removing one.
+
+**`.ticker` carries real client names, and its count is computed.** It is a
+port of replit.com's `LogoBlock` marquee (see the motion section): two
+identical runs in a flex track, each translating -100% of its own width, so
+the loop is seamless with no JS measurement. Theirs carries customer logos.
+We have no logo assets and inventing them is out of the question, so it
+carries 24 of the client's own `PROJECTS` names and cities, with the real
+total beside it counted from the data. Never type that figure. The edge mask
+lives on `.ticker-rail`, NOT on `.ticker` — it was on the outer block first
+and faded the footer line along with the ribbon, rendering "170 rooms
+finished" as "70 rooms finished". Anything carrying a number stays outside
+the masked box.
 
 **`.roomdex` is shared, and its counts are computed.** The ten room types
 appear on both the homepage and the projects page from one `roomdex()`

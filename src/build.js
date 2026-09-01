@@ -205,6 +205,35 @@ const nrcBar = (p, cls = '') => {
   </div>`;
 };
 
+/* --------------------------------- the ticker ----------------------------
+   A port of replit.com's `LogoBlock__scroll` marquee: two identical runs side
+   by side in a flex track, each translating -100% of its own width, so the
+   loop is seamless without a JS measurement step.
+
+   Theirs carries customer logos. We have no logo assets and inventing them is
+   out of the question, so it carries what the client does publish — the names
+   and cities of rooms they have finished, read out of PROJECTS. The slice is
+   24 of 170; the count beside it is the real total, computed, and it links to
+   the gallery where all of them are listed.
+
+   `aria-hidden` on the track is deliberate: it is a decorative repetition of
+   content that the projects page presents properly, and a screen reader
+   reading 48 names twice would be noise, not information. */
+const TICK_N = 24;
+const ticker = (base = '') => {
+  const run = PROJECTS.slice(0, TICK_N)
+    .map(p => `<li><span>${esc(p.n)}</span>${esc(p.l)}</li>`).join('');
+  return `<div class="ticker" data-anim="fade">
+      <div class="ticker-rail" aria-hidden="true">
+        <div class="ticker-track">
+          <ul class="ticker-run">${run}</ul>
+          <ul class="ticker-run">${run}</ul>
+        </div>
+      </div>
+      <p class="ticker-foot">${PROJECTS.length} rooms finished <a class="tlink" href="${base}projects.html">See the gallery ${ARROW}</a></p>
+    </div>`;
+};
+
 /* ------------------------------ the room index ---------------------------
    Ten room types as an index rather than a grid of ten equal cards. Each row
    carries the number of projects actually completed in that room type —
@@ -310,4 +339,4 @@ const ctaBand = (up = '') => `<section class="cta-band">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf, roomdex };
+module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf, roomdex, ticker };

@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
+const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex, ticker } = B;
 
 const built = [];
 
@@ -94,7 +94,7 @@ built.push(page({
     </div>
   </div>
   <div class="diptych">
-  <a class="dip" href="products.html#panels" data-anim="fade">
+  <a class="dip" href="products.html#panels" data-anim="slide-l">
     <div class="dip-surface" aria-hidden="true">
       <img src="assets/img/projects/88-pictures-mumbai.webp" alt=""
            width="760" height="570" loading="lazy" decoding="async">
@@ -106,7 +106,7 @@ built.push(page({
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
-  <a class="dip" href="products.html#proof" data-anim="fade">
+  <a class="dip" href="products.html#proof" data-anim="slide-r">
     <div class="dip-surface" aria-hidden="true">
       <img src="assets/img/projects/action-voice-studio-khar-mumbai.webp" alt=""
            width="760" height="570" loading="lazy" decoding="async">
@@ -177,8 +177,9 @@ ${choreoBand()}
       <h2 data-anim="reveal">Rooms we have finished.</h2>
       <p class="lead" data-anim="fade">Auditoriums and broadcast studios, corporate floors and classrooms — across Mumbai, Maharashtra and the rest of India.</p>
     </div>
+    ${ticker()}
     <div class="gal" data-stagger>
-      ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="rise">
+      ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="tile">
         <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
@@ -386,7 +387,7 @@ built.push(page({
     </div>
 
     <div class="gal" id="gal" data-stagger>
-      ${PROJECTS.map(pr => `<article class="gal-item" data-anim="rise" data-sector="${esc(pr.sec)}">
+      ${PROJECTS.map(pr => `<article class="gal-item" data-anim="tile" data-sector="${esc(pr.sec)}">
         <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>
