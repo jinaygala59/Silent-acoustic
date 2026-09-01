@@ -113,7 +113,6 @@ function footer(depth) {
       </div>
       <div class="foot-bar">
         <span>&copy; ${new Date().getFullYear()} ${SITE.name}</span>
-        <span>${SITE.hours}</span>
         <span>Mumbai, India</span>
       </div>
     </div>
@@ -223,7 +222,7 @@ const roomdex = (base = 'projects.html') => `<ol class="roomdex" data-stagger="l
         <span class="rdx-n" aria-hidden="true"></span>
         <span class="rdx-name">${esc(s.name)}</span>
         <span class="rdx-note">${esc(s.note)}</span>
-        <span class="rdx-count">${n}<small> ${n === 1 ? 'room' : 'rooms'}</small></span>
+        <span class="rdx-count">${n}<small> photographed</small></span>
         <span class="rdx-target">${esc(s.metric)}</span>
       </a></li>`;
       }).join('\n      ')}

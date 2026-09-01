@@ -39,7 +39,7 @@ const choreoBand = () => {
         <figcaption><b>${esc(pr.n)}</b>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</figcaption>
       </figure>`).join('\n      ')}
     </div>
-    <p class="choreo-foot"><a class="tlink" href="projects.html">All ${PROJECTS.length} projects ${ARROW}</a></p>
+    <p class="choreo-foot"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
   </div>
 </section>`;
 };
@@ -173,7 +173,7 @@ ${choreoBand()}
   <div class="wrap">
     <span class="rail-label">Work</span>
     <div class="section-head stack">
-      <p class="eyebrow" data-anim="fade">${PROJECTS.length} completed installations</p>
+      <p class="eyebrow" data-anim="fade">${SITE.projectsCompleted} projects completed</p>
       <h2 data-anim="reveal">Rooms we have finished.</h2>
       <p class="lead" data-anim="fade">Auditoriums and broadcast studios, corporate floors and classrooms — across Mumbai, Maharashtra and the rest of India.</p>
     </div>
@@ -188,7 +188,7 @@ ${choreoBand()}
         </div>
       </article>`).join('\n      ')}
     </div>
-    <p class="mt-l" data-anim="fade"><a class="tlink" href="projects.html">All ${PROJECTS.length} projects ${ARROW}</a></p>
+    <p class="mt-l" data-anim="fade"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
   </div>
 </section>
 
@@ -348,7 +348,7 @@ built.push(page({
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Selected work</p>
     <h1 data-in style="--d:170">Projects</h1>
-    <p class="lead" data-in style="--d:280">${PROJECTS.length} completed installations across ten room types — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.</p>
+    <p class="lead" data-in style="--d:280">${SITE.projectsCompleted} completed installations across ten room types, ${PROJECTS.length} of them photographed here — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.</p>
   </div>
 </section>
 
@@ -371,7 +371,7 @@ built.push(page({
     <span class="rail-label">Gallery</span>
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-anim="fade">${PROJECTS.length} completed installations</p>
+        <p class="eyebrow" data-anim="fade">${PROJECTS.length} rooms photographed</p>
         <h2 data-anim="reveal">Rooms we have finished.</h2>
       </div>
       <p class="lead" data-anim="fade">Auditoriums, broadcast studios, corporate floors, schools and homes — across Mumbai, Maharashtra and the rest of India. Filter by room type, or ask us for a reference in your sector.</p>
@@ -648,7 +648,6 @@ built.push(page({
             <li><span class="k">General enquiries</span><a class="v" href="mailto:${SITE.email}">${SITE.email}</a></li>
             <li><span class="k">Drawings &amp; tenders</span><a class="v" href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a></li>
             <li><span class="k">Office &amp; works</span><span class="v" style="display:block;line-height:1.55">${SITE.addr1}<br>${SITE.addr2}<br>${SITE.addr3}</span></li>
-            <li><span class="k">Hours</span><span class="v">${SITE.hours}</span></li>
           </ul>
           <div class="row" style="margin-top:1.75rem">
             <a class="btn btn-primary" href="${SITE.waHref}" rel="noopener">WhatsApp us ${ARROW}</a>

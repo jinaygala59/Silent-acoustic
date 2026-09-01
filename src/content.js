@@ -15,7 +15,16 @@ const SITE = {
   addr1: '501, 5th Floor, Ijmima Complex',
   addr2: 'Behind Infinity Mall, Malad, Mindspace, Malad West',
   addr3: 'Mumbai, Maharashtra 400064',
-  hours: 'Mon–Sat, 10:00–19:00 IST',
+  /* NO OPENING HOURS. They were 'Mon–Sat, 10:00–19:00 IST' and were invented:
+     the live site publishes email, phone and address in its footer and states
+     opening hours nowhere. Verified against silenceacoustic.com. Do not put
+     them back without the client supplying them. */
+
+  /* The client's own published figure, from the About page: "2035+ successful
+     projects across India" / "2035+ completed projects across India".
+     PROJECTS.length is NOT this number — it is how many photographs are in
+     the gallery (170). Do not use one where the other belongs. */
+  projectsCompleted: '2035+',
 
   /* ---- CONTACT FORM: the one setting that makes enquiries arrive ----
      Paste either a Web3Forms access key (https://web3forms.com, free) or a
