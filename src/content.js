@@ -124,9 +124,12 @@ const PRODUCTS = [
     body: [
       'We print with UV-cured ink straight onto the PET face. There is no laminate film over the top, so the surface stays open and the absorption holds.',
       'Useful in the places where treatment and branding compete for the same wall: a reception, a training room, a clinic waiting area, a stadium concourse.',
-      'Supply artwork at 150 dpi at final size. We proof the layout across panel joints before printing so faces and text do not land on a seam.',
+      'Supply artwork at high resolution, sized to the finished wall. We proof the layout across panel joints before printing so faces and text do not land on a seam.',
     ],
-    specs: { ...PET, 'Printing': 'Direct UV, custom brand, photo or logo', 'Artwork': '150 dpi at final size' },
+    /* No 'Artwork: 150 dpi' row. The live product page says only "print any
+       high-resolution image" and states no resolution anywhere — the figure
+       was invented. Do not restore it without the client confirming a number. */
+    specs: { ...PET, 'Printing': 'Direct UV, custom brand, photo or logo' },
     apps: ['Receptions', 'Training rooms', 'Clinics', 'Retail', 'Sports venues'],
   },
   {
