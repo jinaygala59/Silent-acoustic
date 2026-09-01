@@ -301,7 +301,7 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
       <div class="rail-track">
         ${CATEGORIES.map((cat, i) => {
           const items = PRODUCTS.filter(p => p.cat === cat.id);
-          return `<a class="fam" data-mat="${MAT[cat.id] || 'pet'}" href="products.html#${cat.id}">
+          return `<a class="fam" data-anim="rise" data-mat="${MAT[cat.id] || 'pet'}" href="products.html#${cat.id}">
           <div class="fam-surface surface ${cat.surf}">
             <img src="assets/img/products/${cat.img}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
           </div>
@@ -313,7 +313,7 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
           </div>
         </a>`;
         }).join('\n        ')}
-        <a class="fam fam-all" href="products.html">
+        <a class="fam fam-all" data-anim="rise" href="products.html">
           <div class="fam-body">
             <span class="fam-n" style="color:inherit">The full catalogue</span>
             <h3>Every spec, in one place.</h3>

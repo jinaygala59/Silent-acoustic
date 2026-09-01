@@ -40,7 +40,7 @@ const choreoBand = () => {
       <h2 id="choreo-h">Four rooms,<br>one way of working.</h2>
     </div>
     <div class="choreo-stage">
-      ${picks.map((pr, i) => `<figure class="choreo-plate at-${at[i]}">
+      ${picks.map((pr, i) => `<figure class="choreo-plate at-${at[i]}" data-anim="rise">
         <div class="choreo-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
           <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
         </div>

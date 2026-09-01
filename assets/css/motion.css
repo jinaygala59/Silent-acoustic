@@ -979,17 +979,30 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
    lives in a horizontally-scrolling rail where vertical drift means nothing,
    and the second already animates its own size on the `--choreo` timeline. */
 @keyframes mPara {
-  from { transform: translate3d(0, -5%, 0) scale(1.14); }
-  to   { transform: translate3d(0,  5%, 0) scale(1.14); }
+  from { transform: translate3d(0, calc(var(--para-y) * -1), 0) scale(var(--para-s)); }
+  to   { transform: translate3d(0, var(--para-y), 0) scale(var(--para-s)); }
 }
 
-@media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+/* This was gated at 40rem, which meant a phone — the majority of the traffic —
+   got no parallax on any photograph on the site. There is no reason for that:
+   a scroll-linked transform is composited, and it costs a phone no more than
+   it costs a laptop. What a phone does need is a SMALLER figure. The overdraw
+   is the scale, and on a 375px-wide card a 1.14 scale is throwing away 14% of
+   a photograph that was already the smallest copy of it; the drift is also
+   proportionally more noticeable on a short viewport.
+
+   The two variables are set on the image itself, never inherited from a
+   parent — a custom property on an ancestor that a child's transform reads
+   recalculates styles for every child on every frame. */
+@media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .card-surface > img,
     .gal-surface > img,
     .note-surface > img,
     .rdx-swatch > img,
     .pd-hero > img {
+      --para-y: 3.5%;
+      --para-s: 1.09;
       animation: mPara linear both;
       animation-timeline: --box;
       animation-range: cover 0% cover 100%;
@@ -999,6 +1012,13 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
          transform is composited anyway, so the hint bought nothing and cost
          memory on the longest page on the site. The micro-motion section at
          the top of this file resets `will-change: auto` for the same reason. */
+    }
+    @media (min-width: 40rem) {
+      .card-surface > img,
+      .gal-surface > img,
+      .note-surface > img,
+      .rdx-swatch > img,
+      .pd-hero > img { --para-y: 5%; --para-s: 1.14; }
     }
     /* `.gal-item:hover > .gal-surface > img` scales the IMAGE, and an
        animation beats a transition on the same property — so the gallery's
@@ -1079,15 +1099,20 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
    Same fix the gallery got — the hover moves to the frame. `.dip-surface` is
    the clipping box at `inset: 0`, and `.dip` is itself `overflow: hidden`, so
    scaling the frame is clipped by the panel exactly as scaling the image was. */
-@media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .dip:hover .dip-surface img { transform: none; }
     .dip-surface { transition: transform 900ms var(--ease); }
     .dip:hover .dip-surface { transform: scale(1.03); }
     .dip-surface img {
+      --para-y: 3.5%;
+      --para-s: 1.09;
       animation: mPara linear both;
       animation-timeline: --box;
       animation-range: cover 0% cover 100%;
+    }
+    @media (min-width: 40rem) {
+      .dip-surface img { --para-y: 5%; --para-s: 1.14; }
     }
   }
 }
@@ -1182,17 +1207,22 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
    transform on the parent composes with those, and `.wrap` is not a scroll
    container, so the children's own `view()` timelines still resolve. */
 @keyframes mSettle {
-  from { transform: translate3d(0,  26px, 0); }
-  to   { transform: translate3d(0, -26px, 0); }
+  from { transform: translate3d(0,  var(--settle), 0); }
+  to   { transform: translate3d(0, calc(var(--settle) * -1), 0); }
 }
 
-@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+/* Also un-gated from 48rem. ±26px of drift across a 900px viewport is a
+   gentle depth cue; across an 812px phone it is the same distance over a
+   shorter pass, so it reads faster. ±16px there instead. */
+@media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .statement .wrap {
+      --settle: 16px;
       animation: mSettle linear both;
       animation-timeline: --box;
       animation-range: cover 0% cover 100%;
     }
+    @media (min-width: 48rem) { .statement .wrap { --settle: 26px; } }
   }
 }
 
@@ -1277,4 +1307,34 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
   /* `.tlink`'s underline fades as well as draws, so resetting the transform
      alone would leave a full-opacity zero-width rule behind. */
   .tlink:hover::after { opacity: 0; }
+}
+
+/* ------------------ the two set-pieces, on a phone -----------------------
+   `.fam` and `.choreo-plate` had no reveal at all, and the reason was
+   invisible from the markup: on a wide screen ALL of their motion comes from
+   their pins, so nobody noticed that below the pin breakpoint both sections
+   were completely static. A phone got a horizontal rail of six panels and a
+   2x2 grid of four photographs, neither of which moved.
+
+   `.fam` needs `--box` rather than the `view()` that `[data-anim]` sets up.
+   `.rail-viewport` is `overflow-x: auto` at every width — it is the snap rail
+   on a phone and the pinned track on a desktop — so it is a scroll container
+   either way, and a `view()` timeline inside one never advances. The panels
+   would hold their start state and read as SIX MISSING CARDS. The attribute
+   selector raises specificity above the base `[data-anim]` rule; the pin is
+   untouched by this because the pin animates `.rail-track`, the parent.
+
+   `.choreo-plate` needs no such override. It takes plain `[data-anim]`, and
+   above 48rem every property that rule sets — name, timeline and range — is
+   restated by the `.choreo-plate` / `.at-*` rules inside the pin block, which
+   are later in this file at equal specificity. Do not add a
+   `.choreo-plate[data-anim]` rule: at 0,2,0 it would outrank `.choreo-plate`
+   and steal the `--choreo` timeline off the pin. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .fam[data-anim] {
+      animation-timeline: --box;
+      animation-range: entry 12% cover 42%;
+    }
+  }
 }
