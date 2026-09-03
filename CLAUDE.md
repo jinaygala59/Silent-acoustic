@@ -236,6 +236,25 @@ replaced it is the same bug on the one saturated fill: see the `.fam-all` note
 in the design system section. Any element that sets its own background must
 name the colour of every piece of text inside it.
 
+**Never write a text colour in a `style` attribute — use `.muted`.** An inline
+style outranks every `.dark X` rule in the stylesheet, so a paragraph carrying
+`style="color:var(--on-light-mute)"` cannot be re-coloured for the dark ground
+by anything short of `!important`. Nine of these had accumulated in
+`src/pages.js`, seven of them inside `.dark` sections — including the three
+About paragraphs that carry the twenty-years copy. They rendered fine only
+because `.dark` was a *light* ombre at the time; they become invisible the
+moment it is not. `.muted` / `.dark .muted` (beside `.lead` in `site.css`) is
+the fix, and it mirrors `.lead` deliberately. Inline `font-size`, `max-width`
+and `margin` are fine — it is specifically colour that has to be overridable,
+for the same reason `.sub-h` exists for size.
+
+Two things make this class of bug survive review. The contrast walker skips
+`opacity: 0` elements, so below-fold text is invisible to it unless the
+reveals are forced off first (see the snippet in the contrast section). And
+grepping the built HTML for `class="dark"` under-reports which sections are
+affected, because `.rail-sec` takes the deep ground from its own rule rather
+than the class — measure `getComputedStyle(section).backgroundImage` instead.
+
 
 **The hero's spec rail spans the full width, and the sample band must not.**
 The band (`.hero-wall`) used to run the whole height of the hero, so the rail's
