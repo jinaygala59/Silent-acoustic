@@ -438,12 +438,12 @@ ${ctaBand()}`
 built.push(page({
   file: 'about.html', active: 'about.html',
   title: 'About Silence Acoustic — Acoustics, Mumbai',
-  desc: 'In acoustics since 2006. We manufacture acoustic material in our own facility in Mumbai and install it ourselves — supplier and installer in one company.',
+  desc: 'Twenty years in acoustics, since 2006. We manufacture acoustic material in our own facility and install it ourselves — supplier and installer in one company, with 2035+ projects completed across India.',
   body: `
 <section class="page-head">
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">About</p>
-    <h1 data-in style="--d:170">The panels are ours.<br>So is the ladder.</h1>
+    <h1 data-in style="--d:170">Twenty years in acoustics,<br>as both supplier and installer.</h1>
   </div>
 </section>
 
@@ -454,9 +454,9 @@ built.push(page({
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Since 2006</p>
         <h2 data-anim="reveal">Supplier and installer,<br>not one or the other.</h2>
-        <p style="color:var(--on-light-mute)">Silence Acoustic has been in acoustics since 2006, founded by an acoustician with more than two decades in soundproofing and room treatment. The pattern that started it is a familiar one: the consultant draws one thing, the supplier ships another, the contractor fits a third, and nobody owns whether the finished room actually sounds right.</p>
-        <p style="color:var(--on-light-mute)">So we hold both ends of it. We manufacture the material ourselves in Mumbai &mdash; CNC cutting, UV printing and assembly &mdash; so we are supplying our own product rather than reselling somebody else&rsquo;s stock, and a custom size or a cut pattern is a production decision rather than an import lead time. Then we fit it: our own crews across Mumbai and Maharashtra, certified installation teams elsewhere in India, all working to the same drawing.</p>
-        <p style="color:var(--on-light-mute)">Taking the material and the labour from one company is not merely tidier to administer. It is what puts the survey, the design target and the final measurement inside one set of books &mdash; so if a room misses, fixing it is our problem rather than a negotiation between two suppliers.</p>
+        <p style="color:var(--on-light-mute)">Silence Acoustic has worked in acoustics since 2006 &mdash; twenty years of soundproofing and room treatment, and more than 2,035 completed projects in that time. Auditoriums and broadcast studios, corporate floors, classrooms, hotels and home theatres, across Mumbai, Delhi, Bangalore, Chennai, Pune, Goa and Hyderabad.</p>
+        <p style="color:var(--on-light-mute)">We are the supplier. The material is made in our own facility rather than bought in and resold &mdash; CNC laser and router cutting, UV printing, assembly &mdash; so a custom size, a routed pattern or a printed face is a decision on our own production line rather than an import lead time. Nineteen products across five families, and the specification you are quoted is the one that gets manufactured.</p>
+        <p style="color:var(--on-light-mute)">And we are the installer. Our own crews across Mumbai and Maharashtra, certified installation teams elsewhere in India, all working to the same drawing and to your site timings &mdash; nights and weekends included &mdash; then staying on afterwards for support and maintenance. Twenty years of doing both halves is what puts the survey, the design target and the final measurement in one set of books: if a room misses, fixing it is our problem rather than a negotiation between two suppliers.</p>
       </div>
       <div>
         <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
