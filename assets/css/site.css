@@ -1738,14 +1738,25 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    doing. IT ONLY GUARANTEES THE BAND IT COVERS: move the copy, change the
    panel height, or add a sentence, and this needs re-measuring.
 
-   It has already been re-measured once, and the trigger was exactly that. The
-   stops were 0.03/34%, 0.35/48%, 0.90/60%, 0.985/72%, sized for a copy block
-   occupying 54-90% of the panel. A rewrite that added one sentence to each
-   panel pushed the block to 31-91%, which put the eyebrow at 31% on a 0.03
-   scrim and the h2 across 36-53% on roughly 0.2-0.4 — text sitting on the
-   photograph. The copy came back down and the ramp moved up to reach 0.93 by
-   46%, which covers the measured band with margin at the cost of some of the
-   picture. Verify with the canvas composite, not by eye. */
+   THE GUARANTEE, STATED: from 38% down the scrim is at or above 0.80, and
+   over a pure-black pixel that composites to luminance 0.577 — 4.99:1 against
+   `--on-light-mute`, the lightest text in the panel and the smallest. So any
+   photograph is safe for any copy that starts at 38% or below. The h2 sits
+   lower again on 0.87-0.97 and clears 12:1 on anything.
+
+   That is the second re-measure, and both were caused by the same thing. The
+   stops began at 0.03/34%, 0.35/48%, 0.90/60%, 0.985/72%, sized for a copy
+   block at 54-90%. A rewrite adding a sentence per panel pushed the block to
+   31-91%, putting the eyebrow on a 0.03 scrim. Shortening the copy and moving
+   the ramp to 0.93/46% got the block to 39-91% but still measured the panel-1
+   eyebrow at 3.86:1, because a dark monitor in that photograph sat directly
+   under it — a per-image failure, which is the kind this scrim exists to make
+   impossible. Hence the current ramp, which holds regardless of the picture.
+
+   The cost is the photograph: it is clear only to 24% and half-washed by 31%.
+   That was chosen over tuning `object-position` per image, which would make
+   every future photo swap a contrast negotiation. Verify with the canvas
+   composite, never by eye. */
 /* Explicit, non-negative layering. This used to be z-index -2, which worked
    while .dip-surface painted its own fill, and silently broke the moment it
    carried a photograph instead: .dip sets an opaque --ombre-light gradient, a
@@ -1762,8 +1773,9 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .dip::before {
   content: ''; position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.03) 0 26%, rgba(255, 255, 255, 0.42) 36%,
-    rgba(255, 255, 255, 0.93) 46%, rgba(255, 255, 255, 0.985) 56%);
+    rgba(255, 255, 255, 0.03) 0 24%, rgba(255, 255, 255, 0.50) 31%,
+    rgba(255, 255, 255, 0.80) 38%, rgba(255, 255, 255, 0.95) 47%,
+    rgba(255, 255, 255, 0.985) 55%);
   transition: opacity 420ms var(--ease);
 }
 .dip-body { position: relative; z-index: 2; }

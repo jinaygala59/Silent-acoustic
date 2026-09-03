@@ -108,13 +108,13 @@ built.push(page({
   <div class="diptych">
   <a class="dip" href="products.html#panels" data-anim="slide-l">
     <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/tiger-studio-mumbai.webp" alt=""
+      <img src="assets/img/projects/z3-powai.webp" alt=""
            width="760" height="570" loading="lazy" decoding="async">
     </div>
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>The room is loud with its own sound. Speech blurs, calls echo, music smears. We measure the reverberation, set a target, and put absorption only where it earns its place — ${TREAT_N} of our ${PRODUCTS.length} products do this, and covering a room in more of it than the room needs is the other way to waste money.</p>
+      <p>The room is loud with its own sound — speech blurs, calls echo, music smears. We measure the reverberation, set a target, and absorb only where it earns its place. ${TREAT_N} of our ${PRODUCTS.length} products do this job.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
@@ -126,7 +126,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>The sound is somebody else's. Traffic, a neighbour, the studio next door. This one is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. The other ${PROOF_N} products are built for it, and no quantity of absorption on the wall will do the job instead.</p>
+      <p>The sound is somebody else's — traffic, a neighbour, the studio next door. This one is mass, isolation and sealing, never absorption. The other ${PROOF_N} are built for it.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
