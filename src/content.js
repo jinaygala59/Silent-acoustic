@@ -459,7 +459,7 @@ const PROCESS = [
   { h: 'Design & specification', p: 'A treatment layout drawn to your architect\'s plan, with the material, area and expected result stated per surface. Two rounds of revision are included.' },
   { h: 'Quotation', p: 'Itemised by product and area, with installation, transport and taxes separated. No lump sums that hide what you are paying for.' },
   { h: 'Manufacture', p: 'Cutting, routing, printing and assembly in our own facility. Custom work is proofed with you before it goes on the machine.' },
-  { h: 'Installation', p: 'Our own crews, not a subcontractor found locally on the week. They work to the drawing and to your site timings, including nights and weekends.' },
+  { h: 'Installation', p: 'Fitted by our own crews across Mumbai and Maharashtra, and by certified installation teams elsewhere in India. Either way they work to the drawing and to your site timings, including nights and weekends.' },
   { h: 'Verification', p: 'We measure the finished room against the design target and hand over the report. If it misses, we fix it — that is what the design fee bought.' },
 ];
 
