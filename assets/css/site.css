@@ -59,18 +59,45 @@
      *on* a ground (cards, panels, fields, the filter pills) stay flat — a
      gradient on a small element reads as decoration, and it makes the
      contrast under its text unpredictable. Keep that split. */
-  /* THERE ARE NO DARK GROUNDS ON THIS SITE. These are still called --ink-*
-     because ~200 call sites and the .dark class name depend on them, but they
-     are now the *deep* end of one continuous light range: warm greige, not
-     near-black. A section that opts into .dark gets the deeper of two light
-     ombres, and its text stays dark. See the note on --on-dark below.
-     If you are about to set a near-black background anywhere: don't. */
-  --ink-deep:   #CBD5E1;   /* deepest ground on the site — 12.02:1 under --on-light */
-  --ink:        #F8FAFC;
-  --ink-lift:   #FFFFFF;
-  --ink-panel:  #F1F5F9;
-  --ink-raise:  #F8FAFC;
-  --ink-edge:   #94A3B8;
+  /* THERE ARE REAL DARK GROUNDS ON THIS SITE AGAIN, reintroduced at the
+     client's request for a "premium" pass (see git history around this
+     change for what that meant and what it cost). Two failure modes broke
+     the LAST time dark grounds existed here, and the fix for both survives
+     in this file: any element painting its own background must name the
+     colour of every piece of text inside it (the .rail-sec/.gal-item bug),
+     and any token reused for its CURRENT literal value rather than its name
+     inverts silently the moment that value changes (the .fampick/.dip-body/
+     .gal-cap/.quote/.card-in-dark-section class of bug, fixed alongside this
+     token change — see CLAUDE.md for the list).
+
+     --ink-panel and --ink-edge are DELIBERATELY UNCHANGED. Cards, panels,
+     quotes and gallery tiles inside a .dark section keep their light fill —
+     that is not an oversight, it is the "light object on a dark ground"
+     look the reference used, and it is also what every .dark .card/.panel/
+     .quote rule already assumes (they were never touched when the ground was
+     light, because they were never lit by the ground). --ink-edge already
+     read as a workable border on paper or on this deep a ground, so it did
+     not need to move either.
+
+     The rest of the ramp — --ink, --ink-lift, --ink-raise, --ink-deep — is
+     for the small elements that paint text straight onto the section ground
+     itself (the skip link, the active filter pill, the family picker, the
+     mobile series marker): these were pre-built against this exact day,
+     named --ink-* and paired with --on-dark rather than --on-light, so they
+     could invert for free. That bet paid off; they needed no template
+     changes, only real values. */
+  --ink-deep:   #0B0F14;   /* darkest dark-mode surface; currently unused,
+                              kept for the same reason --paper-lo has a
+                              sibling nothing calls yet — symmetry documents
+                              intent even where nothing consumes it */
+  --ink:        #2C3846;   /* base fill for a small dark-mode chip — kept a
+                              clear step lighter than --ombre-dark's palest
+                              stop (1.20:1 apart) so it still reads as a
+                              distinct surface, not a hole in the ground */
+  --ink-lift:   #48586C;   /* brightest dark-mode surface */
+  --ink-panel:  #F1F5F9;   /* UNCHANGED — see note above */
+  --ink-raise:  #3A4759;   /* hover/active lift for --ink chips */
+  --ink-edge:   #94A3B8;   /* UNCHANGED — see note above */
 
   /* -- paper: cool slate, the datasheet ---------------------------------
      Deliberately short of white. Screen-white next to real product photos
@@ -466,6 +493,16 @@ p { text-wrap: pretty; }
   max-width: var(--measure);
 }
 .dark .lead, .rail-sec .lead { color: var(--on-dark-mute); }
+
+/* Body copy one step down from --on-light, for paragraphs that are secondary
+   but are not a .lead. This exists because the same colour was written inline
+   at nine call sites in src/pages.js, and an inline style beats every .dark
+   override in this file — so seven of those nine, sitting in sections that
+   alternate onto the .dark ground, would render dark-on-dark and vanish the
+   moment .dark is given genuinely dark values. A class can be overridden; a
+   style attribute cannot. Mirrors .lead above deliberately. */
+.muted { color: var(--on-light-mute); }
+.dark .muted, .rail-sec .muted { color: var(--on-dark-mute); }
 
 /* spec value — figures read brighter than their labels, and that is the only
    emphasis they get */
@@ -2423,6 +2460,22 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .nrc[data-mat="wood"]  { --mat: var(--mat-wood); }
 .nrc[data-mat="proof"] { --mat: var(--mat-proof); }
 
+/* NRC bars ride inside .card, and `.dark .card` already repaints itself with
+   --ink-panel — so on a genuinely dark ground the card goes dark underneath a
+   bar whose track and figures are still named in paper/on-light tokens. The
+   figures would be dark-on-dark; the track would read as a pale slab.
+
+   The track takes --ink rather than a lifted tone on purpose. The bar's whole
+   reading is "filled run = absorbed, empty run = the ground, i.e. what comes
+   back off the wall" (see the signature note in CLAUDE.md), so the empty run
+   has to stay whatever the ground is — --paper's analogue on the dark ramp is
+   --ink. If the dark ramp ends up ordered the other way round, this is the one
+   line to revisit; it is a no-op today either way. */
+.dark .nrc-track { background: var(--ink); border-color: var(--ink-edge); }
+.dark .nrc-track::after { background: var(--ink-edge); }
+.dark .nrc-fig { color: var(--on-dark-mute); }
+.dark .nrc-fig b { color: var(--on-dark); }
+
 /* on a card the caption drops to the figure alone — the client's full
    wording is on the product page, and two lines of mono in a card body
    crowds out the product name */
@@ -2493,6 +2546,15 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .note > a:hover .note-t { color: var(--brand-ink); }
 .note > a:hover .btn-arrow { transform: translateX(3px); }
+
+/* The notes list sits in blog.html's "Articles" section, which is .dark, and
+   .note paints NO ground of its own — only a hairline rule — so unlike a card
+   this text composites directly onto the section. That makes it the one place
+   the coming real-dark .dark lands on unprotected copy. No-op while --ink-*
+   and --on-dark* still hold light values. */
+.dark .note, .dark .note:last-child { border-color: var(--ink-edge); }
+.dark .note-t { color: var(--on-dark); }
+.dark .note-d, .dark .note-meta { color: var(--on-dark-mute); }
 
 /* the lead note: the surface joins it, and the title steps up a size */
 @media (min-width: 46rem) {

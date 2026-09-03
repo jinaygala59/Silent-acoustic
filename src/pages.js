@@ -186,8 +186,11 @@ ${choreoBand()}
     <span class="rail-label">Work</span>
     <div class="section-head stack">
       <p class="eyebrow" data-anim="fade">${SITE.projectsCompleted} projects completed</p>
-      <h2 data-anim="reveal">Rooms we have finished.</h2>
-      <p class="lead" data-anim="fade">Auditoriums and broadcast studios, corporate floors and classrooms — across Mumbai, Maharashtra and the rest of India.</p>
+      <!-- The visible heading and lead were removed by request; the ribbon and
+           the gallery carry the section now. The h2 stays as .vh because the
+           six project cards below are h3s — without it they hang off the
+           previous section's heading and the page outline reads wrong. -->
+      <h2 class="vh">Rooms we have finished.</h2>
     </div>
     ${ticker()}
     <div class="gal" data-stagger>
@@ -282,7 +285,7 @@ ${CATEGORIES.map((cat, i) => `
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Which family do you need</p>
         <h2 class="sub-h" data-anim="reveal">Absorb, block, or both</h2>
-        <p style="color:var(--on-light-mute);max-width:var(--measure)">Panels, ceilings, foam and wood all <em>absorb</em> — they change how the room you are standing in sounds. Membranes, doors and windows <em>block</em> — they stop sound moving between two rooms. Most real projects need some of each, and the split is the first thing our survey settles.</p>
+        <p class="muted" style="max-width:var(--measure)">Panels, ceilings, foam and wood all <em>absorb</em> — they change how the room you are standing in sounds. Membranes, doors and windows <em>block</em> — they stop sound moving between two rooms. Most real projects need some of each, and the split is the first thing our survey settles.</p>
       </div>
       <div>
         <table class="spec" data-anim="fade">
@@ -295,7 +298,7 @@ ${CATEGORIES.map((cat, i) => `
             <tr><th>Noise from next door or outside</th><td>Soundproofing</td></tr>
           </tbody>
         </table>
-<p style="font-size:.8125rem;color:var(--on-light-mute);margin-top:1.25rem;line-height:1.5;max-width:var(--measure)">Every figure on the product pages is Silence Acoustic&rsquo;s own published specification. We confirm them against your project and supply test reports on request.</p>
+<p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5;max-width:var(--measure)">Every figure on the product pages is Silence Acoustic&rsquo;s own published specification. We confirm them against your project and supply test reports on request.</p>
       </div>
     </div>
   </div>
@@ -350,7 +353,7 @@ PRODUCTS.forEach(p => {
             ${Object.entries(p.specs).map(([k, v]) => `<tr data-anim="fade"><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('\n            ')}
           </tbody>
         </table>
-        <p style="font-size:.8125rem;color:var(--on-light-mute);margin-top:1.25rem;line-height:1.5">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
+        <p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
         <a class="btn btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center" href="../contact.html">Request a quote ${ARROW}</a>
         <a class="btn btn-ghost on-light" style="margin-top:.6rem;width:100%;justify-content:center" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
       </aside>
@@ -454,9 +457,9 @@ built.push(page({
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Since 2006</p>
         <h2 data-anim="reveal">Supplier and installer,<br>not one or the other.</h2>
-        <p style="color:var(--on-light-mute)">In acoustics since 2006 &mdash; twenty years, and more than 2,035 rooms completed across India.</p>
-        <p style="color:var(--on-light-mute)">We are the supplier: the material is made in our own facility, not bought in and resold, so a custom size or a routed pattern is a production decision rather than an import lead time.</p>
-        <p style="color:var(--on-light-mute)">And we are the installer: our own crews in Mumbai and Maharashtra, certified teams elsewhere. So if a room misses its target, fixing it is our problem &mdash; not a negotiation between two suppliers.</p>
+        <p class="muted">In acoustics since 2006 &mdash; twenty years, and more than 2,035 rooms completed across India.</p>
+        <p class="muted">We are the supplier: the material is made in our own facility, not bought in and resold, so a custom size or a routed pattern is a production decision rather than an import lead time.</p>
+        <p class="muted">And we are the installer: our own crews in Mumbai and Maharashtra, certified teams elsewhere. So if a room misses its target, fixing it is our problem &mdash; not a negotiation between two suppliers.</p>
       </div>
       <div>
         <!-- Deliberately the same material twice: slat samples as we make them,
@@ -468,14 +471,14 @@ built.push(page({
               <img src="assets/img/products/acoustic-wooden-slats-card.webp"
                    alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
             </div>
-            <figcaption style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase;color:var(--on-light-mute)">We make it</figcaption>
+            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We make it</figcaption>
           </figure>
           <figure class="stack" style="margin:0;gap:0.5rem">
             <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
               <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp"
                    alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
             </div>
-            <figcaption style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase;color:var(--on-light-mute)">We fit it</figcaption>
+            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We fit it</figcaption>
           </figure>
         </div>
       </div>
@@ -620,7 +623,7 @@ POSTS.forEach(post => {
       <aside class="pd-aside">
         <p class="eyebrow">The product</p>
         <h2 class="sub-h mb-s" style="margin-top:.8rem">Acoustic Polyester Panel</h2>
-        <p style="font-size:.9375rem;color:var(--on-light-mute)">The panel this guide describes, with published sizes, densities and NRC figures.</p>
+        <p class="muted" style="font-size:.9375rem">The panel this guide describes, with published sizes, densities and NRC figures.</p>
         <a class="btn btn-ghost on-light" style="margin-top:1.25rem;width:100%;justify-content:center" href="products/acoustic-polyester-panel.html">See the spec ${ARROW}</a>
         <a class="btn btn-primary" style="margin-top:.6rem;width:100%;justify-content:center" href="contact.html">Book a free survey ${ARROW}</a>
       </aside>

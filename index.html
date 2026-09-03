@@ -369,8 +369,11 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <span class="rail-label">Work</span>
     <div class="section-head stack">
       <p class="eyebrow" data-anim="fade">2035+ projects completed</p>
-      <h2 data-anim="reveal">Rooms we have finished.</h2>
-      <p class="lead" data-anim="fade">Auditoriums and broadcast studios, corporate floors and classrooms — across Mumbai, Maharashtra and the rest of India.</p>
+      <!-- The visible heading and lead were removed by request; the ribbon and
+           the gallery carry the section now. The h2 stays as .vh because the
+           six project cards below are h3s — without it they hang off the
+           previous section's heading and the page outline reads wrong. -->
+      <h2 class="vh">Rooms we have finished.</h2>
     </div>
     <div class="ticker" data-anim="fade">
       <div class="ticker-rail" aria-hidden="true">
