@@ -44,39 +44,6 @@
 
   if (reduce) return;
 
-  /* ------------------------- reveal fallback only -----------------------
-     Browsers with native scroll timelines never reach this. */
-  if (native || !('IntersectionObserver' in window)) return;
-
-  var targets = [].slice.call(document.querySelectorAll('[data-anim]'));
-  if (!targets.length) return;
-
-  /* Claim the hidden state the inline head script put in place. Until this
-     line runs, that script's six-second timer is still armed and will strip
-     `html.io` back off — so a blocked or failed motion.js leaves a plain,
-     fully readable page rather than an empty one. */
-  doc.dataset.mo = '1';
-  doc.classList.add('io');
-
-  var showAll = function () {
-    for (var i = 0; i < targets.length; i++) targets[i].classList.add('in');
-  };
-
-  var io = new IntersectionObserver(function (entries) {
-    for (var i = 0; i < entries.length; i++) {
-      if (!entries[i].isIntersecting) continue;
-      entries[i].target.classList.add('in');
-      io.unobserve(entries[i].target);
-    }
-  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
-
-  for (var i = 0; i < targets.length; i++) io.observe(targets[i]);
-
-  /* Failsafes: anything the observer has not reached in four seconds is shown
-     anyway, and printing always shows everything. */
-  window.setTimeout(showAll, 4000);
-  window.addEventListener('beforeprint', showAll);
-
   /* ------------------------------ live figures --------------------------
      A figure that counts up to itself. One element on the site uses it — the
      hero's years-in-business — and it is here rather than in CSS on purpose.
@@ -157,6 +124,46 @@
       });
     });
   }
+
+  /* NOTE ON ORDER: everything below the `native` return runs ONLY on browsers
+     without scroll timelines. Anything that has to run everywhere belongs
+     above it. The count-up was added below it by mistake and therefore never
+     ran on Chrome, Edge or Safari 26 at all — the figure simply stayed at its
+     published value, which is why the bug looked like "the counter is subtle"
+     rather than "the counter is dead". */
+
+  /* ------------------------- reveal fallback only -----------------------
+     Browsers with native scroll timelines never reach this. */
+  if (native || !('IntersectionObserver' in window)) return;
+
+  var targets = [].slice.call(document.querySelectorAll('[data-anim]'));
+  if (!targets.length) return;
+
+  /* Claim the hidden state the inline head script put in place. Until this
+     line runs, that script's six-second timer is still armed and will strip
+     `html.io` back off — so a blocked or failed motion.js leaves a plain,
+     fully readable page rather than an empty one. */
+  doc.dataset.mo = '1';
+  doc.classList.add('io');
+
+  var showAll = function () {
+    for (var i = 0; i < targets.length; i++) targets[i].classList.add('in');
+  };
+
+  var io = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (!entries[i].isIntersecting) continue;
+      entries[i].target.classList.add('in');
+      io.unobserve(entries[i].target);
+    }
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
+
+  for (var i = 0; i < targets.length; i++) io.observe(targets[i]);
+
+  /* Failsafes: anything the observer has not reached in four seconds is shown
+     anyway, and printing always shows everything. */
+  window.setTimeout(showAll, 4000);
+  window.addEventListener('beforeprint', showAll);
 
   /* The progress bar is CSS-driven natively; here it needs a hand. One rAF
      per scroll burst, one style write, no reads. */
