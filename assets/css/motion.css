@@ -1424,3 +1424,32 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
     pointer-events: none; z-index: 2;
   }
 }
+
+/* =========================================================================
+   REDUCED MOTION IS NOT NO MOTION
+   ---------------------------------------------------------------------------
+   Every animation block in this file is gated on
+   `prefers-reduced-motion: no-preference`, which meant a reader with Reduce
+   Motion switched on — a single OS toggle, and a common one on iOS — got a
+   completely inert page. That is defensible and it is also more than the
+   setting asks for. Reduce Motion asks for no vestibular triggers: no travel,
+   no parallax, no scale, no marquee, nothing sliding or zooming. A cross-fade
+   is none of those things.
+
+   So this is the whole tier: OPACITY, and nothing else. No transform, no
+   clip-path, no `--sweep-pos`, no drift, no pins, no ticker, no count-up.
+   If you extend this block, the test is not "is it subtle" — it is "does
+   anything move". If something moves, it does not belong here.
+
+   It is driven by `html.iomin`, which the inline boot script adds only when
+   JavaScript is running and strips again after six seconds unless motion.js
+   claims it. Identical contract to `io`: nothing can strand content, because
+   the hidden state never exists unless something is there to undo it.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html.iomin [data-anim] {
+    transition: opacity 520ms linear;
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+  html.iomin [data-anim]:not(.in) { opacity: 0; }
+}

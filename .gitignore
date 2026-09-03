@@ -8,3 +8,8 @@ dist/
 *.zip
 node_modules/
 _diag.html
+_iotest.html
+_mkiotest.js
+assets/css/_motion-nosupport.css
+_reducetest.html
+assets/css/_motion-reduce.css

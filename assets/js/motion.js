@@ -42,7 +42,29 @@
     step();
   }
 
-  if (reduce) return;
+  /* Under reduced motion the only thing that runs is the opacity-only reveal.
+     No header retraction (a transform), no count-up (a moving figure), no
+     observer-driven travel — just the cross-fade, claimed the same way the
+     full fallback claims `io`. Everything after this block is motion. */
+  if (reduce) {
+    if (!('IntersectionObserver' in window)) return;
+    var minT = [].slice.call(document.querySelectorAll('[data-anim]'));
+    if (!minT.length) return;
+    doc.dataset.mo = '1';
+    doc.classList.add('iomin');
+    var minIo = new IntersectionObserver(function (es) {
+      for (var a = 0; a < es.length; a++) {
+        if (!es[a].isIntersecting) continue;
+        es[a].target.classList.add('in');
+        minIo.unobserve(es[a].target);
+      }
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
+    for (var b = 0; b < minT.length; b++) minIo.observe(minT[b]);
+    var minShow = function () { for (var c = 0; c < minT.length; c++) minT[c].classList.add('in'); };
+    window.setTimeout(minShow, 4000);
+    window.addEventListener('beforeprint', minShow);
+    return;
+  }
 
   /* ------------------------------ live figures --------------------------
      A figure that counts up to itself. One element on the site uses it — the

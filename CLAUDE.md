@@ -158,13 +158,43 @@ NRC bars stuck at zero during this pass, which was the probe, not the CSS.
 The sequence that works is: scroll → screenshot → read, as three separate
 calls.
 
-**Scroll reveal is deliberately fail-safe.** Nothing in the stylesheet hides
-content on its own. The hidden state comes from `html.io`, which the inline
-`HEAD_BOOT` script in `src/build.js` adds *only* on the Firefox path — and that
-same script arms a six-second timer to strip it back off unless `motion.js`
-arrives and sets `documentElement.dataset.mo`. A blocked, failed or slow script
-therefore leaves a plain readable page, never an empty one. Do not "simplify"
-this into a CSS-only hidden state.
+**Scroll reveal is deliberately fail-safe, and there are now TWO hidden
+states.** Nothing in the stylesheet hides content on its own. Both states come
+from the inline `HEAD_BOOT` script in `src/build.js`, both are added *only*
+when JavaScript is running, and both arm a six-second timer to strip
+themselves back off unless `motion.js` arrives and sets
+`documentElement.dataset.mo`. A blocked, failed or slow script therefore
+leaves a plain readable page, never an empty one. Do not "simplify" either
+into a CSS-only hidden state.
+
+| class | when | what it drives |
+|---|---|---|
+| `io` | no native scroll timelines (Firefox, iOS Safari before 26) | the full reveal vocabulary, via IntersectionObserver |
+| `iomin` | the reader has Reduce Motion on | **opacity only** — no travel, clip or scale |
+
+`iomin` exists because every animation block in `motion.css` is gated on
+`prefers-reduced-motion: no-preference`, which made one OS toggle — a common
+one on iOS — produce a completely inert page. Reduce Motion asks for no
+vestibular triggers, not for nothing to happen, and a cross-fade is not
+motion. The tier is opacity and nothing else: no transform, no clip-path, no
+`--sweep-pos`, no drift, no pins, no ticker, no count-up. If you extend it,
+the test is not "is it subtle" but "does anything move" — if it moves, it does
+not belong there.
+
+**Verifying either fallback needs a stripped stylesheet, and the stripper must
+remove comments first.** `_mkiotest.js` (gitignored) writes `_iotest.html`,
+which loads a copy of `motion.css` with every `@supports (animation-timeline
+…)` block brace-matched out and stubs `CSS.supports` so `motion.js` takes the
+observer path; `_reducetest.html` inverts the two reduced-motion conditions
+and stubs `matchMedia`. Without them the pane's own support for scroll
+timelines means the native rules always win and the fallback is unreachable.
+The stripper blanks comments before scanning, and that is load-bearing: the
+prose in this file and in `motion.css` contains the literal string `@supports
+(animation-timeline: view())`, and matching it inside a comment then
+brace-matching forward from the next `{` deletes whatever real block follows —
+which silently ate the entire engine-2 block and made a working stylesheet
+look broken for three rounds. `src/designboard.js` carries the same warning
+for the same reason.
 
 **The scroll choreography is a second pin, and it is measured in the page.**
 `.choreo` (homepage, immediately before the Work gallery) is a 300vh section

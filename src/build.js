@@ -39,11 +39,25 @@ const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" f
    anything — and it removes itself after six seconds unless motion.js has
    arrived and claimed responsibility. A blocked, failed or slow script
    therefore leaves a plain readable page, never an empty one. */
+/* Two hidden states, and both are armed the same way: only when JavaScript is
+   running, and only for six seconds unless motion.js turns up and sets
+   `dataset.mo`. A blocked, failed or slow script leaves a plain readable page.
+
+   `io`    — no native scroll timelines. The full reveal vocabulary, driven by
+             an IntersectionObserver in motion.js.
+   `iomin` — the reader asked for reduced motion. OPACITY ONLY: no travel, no
+             clip, no scale. Reduced motion means fewer and gentler, not zero,
+             and a cross-fade is not vestibular motion — but nothing here may
+             move, so this is a separate class rather than a variant of `io`.
+             It is armed regardless of scroll-timeline support, because the
+             native path is gated out under reduce anyway. */
 const HEAD_BOOT = `<script>(function(d){d.classList.remove('no-js');
-try{if(!(window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()'))
-&&'IntersectionObserver' in window
-&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('io');
-setTimeout(function(){if(!d.dataset.mo)d.classList.remove('io')},6000)}}catch(e){}
+try{if(!('IntersectionObserver' in window))return;
+var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
+var c=r?'iomin':(n?null:'io');
+if(c){d.classList.add(c);
+setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 })(document.documentElement)</script>`;
 
 const jsonLd = () => JSON.stringify({
