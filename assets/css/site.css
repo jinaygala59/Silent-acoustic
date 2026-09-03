@@ -283,6 +283,11 @@
   --t-mono: clamp(0.75rem, 0.7rem + 0.16vw, 0.8125rem);
 
   /* -- structure ------------------------------------------------------- */
+  /* Measured height of .site-head, which is sticky at top: 0 and has no
+     height of its own to read. Used by the mobile series marker below so it
+     pins under the bar rather than behind it. Re-measure if the header's
+     padding or logo size changes. */
+  --head-h: 85px;
   --rail: 7.5rem;             /* left spec-margin on desktop */
   --gut: clamp(1.5rem, 5vw, 5rem);
   --measure: 64ch;
@@ -491,7 +496,43 @@ p { text-wrap: pretty; }
     white-space: nowrap; opacity: 0.5;
   }
 }
-@media (max-width: 61.999rem) { .rail-label { display: none; } }
+@media (max-width: 61.999rem) {
+  .rail-label { display: none; }
+
+  /* ...except on the product series, where it becomes the one thing telling
+     you which series you are looking at.
+
+     The catalogue IS grouped -- five sections, one per series -- but below
+     62rem the only marker was each section's <h2>, which scrolls away and
+     leaves you in an unlabelled run of cards. The rotated rail label already
+     carries the series name in the markup and was simply switched off here,
+     so it gets shown instead of adding anything: full-bleed, pinned, and
+     replaced by the next series as you pass into it. Sticky is confined to
+     its own .wrap, which spans exactly one series, so the handover happens
+     at the section boundary for free.
+
+     Scoped to .railed[id] because only the five product series carry an id.
+     The section labels on the other pages (Rooms, Method, Work, Clients)
+     stay hidden -- pinning those would be noise, not orientation. */
+  .railed[id] > .wrap > .rail-label {
+    display: block;
+    position: sticky;
+    top: var(--head-h);
+    z-index: 6;
+    margin: 0 calc(var(--gut) * -1) 1.75rem;
+    padding: 0.6rem var(--gut);
+    background: rgba(237, 241, 245, 0.92);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border-block: 1px solid rgba(16, 23, 27, 0.08);
+    font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--on-light); opacity: 1;
+  }
+  /* motion.js retracts the header on scroll-down; follow it up so the marker
+     never floats with a dead band above it. */
+  html.head-up .railed[id] > .wrap > .rail-label { top: 0; }
+}
 
 section { padding-block: var(--pad-y); }
 .dark { background: var(--ombre-dark); color: var(--on-dark); }
@@ -1692,11 +1733,19 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 /* Each panel carries a photograph of the thing it describes, and fades to a
    paper ground under the copy. Without an image these were ~700px of
    near-white with a paragraph at the bottom and the section read as
-   unfinished. The fade is held off until 34% so the photograph gets the top
-   third, then goes hard: the copy occupies roughly 54-90% of the panel height
-   and the scrim is above 0.90 from 60% down, so the text sits on paper
-   whatever the photograph is doing. Move the copy or change the panel height
-   and this needs re-measuring — it only guarantees the band it covers. */
+   unfinished. The fade is held off so the photograph gets the top of the
+   panel, then goes hard, so the text sits on paper whatever the photograph is
+   doing. IT ONLY GUARANTEES THE BAND IT COVERS: move the copy, change the
+   panel height, or add a sentence, and this needs re-measuring.
+
+   It has already been re-measured once, and the trigger was exactly that. The
+   stops were 0.03/34%, 0.35/48%, 0.90/60%, 0.985/72%, sized for a copy block
+   occupying 54-90% of the panel. A rewrite that added one sentence to each
+   panel pushed the block to 31-91%, which put the eyebrow at 31% on a 0.03
+   scrim and the h2 across 36-53% on roughly 0.2-0.4 — text sitting on the
+   photograph. The copy came back down and the ramp moved up to reach 0.93 by
+   46%, which covers the measured band with margin at the cost of some of the
+   picture. Verify with the canvas composite, not by eye. */
 /* Explicit, non-negative layering. This used to be z-index -2, which worked
    while .dip-surface painted its own fill, and silently broke the moment it
    carried a photograph instead: .dip sets an opaque --ombre-light gradient, a
@@ -1713,8 +1762,8 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .dip::before {
   content: ''; position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.03) 0 34%, rgba(255, 255, 255, 0.35) 48%,
-    rgba(255, 255, 255, 0.90) 60%, rgba(255, 255, 255, 0.985) 72%);
+    rgba(255, 255, 255, 0.03) 0 26%, rgba(255, 255, 255, 0.42) 36%,
+    rgba(255, 255, 255, 0.93) 46%, rgba(255, 255, 255, 0.985) 56%);
   transition: opacity 420ms var(--ease);
 }
 .dip-body { position: relative; z-index: 2; }
