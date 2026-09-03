@@ -277,8 +277,17 @@
      This is the lever to reach for if it is ever "dull" again. Luminance is
      spent -- the deep stops are at the floor and the tops are as low as they
      can go before the page reads dark. Saturation and hue travel are not. */
-  --ombre-light: linear-gradient(168deg, #D1E9ED 0%, #C8DDEB 52%, #BCCCE9 100%);
-  --ombre-dark:  linear-gradient(168deg, #B3DAE3 0%, #AECCE2 52%, #A8BCE3 100%);
+  /* NOT GROUNDS ANY MORE — VEILS. The ombre is one wash on `body` spanning
+     the whole document (see the note there). These two are what a section
+     lays over it: `.light` lifts the wash toward white, `.dark` leaves it
+     almost bare so you see the wash at full strength. That is what keeps the
+     light/dark rhythm while letting a single gradient run the whole page.
+
+     They must stay TRANSLUCENT. Give either one an opaque colour and the
+     section goes back to painting its own ground, the wash stops showing
+     through, and the ombre is nine short gradients again. */
+  --ombre-light: linear-gradient(168deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.20) 52%, rgba(255,255,255,0.10) 100%);
+  --ombre-dark:  linear-gradient(168deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 52%, rgba(255,255,255,0.00) 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -402,13 +411,27 @@ body {
      near-white fills for cards, fields and the NRC track — so the body
      cannot borrow one of them or every scroll gap, overscroll bounce and
      uncovered strip flashes lighter than the section above it. */
-  background-color: #C8DDEB;
-  /* the drafting grid: a fine graph under the paper ground. Sections with
-     their own background (dark, cards, panels) simply paint over it. */
+  /* THE OMBRE LIVES HERE, NOT ON THE SECTIONS. This is the fourth attempt at
+     "I want a gradient / ombre effect" and the first three failed for the
+     same structural reason: the gradient was on each SECTION, so it ran
+     0.78 -> 0.60 and then RESET, nine times down the page. A wash that
+     restarts every 800px is not an ombre, however saturated its stops are.
+
+     Now one continuous wash spans the whole document — 0.78 at the top to
+     0.51 at the bottom, travelling 190deg to 222deg of hue on the way. You
+     are somewhere different in it on every screen, which is the whole point.
+
+     The bottom stop is pinned at 0.51 luminance and cannot go lower: muted
+     text on it is 4.66:1, and the 4.5 floor is what stops this becoming a
+     dark site. Sections no longer paint their own ground — they veil this
+     one. See --ombre-light / --ombre-dark, which are now translucent. */
+  background-color: #A3C0E3;
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(180deg, #D1E9ED 0%, #C2DDEC 34%, #B0CDE8 68%, #A3C0E3 100%);
+  background-size: 64px 64px, 64px 64px, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -635,7 +658,8 @@ section { padding-block: var(--pad-y); }
    against a background (#878584) that never rendered. Sweeps no longer need
    the `.light{background-image:var(--ombre-light)}` override. */
 .light {
-  background-color: var(--paper);
+  /* transparent, not --paper: an opaque fill here would hide the page wash */
+  background-color: transparent;
   background-image: var(--ombre-light);
 }
 
