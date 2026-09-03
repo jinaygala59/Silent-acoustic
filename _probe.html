@@ -1,0 +1,62 @@
+<!doctype html><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Checking your phone</title>
+<style>
+ body{font:17px/1.55 -apple-system,system-ui,sans-serif;margin:0;padding:22px 18px 120vh;color:#0F172A;background:#fff}
+ h1{font-size:1.2rem;margin:0 0 .4rem}
+ p.lead{color:#3F4C5E;margin:0 0 1.4rem}
+ #status{padding:14px;border:1px solid #94A3B8;background:#EEF3F8;font-weight:600;margin-bottom:1.6rem}
+ table{border-collapse:collapse;width:100%;font-size:15px}
+ td{padding:8px 6px;border-bottom:1px solid #CBD5E1}
+ td:first-child{color:#3F4C5E;width:56%}
+ b.y{color:#0a7d3f}b.n{color:#b3261e}
+ .spacer{height:70vh}
+ .t{padding:22px;background:#EEF3F8;border:1px solid #94A3B8;text-align:center;font-weight:600;margin:0 0 30vh}
+ #tn{opacity:.06;transform:translateY(40px)}
+ @supports (animation-timeline: view()){@media (prefers-reduced-motion: no-preference){
+   #tn{animation:pp auto linear both;animation-timeline:view();animation-range:entry 20% cover 55%}}}
+ @keyframes pp{from{opacity:.06;transform:translateY(40px)}}
+ #ti{opacity:.06;transform:translateY(40px);transition:opacity .6s,transform .6s}
+ #ti.in{opacity:1;transform:none}
+</style>
+<h1>Checking your phone</h1>
+<p class=lead>Scroll all the way to the bottom. Nothing to read — it reports back on its own.</p>
+<div id=status>Collecting…</div>
+<table id=t></table>
+<div class=spacer></div>
+<div class=t id=tn>TEST 1 — native CSS scroll animation</div>
+<div class=t id=ti>TEST 2 — JavaScript fallback</div>
+<script>
+var d=document.documentElement, R={};
+R.ua=navigator.userAgent;
+R.supportsViewTimeline=CSS.supports('animation-timeline','view()');
+R.supportsProperty=(function(){try{return typeof CSS.registerProperty==='function'}catch(e){return false}})();
+R.reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+R.hoverHover=matchMedia('(hover: hover)').matches;
+R.pointerCoarse=matchMedia('(pointer: coarse)').matches;
+R.innerWidth=innerWidth; R.dpr=devicePixelRatio;
+R.htmlClassAtBoot=d.className; R.moFlag=d.dataset.mo||null;
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');R.ioFired=true}})},{threshold:.2}).observe(document.getElementById('ti'));
+function rows(){var h='';Object.keys(R).forEach(function(k){var v=R[k];
+ var s=v===true?'<b class=y>YES</b>':v===false?'<b class=n>NO</b>':'<b>'+String(v).slice(0,60)+'</b>';
+ h+='<tr><td>'+k+'</td><td>'+s+'</td></tr>'});document.getElementById('t').innerHTML=h}
+rows();
+var sent=false;
+function send(why){
+ if(sent)return; sent=true;
+ R.why=why;
+ R.nativeOpacity=getComputedStyle(document.getElementById('tn')).opacity;
+ R.ioOpacity=getComputedStyle(document.getElementById('ti')).opacity;
+ R.nativeAnimName=getComputedStyle(document.getElementById('tn')).animationName;
+ R.scrollY=Math.round(scrollY);
+ R.htmlClassNow=d.className; R.moFlagNow=d.dataset.mo||null;
+ try{ navigator.sendBeacon('/beacon?tag=probe', JSON.stringify(R)) }
+ catch(e){ var i=new Image(); i.src='/beacon?tag=probe&fallback=1&d='+encodeURIComponent(JSON.stringify(R).slice(0,1500)) }
+ document.getElementById('status').textContent='Sent. You can close this — I have what I need.';
+ rows();
+}
+addEventListener('scroll',function(){
+ if(scrollY+innerHeight>=document.body.scrollHeight-80) send('reached-bottom');
+},{passive:true});
+setTimeout(function(){send('timeout-15s')},15000);
+</script>

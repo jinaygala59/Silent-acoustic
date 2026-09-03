@@ -1,0 +1,46 @@
+<!doctype html><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Motion diagnostic</title>
+<style>
+  body{font:16px/1.5 -apple-system,system-ui,sans-serif;margin:0;padding:20px 18px 60vh;background:#fff;color:#0F172A}
+  h1{font-size:1.25rem;margin:0 0 1rem}
+  table{border-collapse:collapse;width:100%;font-size:15px}
+  td{padding:9px 6px;border-bottom:1px solid #CBD5E1;vertical-align:top}
+  td:first-child{color:#3F4C5E;width:52%}
+  b.y{color:#0a7d3f}b.n{color:#b3261e}
+  .box{margin:40vh 0 0;padding:24px;background:#EEF3F8;border:1px solid #94A3B8;font-weight:600;text-align:center}
+  /* native scroll-timeline test */
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion: no-preference){
+      #native{animation:pop auto linear both;animation-timeline:view();animation-range:entry 20% cover 55%}
+    }
+  }
+  @keyframes pop{from{opacity:.08;transform:translateY(40px)}}
+  /* IntersectionObserver test */
+  #io{transition:opacity .6s,transform .6s;opacity:.08;transform:translateY(40px)}
+  #io.in{opacity:1;transform:none}
+</style>
+<h1>Motion diagnostic</h1>
+<table id=t></table>
+<div class=box id=native>NATIVE scroll-timeline test — if this faded in as you scrolled, CSS scroll animation works on this phone.</div>
+<div class=box id=io>INTERSECTION OBSERVER test — if this faded in, the JS fallback works on this phone.</div>
+<script>
+var rows=[
+ ['iOS / browser', navigator.userAgent.replace(/^Mozilla\/5\.0 \(/,'').slice(0,72)],
+ ['Supports animation-timeline: view()', CSS.supports('animation-timeline','view()')],
+ ['Supports @property', typeof CSS.registerProperty==='function' || CSS.supports('background','paint(x)') ? 'likely' : 'unknown'],
+ ['Reduce Motion is ON', matchMedia('(prefers-reduced-motion: reduce)').matches],
+ ['hover: hover', matchMedia('(hover: hover)').matches],
+ ['pointer: coarse', matchMedia('(pointer: coarse)').matches],
+ ['Viewport width (CSS px)', innerWidth],
+ ['devicePixelRatio', devicePixelRatio]
+];
+var html='';
+rows.forEach(function(r){
+  var v=r[1], s=v===true?'<b class=y>YES</b>':v===false?'<b class=n>NO</b>':'<b>'+v+'</b>';
+  html+='<tr><td>'+r[0]+'</td><td>'+s+'</td></tr>';
+});
+document.getElementById('t').innerHTML=html;
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.25})
+  .observe(document.getElementById('io'));
+</script>

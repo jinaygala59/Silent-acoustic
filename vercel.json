@@ -1,0 +1,227 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node build.js && mkdir -p dist && cp -R *.html products assets robots.txt sitemap.xml dist/ && rm -f dist/design.html dist/.DS_Store dist/_*.html",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/our-products",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/acoustic-projects-gallery",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/about-acoustic-solutions-company-india",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/blogs-acoustic-treatment-solutions-tips",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-polyester-pet-panel-for-wall",
+      "destination": "/products/acoustic-polyester-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-tile-panel-for-wall-ceiling",
+      "destination": "/products/acoustic-tile-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-designer-panel-cnc-laser-v-groove-u-groove-fluted-custom-design",
+      "destination": "/products/acoustic-designer-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-printed-panel-custom-uv-brand-photo-logo",
+      "destination": "/products/acoustic-printed-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-screen-partition-office-divider-for-workstation",
+      "destination": "/products/acoustic-screen-partitions",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-3d-embossed-panels-for-wall",
+      "destination": "/products/acoustic-3d-embossed-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/parametric-design-acoustic-panels-custom-for-wall-ceiling",
+      "destination": "/products/parametric-design",
+      "permanent": true
+    },
+    {
+      "source": "/product/micro-perforated-acoustic-panel-for-wall-ceiling",
+      "destination": "/products/micro-perforated-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-ceiling-clouds-suspended-for-office-restaurants-classroom",
+      "destination": "/products/acoustic-ceiling-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-ceiling-baffles-suspended-for-open-office-gym-auditorium",
+      "destination": "/products/acoustic-ceiling-baffle",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-foam-pyramid-panels-for-recording-studio",
+      "destination": "/products/acoustic-pyramid-foam",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-foam-wedge-panels",
+      "destination": "/products/acoustic-wedge-foam",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-wood-wool-panel-eco-natural-board-for-wall-ceiling",
+      "destination": "/products/acoustic-wood-wool-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-wooden-slats-panels-for-auditorium-wall",
+      "destination": "/products/acoustic-wooden-slats",
+      "permanent": true
+    },
+    {
+      "source": "/product/acoustic-wooden-panel-perforated-for-wall-ceiling",
+      "destination": "/products/acoustic-wooden-panel",
+      "permanent": true
+    },
+    {
+      "source": "/product/polysynth-wool-acoustic-insulation-for-wall-ceiling",
+      "destination": "/products/polysynth-wool",
+      "permanent": true
+    },
+    {
+      "source": "/product/polyblock-membrane-soundproof-mass-loaded-vinyl-mlv-roll",
+      "destination": "/products/polyblock-membrane",
+      "permanent": true
+    },
+    {
+      "source": "/product/soundproof-doors-acoustic-for-studio-home-theatre-auditorium",
+      "destination": "/products/soundproof-door",
+      "permanent": true
+    },
+    {
+      "source": "/product/soundproof-window-acoustic-noise-reduction-for-studio-office",
+      "destination": "/products/soundproof-window",
+      "permanent": true
+    },
+    {
+      "source": "/product",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/auditorium-acoustic-panels-hall-acoustics",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/classroom-acoustic-panels-training-rooms",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/conference-room-acoustic-panels-soundproofing",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/home-theatre-acoustic-panels-soundproofing",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/hotel-acoustic-panels-clubs-restaurants-soundproofing",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/multiplex-cinema-acoustic-panels-movie-theatre-treatment",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/office-acoustic-panels-treatment-solutions",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/acoustic-ceiling",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/acoustic-foam",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/acoustic-panel",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/acoustic-wood",
+      "destination": "/projects",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(css|js)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}
