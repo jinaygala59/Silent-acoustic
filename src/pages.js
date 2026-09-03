@@ -454,14 +454,29 @@ built.push(page({
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Since 2006</p>
         <h2 data-anim="reveal">Supplier and installer,<br>not one or the other.</h2>
-        <p style="color:var(--on-light-mute)">Silence Acoustic has worked in acoustics since 2006 &mdash; twenty years of soundproofing and room treatment, and more than 2,035 completed projects in that time. Auditoriums and broadcast studios, corporate floors, classrooms, hotels and home theatres, across Mumbai, Delhi, Bangalore, Chennai, Pune, Goa and Hyderabad.</p>
-        <p style="color:var(--on-light-mute)">We are the supplier. The material is made in our own facility rather than bought in and resold &mdash; CNC laser and router cutting, UV printing, assembly &mdash; so a custom size, a routed pattern or a printed face is a decision on our own production line rather than an import lead time. Nineteen products across five families, and the specification you are quoted is the one that gets manufactured.</p>
-        <p style="color:var(--on-light-mute)">And we are the installer. Our own crews across Mumbai and Maharashtra, certified installation teams elsewhere in India, all working to the same drawing and to your site timings &mdash; nights and weekends included &mdash; then staying on afterwards for support and maintenance. Twenty years of doing both halves is what puts the survey, the design target and the final measurement in one set of books: if a room misses, fixing it is our problem rather than a negotiation between two suppliers.</p>
+        <p style="color:var(--on-light-mute)">In acoustics since 2006 &mdash; twenty years, and more than 2,035 rooms completed across India.</p>
+        <p style="color:var(--on-light-mute)">We are the supplier: the material is made in our own facility, not bought in and resold, so a custom size or a routed pattern is a production decision rather than an import lead time.</p>
+        <p style="color:var(--on-light-mute)">And we are the installer: our own crews in Mumbai and Maharashtra, certified teams elsewhere. So if a room misses its target, fixing it is our problem &mdash; not a negotiation between two suppliers.</p>
       </div>
       <div>
-        <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
-          <img src="assets/img/projects/ravindra-natya-mandir-prabhadevi.webp"
-               alt="Ravindra Natya Mandir, Prabhadevi" width="760" height="570" loading="lazy" decoding="async">
+        <!-- Deliberately the same material twice: slat samples as we make them,
+             then the same slats fitted on a wall. It is the supplier/installer
+             point made in pictures rather than in another paragraph. -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+          <figure class="stack" style="margin:0;gap:0.5rem">
+            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
+              <img src="assets/img/products/acoustic-wooden-slats-card.webp"
+                   alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
+            </div>
+            <figcaption style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase;color:var(--on-light-mute)">We make it</figcaption>
+          </figure>
+          <figure class="stack" style="margin:0;gap:0.5rem">
+            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
+              <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp"
+                   alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
+            </div>
+            <figcaption style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase;color:var(--on-light-mute)">We fit it</figcaption>
+          </figure>
         </div>
         <table class="spec" data-anim="fade" style="margin-top:2rem">
           <caption>At a glance</caption>
