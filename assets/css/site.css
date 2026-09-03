@@ -287,7 +287,7 @@
      section goes back to painting its own ground, the wash stops showing
      through, and the ombre is nine short gradients again. */
   --ombre-light: linear-gradient(168deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.20) 52%, rgba(255,255,255,0.10) 100%);
-  --ombre-dark:  linear-gradient(168deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 52%, rgba(255,255,255,0.00) 100%);
+  --ombre-dark:  linear-gradient(168deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 52%, rgba(255,255,255,0.03) 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -425,11 +425,11 @@ body {
      text on it is 4.66:1, and the 4.5 floor is what stops this becoming a
      dark site. Sections no longer paint their own ground — they veil this
      one. See --ombre-light / --ombre-dark, which are now translucent. */
-  background-color: #A3C0E3;
+  background-color: #B2CBE7;
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(180deg, #D1E9ED 0%, #C2DDEC 34%, #B0CDE8 68%, #A3C0E3 100%);
+    linear-gradient(180deg, #D1E9ED 0%, #C7E1EE 34%, #BBD6EA 68%, #B2CBE7 100%);
   background-size: 64px 64px, 64px 64px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
   -webkit-font-smoothing: antialiased;
@@ -1959,7 +1959,13 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   display: flex; align-items: flex-end;
   min-height: clamp(30rem, 82vh, 47rem);
   padding: clamp(2rem, 5vw, 4.5rem);
-  background: var(--ombre-light); color: var(--on-light);
+  /* An OPAQUE fill, not the veil. .dip is an object sitting on the page wash,
+     not a section veiling it — and when --ombre-light became translucent this
+     started showing the wash through, which dropped its muted copy to 3.79:1
+     at the point in the document where the wash is deepest. Objects on this
+     site carry their own fill for exactly this reason; see the flat-objects
+     note. --paper-sub is the same fill the cards use. */
+  background: var(--paper-sub); color: var(--on-light);
   text-decoration: none;
 }
 /* The panel shows bare material at the top and fades to a paper ground under
