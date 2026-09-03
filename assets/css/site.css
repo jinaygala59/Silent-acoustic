@@ -80,7 +80,9 @@
   --ink-deep:   #CBD5E1;   /* deepest ground on the site — 12.02:1 under --on-light */
   --ink:        #F8FAFC;
   --ink-lift:   #FFFFFF;
-  --ink-panel:  #F1F5F9;
+  /* Card fill on a .dark ground. Toned with --paper-sub below — 19 product
+     cards at pure white were as much of the "too white" as the ground was. */
+  --ink-panel:  #EDF2F8;
   --ink-raise:  #F8FAFC;
   --ink-edge:   #94A3B8;
 
@@ -92,12 +94,17 @@
      accent below has something to be warm *against*. A warm ground under a
      warm accent flattens both. */
   --paper-hi:   #FFFFFF;
-  --paper:      #F8FAFC;
+  /* Body ground and form-field fill. */
+  --paper:      #E9EFF6;
   --paper-lo:   #CBD5E1;   /* 1.48:1 end to end. Shallower than the 1.60:1 the
                               cyan ramp ran. The ombre is decoration, not the
                               thing carrying section rhythm — that job belongs
                               to the .light/.dark tone step. */
-  --paper-sub:  #F1F5F9;
+  /* The card and panel fill. Was #F1F5F9 at 0.90 luminance, which put a
+     near-white rectangle on top of the ground 19 times on the products page
+     alone. At 0.88 it still reads as raised above the ground's 0.78 top
+     (1.13:1) and its text is unaffected: muted copy on it is 7.75:1. */
+  --paper-sub:  #EDF2F8;
   --paper-edge: #94A3B8;
 
   /* -- text ------------------------------------------------------------ */
@@ -237,8 +244,25 @@
      note below for why it moved. If you want more depth, darken the text first
      and re-run the gradient-aware sweep — it scores every stop, not just the
      one you are looking at. */
-  --ombre-light: linear-gradient(168deg, #EDF1F5 0%, #DFE6ED 52%, #C2CCD8 100%);
-  --ombre-dark:  linear-gradient(168deg, #DDE4EC 0%, #CED7E1 52%, #B0BCCB 100%);
+  /* THIRD PASS ON "TOO WHITE", AND THE MOVE IS THE TOP STOP, NOT THE BOTTOM.
+     Both previous attempts deepened the whole ramp and ran straight into the
+     contrast floor, because the floor is set by the DEEPEST stop — muted text
+     on it sits at 4.53:1 with 0.03 to spare, so the bottom cannot move at all.
+     The top had 6.86:1 of headroom and was doing all the damage: at 0.88
+     luminance the first thing you see on every section is near-white.
+
+     So the ramps are compressed upward. Deep ends are byte-for-byte what they
+     were (#C2CCD8, #B0BCCB), the tops come down hard, and the floor therefore
+     cannot move — verified, still 4.53:1.
+
+       light  0.88 / 0.78 / 0.60  ->  0.78 / 0.70 / 0.60
+       dark   0.77 / 0.67 / 0.50  ->  0.65 / 0.57 / 0.50
+
+     If asked for more again: the tops can still come down, the bottoms cannot
+     without darkening --on-light-mute, and that has 2.05:1 of separation left
+     from --on-light before body and secondary copy flatten together. */
+  --ombre-light: linear-gradient(168deg, #DDE5EE 0%, #D2DBE5 52%, #C2CCD8 100%);
+  --ombre-dark:  linear-gradient(168deg, #C9D4E0 0%, #BDC9D7 52%, #B0BCCB 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -362,7 +386,7 @@ body {
      near-white fills for cards, fields and the NRC track — so the body
      cannot borrow one of them or every scroll gap, overscroll bounce and
      uncovered strip flashes lighter than the section above it. */
-  background-color: #DFE6ED;
+  background-color: #D2DBE5;
   /* the drafting grid: a fine graph under the paper ground. Sections with
      their own background (dark, cards, panels) simply paint over it. */
   background-image:
@@ -1498,7 +1522,9 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   margin-top: 1.25rem;
 }
 .bento-i {
-  background: var(--paper-hi);
+  /* --paper-sub, not --paper-hi: the tiles are cards and should tone with the
+     rest of them rather than staying the one pure-white block on the page. */
+  background: var(--paper-sub);
   border: 1px solid var(--paper-edge);
   border-radius: var(--r);
   box-shadow: var(--lift);
