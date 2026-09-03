@@ -841,7 +841,9 @@ section { padding-block: var(--pad-y); }
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255,0.10),
               inset 0 -40px 48px -32px rgba(9,7,5,0.55);
 }
-.gal-item:hover > .gal-surface > img { transform: scale(1.035); }
+/* Descendant, not direct child: .gal-zoom now sits between .gal-item and
+   .gal-surface. As `>` this silently stopped matching. */
+.gal-item:hover .gal-surface > img { transform: scale(1.035); }
 .gal-surface > img { transition: transform 240ms var(--ease); }
 
 /* product detail: featured shot + supporting gallery */
@@ -1625,7 +1627,16 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   .gal-item:first-child .gal-surface { aspect-ratio: auto; height: 100%; }
   .gal-item:first-child .gal-cap h3 { font-size: 1.25rem; }
   .gal-item { display: flex; flex-direction: column; }
-  .gal-item > .gal-surface { flex: 1; }
+  /* THE LINK IS IN THE FLEX CHAIN. .gal-zoom wraps every .gal-surface so the
+     tile degrades to a plain link to the photograph without JavaScript, which
+     means the direct-child rule that used to stretch the surface no longer
+     reaches it. Left as `.gal-item > .gal-surface` it matched nothing, the
+     feature tile's surface got no height, and the first project's photograph
+     — Artillery Museum, PROJECTS[0], the 2x2 tile — collapsed to zero and
+     rendered as an empty box. Both hops need to stretch, and both need
+     min-height: 0 or the image's intrinsic height wins and overflows. */
+  .gal-item > .gal-zoom { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .gal-item > .gal-zoom > .gal-surface { flex: 1; min-height: 0; }
 }
 .gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(16, 23, 27, 0.149); background: var(--ink-panel); }
 .gal-surface { aspect-ratio: 3 / 2; }
