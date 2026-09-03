@@ -82,7 +82,7 @@
   --ink-lift:   #FFFFFF;
   /* Card fill on a .dark ground. Toned with --paper-sub below — 19 product
      cards at pure white were as much of the "too white" as the ground was. */
-  --ink-panel:  #EDF2F8;
+  --ink-panel:  #EAF3F7;
   --ink-raise:  #F8FAFC;
   --ink-edge:   #94A3B8;
 
@@ -95,7 +95,7 @@
      warm accent flattens both. */
   --paper-hi:   #FFFFFF;
   /* Body ground and form-field fill. */
-  --paper:      #E9EFF6;
+  --paper:      #E6F0F5;
   --paper-lo:   #CBD5E1;   /* 1.48:1 end to end. Shallower than the 1.60:1 the
                               cyan ramp ran. The ombre is decoration, not the
                               thing carrying section rhythm — that job belongs
@@ -104,7 +104,7 @@
      near-white rectangle on top of the ground 19 times on the products page
      alone. At 0.88 it still reads as raised above the ground's 0.78 top
      (1.13:1) and its text is unaffected: muted copy on it is 7.75:1. */
-  --paper-sub:  #EDF2F8;
+  --paper-sub:  #EAF3F7;
   --paper-edge: #94A3B8;
 
   /* -- text ------------------------------------------------------------ */
@@ -261,8 +261,24 @@
      If asked for more again: the tops can still come down, the bottoms cannot
      without darkening --on-light-mute, and that has 2.05:1 of separation left
      from --on-light before body and secondary copy flatten together. */
-  --ombre-light: linear-gradient(168deg, #DDE5EE 0%, #D2DBE5 52%, #C2CCD8 100%);
-  --ombre-dark:  linear-gradient(168deg, #C9D4E0 0%, #BDC9D7 52%, #B0BCCB 100%);
+  /* FOURTH PASS. "Too white" was answered by bringing the tops down; then it
+     read DULL, and then the gradient read as a solid. Both of those are the
+     same fault: the stops were a narrow range of near-neutral greys, so there
+     was no chroma to see and nothing to see travelling.
+
+     The fix is hue, not luminance. Each stop keeps its exact luminance from
+     the previous pass and gains real saturation (44-52%), and the gradient
+     now TRAVELS about 28 degrees of hue across its length -- cyan at the top
+     to blue at the bottom, in the logo's own family. So it reads as colour
+     moving across the section rather than as a light-to-dark fade, and
+     because luminance did not move the contrast floor could not either.
+     It actually improved slightly: 4.53 -> 4.56.
+
+     This is the lever to reach for if it is ever "dull" again. Luminance is
+     spent -- the deep stops are at the floor and the tops are as low as they
+     can go before the page reads dark. Saturation and hue travel are not. */
+  --ombre-light: linear-gradient(168deg, #D1E9ED 0%, #C8DDEB 52%, #BCCCE9 100%);
+  --ombre-dark:  linear-gradient(168deg, #B3DAE3 0%, #AECCE2 52%, #A8BCE3 100%);
 
   /* -- type ------------------------------------------------------------ */
   --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -386,7 +402,7 @@ body {
      near-white fills for cards, fields and the NRC track — so the body
      cannot borrow one of them or every scroll gap, overscroll bounce and
      uncovered strip flashes lighter than the section above it. */
-  background-color: #D2DBE5;
+  background-color: #C8DDEB;
   /* the drafting grid: a fine graph under the paper ground. Sections with
      their own background (dark, cards, panels) simply paint over it. */
   background-image:
