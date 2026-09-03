@@ -1670,6 +1670,23 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   .gal-item > .gal-zoom > .gal-surface { flex: 1; min-height: 0; }
 }
 .gal-item { border-radius: var(--r); overflow: hidden; border: 1px solid rgba(16, 23, 27, 0.149); background: var(--ink-panel); }
+/* THIS RULE IS WHAT MAKES THE ROOM-TYPE FILTER VISIBLE, and it is not
+   optional. site.js filters by setting el.hidden, which relies on the UA
+   stylesheet's `[hidden] { display: none }`. That rule has specificity 0,1,0
+   from an attribute selector but it lives in the UA origin, so ANY author
+   declaration of `display` on .gal-item beats it — and the feature-tile grid
+   above sets `.gal-item { display: flex }` at >=64rem.
+
+   The result was a filter that looked wired and did nothing: clicking a room
+   type set `hidden` on 163 of 170 tiles and every one of them stayed on
+   screen at `display: flex`. Verified, after I had already told the user the
+   filter worked on the strength of reading el.hidden — the property was
+   perfectly correct, which is exactly why the JS-side check missed it.
+   Check getComputedStyle(el).display, not el.hidden.
+
+   Specificity 0,2,0, so it also survives anyone adding another
+   `.gal-item { display: ... }` later. */
+.gal-item[hidden] { display: none; }
 .gal-surface { aspect-ratio: 3 / 2; }
 .gal-cap { padding: 1rem 1.1rem 1.2rem; }
 /* `.gal-item` is a dark card that lives inside a `.light` section, so the
