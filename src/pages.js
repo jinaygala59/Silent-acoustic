@@ -114,7 +114,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>The room is loud with its own sound — speech blurs, calls echo, music smears. We measure the reverberation, set a target, and absorb only where it earns its place. ${TREAT_N} of our ${PRODUCTS.length} products do this job.</p>
+      <p>The room is loud with its own sound. We measure it, set a target, and absorb to it — ${TREAT_N} of our ${PRODUCTS.length} products.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
@@ -126,7 +126,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>The sound is somebody else's — traffic, a neighbour, the studio next door. This one is mass, isolation and sealing, never absorption. The other ${PROOF_N} are built for it.</p>
+      <p>The sound is somebody else's. Mass, isolation and sealing, never absorption — the other ${PROOF_N}.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>

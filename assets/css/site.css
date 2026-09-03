@@ -1749,11 +1749,19 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    doing. IT ONLY GUARANTEES THE BAND IT COVERS: move the copy, change the
    panel height, or add a sentence, and this needs re-measuring.
 
-   THE GUARANTEE, STATED: from 38% down the scrim is at or above 0.80, and
+   THE GUARANTEE, STATED: from 44% down the scrim is at or above 0.80, and
    over a pure-black pixel that composites to luminance 0.577 — 4.99:1 against
    `--on-light-mute`, the lightest text in the panel and the smallest. So any
-   photograph is safe for any copy that starts at 38% or below. The h2 sits
-   lower again on 0.87-0.97 and clears 12:1 on anything.
+   photograph is safe for any copy that starts at 44% or below. The h2 sits
+   lower again and clears 12:1 on anything.
+
+   The line moved from 38% to 44% when the panel copy was cut to two short
+   sentences: the block dropped to 47% on the widest desktop panel and 59.6%
+   on a phone, so eight points of scrim could go back to the photograph, which
+   is now clear to 28% rather than 24%. That is the trade this gradient always
+   makes — every line of copy removed is height the picture gets back. The
+   margin is thin on desktop, 47% against a 44% guarantee, so adding a line to
+   either panel means measuring again.
 
    That is the second re-measure, and both were caused by the same thing. The
    stops began at 0.03/34%, 0.35/48%, 0.90/60%, 0.985/72%, sized for a copy
@@ -1784,9 +1792,9 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .dip::before {
   content: ''; position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.03) 0 24%, rgba(255, 255, 255, 0.50) 31%,
-    rgba(255, 255, 255, 0.80) 38%, rgba(255, 255, 255, 0.95) 47%,
-    rgba(255, 255, 255, 0.985) 55%);
+    rgba(255, 255, 255, 0.03) 0 28%, rgba(255, 255, 255, 0.38) 35%,
+    rgba(255, 255, 255, 0.80) 44%, rgba(255, 255, 255, 0.95) 52%,
+    rgba(255, 255, 255, 0.985) 60%);
   transition: opacity 420ms var(--ease);
 }
 .dip-body { position: relative; z-index: 2; }
