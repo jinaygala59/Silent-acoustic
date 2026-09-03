@@ -94,10 +94,10 @@ built.push(page({
     <span class="rail-label">The distinction</span>
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-anim="fade">Before you buy anything</p>
+        <p class="eyebrow" data-anim="fade">${YEARS} years of the same first question</p>
         <h2 data-anim="reveal">Two different problems. Two different answers.</h2>
       </div>
-      <p class="lead" data-anim="fade">Most enquiries we get ask for foam to stop noise from next door. Foam will not do that. Getting this right first is the difference between a room that works and a wall covered in wasted money.</p>
+      <p class="lead" data-anim="fade">${YEARS} years and ${SITE.projectsCompleted} installations in, the request we still get most often is foam, to stop a neighbour. Foam will not do that. Telling the two apart before anyone quotes you is the difference between a room that works and a wall covered in wasted money.</p>
     </div>
   </div>
   <div class="diptych">
@@ -109,7 +109,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>Your room echoes. Speech is hard to follow, calls sound like a stairwell, music smears. The fix is absorption on the hard surfaces — panels, clouds, baffles, slats — sized to a reverberation target.</p>
+      <p>Your room echoes. Speech is hard to follow, calls sound like a stairwell, music smears. The fix is absorption on the hard surfaces — panels, clouds, baffles, slats — sized to a reverberation target we set before anything is cut. Adding more of it than the room needs is the other way to waste money.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
@@ -121,7 +121,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>Noise is getting in or out. Traffic, a neighbour, the studio next door. The fix is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window.</p>
+      <p>Noise is getting in or out. Traffic, a neighbour, the studio next door. The fix is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. No amount of absorption on the wall will touch it.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
