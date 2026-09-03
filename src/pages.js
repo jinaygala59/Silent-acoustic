@@ -646,7 +646,7 @@ built.push(page({
 <section class="page-head">
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Contact</p>
-    <h1 data-in style="--d:170">Let's measure the room.</h1>
+    <h1 data-in style="--d:170">Tell us about the space.</h1>
   </div>
 </section>
 
@@ -688,7 +688,7 @@ built.push(page({
             <li><span class="k">Phone &amp; WhatsApp</span><a class="v" href="tel:${SITE.phoneHref}">${SITE.phone}</a></li>
             <li><span class="k">General enquiries</span><a class="v" href="mailto:${SITE.email}">${SITE.email}</a></li>
             <li><span class="k">Drawings &amp; tenders</span><a class="v" href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a></li>
-            <li><span class="k">Office &amp; works</span><span class="v" style="display:block;line-height:1.55">${SITE.addr1}<br>${SITE.addr2}<br>${SITE.addr3}</span></li>
+            <li><span class="k">Office &amp; works</span><span class="v" style="display:block;line-height:1.55">Mumbai, Maharashtra</span></li>
           </ul>
           <div class="row" style="margin-top:1.75rem">
             <a class="btn btn-primary" href="${SITE.waHref}" rel="noopener">WhatsApp us ${ARROW}</a>
