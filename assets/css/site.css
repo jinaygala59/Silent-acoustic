@@ -1115,13 +1115,18 @@ h1.hero-title {
   border-top: 1px solid var(--paper-edge);
   display: grid; gap: 0;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-  /* Trimmed from clamp(2.5rem, 5vw, 4rem). The rail is a four-item summary,
-     not a section, and the old value left a band of empty ground under it
-     taller than the figures themselves. */
+  /* Trimmed from clamp(2.5rem, 5vw, 4rem). The rail is a short summary, not a
+     section, and the old value left a band of empty ground under it taller
+     than the figures themselves. */
   padding-bottom: clamp(1.5rem, 2.6vw, 2.25rem);
 }
+/* The track count is explicit, so it has to match the number of items — the
+   `auto-fit` rule above copes with any count, this one does not. It was four
+   tracks while the rail carried four items; dropping the Coverage item left
+   the fourth track empty and the strip read as truncated. Three items, three
+   tracks. The first is wider because it carries the longest caption. */
 @media (min-width: 64rem) {
-  .hero-specs { grid-template-columns: 1.35fr 1fr 1fr 1fr; }
+  .hero-specs { grid-template-columns: 1.35fr 1fr 1fr; }
 }
 .hero-spec { padding: 2.25rem 1.5rem 0 0; position: relative; }
 @media (min-width: 48rem) {
