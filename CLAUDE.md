@@ -360,8 +360,8 @@ and they are not the same**:
 
 | token | stops | luminance |
 |---|---|---|
-| `--ombre-light` | `#FBFCFD` → `#EEF3F8` → `#CBD5E1` | 0.972 / 0.891 / 0.657 |
-| `--ombre-dark`  | `#E4EAF1` → `#D5DEE8` → `#BAC6D6` | 0.817 / 0.722 / 0.557 |
+| `--ombre-light` | `#EDF1F5` → `#DFE6ED` → `#C2CCD8` | 0.875 / 0.784 / 0.596 |
+| `--ombre-dark`  | `#DDE4EC` → `#CED7E1` → `#B0BCCB` | 0.769 / 0.672 / 0.495 |
 
 **This was the "too white" bug, and it is worth understanding before you
 undo it.** `--ombre-dark` used to be a byte-for-byte alias of
@@ -398,7 +398,11 @@ would drag the cards down with the grounds and cancel the effect.
 
 How deep the grounds can go is capped by the text on them, not by taste.
 `--on-light-mute` was darkened `#475569` → `#3F4C5E` to buy the current
-depth; it measured 4.38:1 against the new deep end otherwise. Darkening text
+depth. The grounds have been deepened again since that trade was made, so
+restate it against today's deep end `#B0BCCB` rather than the `#BAC6D6` it
+was originally scored on: the old mute would now be **3.93:1** there, and the
+current one is **4.53:1** — which is the whole margin the site has left, and
+the floor quoted in the contrast section below. Darkening text
 only ever raises contrast, so that is the free side of the trade — but it is
 not free forever: `--on-light` and the mute are now **2.05:1 apart**, and
 another round of darkening starts flattening body copy against secondary
@@ -443,13 +447,13 @@ pass did once and which silently blanked every surface on the site.
 
 **The accent is the client's blue — one hue, at three exposures.**
 The whole `--brand-*` ramp is the logo cyan `#1CABDE` (hue ~202°) darkened
-until it can carry text. `--brand` `#0B5578` carries links, labels and
-`.tlink` (5.48:1 worst); `--brand-lift` `#083E58` is hover, always a step
+until it can carry text. `--brand` `#094A68` carries links, labels and
+`.tlink` (4.98:1 worst); `--brand-lift` `#073349` is hover, always a step
 darker and never lighter; `--brand-deep` `#10789C` is a **solid pill fill
-only**, carrying `#FFFFFF` at 5.01:1 — at 3.13:1 on `--paper-lo` it is not
+only**, carrying `#FFFFFF` at 5.01:1 — at 3.38:1 on `--paper-lo` it is not
 text-safe, so never set it as a `color`.
 
-`--brand-mark` `#1CABDE` is the raw logo cyan. It measures **2.24:1** on
+`--brand-mark` `#1CABDE` is the raw logo cyan. It measures **2.53:1** on
 paper and can therefore never be type; it exists so the logo asset keeps its
 own colour and nothing else reaches for it. Emphasis moves in lightness
 within this one hue — never to a second colour.
@@ -465,7 +469,7 @@ reference is stale.
 **The hero is the one place text does not sit on a token ground.** Its type
 sits on a swappable banner **photograph** behind a designed two-gradient
 scrim, so its colours are named separately — `--on-banner` `#0F172A` and
-`--mark-banner` `#3A4759` — and are the banner's, not the palette's.
+`--mark-banner` `#333E4E` — and are the banner's, not the palette's.
 
 The scrim is **the page's own light** — `rgb(237,241,245)`, the top stop of
 `--ombre-light` — and the type on it is **dark**. It was white until the
@@ -630,10 +634,14 @@ here is width.
 ### The contrast check, and what it cannot see
 
 Every rendered text/background pair measures at or above 4.5:1. The lowest
-on the site is **4.70:1** — `.note-go`, the "Read the guide" link on the blog
-index, `--brand` `#0B5578` on `#BAC6D6`, the deepest stop of `--ombre-dark`.
-It is tighter than the primary pill (`#FFFFFF` on `--brand-deep`, **5.01:1**),
-which is the floor everywhere else. Both were re-measured after the two
+on the site is **4.53:1** — muted body copy (`--on-light-mute` `#3F4C5E`, via
+`.dark .lead` / `.dark .muted`) on `#B0BCCB`, the deepest stop of
+`--ombre-dark`. Next tightest is `.note-go`, the "Read the guide" link on the
+blog index, at **4.98:1** — `--brand` `#094A68` on that same stop, which is
+also `--brand`'s worst case anywhere. Both are tighter than the primary pill
+(`#FFFFFF` on `--brand-deep`, **5.01:1**).
+
+Those three are token-level computations, which is all a hex can tell you. Both were re-measured after the two
 ombres were separated, by two independent walkers that agreed to the
 hundredth: products 0 failures, projects 0, about 0, blog 0, contact 0,
 404 0, article 0.
