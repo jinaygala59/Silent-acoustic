@@ -497,7 +497,7 @@ built.push(page({
       <div class="bento-i" data-anim="rise"><b>${PRODUCTS.length}</b><span>Products, ${CATEGORIES.length} families</span></div>
       <div class="bento-i" data-anim="rise"><b>${PROJECTS.length}</b><span>Rooms photographed</span></div>
       <div class="bento-i bento-wide" data-anim="rise">
-        <b>In-house</b><span>Made in Malad, Mumbai</span>
+        <b>In-house</b><span>Made in Mumbai</span>
         <small>Manufactured in our own facility and installed by our own crews, pan-India.</small>
       </div>
       <div class="bento-i bento-wide" data-anim="rise">
@@ -523,21 +523,6 @@ built.push(page({
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Quote a lump sum</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Drop the material at your gate</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Supplying the panels is half a job. We fit them too, to the drawing and to your site timings, and we stay on after handover for support and maintenance. If you only want the material, say so and we will price it that way &mdash; but the default is that we finish what we make.</p></div>
       <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Hand over unmeasured</h3><p style="grid-column:1;grid-row:2;max-width:70ch">We measure the finished room against the design target and give you the report. If it misses, we come back and fix it. That is what the design fee bought.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Questions</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Frequently asked</p>
-        <h2 data-anim="reveal">The things clients ask first.</h2>
-      </div>
-    </div>
-    <div class="steps" data-stagger="long">
-      ${FAQ.map(f => `<div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1;font-size:1.125rem">${esc(f.q)}</h3><p style="grid-column:1;grid-row:2;max-width:70ch">${esc(f.a)}</p></div>`).join('\n      ')}
     </div>
   </div>
 </section>
@@ -576,6 +561,21 @@ built.push(page({
       </li>`).join('\n      ')}
     </ol>
     <p class="mt-l lead">More notes are being written. If you have a question today, call us and we will answer it on the phone rather than make you wait for the post.</p>
+  </div>
+</section>
+
+<section class="light railed">
+  <div class="wrap">
+    <span class="rail-label">Questions</span>
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-anim="fade">Frequently asked</p>
+        <h2 data-anim="reveal">The things clients ask first.</h2>
+      </div>
+    </div>
+    <div class="steps" data-stagger="long">
+      ${FAQ.map(f => `<div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1;font-size:1.125rem">${esc(f.q)}</h3><p style="grid-column:1;grid-row:2;max-width:70ch">${esc(f.a)}</p></div>`).join('\n      ')}
+    </div>
   </div>
 </section>
 

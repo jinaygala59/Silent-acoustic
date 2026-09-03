@@ -697,15 +697,18 @@ const POSTS = [
   },
 ];
 
-/* Verbatim from the FAQ block on silenceacoustic.com's About page
-   (/about-acoustic-solutions-company-india/) — replaces an earlier, unconfirmed
-   placeholder FAQ. Do not edit; these are the client's own published answers. */
+/* Originally verbatim from the FAQ block on silenceacoustic.com's About page
+   (/about-acoustic-solutions-company-india/). Condensed by request — the
+   client's answers ran long for this page's format — but every figure below
+   (pricing, timelines, warranty terms) is still theirs; nothing was added or
+   changed, only shortened. Moved from the About page to the Notes page by
+   request. */
 const FAQ = [
-  { q: 'How much do acoustic treatments cost?', a: 'Acoustic treatment costs vary based on space size, material selection, and performance requirements. Our solutions start from ₹150 per sq ft for basic treatments, with premium installations ranging ₹400-800 per sq ft. We provide detailed quotations after free site assessment.' },
-  { q: 'What’s the difference between soundproofing and acoustic treatment?', a: 'Soundproofing blocks sound transmission between spaces, while acoustic treatment controls sound reflections within a space. Most projects require both approaches for optimal results. Our experts help determine the right combination for your specific needs.' },
-  { q: 'How long does acoustic installation take?', a: 'Installation timelines depend on project scope: small rooms (10-20 sq m) take 1-2 days, medium spaces (50-100 sq m) take 3-5 days, large facilities (500+ sq m) take 1-2 weeks, and complex projects run to a custom timeline based on requirements.' },
-  { q: 'Do you provide warranties on acoustic products?', a: 'Yes, we provide comprehensive warranties: material warranty of 5-10 years depending on product type, installation warranty of 2 years on workmanship, a performance guarantee on the acoustic targets specified in your contract, and annual maintenance packages are available.' },
-  { q: 'Can acoustic treatments be customized for interior design?', a: 'Absolutely! Our fabric-wrapped acoustic panels and decorative acoustic tiles are available in hundreds of colors, patterns, and textures. We work with interior designers to create acoustic solutions that enhance your space’s aesthetic appeal.' },
+  { q: 'How much do acoustic treatments cost?', a: 'From ₹150/sq ft for basic treatments up to ₹400–800/sq ft for premium installations, depending on size, material and performance target. We quote after a free site assessment.' },
+  { q: 'What’s the difference between soundproofing and acoustic treatment?', a: 'Soundproofing blocks sound between spaces; acoustic treatment controls reflections within one. Most projects need both — we work out the right mix for yours.' },
+  { q: 'How long does acoustic installation take?', a: '1–2 days for a small room, 3–5 days for a medium space, 1–2 weeks for a large facility (500+ sq m). Bigger or more complex projects run to a custom timeline.' },
+  { q: 'Do you provide warranties on acoustic products?', a: 'Yes — 5–10 years on materials, 2 years on installation, plus a performance guarantee against your contracted targets. Annual maintenance packages are available.' },
+  { q: 'Can acoustic treatments be customized for interior design?', a: 'Yes. Our fabric-wrapped panels and acoustic tiles come in hundreds of colours, patterns and textures, and we work directly with interior designers on the look.' },
 ];
 
 module.exports = { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };

@@ -681,7 +681,14 @@ If you change a token, re-run it rather than eyeballing.
 - Process steps and the About page's four commitments (`src/pages.js`, the
   "Four things we will not do" section) are written copy, not client-confirmed.
   They include a promise to re-measure and fix a room that misses its target.
-  The FAQ is no longer in this category — as of the last content sync it is
+  The FAQ is no longer in this category — as of the last content sync it was
   transcribed verbatim from the live site's About-page FAQ block, not written
   copy. See the "content sync" note in git history for what else was checked
   against the live site and when.
+
+  It has since moved: the FAQ now lives on the Notes page (`blog.html`), not
+  About, and its five answers were condensed by request — the client's own
+  answers ran long for a page built around short entries. Every figure
+  (pricing, timelines, warranty terms) is unchanged; only the wording was
+  cut. `src/content.js`'s `FAQ` array carries the current text and the note
+  on why it no longer matches the live site word-for-word.
