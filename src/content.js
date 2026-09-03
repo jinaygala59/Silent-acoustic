@@ -13,7 +13,7 @@ const SITE = {
   email: 'info@silenceacoustic.com',
   emailProjects: 'projects@silenceacoustic.com',
   addr1: '501, 5th Floor, Ijmima Complex',
-  addr2: 'Behind Infinity Mall, Malad, Mindspace, Malad West',
+  addr2: 'Behind Infinity Mall, Mindspace',
   addr3: 'Mumbai, Maharashtra 400064',
   /* NO OPENING HOURS. They were 'Mon–Sat, 10:00–19:00 IST' and were invented:
      the live site publishes email, phone and address in its footer and states

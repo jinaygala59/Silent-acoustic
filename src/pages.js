@@ -8,6 +8,11 @@ const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex, ticker
    in 2027 the sentence is still right and the figure is not. It is derived
    now, so a rebuild is all it takes. Same arithmetic, no new claim — 2006 is
    theirs, the subtraction is ours. */
+/* The split the distinction section quotes. Counted, never typed — add a
+   soundproofing product and both halves of that copy correct themselves. */
+const PROOF_N = C.PRODUCTS.filter(p => p.cat === 'proof').length;
+const TREAT_N = C.PRODUCTS.length - PROOF_N;
+
 const FOUNDED = 2006;
 const YEARS = new Date().getFullYear() - FOUNDED;
 
@@ -94,10 +99,10 @@ built.push(page({
     <span class="rail-label">The distinction</span>
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-anim="fade">${YEARS} years of the same first question</p>
-        <h2 data-anim="reveal">Two different problems. Two different answers.</h2>
+        <p class="eyebrow" data-anim="fade">Since ${FOUNDED}</p>
+        <h2 data-anim="reveal">What ${YEARS} years actually buys you.</h2>
       </div>
-      <p class="lead" data-anim="fade">${YEARS} years and ${SITE.projectsCompleted} installations in, the request we still get most often is foam, to stop a neighbour. Foam will not do that. Telling the two apart before anyone quotes you is the difference between a room that works and a wall covered in wasted money.</p>
+      <p class="lead" data-anim="fade">${SITE.projectsCompleted} installations. ${PROJECTS.length} of those rooms photographed on this site. ${SECTORS.length} room types, each designed to its own number. Long enough to tell which of two very different problems you have before anyone quotes you — and long enough to know that getting that one wrong is a wall covered in wasted money.</p>
     </div>
   </div>
   <div class="diptych">
@@ -109,7 +114,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>Your room echoes. Speech is hard to follow, calls sound like a stairwell, music smears. The fix is absorption on the hard surfaces — panels, clouds, baffles, slats — sized to a reverberation target we set before anything is cut. Adding more of it than the room needs is the other way to waste money.</p>
+      <p>Your room echoes. Speech is hard to follow, calls sound like a stairwell, music smears. The fix is absorption on the hard surfaces, sized to a reverberation target we set before anything is cut — because over-treating a room is the other way to waste money on it. ${TREAT_N} of our ${PRODUCTS.length} products do this job.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
@@ -121,7 +126,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>Noise is getting in or out. Traffic, a neighbour, the studio next door. The fix is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. No amount of absorption on the wall will touch it.</p>
+      <p>Noise is getting in or out. Traffic, a neighbour, the studio next door. The fix is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. No amount of absorption on the wall will touch it. The other ${PROOF_N} products are built for this.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
@@ -233,7 +238,7 @@ built.push(page({
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Catalogue</p>
     <h1 data-in style="--d:170">Products</h1>
-    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our facility in Malad, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
+    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our own facility in Mumbai, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
     <nav class="crumbs" data-in style="--d:390" aria-label="Product families">
       ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)}</a>`).join('<span aria-hidden="true">/</span>\n      ')}
     </nav>
@@ -430,7 +435,7 @@ ${ctaBand()}`
 built.push(page({
   file: 'about.html', active: 'about.html',
   title: 'About Silence Acoustic — Acoustics, Mumbai',
-  desc: 'Over a decade in acoustics. We measure, design, manufacture and install acoustic treatment ourselves, from Malad West, Mumbai.',
+  desc: 'Over a decade in acoustics. We measure, design, manufacture and install acoustic treatment ourselves, from Mumbai.',
   body: `
 <section class="page-head">
   <div class="wrap">
@@ -448,7 +453,7 @@ built.push(page({
         <p class="eyebrow" data-anim="fade">Since 2006</p>
         <h2 data-anim="reveal">Twenty years of rooms that were not working.</h2>
         <p style="color:var(--on-light-mute)">Silence Acoustic was founded by an acoustician with more than two decades in soundproofing and room treatment, after too many projects where the consultant drew one thing, the supplier shipped another, and the contractor fitted a third. Nobody was accountable for whether the room actually sounded right.</p>
-        <p style="color:var(--on-light-mute)">So we took the whole chain. We survey and measure the space ourselves. We produce the acoustic design against a stated target. We manufacture the panels in our own facility in Malad West. Our own crews install them. Then we come back with the meter and check.</p>
+        <p style="color:var(--on-light-mute)">So we took the whole chain. We survey and measure the space ourselves. We produce the acoustic design against a stated target. We manufacture the panels in our own facility in Mumbai. Our own crews install them. Then we come back with the meter and check.</p>
         <p style="color:var(--on-light-mute)">That is unusual in this industry, and it is the only part of our pitch that matters. Everything else — the finishes, the cut patterns, the colour range — is downstream of being answerable for the result.</p>
       </div>
       <div>
@@ -460,7 +465,7 @@ built.push(page({
           <caption>At a glance</caption>
           <tbody>
             <tr><th>Founded</th><td>2006 &middot; 20+ years in acoustics</td></tr>
-            <tr><th>Base</th><td>Malad West, Mumbai</td></tr>
+            <tr><th>Base</th><td>Mumbai</td></tr>
             <tr><th>Manufacturing</th><td>In-house, own facility</td></tr>
             <tr><th>Installation</th><td>Own crews, pan-India</td></tr>
             <tr><th>Products</th><td>${PRODUCTS.length} across 5 families</td></tr>
