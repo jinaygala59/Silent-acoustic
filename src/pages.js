@@ -365,20 +365,6 @@ built.push(page({
   </div>
 </section>
 
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Room types</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Ten room types</p>
-        <h2 data-anim="reveal">Each one is designed to its own target.</h2>
-      </div>
-      <p class="lead" data-anim="fade">Reverberation time, background noise level and sound transmission between spaces — the three numbers that decide whether a room works. Which one leads depends entirely on what happens in the room.</p>
-    </div>
-    ${roomdex('')}
-  </div>
-</section>
-
 <section class="light railed">
   <div class="wrap">
     <span class="rail-label">Gallery</span>
