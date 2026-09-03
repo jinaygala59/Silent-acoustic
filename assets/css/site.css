@@ -539,6 +539,17 @@ p { text-wrap: pretty; }
   /* motion.js retracts the header on scroll-down; follow it up so the marker
      never floats with a dead band above it. */
   html.head-up .railed[id] > .wrap > .rail-label { top: 0; }
+
+  /* Same forward-compatibility as .fampick above: the series sections
+     alternate, so this marker sits on a .dark ground every other time. The
+     hardcoded light tint is the light ramp's top stop, which would read as a
+     pale band if .dark ever became genuinely dark. --ink is that ramp's
+     equivalent and is currently the same colour, so this is a no-op today. */
+  .dark.railed[id] > .wrap > .rail-label {
+    background: var(--ink);
+    color: var(--on-dark);
+    border-block-color: var(--ink-edge);
+  }
 }
 
 section { padding-block: var(--pad-y); }
@@ -1418,6 +1429,21 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
   .fampick a:hover b { color: var(--on-light); }
 }
 .fampick a:active { border-color: var(--mark-ink); background: var(--paper-hi); }
+
+/* The picker lives in a .dark section. Today .dark is the deeper of two LIGHT
+   ombres, so --on-light and --on-dark hold the same value and these three
+   rules change nothing at all. They exist because that is about to stop being
+   true: if .dark is ever given genuinely dark values, a pill painted with
+   --on-light on a dark ground is dark-on-dark and the whole family picker
+   disappears. Naming the on-dark tokens now costs nothing and means the
+   component survives that change without anyone remembering it. */
+.dark .fampick a { color: var(--on-dark); border-color: var(--ink-edge); }
+.dark .fampick a b { color: var(--on-dark-mute); }
+@media (hover: hover) and (pointer: fine) {
+  .dark .fampick a:hover { border-color: var(--mark); background: var(--ink-raise); }
+  .dark .fampick a:hover b { color: var(--on-dark); }
+}
+.dark .fampick a:active { border-color: var(--mark); background: var(--ink-raise); }
 
 .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
 .pills li {
