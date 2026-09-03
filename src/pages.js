@@ -426,8 +426,7 @@ built.push(page({
 <section class="page-head">
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">About</p>
-    <h1 data-in style="--d:170">We make the material,<br>and we fit it ourselves.</h1>
-    <p class="lead" data-in style="--d:280">Acoustic work usually splits in two: someone sells you the panels, someone else puts them up, and neither is answerable for how the finished room sounds. We are both halves &mdash; the manufacturer and the installer &mdash; so either way there is one company to call.</p>
+    <h1 data-in style="--d:170">The panels are ours.<br>So is the ladder.</h1>
   </div>
 </section>
 
