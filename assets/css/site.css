@@ -1381,6 +1381,37 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .dark .spec tr + tr { border-top-color: rgba(16, 23, 27, 0.115); }
 
 /* pill list for applications / finishes */
+/* The family picker at the top of the catalogue. A nav, not a card grid —
+   the page already has 19 cards below it and five more would read as the
+   catalogue starting twice. Shaped like .pills, but these are links rather
+   than the inert li chips that component renders, so they carry their own
+   rule instead of being bolted onto it.
+
+   min-height: 44px is not decoration: this is the first thing a phone user
+   taps, and it has to clear the target size the rest of the site now holds
+   to. The count is tabular so five pills of different name lengths still
+   line their numbers up. */
+.fampick { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.fampick a {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  min-height: 44px; padding: 0.5rem 1.15rem;
+  border: 1px solid var(--paper-edge); border-radius: var(--r-pill);
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-light); text-decoration: none;
+  transition: background 200ms var(--ease), border-color 200ms var(--ease),
+              color 200ms var(--ease);
+}
+.fampick a b {
+  font-weight: 500; color: var(--on-light-mute);
+  font-variant-numeric: tabular-nums;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fampick a:hover { border-color: var(--mark-ink); background: var(--paper-hi); }
+  .fampick a:hover b { color: var(--on-light); }
+}
+.fampick a:active { border-color: var(--mark-ink); background: var(--paper-hi); }
+
 .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
 .pills li {
   font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.14em;

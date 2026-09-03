@@ -241,11 +241,39 @@ built.push(page({
     <p class="eyebrow" data-in style="--d:60">Catalogue</p>
     <h1 data-in style="--d:170">Products</h1>
     <p class="lead" data-in style="--d:280">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our own facility in Mumbai, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
-    <nav class="crumbs" data-in style="--d:390" aria-label="Product families">
-      ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)}</a>`).join('<span aria-hidden="true">/</span>\n      ')}
+  </div>
+</section>
+
+<section class="dark railed">
+  <div class="wrap">
+    <span class="rail-label">Families</span>
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-anim="fade">Pick a family</p>
+        <h2 class="sub-h" data-anim="reveal">Five families, ${PRODUCTS.length} products</h2>
+      </div>
+      <p class="lead" data-anim="fade">Jump straight to the range you need, or keep scrolling to see all of them in order.</p>
+    </div>
+    <nav class="fampick" data-anim="fade" aria-label="Jump to a product family">
+      ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)} <b>${PRODUCTS.filter(p => p.cat === c.id).length}</b></a>`).join('\n      ')}
     </nav>
   </div>
 </section>
+
+${CATEGORIES.map((cat, i) => `
+<section class="${i % 2 ? 'dark' : 'light'} railed" id="${cat.id}">
+  <div class="wrap">
+    <span class="rail-label">${esc(cat.name)}</span>
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-anim="fade">${PRODUCTS.filter(p => p.cat === cat.id).length} products</p>
+        <h2 data-anim="reveal">${esc(cat.name)}</h2>
+      </div>
+      <p class="lead" data-anim="fade">${esc(cat.note)}.</p>
+    </div>
+    <div class="grid g3 cat-grid" data-stagger>${PRODUCTS.filter(p => p.cat === cat.id).map(p => productCard(p)).join('\n')}</div>
+  </div>
+</section>`).join('')}
 
 <section class="dark railed">
   <div class="wrap">
@@ -272,21 +300,6 @@ built.push(page({
     </div>
   </div>
 </section>
-
-${CATEGORIES.map((cat, i) => `
-<section class="${i % 2 ? 'dark' : 'light'} railed" id="${cat.id}">
-  <div class="wrap">
-    <span class="rail-label">${esc(cat.name)}</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">${PRODUCTS.filter(p => p.cat === cat.id).length} products</p>
-        <h2 data-anim="reveal">${esc(cat.name)}</h2>
-      </div>
-      <p class="lead" data-anim="fade">${esc(cat.note)}.</p>
-    </div>
-    <div class="grid g3 cat-grid" data-stagger>${PRODUCTS.filter(p => p.cat === cat.id).map(p => productCard(p)).join('\n')}</div>
-  </div>
-</section>`).join('')}
 
 ${ctaBand()}`
 }));
