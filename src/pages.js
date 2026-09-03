@@ -82,7 +82,7 @@ built.push(page({
   </div>
   <div class="wrap hero-rail">
     <dl class="hero-specs" data-in style="--d:800">
-      <div class="hero-spec"><dt>Experience</dt><dd><span class="tick" data-count-to="${YEARS}">${YEARS}</span>+ yrs<small>Designing and installing acoustic systems since ${FOUNDED}</small></dd></div>
+      <div class="hero-spec"><dt>Experience</dt><dd><span class="tick" data-count-to="${YEARS}">${YEARS}</span>+ yrs<small>Designing and installing acoustic products since ${FOUNDED}</small></dd></div>
       <div class="hero-spec"><dt>Manufacturing</dt><dd>In-house<small>CNC cutting, UV printing and assembly</small></dd></div>
       <div class="hero-spec"><dt>Site survey</dt><dd>Free<small>Within Mumbai and the MMR</small></dd></div>
     </dl>

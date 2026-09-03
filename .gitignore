@@ -13,3 +13,6 @@ _mkiotest.js
 assets/css/_motion-nosupport.css
 _reducetest.html
 assets/css/_motion-reduce.css
+_probe.js
+_probe.html
+_probe.log
