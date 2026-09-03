@@ -586,26 +586,20 @@ because `.panel` and the roomdex rows were both tried and both removed.
 **Section shapes are deliberately varied.** The page used to be one shape
 repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
 family rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
-`.cat-grid`, `.notes`, the `.ticker` ribbon, and the pinned `.choreo` scroll
-choreography. Reach for an existing shape before adding a grid of equal cards
-— two of the three most recent fixes were removing one.
+`.cat-grid`, `.notes`, and the pinned `.choreo` scroll choreography. Reach for
+an existing shape before adding a grid of equal cards — two of the three most
+recent fixes were removing one.
 
-**`.ticker` carries real client names, and its count is computed.** It is a
-port of replit.com's `LogoBlock` marquee (see the motion section): two
-identical runs in a flex track, each translating -100% of its own width, so
-the loop is seamless with no JS measurement. Theirs carries customer logos.
-We have no logo assets and inventing them is out of the question, so it
-carries 24 of the client's own `PROJECTS` names and cities, with
-`PROJECTS.length` beside it labelled **"photographed"**. Never type that
-figure, and never label it "finished": `PROJECTS.length` is how many rooms
-are photographed on the site, while completed installations is
-`SITE.projectsCompleted` (2035+). The footer said "170 rooms finished" for one
-commit — the same claim the "stop passing 170 off as the project count" pass
-had just removed everywhere else. The edge mask
-lives on `.ticker-rail`, NOT on `.ticker` — it was on the outer block first
-and faded the footer line along with the ribbon, rendering "170 rooms
-finished" as "70 rooms finished". Anything carrying a number stays outside
-the masked box.
+**The `.ticker` marquee (a port of replit.com's `LogoBlock`, 24 client project
+names scrolling past "N rooms photographed") was removed by request from the
+homepage's Work section.** It sat directly above the actual photo gallery and
+duplicated it — the same 24-ish names, less usefully, in motion instead of as
+photographs. `ticker()` is gone from `src/build.js` entirely (it is not dead
+code kept for later; it was deleted), and its CSS is gone from `motion.css`.
+If a marquee of client names is wanted again elsewhere, write it fresh against
+the current motion vocabulary rather than reviving this — the old version's
+reduced-motion and dark/`.rail-sec` handling documented here no longer exists
+to copy from.
 
 **`.roomdex` is shared, and its counts are computed.** The ten room types
 appear on both the homepage and the projects page from one `roomdex()`
