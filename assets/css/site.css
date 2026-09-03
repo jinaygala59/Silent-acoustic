@@ -2460,21 +2460,15 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 .nrc[data-mat="wood"]  { --mat: var(--mat-wood); }
 .nrc[data-mat="proof"] { --mat: var(--mat-proof); }
 
-/* NRC bars ride inside .card, and `.dark .card` already repaints itself with
-   --ink-panel — so on a genuinely dark ground the card goes dark underneath a
-   bar whose track and figures are still named in paper/on-light tokens. The
-   figures would be dark-on-dark; the track would read as a pale slab.
-
-   The track takes --ink rather than a lifted tone on purpose. The bar's whole
-   reading is "filled run = absorbed, empty run = the ground, i.e. what comes
-   back off the wall" (see the signature note in CLAUDE.md), so the empty run
-   has to stay whatever the ground is — --paper's analogue on the dark ramp is
-   --ink. If the dark ramp ends up ordered the other way round, this is the one
-   line to revisit; it is a no-op today either way. */
-.dark .nrc-track { background: var(--ink); border-color: var(--ink-edge); }
-.dark .nrc-track::after { background: var(--ink-edge); }
-.dark .nrc-fig { color: var(--on-dark-mute); }
-.dark .nrc-fig b { color: var(--on-dark); }
+/* No .dark override here, deliberately. NRC bars only ever appear inside
+   .card, and `.dark .card` repaints itself with --ink-panel, which is one of
+   the two ink tokens held at a LIGHT value on purpose — so a bar in a .dark
+   section is still sitting on a light card and its paper/on-light tokens are
+   already correct. An earlier pass added a dark track and on-dark figures
+   here on the assumption that .dark cards darken with the section. They do
+   not, and the override painted a dark slab with invisible figures onto a
+   white card. If --ink-panel is ever darkened, this is where the four rules
+   go back. */
 
 /* on a card the caption drops to the figure alone — the client's full
    wording is on the product page, and two lines of mono in a card body
@@ -2549,9 +2543,11 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 /* The notes list sits in blog.html's "Articles" section, which is .dark, and
    .note paints NO ground of its own — only a hairline rule — so unlike a card
-   this text composites directly onto the section. That makes it the one place
-   the coming real-dark .dark lands on unprotected copy. No-op while --ink-*
-   and --on-dark* still hold light values. */
+   this text composites directly onto the section. That made it the one
+   component still naming paper tokens while ~20 sibling `.dark X` rules had
+   already been moved onto --on-dark*, so it would have been the one block
+   left behind when --ombre-dark darkens. It now moves with them: correct or
+   broken exactly when `.dark .lead` is, which is the point. */
 .dark .note, .dark .note:last-child { border-color: var(--ink-edge); }
 .dark .note-t { color: var(--on-dark); }
 .dark .note-d, .dark .note-meta { color: var(--on-dark-mute); }
