@@ -106,6 +106,77 @@
     window.addEventListener('hashchange', applyHash);
   }
 
+  /* ---------------------------- image lightbox --------------------------
+     Every gallery tile crops its photograph: .gal-surface is aspect-ratio
+     3/2 with object-fit: cover, so the tile shows the middle of a 760x570
+     frame. Clicking opens the whole frame, uncropped.
+
+     Progressive, like the rest of this file. The markup wraps each surface in
+     a real <a href> pointing at the image file, so with the script blocked
+     the link still opens the photograph — and it is keyboard-focusable and
+     Enter-activatable for free. This only intercepts the click.
+
+     The photographs are 760x570. The figure is capped at 960px so the
+     lightbox stops short of a 1.3x upscale; going full-bleed here would look
+     soft, and the honest fix is higher-resolution originals, not more CSS. */
+  var zooms = [].slice.call(document.querySelectorAll('.gal-zoom'));
+  if (zooms.length) {
+    var lb = null, lbImg = null, lbCap = null, lbClose = null, opener = null;
+
+    var build = function () {
+      lb = document.createElement('div');
+      lb.className = 'lb';
+      lb.setAttribute('role', 'dialog');
+      lb.setAttribute('aria-modal', 'true');
+      lb.setAttribute('aria-label', 'Project photograph');
+      lb.hidden = true;
+      lb.innerHTML =
+        '<button class="lb-close" type="button" aria-label="Close">Close</button>' +
+        '<figure class="lb-fig"><img alt=""><figcaption></figcaption></figure>';
+      document.body.appendChild(lb);
+      lbImg = lb.querySelector('img');
+      lbCap = lb.querySelector('figcaption');
+      lbClose = lb.querySelector('.lb-close');
+      lbClose.addEventListener('click', close);
+      /* Backdrop only — a click on the figure itself must not close it. */
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      /* Two focusables, so the trap is a wrap rather than a real tab ring. */
+      lb.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { close(); return; }
+        if (e.key === 'Tab') { e.preventDefault(); lbClose.focus(); }
+      });
+    };
+
+    function close() {
+      if (!lb || lb.hidden) return;
+      lb.hidden = true;
+      if (opener) { opener.focus(); opener = null; }
+    }
+
+    zooms.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var src = a.getAttribute('href');
+        if (!src) return;
+        e.preventDefault();
+        if (!lb) build();
+        var img = a.querySelector('img');
+        var cap = a.parentNode.querySelector('.gal-cap');
+        lbImg.src = src;
+        lbImg.alt = img ? img.getAttribute('alt') || '' : '';
+        lbCap.textContent = cap ? cap.textContent.replace(/\s+/g, ' ').trim() : '';
+        opener = a;
+        /* Visibility is NOT gated on a class applied in requestAnimationFrame.
+           It was, and that is a real failure mode rather than a theoretical
+           one: rAF does not fire in a background or non-painting tab, so the
+           dialog unhid at opacity 0 and stayed invisible with focus trapped
+           inside it. The fade is a CSS animation on .lb instead, which runs
+           off the style change alone. */
+        lb.hidden = false;
+        lbClose.focus();
+      });
+    });
+  }
+
   /* --------------------------- floating controls ------------------------
      Reveal both once the reader is a screen down, and send the top button
      home. Lives here rather than in motion.js because motion.js returns early

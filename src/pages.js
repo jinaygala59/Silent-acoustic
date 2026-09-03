@@ -108,25 +108,25 @@ built.push(page({
   <div class="diptych">
   <a class="dip" href="products.html#panels" data-anim="slide-l">
     <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/88-pictures-mumbai.webp" alt=""
+      <img src="assets/img/projects/tiger-studio-mumbai.webp" alt=""
            width="760" height="570" loading="lazy" decoding="async">
     </div>
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>Your room echoes. Speech is hard to follow, calls sound like a stairwell, music smears. The fix is absorption on the hard surfaces, sized to a reverberation target we set before anything is cut — because over-treating a room is the other way to waste money on it. ${TREAT_N} of our ${PRODUCTS.length} products do this job.</p>
+      <p>The room is loud with its own sound. Speech blurs, calls echo, music smears. We measure the reverberation, set a target, and put absorption only where it earns its place — ${TREAT_N} of our ${PRODUCTS.length} products do this, and covering a room in more of it than the room needs is the other way to waste money.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
   <a class="dip" href="products.html#proof" data-anim="slide-r">
     <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/action-voice-studio-khar-mumbai.webp" alt=""
+      <img src="assets/img/projects/swarsamwad-studio-mumbai.webp" alt=""
            width="760" height="570" loading="lazy" decoding="async">
     </div>
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>Noise is getting in or out. Traffic, a neighbour, the studio next door. The fix is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. No amount of absorption on the wall will touch it. The other ${PROOF_N} products are built for this.</p>
+      <p>The sound is somebody else's. Traffic, a neighbour, the studio next door. This one is mass, isolation and sealing — a heavier partition, a membrane layer, a rated door, a proper window. The other ${PROOF_N} products are built for it, and no quantity of absorption on the wall will do the job instead.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
@@ -192,9 +192,11 @@ ${choreoBand()}
     ${ticker()}
     <div class="gal" data-stagger>
       ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="tile">
-        <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-          <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-        </div>
+        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
+          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
+            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+          </div>
+        </a>
         <div class="gal-cap">
           <h3>${esc(pr.n)}</h3>
           <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
@@ -386,9 +388,11 @@ built.push(page({
 
     <div class="gal" id="gal" data-stagger>
       ${PROJECTS.map(pr => `<article class="gal-item" data-anim="tile" data-sector="${esc(pr.sec)}">
-        <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-          <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-        </div>
+        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
+          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
+            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+          </div>
+        </a>
         <div class="gal-cap">
           <h3>${esc(pr.n)}</h3>
           <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>

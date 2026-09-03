@@ -2360,3 +2360,80 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .floats.on .float { transform: none; transition-delay: 0s; }
   .float:active { transform: none; }
 }
+
+
+/* ---------------------------- image lightbox ----------------------------
+   Opened from .gal-zoom, which wraps every gallery surface in a real <a href>
+   to the image file so the whole thing degrades to "the link opens the
+   photograph" with the script blocked.
+
+   The tile crops: .gal-surface is 3/2 with object-fit: cover over a 760x570
+   frame. Here the image is object-fit: contain so the full frame shows, which
+   is the point of the interaction.
+
+   Capped at 960px on purpose. The source photographs are 760x570, so 960 is
+   already a 1.26x upscale and anything more starts to look soft. If
+   higher-resolution originals ever arrive this is the number to raise.
+
+   The caption sits on its own opaque paper strip below the image rather than
+   over it, so its contrast is a normal token pair the walker can score
+   instead of something a scrim has to guarantee.
+
+   z-index is above .site-head (100), which is sticky and would otherwise
+   sit over the backdrop. */
+.lb {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(11, 13, 16, 0.82);
+  /* NO OPENING FADE, deliberately, and do not add one back.
+     Two attempts failed the same way. First a class toggled in
+     requestAnimationFrame: rAF does not fire in a background or non-painting
+     tab, so the dialog unhid at opacity 0 and stayed invisible with focus
+     trapped on its close button. Then a CSS animation with fill-mode `both`:
+     animations are starved in the same conditions, and `both` holds the
+     `from` keyframe, so it was invisible again for exactly the same reason.
+     Measured both times — computed opacity 0 at 400ms after opening.
+
+     A modal that can be invisible while holding focus is a trap, and 200ms of
+     polish is not worth that. It is opaque the moment it unhides. If you want
+     an entrance, animate the figure inside it, never the layer that carries
+     the backdrop and the focus. */
+}
+.lb[hidden] { display: none; }
+
+.lb-fig {
+  margin: 0; max-width: min(94vw, 960px); max-height: 88vh;
+  display: flex; flex-direction: column;
+  background: var(--paper-hi);
+  border-radius: var(--r); overflow: hidden;
+  box-shadow: var(--lift-2);
+}
+.lb-fig img {
+  display: block; width: 100%; min-height: 0;
+  max-height: calc(88vh - 4.5rem);
+  object-fit: contain; background: var(--paper-sub);
+}
+.lb-fig figcaption {
+  flex: none; padding: 0.9rem 1.15rem 1rem;
+  font-family: var(--mono); font-size: var(--t-mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-light-mute);
+  border-top: 1px solid var(--paper-edge);
+}
+
+.lb-close {
+  position: absolute; top: clamp(0.75rem, 2.5vw, 1.5rem);
+  right: clamp(0.75rem, 2.5vw, 1.5rem);
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.7rem 1.15rem; border-radius: var(--r-pill); cursor: pointer;
+  background: var(--paper-hi); color: var(--on-light);
+  border: 1px solid var(--paper-edge);
+}
+.lb-close:hover { background: #FFFFFF; }
+
+/* A tile is now interactive, so say so. */
+.gal-zoom { display: block; cursor: zoom-in; text-decoration: none; }
+
+
