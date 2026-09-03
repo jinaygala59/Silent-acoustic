@@ -1428,6 +1428,64 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 }
 .dark .pills li { border-color: rgba(16, 23, 27, 0.184); color: var(--on-dark-mute); }
 
+/* ------------------------------- the bento ------------------------------
+   Replaces the At-a-glance spec table on the About page. A table was the
+   wrong shape for eight standalone figures — it implied a row-by-row
+   relationship none of them have, and buried the two numbers that actually
+   sell the company (2035+ installations, 98%) in a column of labels.
+
+   Asymmetric on purpose: the lead tile takes two columns and two rows so the
+   headline figure is read first, the four single tiles carry the countable
+   facts, and the two wide tiles hold the qualitative ones that need a
+   sentence. Four columns above 48rem, two below, and the spans collapse with
+   it so nothing is ever orphaned in a half-row.
+
+   Flat fills, deliberately. These are objects sitting on a ground, so the
+   flat-objects rule applies — a gradient under the small uppercase label
+   would make its contrast depend on where the text landed. Depth comes from
+   the border and --lift instead, which sit outside the text entirely. */
+.bento {
+  display: grid; gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.25rem;
+}
+.bento-i {
+  background: var(--paper-hi);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r);
+  box-shadow: var(--lift);
+  padding: clamp(1.1rem, 2.2vw, 1.6rem);
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+.bento-i b {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 32;
+  font-size: clamp(1.75rem, 1.1rem + 2.2vw, 2.5rem);
+  line-height: 0.95; letter-spacing: -0.02em; color: var(--on-light);
+  /* the figures sit in a grid and have to line up down the columns */
+  font-variant-numeric: tabular-nums;
+}
+.bento-i span {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-light-mute);
+}
+.bento-i small {
+  font-size: 0.875rem; line-height: 1.5; color: var(--on-light-mute);
+  margin-top: 0.4rem;
+}
+.bento-lg, .bento-wide { grid-column: span 2; }
+.bento-lg b { font-size: clamp(2.5rem, 1.5rem + 3.4vw, 4rem); }
+/* The lead tile is two rows tall and its content is short, so without help it
+   reads as a mostly-empty box. Push only the NOTE to the floor — spacing the
+   three children evenly instead (justify-content: space-between) stranded
+   "installations completed" in mid-air, away from the figure it labels. */
+@media (min-width: 48rem) { .bento-lg small { margin-top: auto; } }
+
+@media (min-width: 48rem) {
+  .bento { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .bento-lg { grid-row: span 2; }
+}
+
 /* =========================== process ==================================== */
 /* Numbered here because it genuinely is a sequence: each step gates the next. */
 .steps { counter-reset: step; display: grid; gap: 0; }
