@@ -239,10 +239,10 @@
         'Email: ' + (d.get('email') || ''),
         'Phone: ' + (d.get('phone') || ''),
         'City: ' + (d.get('city') || '\u2014'),
-        'Room type: ' + (d.get('room') || '\u2014'),
+        'Project type: ' + (d.get('room') || '\u2014'),
         'Room size: ' + (d.get('size') || '\u2014'),
         '',
-        'What is wrong with the room:',
+        'Brief about the project:',
         (d.get('message') || '')
       ].join('\n');
     };

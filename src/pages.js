@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex, ticker } = B;
+const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
 
 /* "20+ yrs" was typed, next to "since 2006" which is the client's published
    fact. Two ways of saying the same thing, one of which goes stale on its own:
@@ -185,14 +185,15 @@ ${choreoBand()}
   <div class="wrap">
     <span class="rail-label">Work</span>
     <div class="section-head stack">
-      <p class="eyebrow" data-anim="fade">${SITE.projectsCompleted} projects completed</p>
-      <!-- The visible heading and lead were removed by request; the ribbon and
-           the gallery carry the section now. The h2 stays as .vh because the
-           six project cards below are h3s — without it they hang off the
-           previous section's heading and the page outline reads wrong. -->
+      <!-- The visible heading, lead and eyebrow were removed by request, and
+           the ticker marquee (24 project names + "N rooms photographed") that
+           used to sit here was removed by request too — it duplicated the
+           actual photo gallery immediately below it. The h2 stays as .vh
+           because the six project cards below are h3s — without it they hang
+           off the previous section's heading and the page outline reads
+           wrong. -->
       <h2 class="vh">Rooms we have finished.</h2>
     </div>
-    ${ticker()}
     <div class="gal" data-stagger>
       ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="tile">
         <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
@@ -645,8 +646,7 @@ built.push(page({
 <section class="page-head">
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Contact</p>
-    <h1 data-in style="--d:170">Tell us about the room.</h1>
-    <p class="lead" data-in style="--d:280">Survey is free within Mumbai and the MMR, and chargeable against travel elsewhere in India — refunded if the project proceeds.</p>
+    <h1 data-in style="--d:170">Let's measure the room.</h1>
   </div>
 </section>
 
@@ -664,15 +664,15 @@ built.push(page({
           <div class="field half"><label for="f-phone">Phone <span class="req">*</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
           <div class="field half"><label for="f-city">Project city</label><input id="f-city" name="city" type="text" placeholder="Mumbai"></div>
           <div class="field half">
-            <label for="f-room">Room type</label>
+            <label for="f-room">Project type</label>
             <select id="f-room" name="room">
-              <option value="">Select a room type</option>
+              <option value="">Select a project type</option>
               ${roomOptions}
               <option value="Other">Something else</option>
             </select>
           </div>
           <div class="field full"><label for="f-size">Approximate room size</label><input id="f-size" name="size" type="text" placeholder="e.g. 12 × 8 m, 3.5 m ceiling"></div>
-          <div class="field full"><label for="f-msg">What is wrong with it now? <span class="req">*</span></label><textarea id="f-msg" name="message" required placeholder="Echo, speech is hard to follow, noise from the road, music carrying to the next room…"></textarea></div>
+          <div class="field full"><label for="f-msg">Brief about the project <span class="req">*</span></label><textarea id="f-msg" name="message" required placeholder="Echo, speech is hard to follow, noise from the road, music carrying to the next room…"></textarea></div>
           <div class="full stack stack-m">
             <button class="btn btn-primary" type="submit" style="justify-content:center">Send enquiry ${ARROW}</button>
             <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
