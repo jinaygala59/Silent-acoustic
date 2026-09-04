@@ -389,13 +389,25 @@
      and the one the hero draws. ONE token and one spacing on purpose, so the
      two surfaces cannot disagree about what a grid looks like here.
 
-     0.055 is a measured ceiling, not a preference — see the long note beside
-     the body background for the arithmetic. Raising it to make the grid read
-     more strongly walks the muted-text floor toward 4.5:1.
+     0.07 is a measured ceiling, not a preference — see the long note beside
+     the body background for the arithmetic. 0.08 puts the muted-text floor at
+     4.60:1 and 0.09 at 4.51:1, so there is roughly one more step in this and
+     then none.
+
+     The ink is DARK rather than white, and that was tested rather than
+     assumed. White is the safer direction for contrast — it only ever adds
+     luminance under dark text, the same argument that lets .review carry its
+     sweep — and a white grid at 0.35 is nearly twice as visible as this on
+     the deepest ground while RAISING the worst pair to 6.38:1. It still
+     loses, because most of this page is not the deepest ground: under a
+     .light veil the ground is already rgb(225,240,243), where a white line
+     moves it ~8/channel and disappears, and the hero rail is paler still. A
+     dark line is the more uniformly visible of the two here. If the wash is
+     ever deepened substantially, re-run that comparison — the answer flips.
 
      The --ripple / --ripple-2 pair that used to sit here is gone with the
      concentric ripple field it fed; nothing referenced it afterwards. */
-  --grid-line: rgba(16, 23, 27, 0.055);
+  --grid-line: rgba(16, 23, 27, 0.07);
 }
 
 /* =========================== reset ====================================== */
@@ -451,12 +463,13 @@ body {
 
      The alpha is load-bearing, not taste. A grid line lands under body text
      wherever it crosses one, and it darkens the ground there. Worst case is
-     muted copy on a .dark section over the wash's deepest stop, which is a
-     0.03 white veil and hides almost nothing: 5.32:1 clean, 4.82:1 with a
-     line beneath it. At 0.08 that becomes 4.60:1. 0.055 is the value that
-     keeps the 0.5 of headroom; do not raise it to make the grid more
-     visible. Cards, panels and fields paint opaque --paper-* fills on top, so
-     only text sitting directly on a section ground is affected at all. */
+     muted copy on a .dark section over the wash's deepest stop, where the
+     white veil is only 0.03 and hides almost nothing: 5.32:1 with no grid,
+     4.68:1 with a line directly beneath the text at the current 0.07. The
+     next steps are 4.60 at 0.08 and 4.51 at 0.09, so the floor is close.
+     Cards, panels and fields paint opaque --paper-* fills on top, so only
+     text sitting directly on a section ground is affected at all — which is
+     leads, headings and the section copy, not anything in a card. */
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
