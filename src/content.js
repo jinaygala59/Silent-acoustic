@@ -15,6 +15,13 @@ const SITE = {
   addr1: '501, 5th Floor, Ijmima Complex',
   addr2: 'Behind Infinity Mall, Mindspace',
   addr3: 'Mumbai, Maharashtra 400064',
+  /* THE FOOTER SHOWS ONLY THIS, by request — the street address is not on the
+     page. addr1/addr2/addr3 are kept because the JSON-LD PostalAddress in
+     src/build.js still carries the full address, which is what a local
+     business listing is matched on. If the intent is that the street address
+     should not be published anywhere, the structured data has to be cut too,
+     and that costs local search visibility — it is a separate decision. */
+  addrShort: 'Mumbai, Maharashtra',
   /* NO OPENING HOURS. They were 'Mon–Sat, 10:00–19:00 IST' and were invented:
      the live site publishes email, phone and address in its footer and states
      opening hours nowhere. Verified against silenceacoustic.com. Do not put

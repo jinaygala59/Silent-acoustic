@@ -66,7 +66,13 @@ const jsonLd = () => JSON.stringify({
   description: 'Acoustic treatment, acoustic panels and soundproofing. Design, manufacture and installation across India, from Mumbai.',
   address: { '@type': 'PostalAddress', streetAddress: `${SITE.addr1}, ${SITE.addr2}`, addressLocality: 'Mumbai', addressRegion: 'Maharashtra', postalCode: '400064', addressCountry: 'IN' },
   areaServed: 'IN', priceRange: '$$',
-  openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '10:00', closes: '19:00' },
+  /* NO openingHoursSpecification. It said Mon-Sat 10:00-19:00, which is the
+     exact string src/content.js records as INVENTED and removed from the
+     footer for that reason — it survived here because nobody looked in the
+     structured data. Worse than on-page copy: a search engine can surface it
+     as the business's hours, so a visitor is told the client is open at a
+     time nobody verified. Restore it only when the client supplies the hours.
+     The same test applies to anything else added to this block. */
 });
 
 function header(active, depth) {
@@ -121,7 +127,7 @@ function footer(depth) {
             <li><a href="tel:${SITE.phoneHref}">${SITE.phone}</a></li>
             <li><a href="mailto:${SITE.email}">${SITE.email}</a></li>
             <li><a href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a></li>
-            <li style="margin-top:.4rem;line-height:1.5">${SITE.addr1}<br>${SITE.addr2}<br>${SITE.addr3}</li>
+            <li style="margin-top:.4rem;line-height:1.5">${SITE.addrShort}</li>
           </ul>
         </div>
       </div>
