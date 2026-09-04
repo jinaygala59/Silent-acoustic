@@ -1218,8 +1218,25 @@ section { padding-block: var(--pad-y); }
   padding-block: clamp(7rem, 14vw, 11rem) clamp(3rem, 6vw, 5rem);
   color: var(--on-banner);
 }
-.hero-media { position: absolute; inset: 0; z-index: 0; }
+.hero-media { position: absolute; inset: 0; z-index: 0; background: var(--paper); }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Three banner photographs, cross-faded. The slide wrapper carries the fade so
+   that `.hero-media img` keeps `mWall` to itself — one element, one animation,
+   rather than a two-entry animation list with two different timelines.
+
+   Slides 2 and 3 are hidden HERE, in the stylesheet that always loads, so the
+   default state of this component is a single static banner. The cross-fade in
+   motion.css only ever turns that into three; if it never runs — reduced
+   motion, an old browser, a stylesheet that failed — the hero is exactly what
+   it was before, never three photographs stacked on top of each other.
+
+   --paper sits behind them because an opacity cross-fade does not keep total
+   coverage at 1: at the midpoint the two slides cover 75% and the ground shows
+   through the rest. A pale ground only ever lightens what is under the dark
+   banner type, so the transition cannot dip below the contrast either
+   photograph is measured at on its own. */
+.hero-slide { position: absolute; inset: 0; }
+.hero-slide + .hero-slide { opacity: 0; }
 .hero-media::after {
   content: ''; position: absolute; inset: 0;
   /* THE SCRIM IS THE PAGE'S OWN LIGHT, NOT WHITE. rgb(237,241,245) is the top
@@ -2156,27 +2173,30 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    still line up with the index underneath. */
 .rdx-feat {
   display: grid;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
-  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
 }
 @media (min-width: 46rem) { .rdx-feat { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 .rdx-card {
-  display: flex; flex-direction: column; gap: 1rem;
-  padding: 0 0 0.5rem;
+  display: flex; flex-direction: column; gap: 0.7rem;
+  padding: 0;
   text-decoration: none; color: inherit;
   transition: color 320ms var(--ease);
 }
 
-.rdx-card-surface { aspect-ratio: 4 / 3; border-radius: var(--r-sm); }
-.rdx-card-body { display: flex; flex-direction: column; gap: 0.4rem; }
+/* 16/9, not 4/3. At 4/3 a three-up on a 1280 viewport is 242px of photograph
+   per card and the block ran taller than the seven rows it introduces — the
+   lead is meant to open the index, not outweigh it. */
+.rdx-card-surface { aspect-ratio: 16 / 9; border-radius: var(--r-sm); }
+.rdx-card-body { display: flex; flex-direction: column; gap: 0.3rem; }
 
 /* The figure leads, because the figure is the argument. Tabular so the three
    cards' numbers sit on one optical line whatever their digit count. */
 .rdx-card-fig {
   font-family: var(--display); font-weight: var(--w-display);
   font-variation-settings: 'wdth' var(--wd-h2), 'opsz' 40;
-  font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 0.95;
+  font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2.125rem); line-height: 1;
   letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
   color: var(--on-light);
 }
@@ -2189,7 +2209,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   font-family: var(--display); font-weight: var(--w-display);
   font-size: var(--t-h3); line-height: 1.1; letter-spacing: -0.015em;
 }
-.rdx-card-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-light-mute); }
+.rdx-card-note { font-size: 0.875rem; line-height: 1.45; color: var(--on-light-mute); }
 
 .rdx-card:hover .rdx-card-name { color: var(--brand-ink); }
 
@@ -2209,8 +2229,8 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 .dark .rdx-cols, .rail-sec .rdx-cols { color: var(--on-dark-mute); }
 
-.roomdex { list-style: none; padding: 0; margin: 0; counter-reset: rdx; }
-.rdx { counter-increment: rdx; border-top: 1px solid var(--paper-edge); }
+.roomdex { list-style: none; padding: 0; margin: 0; }
+.rdx { border-top: 1px solid var(--paper-edge); }
 .rdx:last-child { border-bottom: 1px solid var(--paper-edge); }
 .rdx > a {
   display: grid; gap: 0.35rem 1.5rem; align-items: center;
@@ -2220,7 +2240,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 @media (min-width: 52rem) {
   .rdx > a {
-    grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
+    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
     gap: 1.75rem; padding: 1.5rem 0;
   }
 }
@@ -2282,7 +2302,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 }
 @media (min-width: 76rem) {
   .rdx > a {
-    grid-template-columns: 3.5rem 2.5rem auto minmax(0, 1fr) auto auto;
+    grid-template-columns: 3.5rem auto minmax(0, 1fr) auto;
     gap: 0.9rem;
   }
   .rdx-name { font-size: 1.375rem; white-space: nowrap; }
@@ -2294,13 +2314,6 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   transition: transform 420ms var(--ease);
 }
 @media (min-width: 52rem) { .rdx-swatch { display: block; } }
-.rdx-n {
-  display: none;
-  font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.12em;
-  color: var(--on-light-mute);
-}
-@media (min-width: 52rem) { .rdx-n { display: block; } }
-.rdx-n::before { content: counter(rdx, decimal-leading-zero); }
 .rdx-name {
   font-family: var(--display); font-weight: var(--w-display);
   font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
@@ -2330,8 +2343,7 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 .rdx > a:hover { color: var(--brand-ink); }
 .rdx > a:hover .rdx-swatch { transform: scale(1.06); }
-.rdx > a:hover .rdx-note, .rdx > a:hover .rdx-n { color: var(--on-light-mute); }
-
+.rdx > a:hover .rdx-note, .rdx > a:hover 
 /* --------------------------- sticky process -----------------------------
    Seven steps that gate each other is a long read, and the heading used to
    scroll away at step two. It now stays put while the steps move past it. */

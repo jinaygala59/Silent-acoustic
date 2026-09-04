@@ -291,7 +291,6 @@ const roomdex = (base = 'projects.html') => {
       <ol class="roomdex" data-stagger="long">
       ${rest.map(r => `<li class="rdx" data-anim="fade"><a href="${href(r.s)}">
         <span class="rdx-swatch surface ${r.s.surf}" aria-hidden="true">${shot(r, 760, 507)}</span>
-        <span class="rdx-n" aria-hidden="true"></span>
         <span class="rdx-name">${esc(r.s.name)}</span>
         <span class="rdx-note">${esc(r.s.note)}</span>
         <span class="rdx-count">${r.n}<small> photographed</small></span>

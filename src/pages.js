@@ -67,8 +67,12 @@ built.push(page({
 <section class="hero">
   <div class="hero-top">
   <div class="hero-media" aria-hidden="true">
-    <img src="assets/img/projects/adani-bkc-mumbai.webp"
-         alt="" width="760" height="570" fetchpriority="high" decoding="async">
+    <div class="hero-slide"><img src="assets/img/projects/adani-bkc-mumbai.webp"
+         alt="" width="760" height="569" fetchpriority="high" decoding="async"></div>
+    <div class="hero-slide"><img src="assets/img/projects/atlas-pune.webp"
+         alt="" width="760" height="570" fetchpriority="low" decoding="async"></div>
+    <div class="hero-slide"><img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp"
+         alt="" width="760" height="569" fetchpriority="low" decoding="async"></div>
   </div>
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>

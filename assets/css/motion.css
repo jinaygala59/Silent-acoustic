@@ -257,6 +257,42 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
                     to   { transform: translate3d(0, -52px, 0); opacity: 0.25; } }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* ---- the banner cross-fade -------------------------------------------
+     Three photographs, 9s each on a 27s loop. Deliberately NOT inside the
+     scroll-timeline @supports block further down: this is a plain time-based
+     animation and Firefox should get it too. It IS inside the reduced-motion
+     gate, because content that changes on its own is exactly what that
+     setting asks not to happen — under Reduce Motion the first photograph
+     simply stays.
+
+     The delays are NEGATIVE so all three slides run one shared cycle that is
+     already in progress, and 0% is the visible state. Positive delays would
+     need `fill-mode: backwards`, which paints the 0% state throughout the
+     wait — all three slides opaque at load, the last sibling winning. That is
+     the bug this shape avoids.
+
+     EVERY PHOTOGRAPH HERE IS MEASURED. The scrim guarantees nothing on its
+     own (see the banner note in site.css), so a fourth image cannot just be
+     appended: composite it under both scrim gradients on a canvas, sample the
+     DARKEST pixel inside the eyebrow, h1 and lead boxes, and score it against
+     --on-banner. Minimum, not a percentile — a 5th-percentile sample reads
+     about twice as forgiving and will pass an image that fails. Worst case
+     per box, in the order they appear:
+       adani-bkc-mumbai    eyebrow 10.44  h1 5.35  lead 5.61  decay 3.30
+       atlas-pune          eyebrow  8.71  h1 6.32  lead 6.57  decay 3.98
+       upl-metro-juinagar  eyebrow  7.24  h1 6.27  lead 8.07  decay 3.94
+     --mark-banner carries .decay and is LARGE TEXT ONLY at those figures. */
+  @keyframes mHeroFade {
+    0%     { opacity: 1; }
+    30%    { opacity: 1; }
+    33.33% { opacity: 0; }
+    96.67% { opacity: 0; }
+    100%   { opacity: 1; }
+  }
+  .hero-slide { animation: mHeroFade 27s linear infinite; }
+  .hero-slide:nth-child(2) { animation-delay: -18s; }
+  .hero-slide:nth-child(3) { animation-delay: -9s; }
+
   /* Load-time entrance, NOT a scroll reveal. Both the hero and the page-head
      are above the fold, so there is no scroll for a view() timeline to run
      against — and .page-head is overflow: hidden, where view() never advances
