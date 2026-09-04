@@ -16,3 +16,5 @@ assets/css/_motion-reduce.css
 _probe.js
 _probe.html
 _probe.log
+.vercel
+.env*
