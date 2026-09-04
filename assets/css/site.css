@@ -2092,6 +2092,56 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    the content is a specification: every room is designed to a number. It is
    now an index — swatch, number, room, note, target — and the targets line
    up in a column you can read straight down. */
+/* ------------------------ the index as one table -------------------------
+   The section head used to be a `.section-head split` floating above the list
+   with a section-sized gap under it, so the page read as "a heading, and then
+   separately some rows". The head is now the table's own head: tight to the
+   first hairline, and sharing the left edge the rows start from.
+
+   The header row is the other half of that. The columns carried no labels, so
+   a reader met "20 photographed" and had to work out what the number counted —
+   the one figure here derived from PROJECTS at build time rather than typed,
+   and the reason this is an index instead of ten equal cards. It now says so.
+
+   IT DELIBERATELY DOES NOT SHARE THE ROW GRID. That was tried first, adding
+   `.rdx-cols` to the same `grid-template-columns` rules, and it cannot work:
+   the name and count tracks are `auto` and the middle two are `fr`, so every
+   track resolves against its OWN container's content. Measured, the header
+   computed `56px 40px 93.6px 609.9px 196.5px` against the rows'
+   `56px 40px 239px 507.9px 153.1px` — labels sitting nowhere near the cells
+   they name. Sharing intrinsic tracks across separate grid containers needs
+   `subgrid` all the way down, which would mean the ol, the li and the a each
+   becoming a subgrid and would break outright where subgrid is missing.
+
+   So the labels anchor to the two EDGES instead, which are the only positions
+   both grids agree on: the first track starts at the container's left, the
+   last ends at its right. Two labels, not five — and the right-hand one is on
+   the figure that needed explaining. Nothing can drift because nothing is
+   claiming to line up with a middle column.
+
+   Hidden below 52rem, where the rows stack into a single column and column
+   labels would describe a layout that is not on screen. */
+.rdx-intro {
+  display: grid; gap: clamp(1rem, 2.5vw, 2rem); align-items: end;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+.rdx-intro h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
+@media (min-width: 56rem) {
+  .rdx-intro { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+}
+
+.rdx-cols { display: none; }
+@media (min-width: 52rem) {
+  .rdx-cols {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1.5rem; padding-bottom: 0.8rem;
+    font-family: var(--mono); font-size: var(--t-mono);
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--on-light-mute);
+  }
+}
+.dark .rdx-cols, .rail-sec .rdx-cols { color: var(--on-dark-mute); }
+
 .roomdex { list-style: none; padding: 0; margin: 0; counter-reset: rdx; }
 .rdx { counter-increment: rdx; border-top: 1px solid var(--paper-edge); }
 .rdx:last-child { border-bottom: 1px solid var(--paper-edge); }

@@ -137,11 +137,11 @@ ${famRail()}
 
 <section class="light railed">
   <div class="wrap">
-    <span class="rail-label">Rooms</span>
-    <div class="section-head split">
+    <span class="rail-label">Projects</span>
+    <div class="rdx-intro">
       <div>
         <p class="eyebrow" data-anim="fade">Where we work</p>
-        <h2 data-anim="reveal">Every room type has a number to hit.</h2>
+        <h2 data-anim="reveal">Every project type has a number to hit.</h2>
       </div>
       <p class="lead" data-anim="fade">A studio and a sports hall both need treating, but they need opposite things. We design to the target for the room's actual use, not to a coverage percentage.</p>
     </div>

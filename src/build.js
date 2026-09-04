@@ -249,7 +249,12 @@ const nrcBar = (p, cls = '') => {
 
    `base` is '' on the projects page (a same-page hash) and 'projects.html' on
    the homepage. The hash is read by site.js on load and on hashchange. */
-const roomdex = (base = 'projects.html') => `<ol class="roomdex" data-stagger="long">
+const roomdex = (base = 'projects.html') => `<div class="rdx-table">
+      <div class="rdx-cols" data-anim="fade">
+        <span>Project type &amp; what it has to do</span>
+        <span>Projects photographed</span>
+      </div>
+      <ol class="roomdex" data-stagger="long">
       ${SECTORS.map(s => {
         const n = PROJECTS.filter(pr => pr.sec === s.name).length;
         const ex = PROJECTS.find(pr => pr.sec === s.name);
@@ -261,7 +266,8 @@ const roomdex = (base = 'projects.html') => `<ol class="roomdex" data-stagger="l
         <span class="rdx-count">${n}<small> photographed</small></span>
       </a></li>`;
       }).join('\n      ')}
-    </ol>`;
+      </ol>
+    </div>`;
 
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
   <div class="card-surface surface ${p.surf}">
