@@ -1313,8 +1313,27 @@ section { padding-block: var(--pad-y); }
    Hence 80rem. Below it the pair stays on the two edges but rides up into the
    empty band above the eyebrow, which is clear at every width. Lower this
    breakpoint and the left arrow lands on the headline. */
+/* Bottom corners, one per edge, above 80rem. The left arrow does not fight
+   the copy here even though it shares the CTA's row: the text column starts
+   at 88px and the button ends at 72px, so it sits in the margin beside the
+   buttons rather than on them. Below 80rem that margin is gone (--gut is 5vw
+   and the column starts around 51px) and the pair goes back up to the clear
+   band above the eyebrow.
+
+   The min() is what stops this repeating the very first bug. .hero-top is a
+   fixed 801px, so `bottom` alone puts the arrows at 745px down — off-screen
+   on any window shorter than ~800px, which is most laptops. The second term
+   pins them to the viewport instead whenever that is tighter, so they ride up
+   and stay in view.
+
+   THE 141px IS NOT ARBITRARY AND THE TWO TERMS DO NOT SHARE AN ORIGIN. `top`
+   is measured from .hero-top, which begins 85px down the page under the
+   sticky header, while 100vh is measured from the top of the window. Without
+   the header in the sum the clamp is 85px too generous and puts the arrows
+   just below the fold — which it did, at 830px in an 820px window. 141 =
+   85 header + 44 button + 12 breathing room. */
 @media (min-width: 80rem) {
-  .hero-nav { top: 50%; transform: translateY(-50%); }
+  .hero-nav { top: min(calc(100% - 3.5rem), calc(100vh - 141px)); }
 }
 /* SOLID BRAND FILL, not a white pill. The first version was --paper-hi with a
    1px --paper-edge outline, which is a white circle faintly outlined — and the
