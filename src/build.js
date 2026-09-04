@@ -250,50 +250,33 @@ const nrcBar = (p, cls = '') => {
    `base` is '' on the projects page (a same-page hash) and 'projects.html' on
    the homepage. The hash is read by site.js on load and on hashchange. */
 const roomdex = (base = 'projects.html') => {
-  /* Every figure here is counted from PROJECTS at build time, never typed —
-     that is the whole reason this section is an index rather than ten equal
-     cards, so the derivation has to survive any layout change made to it. */
+  /* Counted from PROJECTS at build time, never typed. That derivation is the
+     reason this section exists as an index at all, so it outlives any layout
+     put on top of it. */
   const rows = SECTORS.map(s => ({
-    s,
-    n: PROJECTS.filter(pr => pr.sec === s.name).length,
-    ex: PROJECTS.find(pr => pr.sec === s.name),
+    s, n: PROJECTS.filter(pr => pr.sec === s.name).length,
   }));
+  const total = rows.reduce((a, r) => a + r.n, 0);
 
-  /* The three most-photographed types lead, at photograph size; the other
-     seven stay as one-line rows. Same shape the Notes list uses for its lead
-     article and the product families use for the first item in a family — the
-     alternative, ten equal tiles, is the thing this section was deliberately
-     moved away from. Which three lead is decided by the data, not chosen. */
-  const lead = [...rows].sort((a, b) => b.n - a.n).slice(0, 3);
-  const leading = new Set(lead.map(r => r.s.name));
-  const rest = rows.filter(r => !leading.has(r.s.name));
-
-  const href = (s) => `${base}#room=${encodeURIComponent(s.name)}`;
-  const shot = (r, w, h) => r.ex
-    ? `<img src="assets/img/projects/${r.ex.s}.webp" alt="" width="${w}" height="${h}" loading="lazy" decoding="async">`
-    : '';
-
+  /* The heading promises "a number to hit", so the number is the layout. No
+     photographs here: they were tried at 4/3 and at 16/9 and both times the
+     pictures were the size problem, and none of them showed the figure the
+     row is actually about. The material swatch stays as a two-line colour
+     cue — it is drawn in CSS, costs no request, and keeps the family
+     temperatures the rest of the site uses. */
   return `<div class="rdx-table">
-      <div class="rdx-feat" data-stagger>
-        ${lead.map(r => `<a class="rdx-card" data-anim="rise" href="${href(r.s)}">
-          <span class="rdx-card-surface surface ${r.s.surf}" aria-hidden="true">${shot(r, 760, 507)}</span>
-          <span class="rdx-card-body">
-            <span class="rdx-card-fig">${r.n}<small> photographed</small></span>
-            <span class="rdx-card-name">${esc(r.s.name)}</span>
-            <span class="rdx-card-note">${esc(r.s.note)}</span>
-          </span>
-        </a>`).join('\n        ')}
-      </div>
-      <div class="rdx-cols" data-anim="fade">
-        <span>The other ${rest.length} project types</span>
-        <span>Projects photographed</span>
-      </div>
+      <p class="rdx-cols" data-anim="fade">
+        <span>Ten project types</span>
+        <span>${total} rooms photographed</span>
+      </p>
       <ol class="roomdex" data-stagger="long">
-      ${rest.map(r => `<li class="rdx" data-anim="fade"><a href="${href(r.s)}">
-        <span class="rdx-swatch surface ${r.s.surf}" aria-hidden="true">${shot(r, 760, 507)}</span>
-        <span class="rdx-name">${esc(r.s.name)}</span>
-        <span class="rdx-note">${esc(r.s.note)}</span>
-        <span class="rdx-count">${r.n}<small> photographed</small></span>
+      ${rows.map(r => `<li class="rdx" data-anim="fade"><a href="${base}#room=${encodeURIComponent(r.s.name)}">
+        <span class="rdx-fig">${r.n}</span>
+        <span class="rdx-body">
+          <span class="rdx-name">${esc(r.s.name)}</span>
+          <span class="rdx-note">${esc(r.s.note)}</span>
+        </span>
+        <span class="rdx-swatch surface ${r.s.surf}" aria-hidden="true"></span>
       </a></li>`).join('\n      ')}
       </ol>
     </div>`;
