@@ -2130,6 +2130,73 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   .rdx-intro { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
 }
 
+/* ---------------------- the three that lead the index --------------------
+   Ten equal tiles is what this section was moved away from, and a flat table
+   of ten was what replaced it — legible, and visually inert. This is the
+   middle shape the rest of the site already uses: the Notes list gives its
+   lead article a photograph and leaves the others as rows, and a product
+   family does the same for its first product.
+
+   WHICH three lead is decided by the data — the three highest counts, sorted
+   at build time — so it cannot drift as projects are added, and nobody has to
+   maintain a list of favourites. The counter on the remaining rows is dropped
+   with it: once the order is by count rather than by SECTORS order, a leading
+   01-10 would imply a ranking the numbers no longer match.
+
+   No fill and no gradient on these cards, only the photograph and a hairline.
+   That keeps them inside the rule that objects sitting on a ground stay flat,
+   and it means the text composites on the section ground exactly as the rows
+   below do — one contrast pair for the whole section instead of two. */
+/* Separation is the grid GAP, not padding on the cards. Padding was tried and
+   is subtly wrong here: zeroing the outer edges so the first and last card
+   align with the rows below leaves the middle card narrower by that amount,
+   and since the surfaces are aspect-ratio 4/3 a narrower card gets a SHORTER
+   photograph. Three cards, two visibly different image heights. With a gap all
+   three tracks are exactly 1fr, so the photographs match and the outer edges
+   still line up with the index underneath. */
+.rdx-feat {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+@media (min-width: 46rem) { .rdx-feat { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.rdx-card {
+  display: flex; flex-direction: column; gap: 1rem;
+  padding: 0 0 0.5rem;
+  text-decoration: none; color: inherit;
+  transition: color 320ms var(--ease);
+}
+
+.rdx-card-surface { aspect-ratio: 4 / 3; border-radius: var(--r-sm); }
+.rdx-card-body { display: flex; flex-direction: column; gap: 0.4rem; }
+
+/* The figure leads, because the figure is the argument. Tabular so the three
+   cards' numbers sit on one optical line whatever their digit count. */
+.rdx-card-fig {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-h2), 'opsz' 40;
+  font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 0.95;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  color: var(--on-light);
+}
+.rdx-card-fig small {
+  font-family: var(--mono); font-size: var(--t-mono); font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--on-light-mute);
+}
+.rdx-card-name {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-size: var(--t-h3); line-height: 1.1; letter-spacing: -0.015em;
+}
+.rdx-card-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-light-mute); }
+
+.rdx-card:hover .rdx-card-name { color: var(--brand-ink); }
+
+.dark .rdx-card-fig, .rail-sec .rdx-card-fig { color: var(--on-dark); }
+.dark .rdx-card-fig small, .dark .rdx-card-note,
+.rail-sec .rdx-card-fig small, .rail-sec .rdx-card-note { color: var(--on-dark-mute); }
+
 .rdx-cols { display: none; }
 @media (min-width: 52rem) {
   .rdx-cols {

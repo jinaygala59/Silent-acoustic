@@ -249,25 +249,56 @@ const nrcBar = (p, cls = '') => {
 
    `base` is '' on the projects page (a same-page hash) and 'projects.html' on
    the homepage. The hash is read by site.js on load and on hashchange. */
-const roomdex = (base = 'projects.html') => `<div class="rdx-table">
+const roomdex = (base = 'projects.html') => {
+  /* Every figure here is counted from PROJECTS at build time, never typed —
+     that is the whole reason this section is an index rather than ten equal
+     cards, so the derivation has to survive any layout change made to it. */
+  const rows = SECTORS.map(s => ({
+    s,
+    n: PROJECTS.filter(pr => pr.sec === s.name).length,
+    ex: PROJECTS.find(pr => pr.sec === s.name),
+  }));
+
+  /* The three most-photographed types lead, at photograph size; the other
+     seven stay as one-line rows. Same shape the Notes list uses for its lead
+     article and the product families use for the first item in a family — the
+     alternative, ten equal tiles, is the thing this section was deliberately
+     moved away from. Which three lead is decided by the data, not chosen. */
+  const lead = [...rows].sort((a, b) => b.n - a.n).slice(0, 3);
+  const leading = new Set(lead.map(r => r.s.name));
+  const rest = rows.filter(r => !leading.has(r.s.name));
+
+  const href = (s) => `${base}#room=${encodeURIComponent(s.name)}`;
+  const shot = (r, w, h) => r.ex
+    ? `<img src="assets/img/projects/${r.ex.s}.webp" alt="" width="${w}" height="${h}" loading="lazy" decoding="async">`
+    : '';
+
+  return `<div class="rdx-table">
+      <div class="rdx-feat" data-stagger>
+        ${lead.map(r => `<a class="rdx-card" data-anim="rise" href="${href(r.s)}">
+          <span class="rdx-card-surface surface ${r.s.surf}" aria-hidden="true">${shot(r, 760, 507)}</span>
+          <span class="rdx-card-body">
+            <span class="rdx-card-fig">${r.n}<small> photographed</small></span>
+            <span class="rdx-card-name">${esc(r.s.name)}</span>
+            <span class="rdx-card-note">${esc(r.s.note)}</span>
+          </span>
+        </a>`).join('\n        ')}
+      </div>
       <div class="rdx-cols" data-anim="fade">
-        <span>Project type &amp; what it has to do</span>
+        <span>The other ${rest.length} project types</span>
         <span>Projects photographed</span>
       </div>
       <ol class="roomdex" data-stagger="long">
-      ${SECTORS.map(s => {
-        const n = PROJECTS.filter(pr => pr.sec === s.name).length;
-        const ex = PROJECTS.find(pr => pr.sec === s.name);
-        return `<li class="rdx" data-anim="fade"><a href="${base}#room=${encodeURIComponent(s.name)}">
-        <span class="rdx-swatch surface ${s.surf}" aria-hidden="true">${ex ? `<img src="assets/img/projects/${ex.s}.webp" alt="" width="760" height="507" loading="lazy" decoding="async">` : ''}</span>
+      ${rest.map(r => `<li class="rdx" data-anim="fade"><a href="${href(r.s)}">
+        <span class="rdx-swatch surface ${r.s.surf}" aria-hidden="true">${shot(r, 760, 507)}</span>
         <span class="rdx-n" aria-hidden="true"></span>
-        <span class="rdx-name">${esc(s.name)}</span>
-        <span class="rdx-note">${esc(s.note)}</span>
-        <span class="rdx-count">${n}<small> photographed</small></span>
-      </a></li>`;
-      }).join('\n      ')}
+        <span class="rdx-name">${esc(r.s.name)}</span>
+        <span class="rdx-note">${esc(r.s.note)}</span>
+        <span class="rdx-count">${r.n}<small> photographed</small></span>
+      </a></li>`).join('\n      ')}
       </ol>
     </div>`;
+};
 
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
   <div class="card-surface surface ${p.surf}">
