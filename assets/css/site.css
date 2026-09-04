@@ -385,13 +385,16 @@
   --lift-d-2: 0 3px 6px rgba(16, 23, 27, 0.09), 0 20px 48px rgba(16, 23, 27, 0.18);
 
   /* -- drafting grid ------------------------------------------------------
-     A faint graph over the paper ground only — dark/atmospheric sections
-     paint their own background over it. Same low-key logic as the grain. */
-  /* The ripple ink. Two strengths so the two ripple sources sit at slightly
-     different depths. --grid-line is kept because .rail-sec still draws a
-     grid of its own from it. */
-  --ripple:   rgba(16, 23, 27, 0.045);
-  --ripple-2: rgba(16, 23, 27, 0.038);
+     The ink for every grid on the site: the 64px graph on the document ground
+     and the one the hero draws. ONE token and one spacing on purpose, so the
+     two surfaces cannot disagree about what a grid looks like here.
+
+     0.055 is a measured ceiling, not a preference — see the long note beside
+     the body background for the arithmetic. Raising it to make the grid read
+     more strongly walks the muted-text floor toward 4.5:1.
+
+     The --ripple / --ripple-2 pair that used to sit here is gone with the
+     concentric ripple field it fed; nothing referenced it afterwards. */
   --grid-line: rgba(16, 23, 27, 0.055);
 }
 
@@ -431,17 +434,34 @@ body {
      dark site. Sections no longer paint their own ground — they veil this
      one. See --ombre-light / --ombre-dark, which are now translucent. */
   background-color: #B2CBE7;
-  /* SOUND RIPPLES, not a square grid. The graph paper suited a drawing
-     office; concentric rings are the diagram you would actually draw to
-     explain what this company sells. Two sources at different ring spacings
-     (108px / 132px) so they never beat into a moire, and they tile per
-     1400x1000 block rather than stretching — ripple scale stays constant
-     however long the page is, while only the wash below them stretches. */
+  /* A SQUARE GRID over the wash, by request. This replaces the two concentric
+     "sound ripple" sources that were here — a grid and a ripple field are both
+     figure on the same ground, and running them together read as neither, so
+     this is a swap rather than an addition. The ripples are one commit back
+     (834ebc7) if that judgement gets reversed again.
+
+     Deliberately the SAME grid the hero already draws — 64px, one tier, from
+     --grid-line — rather than a second grid vocabulary with its own spacing
+     and a major/minor tier. The site had one grid idiom; now two surfaces
+     share it instead of disagreeing about what a grid looks like here.
+
+     Scale is fixed in px and the wash still stretches, so the grid stays 64px
+     however long the page is — the same property the ripples' 1400x1000
+     tiling was buying with more machinery.
+
+     The alpha is load-bearing, not taste. A grid line lands under body text
+     wherever it crosses one, and it darkens the ground there. Worst case is
+     muted copy on a .dark section over the wash's deepest stop, which is a
+     0.03 white veil and hides almost nothing: 5.32:1 clean, 4.82:1 with a
+     line beneath it. At 0.08 that becomes 4.60:1. 0.055 is the value that
+     keeps the 0.5 of headroom; do not raise it to make the grid more
+     visible. Cards, panels and fields paint opaque --paper-* fills on top, so
+     only text sitting directly on a section ground is affected at all. */
   background-image:
-    repeating-radial-gradient(circle at 22% 14%, var(--ripple) 0 1px, transparent 1px 108px),
-    repeating-radial-gradient(circle at 78% 62%, var(--ripple-2) 0 1px, transparent 1px 132px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     linear-gradient(180deg, #D1E9ED 0%, #C7E1EE 34%, #BBD6EA 68%, #B2CBE7 100%);
-  background-size: 1400px 1000px, 1400px 1000px, 100% 100%;
+  background-size: 64px 64px, 64px 64px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -1959,17 +1979,26 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    Two answers to two different problems, so: two halves, full bleed, floor
    to ceiling, split by a single hairline. The structure states the argument
    before anybody reads a word of it. */
+/* TWO ROWS, NOT TWO COLUMNS. As a 2-up split each panel was ~47rem tall with
+   the photograph behind a scrim that reached 98% white by 60% of its height,
+   so the image faded to nothing and the copy sat alone at the bottom — two
+   thirds of each panel was empty ground, and the picture never appeared
+   beside the words it illustrated.
+
+   Now each idea is a full-width row: photograph on one side, copy on the
+   other, mirrored on the second row so the two read as a pair rather than a
+   list. The hairline between them is the 1px gap showing the grid's own
+   background through. */
 .diptych {
   display: grid; grid-template-columns: 1fr; gap: 1px;
   background: var(--ink-edge);
 }
-@media (min-width: 48rem) { .diptych { grid-template-columns: 1fr 1fr; } }
 
 .dip {
   position: relative; isolation: isolate; overflow: hidden;
-  display: flex; align-items: flex-end;
-  min-height: clamp(30rem, 82vh, 47rem);
-  padding: clamp(2rem, 5vw, 4.5rem);
+  display: grid; grid-template-columns: 1fr; align-items: stretch;
+  /* no min-height: the row is now as tall as the picture needs, not 82vh */
+  padding: 0;
   /* An OPAQUE fill, not the veil. .dip is an object sitting on the page wash,
      not a section veiling it — and when --ombre-light became translucent this
      started showing the wash through, which dropped its muted copy to 3.79:1
@@ -2026,23 +2055,42 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    negative-z child lands behind it, and the panel rendered as ~750px of blank
    white with the copy at the bottom. Verified by forcing z-index 0 in the
    page — the photograph appeared. Surface 0, scrim 1, copy 2. */
-.dip-surface { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+/* In flow now, not absolute — it is one half of the row rather than a
+   backdrop behind the whole panel. */
+.dip-surface {
+  position: relative; z-index: 0; overflow: hidden;
+  min-height: clamp(15rem, 32vw, 24rem);
+}
+@media (min-width: 48rem) {
+  .dip { grid-template-columns: 1.05fr 1fr; }
+  /* mirror the second row so the pair reads as a pair */
+  .dip:nth-child(even) .dip-surface { order: 2; }
+}
 .dip-surface img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; display: block;
   transition: transform 900ms var(--ease);
 }
 .dip:hover .dip-surface img { transform: scale(1.03); }
+/* The scrim is gone. It existed to make the bottom of the panel readable
+   when the copy sat ON the photograph; the copy now sits beside it on the
+   panel's own fill, so a 98%-white veil over the picture only destroyed it.
+   Kept as a no-op rather than deleted so the layering (z-index 1 between
+   surface and body) is still documented if anyone puts text back over it. */
 .dip::before {
-  content: ''; position: absolute; inset: 0; z-index: 1;
+  content: none;
   background: linear-gradient(180deg,
     rgba(255, 255, 255, 0.03) 0 28%, rgba(255, 255, 255, 0.38) 35%,
     rgba(255, 255, 255, 0.80) 44%, rgba(255, 255, 255, 0.95) 52%,
     rgba(255, 255, 255, 0.985) 60%);
   transition: opacity 420ms var(--ease);
 }
-.dip-body { position: relative; z-index: 2; }
-.dip-body { max-width: 34ch; }
+.dip-body {
+  position: relative; z-index: 2;
+  align-self: center;
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  max-width: 42ch;
+}
 .dip-body h2 { font-size: var(--t-h2); margin: 1rem 0 1rem; }
 .dip-body p { color: var(--on-dark-mute); }
 .dip .tlink { margin-top: 1.75rem; color: var(--brand-ink); }
