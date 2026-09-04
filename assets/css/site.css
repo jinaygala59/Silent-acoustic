@@ -1237,6 +1237,116 @@ section { padding-block: var(--pad-y); }
    photograph is measured at on its own. */
 .hero-slide { position: absolute; inset: 0; }
 .hero-slide + .hero-slide { opacity: 0; }
+
+/* Manual mode. The moment the reader uses an arrow, JS takes the wheel: it
+   adds .is-manual and marks one slide .is-on, and the auto cross-fade stops
+   for good. The two-class selector outranks the `.hero-slide` animation in
+   motion.css on specificity, so it wins regardless of which sheet loads
+   first — do not "simplify" it to a single class.
+
+   This path is deliberately OUTSIDE the reduced-motion gate. Reduce Motion
+   asks for nothing to move on its own; it does not ask for buttons to stop
+   working. A cross-fade the reader asked for by clicking is opacity only,
+   which is the same thing the `iomin` tier already allows. */
+.hero-media.is-manual .hero-slide {
+  animation: none;
+  opacity: 0;
+  transition: opacity 420ms var(--ease);
+}
+.hero-media.is-manual .hero-slide.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-media.is-manual .hero-slide { transition-duration: 1ms; }
+}
+
+/* The arrows sit on the photograph, in the half where the scrim has already
+   fallen to alpha 0 — so they cannot borrow its coverage the way the type
+   does. They carry their own solid fill instead, which makes their contrast
+   a property of two tokens (--brand on --paper-hi, 9.58:1) rather than of
+   whichever photograph is on screen. Do not make them translucent. */
+/* One arrow on each edge, vertically centred — the shape everybody already
+   knows how to read.
+
+   Two constraints it has to respect, both measured rather than guessed:
+
+   1. NEVER PIN THIS TO THE BOTTOM OF THE HERO. .hero-top is a fixed 801px
+      tall while a laptop viewport is commonly 700-780px, so a bottom-anchored
+      control lands below the fold on the most common screen there is —
+      present, keyboard reachable, and invisible to the person it exists for.
+      That was the first version, and it measured 134px past the fold at
+      1440x720. Vertical centre of the hero is ~400px, which is in view on
+      anything 620px and taller.
+
+   2. The left edge is shared with the type column, which starts 88px in at
+      1440 and 23px in at 375. The inset is therefore deliberately small — the
+      buttons hug the frame and stay outside the copy. Widen it to var(--gut)
+      and the left arrow lands on the h1.
+
+   Below 60rem the middle of the banner is solid type from the eyebrow to the
+   lead, so there is no centred position that is not on top of a word. There
+   the pair moves up into the empty band above the eyebrow, still one on each
+   edge. The bar itself is pointer-events: none so it never swallows a click
+   meant for the photograph or the copy behind it. */
+.hero-nav {
+  position: absolute; z-index: 5;
+  left: 0; right: 0; top: clamp(1rem, 4vw, 1.5rem);
+  /* Track the CONTENT column, not the viewport. --max is 88rem and every
+     other block on the site is centred inside it, so `left: 0; right: 0`
+     alone parks the arrows against the bare edges of the monitor — on a
+     1920px screen that is 256px outside the layout on each side, reading as
+     stranded at the far edges rather than as part of the banner. Matching
+     --max and auto margins puts them on the edges of the design instead. */
+  width: 100%; max-width: var(--max); margin-inline: auto;
+  display: flex; justify-content: space-between; align-items: center;
+  padding-inline: 0.75rem;
+  pointer-events: none;
+}
+.hero-nav-btn { pointer-events: auto; }
+
+/* Centred on the edges only where the left one actually clears the copy.
+   The type column starts at --gut, which is 5vw for most of the range, while
+   the button needs a fixed 44px plus its inset — so the clearance SHRINKS as
+   the window narrows and goes negative around 1100px. Measured at the left
+   arrow's right edge against the h1's left edge:
+       1440px   32px clear
+       1280px    8px clear
+       1024px   -8px  <- overlapping "in its place."
+   Hence 80rem. Below it the pair stays on the two edges but rides up into the
+   empty band above the eyebrow, which is clear at every width. Lower this
+   breakpoint and the left arrow lands on the headline. */
+@media (min-width: 80rem) {
+  .hero-nav { top: 50%; transform: translateY(-50%); }
+}
+/* SOLID BRAND FILL, not a white pill. The first version was --paper-hi with a
+   1px --paper-edge outline, which is a white circle faintly outlined — and the
+   top of the banner is very often a white ceiling or a daylit window, so it
+   disappeared into the photograph. It was on the page, measured, keyboard
+   reachable and effectively invisible.
+
+   A saturated fill makes the control a figure against any photograph instead
+   of borrowing contrast from whatever happens to be behind it, and it matches
+   .btn-primary, which is the site's existing "this is the thing you press".
+   White on --brand-deep is 5.01:1. The shadow is there to separate it from a
+   busy photograph, not for depth. */
+.hero-nav-btn {
+  width: 2.75rem; height: 2.75rem;      /* 44px — the touch-target floor */
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; cursor: pointer;
+  color: #FFFFFF;
+  background: var(--brand-deep);
+  border: 1px solid transparent;
+  border-radius: var(--r-pill, 999px);
+  box-shadow: var(--lift);
+  transition: background-color 180ms var(--ease), transform 180ms var(--ease);
+}
+.hero-nav-btn:hover { background: var(--brand-lift); }
+
+
+/* visually hidden, still announced */
+.vh {
+  position: absolute; width: 1px; height: 1px; margin: -1px;
+  padding: 0; border: 0; overflow: hidden; white-space: nowrap;
+  clip-path: inset(50%);
+}
 .hero-media::after {
   content: ''; position: absolute; inset: 0;
   /* THE SCRIM IS THE PAGE'S OWN LIGHT, NOT WHITE. rgb(237,241,245) is the top

@@ -271,17 +271,37 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      wait — all three slides opaque at load, the last sibling winning. That is
      the bug this shape avoids.
 
-     EVERY PHOTOGRAPH HERE IS MEASURED. The scrim guarantees nothing on its
-     own (see the banner note in site.css), so a fourth image cannot just be
-     appended: composite it under both scrim gradients on a canvas, sample the
-     DARKEST pixel inside the eyebrow, h1 and lead boxes, and score it against
-     --on-banner. Minimum, not a percentile — a 5th-percentile sample reads
-     about twice as forgiving and will pass an image that fails. Worst case
-     per box, in the order they appear:
-       adani-bkc-mumbai    eyebrow 10.44  h1 5.35  lead 5.61  decay 3.30
-       atlas-pune          eyebrow  8.71  h1 6.32  lead 6.57  decay 3.98
-       upl-metro-juinagar  eyebrow  7.24  h1 6.27  lead 8.07  decay 3.94
-     --mark-banner carries .decay and is LARGE TEXT ONLY at those figures. */
+     EVERY PHOTOGRAPH HERE IS MEASURED, AT BOTH LAYOUTS. The scrim guarantees
+     nothing on its own (see the banner note in site.css), so a fourth image
+     cannot just be appended. Method: composite it under both scrim gradients
+     on a canvas at the hero's real aspect, then sample the DARKEST pixel
+     under the WORDS and score it against --on-banner.
+
+     Two things about that method are load-bearing, and both were got wrong
+     first time round here:
+       - Minimum, not a percentile. A 5th-percentile sample reads about twice
+         as forgiving and will pass an image that fails.
+       - Per WORD, not per element box. The h1 and lead line boxes run the
+         full column width while the glyphs do not, so a box-level minimum
+         reads the bare photograph past the end of the text and condemns
+         images that are fine. Range over each word and union those rects.
+
+     Mobile is the binding case, not desktop: below 64rem the copy runs the
+     full width, so the lead reaches ~91% across the hero, where the 102deg
+     scrim has already fallen to alpha 0. Only 9 of the 170 project
+     photographs clear AA there. Measured worst case per element:
+
+                          DESKTOP 1440x801            MOBILE 375x682
+       adani-bkc-mumbai   eye 10.92 h1 5.49 lead 5.63  eye 12.34 h1 8.40 lead 3.80
+       atlas-pune         eye  8.75 h1 6.87 lead 7.18  eye  6.41 h1 5.60 lead 6.62
+       meraki-arean       eye  6.51 h1 6.44 lead 7.70  eye  5.69 h1 6.61 lead 6.84
+
+     NOTE THE FIRST ROW: the incumbent banner's lead is 3.80:1 on mobile,
+     under the 4.5 floor. That is pre-existing — the scrim was shaped around
+     the desktop type column — and it is the reason the two images added
+     beside it were held to passing at BOTH widths rather than matching it.
+     Fixing it is a scrim change, not an image change. --mark-banner carries
+     .decay and is LARGE TEXT ONLY: 3.33 / 4.36 / 6.52 desktop. */
   @keyframes mHeroFade {
     0%     { opacity: 1; }
     30%    { opacity: 1; }

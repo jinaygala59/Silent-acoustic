@@ -302,4 +302,75 @@
         .then(function () { if (submit) { submit.disabled = false; } });
     });
   }
+
+  /* ------------------------- banner carousel ----------------------------
+     The arrows are BUILT HERE rather than sitting in the markup, because a
+     control that cannot work without this file should not exist without it.
+     With the script blocked the banner is still the CSS cross-fade, and with
+     that gated off too (Reduce Motion) it is still one static photograph.
+
+     They are appended to .hero-top, NOT to .hero-media: the photographs are
+     decoration and .hero-media carries aria-hidden="true". A button inside an
+     aria-hidden subtree is stripped from the accessibility tree while staying
+     keyboard focusable — a screen reader user tabs onto a control that
+     announces nothing. That is the easiest way to get this wrong. */
+  var media = document.querySelector('.hero-media');
+  var slides = media ? [].slice.call(media.querySelectorAll('.hero-slide')) : [];
+
+  if (media && media.parentNode && slides.length > 1) {
+    var manual = false;
+    var at = 0;
+
+    /* Which slide is on screen right now. The auto cross-fade may be part way
+       through its loop when the reader first reaches for an arrow — starting
+       from 0 would jump the banner backwards before it stepped forward. */
+    function showing() {
+      var best = 0, top = -1;
+      for (var n = 0; n < slides.length; n++) {
+        var o = parseFloat(window.getComputedStyle(slides[n]).opacity) || 0;
+        if (o > top) { top = o; best = n; }
+      }
+      return best;
+    }
+
+    var live = document.createElement('p');
+    live.className = 'vh';
+    live.setAttribute('aria-live', 'polite');
+
+    function step(by) {
+      if (!manual) { manual = true; at = showing(); media.classList.add('is-manual'); }
+      slides[at].classList.remove('is-on');
+      at = (at + by + slides.length) % slides.length;
+      slides[at].classList.add('is-on');
+      live.textContent = 'Banner image ' + (at + 1) + ' of ' + slides.length;
+    }
+
+    function button(label, path, by) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'hero-nav-btn';
+      b.setAttribute('aria-label', label);
+      b.innerHTML = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none"'
+        + ' aria-hidden="true" focusable="false"><path d="' + path + '"'
+        + ' stroke="currentColor" stroke-width="2.1" stroke-linecap="round"'
+        + ' stroke-linejoin="round"/></svg>';
+      b.addEventListener('click', function () { step(by); });
+      return b;
+    }
+
+    var nav = document.createElement('div');
+    nav.className = 'hero-nav';
+    nav.appendChild(button('Previous banner image', 'M15 5 8 12l7 7', -1));
+    nav.appendChild(button('Next banner image', 'M9 5l7 7-7 7', 1));
+    nav.appendChild(live);
+
+    /* Left/Right once focus is inside the control group, which is what a
+       reader who has just tabbed onto an arrow will try. */
+    nav.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+    });
+
+    media.parentNode.appendChild(nav);
+  }
 })();
