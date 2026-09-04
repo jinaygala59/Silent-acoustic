@@ -64,7 +64,15 @@ const jsonLd = () => JSON.stringify({
   '@context': 'https://schema.org', '@type': 'LocalBusiness',
   name: SITE.name, url: SITE.url, telephone: SITE.phone, email: SITE.email,
   description: 'Acoustic treatment, acoustic panels and soundproofing. Design, manufacture and installation across India, from Mumbai.',
-  address: { '@type': 'PostalAddress', streetAddress: `${SITE.addr1}, ${SITE.addr2}`, addressLocality: 'Mumbai', addressRegion: 'Maharashtra', postalCode: '400064', addressCountry: 'IN' },
+  /* Locality only, to match the footer. streetAddress and postalCode were
+     here and are deliberately gone: the request was that the site show the
+     city and state, and a street address in the page source is still
+     published even though no visitor sees it. addr1/addr2 stay in content.js
+     because the client's own contact details have not changed — only what
+     this site broadcasts. Cost, stated plainly: a Google Business listing is
+     matched partly on address, so a locality-only schema is weaker for local
+     search than a full one. That was the trade asked for. */
+  address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressRegion: 'Maharashtra', addressCountry: 'IN' },
   areaServed: 'IN', priceRange: '$$',
   /* NO openingHoursSpecification. It said Mon-Sat 10:00-19:00, which is the
      exact string src/content.js records as INVENTED and removed from the

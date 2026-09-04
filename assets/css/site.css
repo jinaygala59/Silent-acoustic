@@ -1390,6 +1390,42 @@ section { padding-block: var(--pad-y); }
     linear-gradient(180deg,
       rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.06) 42%, rgba(237, 241, 245, 0.26) 100%);
 }
+/* THE SCRIM ABOVE IS SHAPED FOR THE DESKTOP TYPE COLUMN, WHICH ENDS AT ~52%.
+   Below 64rem the copy runs the full width instead — the lead reaches ~91%
+   across the banner, which is past the 78% stop where the 102deg gradient has
+   already fallen to alpha 0.12 and heading for 0. The type there sits on the
+   bare photograph.
+
+   That was measured, not guessed: on the incumbent banner the lead's darkest
+   composited pixel scored 3.80:1 at 375px, under the 4.5 floor, while the
+   same text scores 5.63:1 at 1440px. It is the reason only 9 of the 170
+   project photographs clear AA at mobile width.
+
+   So the narrow layout gets a scrim shaped for a full-width column: the
+   falloff is removed and the wash is held across the frame. It covers more of
+   the photograph than the desktop scrim does, which is the price of the copy
+   being full-bleed at this size.
+
+   The alphas are tuned, not maximal. The first pass ran 0.74 -> 0.64 and put
+   the lead at 8.67:1 — nearly double the floor, and it flattened the
+   photograph to the point where the banner stopped reading as a room. These
+   values clear AA with margin while leaving the picture legible. Measured at
+   375x682, darkest pixel under the words:
+       adani-bkc-mumbai    eye 13.70  h1 9.08  lead 5.82  decay 5.60
+       atlas-pune          eye  8.62  h1 6.80  lead 6.29  decay 8.31
+       meraki-arean        eye  6.86  h1 6.84  lead 7.00  decay 4.15
+   Worst text pair 5.82:1, worst mute 4.15:1. Re-measure per word, not per
+   element box, against the darkest pixel — see the note in motion.css. */
+@media (max-width: 63.999rem) {
+  .hero-media::after {
+    background:
+      linear-gradient(102deg,
+        rgba(237, 241, 245, 0.62) 0%, rgba(237, 241, 245, 0.60) 45%,
+        rgba(237, 241, 245, 0.56) 78%, rgba(237, 241, 245, 0.52) 100%),
+      linear-gradient(180deg,
+        rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.06) 42%, rgba(237, 241, 245, 0.26) 100%);
+  }
+}
 /* The banner is the ONE place on this light-only site with light text, because
    it is text on a photograph rather than on a ground. --on-dark is a
    near-black now, so it cannot be used here. Name every colour: a scrim no
