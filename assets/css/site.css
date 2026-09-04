@@ -2008,55 +2008,27 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   background: var(--paper-sub); color: var(--on-light);
   text-decoration: none;
 }
-/* The panel shows bare material at the top and fades to a paper ground under
-   the copy. The scrim used to run the other way — near-opaque cool ink, with
-   light text on it — which is why it survived the warm remap looking correct
-   and then went dark-on-dark the moment --on-dark became a near-black. It
-   reaches 0.985 where the text sits, so the copy is effectively on --paper-hi
-   whatever the material swatch underneath is doing. */
-/* Each panel carries a photograph of the thing it describes, and fades to a
-   paper ground under the copy. Without an image these were ~700px of
-   near-white with a paragraph at the bottom and the section read as
-   unfinished. The fade is held off so the photograph gets the top of the
-   panel, then goes hard, so the text sits on paper whatever the photograph is
-   doing. IT ONLY GUARANTEES THE BAND IT COVERS: move the copy, change the
-   panel height, or add a sentence, and this needs re-measuring.
+/* THE SCRIM IS RETIRED — read this before reinstating it.
 
-   THE GUARANTEE, STATED: from 44% down the scrim is at or above 0.80, and
-   over a pure-black pixel that composites to luminance 0.577 — 4.99:1 against
-   `--on-light-mute`, the lightest text in the panel and the smallest. So any
-   photograph is safe for any copy that starts at 44% or below. The h2 sits
-   lower again and clears 12:1 on anything.
+   Everything that used to be documented here described a guarantee for the
+   old 2-up layout: panels clamp(30rem, 82vh, 47rem) tall with the copy lying
+   ON the photograph, and stops tuned so that from 44% of panel height down
+   the scrim was at or above 0.80 alpha, compositing to 4.99:1 against
+   --on-light-mute over even a pure-black pixel.
 
-   The line moved from 38% to 44% when the panel copy was cut to two short
-   sentences: the block dropped to 47% on the widest desktop panel and 59.6%
-   on a phone, so eight points of scrim could go back to the photograph, which
-   is now clear to 28% rather than 24%. That is the trade this gradient always
-   makes — every line of copy removed is height the picture gets back. The
-   margin is thin on desktop, 47% against a 44% guarantee, so adding a line to
-   either panel means measuring again.
+   None of those numbers mean anything now. The rows are as tall as the
+   picture needs, padding moved to .dip-body, and the copy sits BESIDE the
+   photograph on the panel's own opaque fill rather than over it. "44% of
+   panel height" no longer describes where any text is.
 
-   That is the second re-measure, and both were caused by the same thing. The
-   stops began at 0.03/34%, 0.35/48%, 0.90/60%, 0.985/72%, sized for a copy
-   block at 54-90%. A rewrite adding a sentence per panel pushed the block to
-   31-91%, putting the eyebrow on a 0.03 scrim. Shortening the copy and moving
-   the ramp to 0.93/46% got the block to 39-91% but still measured the panel-1
-   eyebrow at 3.86:1, because a dark monitor in that photograph sat directly
-   under it — a per-image failure, which is the kind this scrim exists to make
-   impossible. Hence the current ramp, which holds regardless of the picture.
+   So the scrim is off (`content: none` below) rather than retuned, because a
+   scrim exists only to make text legible on top of an image and there is no
+   longer any text on top of an image. Its measured contrast is now simply the
+   copy on --paper-sub: h2 15.86:1, body 7.75:1, independent of the
+   photograph entirely — which is the better property.
 
-   The cost is the photograph: it is clear only to 24% and half-washed by 31%.
-   That was chosen over tuning `object-position` per image, which would make
-   every future photo swap a contrast negotiation. Verify with the canvas
-   composite, never by eye. */
-/* Explicit, non-negative layering. This used to be z-index -2, which worked
-   while .dip-surface painted its own fill, and silently broke the moment it
-   carried a photograph instead: .dip sets an opaque --ombre-light gradient, a
-   negative-z child lands behind it, and the panel rendered as ~750px of blank
-   white with the copy at the bottom. Verified by forcing z-index 0 in the
-   page — the photograph appeared. Surface 0, scrim 1, copy 2. */
-/* In flow now, not absolute — it is one half of the row rather than a
-   backdrop behind the whole panel. */
+   If a future layout puts copy back over the picture, do not carry the old
+   stops across. Re-derive them against that layout's geometry. */
 .dip-surface {
   position: relative; z-index: 0; overflow: hidden;
   min-height: clamp(15rem, 32vw, 24rem);
@@ -2092,7 +2064,12 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   max-width: 42ch;
 }
 .dip-body h2 { font-size: var(--t-h2); margin: 1rem 0 1rem; }
-.dip-body p { color: var(--on-dark-mute); }
+/* --on-light-mute, not --on-dark-mute. This paragraph renders on the panel's
+   own --paper-sub fill inside a `.light railed dip-sec` section — there is no
+   dark ground anywhere near it. The two tokens hold the same value today, so
+   this changes nothing now; it stops the paragraph inverting to near-white if
+   the on-dark family is ever given genuinely dark-ground values. */
+.dip-body p { color: var(--on-light-mute); }
 .dip .tlink { margin-top: 1.75rem; color: var(--brand-ink); }
 
 .dip:hover .btn-arrow { transform: translateX(4px); }
