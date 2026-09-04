@@ -181,35 +181,6 @@ ${famRail()}
 
 ${choreoBand()}
 
-<section class="light railed">
-  <div class="wrap">
-    <span class="rail-label">Work</span>
-    <div class="section-head stack">
-      <!-- The visible heading, lead and eyebrow were removed by request, and
-           the ticker marquee (24 project names + "N rooms photographed") that
-           used to sit here was removed by request too — it duplicated the
-           actual photo gallery immediately below it. The h2 stays as .vh
-           because the six project cards below are h3s — without it they hang
-           off the previous section's heading and the page outline reads
-           wrong. -->
-      <h2 class="vh">Rooms we have finished.</h2>
-    </div>
-    <div class="gal" data-stagger>
-      ${PROJECTS.slice(0, 6).map(pr => `<article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
-          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-          </div>
-        </a>
-        <div class="gal-cap">
-          <h3>${esc(pr.n)}</h3>
-          <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
-        </div>
-      </article>`).join('\n      ')}
-    </div>
-    <p class="mt-l" data-anim="fade"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
-  </div>
-</section>
 
 <section class="dark railed">
   <div class="wrap">

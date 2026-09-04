@@ -376,7 +376,7 @@ adjacent `.dark` sections, and none starts a section at pure white. Sequences
 (P=page-head, L=light, D=dark, C=cta):
 
 ```
-index     H L D L D L L L D C      products  P D L D L D L C
+index     H L D L D L L D C        products  P D L D L D L C
 projects  P D L D C                about     P D L D C
 blog      P D C                    contact   P L
 ```
