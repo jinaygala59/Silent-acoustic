@@ -1790,8 +1790,36 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
 .cta-band h2 { font-size: var(--t-h1); max-width: 18ch; }
 
 /* =========================== footer ===================================== */
+/* The footer joins the page's own ground instead of ending it with a slab.
+   It used to paint an opaque --paper-sub, which did to the bottom of the page
+   exactly what an opaque section background does anywhere else here: it hid
+   the document wash AND the 64px grid under a flat near-white rectangle, so
+   the site faded out into something that looked like a different page.
+
+   Now it veils rather than covers, the same move .light and .dark make, and
+   both the colour and the grid read through. It takes --ombre-dark, the
+   thinner of the two veils (white 0.12 -> 0.03), because the footer sits at
+   the very bottom of the document where the wash is deepest — so this is the
+   most saturated band on the site, which is the right place for the page to
+   arrive rather than to drain away.
+
+   That depth is measured, not chosen by eye. Against the wash's deepest stop
+   with a grid line directly under the text: links and body copy
+   (--on-light-mute) 4.68:1, .foot-h (--on-light) 9.58:1, link hover
+   (--brand-ink) 5.15:1. The 4.68 is exactly the worst case the .dark sections
+   already ship, so the footer is no tighter than the rest of the page — but
+   it is at the limit. Dropping the veil entirely to get more colour was
+   tested and rejected: that lands muted copy at 4.58:1, and 0.08 of headroom
+   is not headroom once grain and antialiasing are in it.
+
+   The three --paper-edge hairlines soften on this deeper ground. Left as they
+   are on purpose — .note and hr.rule already sit on the same deep ground in
+   the dark sections, so this is the established look for a rule down here,
+   not a regression. */
 .site-foot {
-  background: var(--paper-sub); color: var(--on-light-mute);
+  background-color: transparent;
+  background-image: var(--ombre-dark);
+  color: var(--on-light-mute);
   padding-block: clamp(4rem, 8vw, 6.5rem) 2.25rem;
   border-top: 1px solid var(--paper-edge);
 }
@@ -2104,245 +2132,60 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
 
 .dip:hover .btn-arrow { transform: translateX(4px); }
 
-/* ----------------------------- room index -------------------------------
-   Ten room types were a grid of ten equal tiles, which said "gallery" when
-   the content is a specification: every room is designed to a number. It is
-   now an index — swatch, number, room, note, target — and the targets line
-   up in a column you can read straight down. */
-/* ------------------------ the index as one table -------------------------
-   The section head used to be a `.section-head split` floating above the list
-   with a section-sized gap under it, so the page read as "a heading, and then
-   separately some rows". The head is now the table's own head: tight to the
-   first hairline, and sharing the left edge the rows start from.
+/* ----------------------------- project index -----------------------------
+   The heading promises every project type has a number to hit, so the number
+   IS the layout: it leads each entry at display size, tabular so the ten sit
+   on one optical column, and the type and its target follow underneath.
 
-   The header row is the other half of that. The columns carried no labels, so
-   a reader met "20 photographed" and had to work out what the number counted —
-   the one figure here derived from PROJECTS at build time rather than typed,
-   and the reason this is an index instead of ten equal cards. It now says so.
-
-   IT DELIBERATELY DOES NOT SHARE THE ROW GRID. That was tried first, adding
-   `.rdx-cols` to the same `grid-template-columns` rules, and it cannot work:
-   the name and count tracks are `auto` and the middle two are `fr`, so every
-   track resolves against its OWN container's content. Measured, the header
-   computed `56px 40px 93.6px 609.9px 196.5px` against the rows'
-   `56px 40px 239px 507.9px 153.1px` — labels sitting nowhere near the cells
-   they name. Sharing intrinsic tracks across separate grid containers needs
-   `subgrid` all the way down, which would mean the ol, the li and the a each
-   becoming a subgrid and would break outright where subgrid is missing.
-
-   So the labels anchor to the two EDGES instead, which are the only positions
-   both grids agree on: the first track starts at the container's left, the
-   last ends at its right. Two labels, not five — and the right-hand one is on
-   the figure that needed explaining. Nothing can drift because nothing is
-   claiming to line up with a middle column.
-
-   Hidden below 52rem, where the rows stack into a single column and column
-   labels would describe a layout that is not on screen. */
-.rdx-intro {
-  display: grid; gap: clamp(1rem, 2.5vw, 2rem); align-items: end;
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+   Two columns, not one. Ten full-width rows made a 650px ladder that had to
+   be scrolled through; at two columns the same ten fit one screen and the
+   figures can be compared down the column, which is the only reason to put
+   them next to each other. Photographs are gone from here entirely — they
+   were tried at 4/3 and at 16/9, both times they were the size problem, and
+   none of them showed the figure the entry is about. The material swatch
+   survives as a two-line colour cue, drawn in CSS, no request. */
+.roomdex { list-style: none; padding: 0; margin: 0; display: grid; }
+@media (min-width: 52rem) {
+  .roomdex { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 4rem); }
 }
-.rdx-intro h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
-@media (min-width: 56rem) {
-  .rdx-intro { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
-}
+.rdx { border-top: 1px solid var(--paper-edge); }
+/* With two columns the last row is two cells, so :last-child alone underlines
+   one of them. Both of the final pair need it. */
+.rdx:last-child, .rdx:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--paper-edge); }
+@media (max-width: 51.99rem) { .rdx:nth-last-child(2):nth-child(odd) { border-bottom: 0; } }
 
-/* ---------------------- the three that lead the index --------------------
-   Ten equal tiles is what this section was moved away from, and a flat table
-   of ten was what replaced it — legible, and visually inert. This is the
-   middle shape the rest of the site already uses: the Notes list gives its
-   lead article a photograph and leaves the others as rows, and a product
-   family does the same for its first product.
-
-   WHICH three lead is decided by the data — the three highest counts, sorted
-   at build time — so it cannot drift as projects are added, and nobody has to
-   maintain a list of favourites. The counter on the remaining rows is dropped
-   with it: once the order is by count rather than by SECTORS order, a leading
-   01-10 would imply a ranking the numbers no longer match.
-
-   No fill and no gradient on these cards, only the photograph and a hairline.
-   That keeps them inside the rule that objects sitting on a ground stay flat,
-   and it means the text composites on the section ground exactly as the rows
-   below do — one contrast pair for the whole section instead of two. */
-/* Separation is the grid GAP, not padding on the cards. Padding was tried and
-   is subtly wrong here: zeroing the outer edges so the first and last card
-   align with the rows below leaves the middle card narrower by that amount,
-   and since the surfaces are aspect-ratio 4/3 a narrower card gets a SHORTER
-   photograph. Three cards, two visibly different image heights. With a gap all
-   three tracks are exactly 1fr, so the photographs match and the outer edges
-   still line up with the index underneath. */
-.rdx-feat {
-  display: grid;
-  gap: clamp(1rem, 2vw, 1.5rem);
-  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
-}
-@media (min-width: 46rem) { .rdx-feat { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-.rdx-card {
-  display: flex; flex-direction: column; gap: 0.7rem;
-  padding: 0;
-  text-decoration: none; color: inherit;
+.rdx > a {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) 1.5rem;
+  gap: 0 1.1rem; align-items: baseline;
+  padding: 1.15rem 0; text-decoration: none; color: inherit;
   transition: color 320ms var(--ease);
 }
-
-/* 16/9, not 4/3. At 4/3 a three-up on a 1280 viewport is 242px of photograph
-   per card and the block ran taller than the seven rows it introduces — the
-   lead is meant to open the index, not outweigh it. */
-.rdx-card-surface { aspect-ratio: 16 / 9; border-radius: var(--r-sm); }
-.rdx-card-body { display: flex; flex-direction: column; gap: 0.3rem; }
-
-/* The figure leads, because the figure is the argument. Tabular so the three
-   cards' numbers sit on one optical line whatever their digit count. */
-.rdx-card-fig {
+.rdx-fig {
   font-family: var(--display); font-weight: var(--w-display);
-  font-variation-settings: 'wdth' var(--wd-h2), 'opsz' 40;
-  font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2.125rem); line-height: 1;
-  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 32;
+  font-size: 1.75rem; line-height: 1; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.4ch; text-align: right;
   color: var(--on-light);
 }
-.rdx-card-fig small {
-  font-family: var(--mono); font-size: var(--t-mono); font-weight: 400;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--on-light-mute);
-}
-.rdx-card-name {
-  font-family: var(--display); font-weight: var(--w-display);
-  font-size: var(--t-h3); line-height: 1.1; letter-spacing: -0.015em;
-}
-.rdx-card-note { font-size: 0.875rem; line-height: 1.45; color: var(--on-light-mute); }
-
-.rdx-card:hover .rdx-card-name { color: var(--brand-ink); }
-
-.dark .rdx-card-fig, .rail-sec .rdx-card-fig { color: var(--on-dark); }
-.dark .rdx-card-fig small, .dark .rdx-card-note,
-.rail-sec .rdx-card-fig small, .rail-sec .rdx-card-note { color: var(--on-dark-mute); }
-
-.rdx-cols { display: none; }
-@media (min-width: 52rem) {
-  .rdx-cols {
-    display: flex; justify-content: space-between; align-items: baseline;
-    gap: 1.5rem; padding-bottom: 0.8rem;
-    font-family: var(--mono); font-size: var(--t-mono);
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--on-light-mute);
-  }
-}
-.dark .rdx-cols, .rail-sec .rdx-cols { color: var(--on-dark-mute); }
-
-.roomdex { list-style: none; padding: 0; margin: 0; }
-.rdx { border-top: 1px solid var(--paper-edge); }
-.rdx:last-child { border-bottom: 1px solid var(--paper-edge); }
-.rdx > a {
-  display: grid; gap: 0.35rem 1.5rem; align-items: center;
-  grid-template-columns: 1fr auto;
-  padding: 1.35rem 0; text-decoration: none; color: inherit;
-  transition: padding 320ms var(--ease), color 320ms var(--ease);
-}
-@media (min-width: 52rem) {
-  .rdx > a {
-    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.15fr) auto;
-    gap: 1.75rem; padding: 1.5rem 0;
-  }
-}
-/* ONE LINE PER ROW — in two stages, because only one of them fits everywhere.
-
-   MEASURED FIRST, AND RE-MEASURED WHEN THE ROW CHANGED. The requirement is a
-   property of what the row carries, so it moves when the row does. With the
-   `RT … TARGET` column still present, the widest row needed 1039px of content
-   even at the reduced sizes below, against 901px available at a 1134
-   viewport — 139px short, so single-line rows could not start below ~1273px.
-   Removing that column (it carried invented targets) took ~210px out, and the
-   floor came down with it — to **1201px**, so the breakpoint is 76rem rather
-   than 80rem.
-
-   MEASURE THE OVERFLOW, NOT A CLONE. Both earlier figures here came from
-   cloning each cell with `white-space: nowrap` and copying `font`, and both
-   were wrong — the `font` shorthand does not carry `letter-spacing`, and this
-   row has plenty of it (the count's `<small>` is letter-spaced uppercase).
-   That method said 1109px; the rows still collided at 1134, with the note
-   running under the count. The number that is actually true is
-   `scrollWidth - clientWidth` on `.rdx-note` with the single-line rules
-   applied: 67px of overflow at 1134, worst row "Classroom & Training Rooms",
-   so 1201px. Use that check if this ever needs re-deriving.
-
-   What was NOT done to make it fit, at either width: dropping the note to
-   13px, under this site's floor for body copy, or truncating it. An ellipsis
-   is not on the table — it would turn a room's description into a different,
-   shorter sentence, which is exactly what the `.nrc-raw` note in the NRC
-   section warns about. If a column is ever added back to this row, re-run the
-   measurement rather than assuming 70rem still holds.
-
-   So: stage one is the ALIGNMENT, and it costs nothing, so it applies from
-   52rem up. Before it the six cells were each centred in their own track, so
-   even a row whose text did fit had its number, name, note, count and target
-   sitting at five different heights — the thing that made the index read as
-   ragged. `align-items: baseline` puts every cell on one line in the
-   typographic sense, which is the half of "one line" that is free. The swatch
-   opts back out: it is a 2.75rem photograph with no baseline to share.
-
-   Stage two is the actual single-line row, and it starts at 76rem — just above
-   the 1201px the measurement asked for, not at a round number chosen first. Below
-   that the rows keep wrapping, which is correct: `nowrap` in a column too
-   narrow for it overflows the row and rides over the next column, so forcing
-   it lower would not produce one line, it would produce overlap.
-
-     gap      1.75rem -> 0.9rem   across five gutters
-     swatch   4.5rem  -> 3.5rem
-     name     28px    -> 22px     still the display face, still the h3 width axis
-     note     15px    -> 14px     the floor for body copy here
-
-   The note is still the cell that decides the floor — the ten `SECTORS[].note`
-   strings run 35-57 characters. If single-line rows are ever wanted below
-   76rem, shortening those to ~40 is the one change that buys it without
-   shrinking type or cutting a sentence short. They are written copy, not the
-   client's. */
-@media (min-width: 52rem) {
-  .rdx > a { align-items: baseline; }
-  .rdx-swatch { align-self: center; }
-}
-@media (min-width: 76rem) {
-  .rdx > a {
-    grid-template-columns: 3.5rem auto minmax(0, 1fr) auto;
-    gap: 0.9rem;
-  }
-  .rdx-name { font-size: 1.375rem; white-space: nowrap; }
-  .rdx-note { font-size: 0.875rem; white-space: nowrap; }
-}
-.rdx-swatch {
-  display: none; height: 2.75rem; border-radius: 1px;
-  border: 1px solid var(--paper-edge);
-  transition: transform 420ms var(--ease);
-}
-@media (min-width: 52rem) { .rdx-swatch { display: block; } }
+.rdx-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
 .rdx-name {
   font-family: var(--display); font-weight: var(--w-display);
-  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
-  line-height: 1.1; letter-spacing: -0.015em;
+  font-size: 1.0625rem; line-height: 1.25; letter-spacing: -0.01em;
 }
-.rdx-note { font-size: 0.9375rem; line-height: 1.5; color: var(--on-light-mute); }
-@media (max-width: 51.99rem) { .rdx-note { grid-column: 1 / -1; } }
-/* How many rooms of this type they have actually finished. Counted from
-   PROJECTS in src/build.js, never typed — the figure is the reason the index
-   earns its place over a grid of ten equal cards. Tabular figures so the
-   column stays a column. */
-.rdx-count {
-  font-family: var(--display); font-weight: var(--w-display);
-  font-variation-settings: 'wdth' var(--wd-h3), 'opsz' 20;
-  font-size: 1.5rem; line-height: 1; letter-spacing: -0.01em;
-  font-feature-settings: 'tnum' 1; color: var(--on-light);
-  white-space: nowrap;
+.rdx-note { font-size: 0.875rem; line-height: 1.45; color: var(--on-light-mute); }
+.rdx-swatch {
+  align-self: center; width: 1.5rem; height: 1.5rem;
+  border-radius: 2px; border: 1px solid var(--paper-edge);
 }
-.rdx-count small {
-  font-family: var(--mono); font-size: var(--t-mono); font-weight: 400;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--on-light-mute);
-}
-@media (max-width: 51.99rem) {
-  .rdx-count { font-size: 1.15rem; grid-column: 1; }
-}
-
 .rdx > a:hover { color: var(--brand-ink); }
-.rdx > a:hover .rdx-swatch { transform: scale(1.06); }
+.rdx > a:hover .rdx-note { color: var(--on-light-mute); }
+
+.dark .rdx-fig, .rail-sec .rdx-fig { color: var(--on-dark); }
+.dark .rdx-note, .rail-sec .rdx-note { color: var(--on-dark-mute); }
+.dark .rdx, .rail-sec .rdx { border-color: var(--ink-edge); }
+
+
 .rdx > a:hover .rdx-note, .rdx > a:hover 
 /* --------------------------- sticky process -----------------------------
    Seven steps that gate each other is a long read, and the heading used to
