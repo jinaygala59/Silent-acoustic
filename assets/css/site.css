@@ -1083,6 +1083,23 @@ section { padding-block: var(--pad-y); }
     transition: opacity 200ms var(--ease), transform 240ms var(--ease), visibility 200ms;
     max-height: calc(100dvh - 5.25rem); overflow-y: auto;
   }
+  /* THE PANEL OPENS OFF THE BUTTON'S OWN ARIA STATE, not off a class the
+     script has to remember to set on a second element.
+
+     It used to key on `.nav[data-open="true"]` alone, and the menu was dead
+     on every phone: tapping the control flipped the button to an X and
+     nothing appeared. Verified with a MutationObserver — the click produced
+     exactly one attribute change, `aria-expanded` on the button, and none at
+     all on the nav, so the panel never left opacity 0 / visibility hidden.
+     A fresh listener could set `data-open` on that same node perfectly well,
+     so the DOM was fine; the second write simply was not landing.
+
+     Keying on the button removes the dependency entirely. `aria-expanded` is
+     the state the control already publishes for assistive tech, the nav is
+     its next sibling in `.wrap`, and one attribute now drives both the icon
+     and the panel — they cannot disagree. The data-open rule is kept so the
+     script's write still works if it starts landing again. */
+  .nav-toggle[aria-expanded="true"] ~ .nav,
   .nav[data-open="true"] { transform: none; opacity: 1; visibility: visible; }
   .nav a { padding-block: 0.95rem; border-bottom: 1px solid rgba(16, 23, 27, 0.08); font-size: 0.8125rem; }
   .nav a::after { display: none; }
