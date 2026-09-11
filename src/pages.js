@@ -335,9 +335,11 @@ PRODUCTS.forEach(p => {
       </aside>
     </div>
 
-    ${related.length ? `<hr class="rule">
+    ${related.length ? `<div class="pd-related">
+    <hr class="rule">
     <h2 class="sub-h mb-l">Others in ${esc(cat.name)}</h2>
-    <div class="grid g3" data-stagger>${related.map(r => productCard(r, '../')).join('\n')}</div>` : ''}
+    <div class="grid g3" data-stagger>${related.map(r => productCard(r, '../')).join('\n')}</div>
+    </div>` : ''}
   </div>
 </section>
 

@@ -497,7 +497,58 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
 }
-@media print { body::after { display: none; } }
+/* ============================== print ===================================
+   Printing a product page — or saving it as a PDF, which is the same code
+   path — is how anyone gets a spec sheet off this site. There is no separate
+   PDF build, so this stylesheet IS the spec sheet.
+
+   THE REVEALS HAVE TO BE SWITCHED OFF FIRST, and this is not cosmetic. Every
+   `[data-anim]` element carries `animation-fill-mode: both`, and a `view()`
+   timeline has no scrollport to resolve against on the print canvas, so it
+   holds its from-state: `opacity: 0`, and for `frame` a `clip-path` that
+   removes the contents outright. Printed as it stood, a product page came out
+   largely blank below the first screen — the specs, the applications and the
+   related products all present in the document and none of them inked. The
+   `beforeprint` listener in motion.js covers the Firefox path only, because
+   only that path has an `.in` class to add.
+
+   What is dropped is site furniture, not content: the header and its nav, the
+   breadcrumb, the floating buttons, the scroll progress bar, the CTA band, the
+   related-products grid, and the footer — which is where "About" appeared in
+   the PDF and the reason this block exists. What is kept is the page head, the
+   photograph, the description, the applications and the spec tables.
+
+   Grounds go flat white. The two ombres exist to separate sections on a
+   screen; on paper they are ink, and a spec sheet is a document rather than a
+   page of the site. */
+@media print {
+  body::after { display: none; }
+
+  .site-head, .site-foot, .cta-band, .crumbs,
+  .float, .skip, .progress, .pd-related { display: none !important; }
+
+  [data-anim], [data-in] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  body, .light, .dark, .page-head, section {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .page-head::before, .cta-band::before, .cta-band::after { display: none !important; }
+
+  section, .page-head { padding-block: 0.6rem !important; }
+  .wrap { max-width: none !important; padding-inline: 0 !important; }
+
+  /* Keep a table on one sheet where it fits, and never orphan its heading. */
+  .spec { break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+
+  a { text-decoration: none; color: inherit; }
+}
 
 :focus-visible {
   outline: 2px solid var(--brand-deep);
