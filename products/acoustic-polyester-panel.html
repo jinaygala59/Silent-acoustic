@@ -77,7 +77,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-felt" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-felt is-cut" data-mat="pet" data-anim="frame">
           <img src="../assets/img/products/acoustic-polyester-panel-hero.webp" alt="Acoustic Polyester Panel" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-polyester-panel-1.webp" alt="Acoustic Polyester Panel — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-polyester-panel-2.webp" alt="Acoustic Polyester Panel — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-polyester-panel-3.webp" alt="Acoustic Polyester Panel — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
@@ -113,7 +118,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <hr class="rule">
     <h2 class="sub-h mb-l">Others in Acoustic Panels</h2>
     <div class="grid g3" data-stagger><a class="card" data-anim="rise" data-mat="pet" href="../products/acoustic-tile-panel.html">
-  <div class="card-surface surface s-tile">
+  <div class="card-surface surface s-tile is-cut">
     <img src="../assets/img/products/acoustic-tile-panel-card.webp" alt="Acoustic Tile Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -128,7 +133,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
 <a class="card" data-anim="rise" data-mat="pet" href="../products/acoustic-designer-panel.html">
-  <div class="card-surface surface s-groove">
+  <div class="card-surface surface s-groove is-cut">
     <img src="../assets/img/products/acoustic-designer-panel-card.webp" alt="Acoustic Designer Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -143,7 +148,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
 <a class="card" data-anim="rise" data-mat="pet" href="../products/acoustic-printed-panel.html">
-  <div class="card-surface surface s-print">
+  <div class="card-surface surface s-print is-cut">
     <img src="../assets/img/products/acoustic-printed-panel-card.webp" alt="Acoustic Printed Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

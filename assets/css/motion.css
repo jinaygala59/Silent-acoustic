@@ -929,6 +929,15 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
        nothing to read it against. It cannot simply be left out of the list
        above — `.card-surface > img` matches these — so it is switched off. */
     .rail-track .card-surface > img { animation: none; transform: none; }
+
+    /* A MOUNTED SPECIMEN DOES NOT DRIFT. Parallax is for photographs — it
+       works because a `cover` image has overflow to spend, which is exactly
+       what the scale is for. An `.is-cut` sample is `object-fit: contain`
+       inside padding, so there is no overflow: the 1.14 scale pushes the
+       sample past its mount and `.surface`'s overflow clips the edges off the
+       product. It also reads wrong — the specimen slides around on its card
+       while the card itself is still. */
+    .surface.is-cut > img { animation: none; transform: none; }
   }
 }
 

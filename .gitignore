@@ -18,3 +18,6 @@ _probe.html
 _probe.log
 .vercel
 .env*
+
+# Claude Design working files for the homepage canvas
+_design/

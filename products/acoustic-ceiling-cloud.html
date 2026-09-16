@@ -77,7 +77,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-cloud" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-cloud" data-mat="cloud" data-anim="frame">
           <img src="../assets/img/products/acoustic-ceiling-cloud-hero.webp" alt="Acoustic Ceiling Cloud" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-cloud-1.webp" alt="Acoustic Ceiling Cloud — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-cloud-2.webp" alt="Acoustic Ceiling Cloud — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-cloud-3.webp" alt="Acoustic Ceiling Cloud — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>

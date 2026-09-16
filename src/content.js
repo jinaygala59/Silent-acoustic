@@ -253,9 +253,38 @@ const PET = {
   'NRC': 'up to 0.6 (9 mm) / up to 0.85 (12 mm)',
 };
 
+/* `cut: true` MARKS A CARD SHOT THAT IS A CUT-OUT ON PURE WHITE, as opposed
+   to a photograph of a finished room. Twelve of the nineteen are; the other
+   seven (both ceilings, screen partitions, micro-perforated, parametric,
+   polysynth wool and the soundproof door) are room photography.
+
+   It is a fact about the ASSET, not about the product, and it is recorded
+   here because Node cannot decode a WebP without a dependency this project
+   does not have. It drives `.card-surface.is-cut` in site.css, which drops
+   the white out of the shot and floats the sample on its own material — the
+   move that makes a page of cards read as a materials library. Get it wrong
+   in one direction and a room photograph is multiplied into mud; wrong in
+   the other and a white rectangle punches a hole in the card.
+
+   RECOMPUTE IT rather than guessing, whenever a card image is replaced:
+
+     python3 -c "
+     from PIL import Image; import glob, os
+     for f in sorted(glob.glob('assets/img/products/*-card.webp')):
+         im = Image.open(f).convert('RGB'); w, h = im.size
+         b  = [im.getpixel((x, 0)) for x in range(0, w, 3)]
+         b += [im.getpixel((x, h - 1)) for x in range(0, w, 3)]
+         b += [im.getpixel((0, y)) for y in range(0, h, 3)]
+         b += [im.getpixel((w - 1, y)) for y in range(0, h, 3)]
+         white = sum(1 for p in b if min(p) >= 246) / len(b)
+         print(f'{os.path.basename(f)[:-11]:34}{white:6.0%}', 'cut' if white > 0.90 else '')
+     "
+
+   Anything above ~90% white border is a cut-out. The threshold is 90 and not
+   99 because the designer panel's board runs off one edge and scores 93. */
 const PRODUCTS = [
   {
-    slug: 'acoustic-polyester-panel', name: 'Acoustic Polyester Panel', cat: 'panels', surf: 's-felt', shots: [1, 2, 3],
+    slug: 'acoustic-polyester-panel', name: 'Acoustic Polyester Panel', cat: 'panels', surf: 's-felt', cut: true, shots: [1, 2, 3],
     tag: 'PET felt board for walls and ceilings',
     lead: 'A dense polyester fibre board that absorbs mid and high frequencies across a wide band. It is the panel we specify most often, because it does the acoustic work without asking for a specialist installer.',
     body: [
@@ -267,7 +296,7 @@ const PRODUCTS = [
     apps: ['Offices', 'Classrooms', 'Conference rooms', 'Studios', 'Home theatres'],
   },
   {
-    slug: 'acoustic-tile-panel', name: 'Acoustic Tile Panel', cat: 'panels', surf: 's-tile', shots: [1, 2, 3],
+    slug: 'acoustic-tile-panel', name: 'Acoustic Tile Panel', cat: 'panels', surf: 's-tile', cut: true, shots: [1, 2, 3],
     tag: 'Modular tiles for grids and feature walls',
     lead: 'The same PET absorber cut to module sizes that drop into a suspended grid or tile up a wall in a repeating pattern.',
     body: [
@@ -279,7 +308,7 @@ const PRODUCTS = [
     apps: ['Offices', 'Classrooms', 'Retail', 'Reception areas'],
   },
   {
-    slug: 'acoustic-designer-panel', name: 'Acoustic Designer Panel', cat: 'panels', surf: 's-groove', shots: [1, 2, 3],
+    slug: 'acoustic-designer-panel', name: 'Acoustic Designer Panel', cat: 'panels', surf: 's-groove', cut: true, shots: [1, 2, 3],
     tag: 'CNC-cut patterns: V-groove, U-groove, fluted, bespoke',
     lead: 'Absorption with a cut pattern in it. The routing is done from your drawing, so the panel reads as part of the interior rather than as acoustic treatment bolted onto it.',
     body: [
@@ -291,7 +320,7 @@ const PRODUCTS = [
     apps: ['Boardrooms', 'Hotel lobbies', 'Auditoriums', 'Premium offices'],
   },
   {
-    slug: 'acoustic-printed-panel', name: 'Acoustic Printed Panel', cat: 'panels', surf: 's-print', shots: [1, 2, 3],
+    slug: 'acoustic-printed-panel', name: 'Acoustic Printed Panel', cat: 'panels', surf: 's-print', cut: true, shots: [1, 2, 3],
     tag: 'UV-printed artwork on an absorbing substrate',
     lead: 'Your artwork, logo or photograph printed directly onto the acoustic panel. The wall keeps absorbing; it just stops looking like a wall of grey rectangles.',
     body: [
@@ -325,7 +354,7 @@ const PRODUCTS = [
     apps: ['Open-plan offices', 'Call centres', 'Co-working', 'Libraries'],
   },
   {
-    slug: 'acoustic-3d-embossed-panel', name: 'Acoustic 3D Embossed Panel', cat: 'panels', surf: 's-emboss', shots: [1, 2, 3],
+    slug: 'acoustic-3d-embossed-panel', name: 'Acoustic 3D Embossed Panel', cat: 'panels', surf: 's-emboss', cut: true, shots: [1, 2, 3],
     tag: 'Moulded relief that scatters as well as absorbs',
     lead: 'A pressed three-dimensional face on a recycled polyester board, reaching an NRC of 0.85. The relief adds scatter to what would otherwise be a purely absorptive surface, which keeps a room from going dead.',
     body: [
@@ -414,7 +443,7 @@ const PRODUCTS = [
   },
 
   {
-    slug: 'acoustic-pyramid-foam', name: 'Acoustic Pyramid Foam', cat: 'foam', surf: 's-pyramid', shots: [1, 2, 3],
+    slug: 'acoustic-pyramid-foam', name: 'Acoustic Pyramid Foam', cat: 'foam', surf: 's-pyramid', cut: true, shots: [1, 2, 3],
     tag: 'Profiled PU foam for control rooms and booths',
     lead: 'Open-cell polyurethane foam cut into a field of pyramids at 50 mm, reaching an NRC of up to 0.9. The profile increases surface area and gives the wave a graded entry into the material instead of a hard face.',
     body: [
@@ -436,7 +465,7 @@ const PRODUCTS = [
     apps: ['Recording studios', 'Vocal booths', 'Podcast rooms', 'Control rooms'],
   },
   {
-    slug: 'acoustic-wedge-foam', name: 'Acoustic Wedge Foam', cat: 'foam', surf: 's-wedge', shots: [1, 2, 3],
+    slug: 'acoustic-wedge-foam', name: 'Acoustic Wedge Foam', cat: 'foam', surf: 's-wedge', cut: true, shots: [1, 2, 3],
     tag: 'Directional wedge profile for first reflections',
     lead: 'The same 50 mm polyurethane foam cut as parallel wedges rather than pyramids. The profile is directional, so orienting alternate tiles at ninety degrees evens out the response across the wall.',
     body: [
@@ -459,7 +488,7 @@ const PRODUCTS = [
   },
 
   {
-    slug: 'acoustic-wood-wool-panel', name: 'Acoustic Wood Wool Panel', cat: 'wood', surf: 's-wool', shots: [1, 2, 3],
+    slug: 'acoustic-wood-wool-panel', name: 'Acoustic Wood Wool Panel', cat: 'wood', surf: 's-wool', cut: true, shots: [1, 2, 3],
     tag: 'Magnesite-bonded wood fibre, robust and paintable',
     lead: 'Long wood fibres bound with magnesite into a rigid, open board reaching an NRC of up to 0.9. It is the toughest absorber we supply, and the one to use where panels will be kicked, leaned on or hosed down.',
     body: [
@@ -478,7 +507,7 @@ const PRODUCTS = [
     apps: ['Schools', 'Sports halls', 'Basements', 'Plant rooms', 'Car parks'],
   },
   {
-    slug: 'acoustic-wooden-slats', name: 'Acoustic Wooden Slats', cat: 'wood', surf: 's-slat', shots: [1, 2, 3],
+    slug: 'acoustic-wooden-slats', name: 'Acoustic Wooden Slats', cat: 'wood', surf: 's-slat', cut: true, shots: [1, 2, 3],
     tag: 'Veneered slat planks on an acoustic felt backing',
     lead: 'Pre-assembled slat planks — real wood veneer over an MDF or HDF core, mounted on a high-density acoustic felt backing. Sound passes between the slats and is absorbed behind; the room reads as a warm timber wall.',
     body: [
@@ -499,7 +528,7 @@ const PRODUCTS = [
     apps: ['Auditoriums', 'Boardrooms', 'Hotel interiors', 'Home theatres', 'Restaurants'],
   },
   {
-    slug: 'acoustic-wooden-panel', name: 'Acoustic Wooden Panel', cat: 'wood', surf: 's-woodperf', shots: [1, 2, 3],
+    slug: 'acoustic-wooden-panel', name: 'Acoustic Wooden Panel', cat: 'wood', surf: 's-woodperf', cut: true, shots: [1, 2, 3],
     tag: 'Perforated MDF or HDF board with a fleece backing',
     lead: 'A solid timber-faced board perforated on a regular grid, with acoustic fleece bonded behind, reaching an NRC of up to 0.9. It looks like joinery and performs like an absorber.',
     body: [
@@ -540,7 +569,7 @@ const PRODUCTS = [
     apps: ['Partition walls', 'Ceiling voids', 'Behind panels', 'Ducting'],
   },
   {
-    slug: 'polyblock-membrane', name: 'Polyblock Membrane', cat: 'proof', surf: 's-mlv', shots: [1, 2, 3],
+    slug: 'polyblock-membrane', name: 'Polyblock Membrane', cat: 'proof', surf: 's-mlv', cut: true, shots: [1, 2, 3],
     tag: 'Mass-loaded vinyl for blocking sound transfer',
     lead: 'A limp, heavy sheet that adds mass to a wall, floor or ceiling without adding bulk. Where a partition has to stop sound rather than absorb it, this is the layer that does it — Rw 20 dB at 2 mm, 30 dB at 4 mm.',
     body: [
@@ -581,7 +610,7 @@ const PRODUCTS = [
     apps: ['Recording studios', 'Home theatres', 'Auditoriums', 'Boardrooms', 'Clinics'],
   },
   {
-    slug: 'soundproof-window', name: 'Soundproof Window', cat: 'proof', surf: 's-glass', shots: [1, 2, 3],
+    slug: 'soundproof-window', name: 'Soundproof Window', cat: 'proof', surf: 's-glass', cut: true, shots: [1, 2, 3],
     tag: 'Acoustic glazing, STC 30–60 dB',
     lead: 'Sealed glazing units built for sound rather than for heat, in wood or uPVC frames and made to your opening. Depending on the build, they reach an STC of between 30 and 60 dB.',
     body: [

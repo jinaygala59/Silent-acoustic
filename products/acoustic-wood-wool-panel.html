@@ -77,7 +77,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-wool" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-wool is-cut" data-mat="wood" data-anim="frame">
           <img src="../assets/img/products/acoustic-wood-wool-panel-hero.webp" alt="Acoustic Wood Wool Panel" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-wood-wool-panel-1.webp" alt="Acoustic Wood Wool Panel — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wood-wool-panel-2.webp" alt="Acoustic Wood Wool Panel — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wood-wool-panel-3.webp" alt="Acoustic Wood Wool Panel — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
@@ -112,7 +117,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <hr class="rule">
     <h2 class="sub-h mb-l">Others in Acoustic Wood</h2>
     <div class="grid g3" data-stagger><a class="card" data-anim="rise" data-mat="wood" href="../products/acoustic-wooden-slats.html">
-  <div class="card-surface surface s-slat">
+  <div class="card-surface surface s-slat is-cut">
     <img src="../assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic Wooden Slats" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -127,7 +132,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
 <a class="card" data-anim="rise" data-mat="wood" href="../products/acoustic-wooden-panel.html">
-  <div class="card-surface surface s-woodperf">
+  <div class="card-surface surface s-woodperf is-cut">
     <img src="../assets/img/products/acoustic-wooden-panel-card.webp" alt="Acoustic Wooden Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

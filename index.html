@@ -91,6 +91,15 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     </div>
   </div>
   </div>
+  <!-- THE FIVE MATERIALS AS A RULE, closing the banner. Each segment is
+       weighted by how many products that family holds, counted at build time,
+       so the band is a reading of the range rather than five equal stripes.
+       It is the site's own colour rule stated once, at full width: colour
+       means which material you are looking at, and nothing else on the page
+       is allowed to use these five. Decorative, so aria-hidden. -->
+  <div class="mat-rule" aria-hidden="true">
+    <i style="flex:8;background:var(--mat-pet)"></i><i style="flex:2;background:var(--mat-cloud)"></i><i style="flex:2;background:var(--mat-foam)"></i><i style="flex:3;background:var(--mat-wood)"></i><i style="flex:4;background:var(--mat-proof)"></i>
+  </div>
   <div class="wrap hero-rail">
     <dl class="hero-specs hero-specs-4" data-in style="--d:800">
       <div class="hero-spec"><dt>Project Completed</dt><dd>2035+</dd></div>
@@ -157,7 +166,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <div class="rail-viewport">
       <div class="rail-track">
         <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-designer-panel.html">
-  <div class="card-surface surface s-groove">
+  <div class="card-surface surface s-groove is-cut">
     <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="Acoustic Designer Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -172,7 +181,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
         <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-polyester-panel.html">
-  <div class="card-surface surface s-felt">
+  <div class="card-surface surface s-felt is-cut">
     <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="Acoustic Polyester Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -217,7 +226,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
         <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-wedge-foam.html">
-  <div class="card-surface surface s-wedge">
+  <div class="card-surface surface s-wedge is-cut">
     <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="Acoustic Wedge Foam" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -232,7 +241,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
         <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-pyramid-foam.html">
-  <div class="card-surface surface s-pyramid">
+  <div class="card-surface surface s-pyramid is-cut">
     <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="Acoustic Pyramid Foam" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -247,7 +256,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
         <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wooden-slats.html">
-  <div class="card-surface surface s-slat">
+  <div class="card-surface surface s-slat is-cut">
     <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic Wooden Slats" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
@@ -262,7 +271,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
         <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wood-wool-panel.html">
-  <div class="card-surface surface s-wool">
+  <div class="card-surface surface s-wool is-cut">
     <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="Acoustic Wood Wool Panel" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

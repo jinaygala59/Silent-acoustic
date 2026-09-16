@@ -315,6 +315,20 @@ affected, because `.rail-sec` takes the deep ground from its own rule rather
 than the class — measure `getComputedStyle(section).backgroundImage` instead.
 
 
+**The hero closes on a rule of the five material colours**, each segment
+weighted by how many products that family holds, counted at build time —
+`.mat-rule`, built in `src/pages.js`. It is the site's colour rule stated once
+at full width, and it is the only place those five appear at that scale.
+
+**The stat rail sits on a plinth now, and that is only safe because
+`.hero-rail` is excluded from `mDrift`.** This file used to say flatly: do not
+give the rail a background. The reason was real — `mDrift` fades `.hero .wrap`
+to opacity 0.25 across the first 78vh, the rail IS a `.hero .wrap`, so a fill
+on it faded and whatever sat behind read back through. The rule is
+`.hero .wrap:not(.hero-rail)` today, so the rail holds still and holds a fill.
+**Widen that selector again and the plinth starts ghosting on scroll** — the
+two have to be checked together.
+
 **The hero's spec rail carries the client's own four counters now** — 2035+
 Project Completed, 20+ Years of Experience, 20+ Team Strength, 7 Project
 Running — transcribed from the band on their live site, labels in their
@@ -533,6 +547,43 @@ accent hue: a tinted foam swatch stops looking like foam. The marker is
 scoped to `.card[data-mat]` and `.fam[data-mat]`, so it appears on products
 and product families only — a blog post is not a material and must not carry
 one.
+
+**THE SAMPLE SITS ON ITS MATERIAL — `mix-blend-mode: multiply` is the whole
+trick.** Twelve of the nineteen catalogue shots are cut out on pure white.
+White multiplied by anything is that thing, so the mount shows straight
+through the shot's background and only the product survives; the mount is the
+product's own material colour at a 20% tint, which is why a wood card sits on
+warm paper and a foam card on cold. `.surface.is-cut` in `site.css`, driven by
+`PRODUCTS[].cut`, which is MEASURED off the asset — the recompute command is
+beside the flag in `content.js`. The `-card` and `-hero` assets classify
+identically, so one flag drives the card grid, the homepage rail and the
+product detail hero.
+
+Three things will break it, and two of them bit during the build:
+
+1. **Any `filter` on the image kills the blend.** A filtered element is
+   composited as its own group and the blend has nothing to multiply against.
+   This was diagnosed by putting three cards side by side with filter on,
+   filter off and parallax toggled — only the unfiltered one dropped its
+   white. So there is no drop shadow on the sample, which is correct anyway:
+   these rasters have no alpha, so `drop-shadow` traced the image's rectangle
+   rather than the product's silhouette.
+2. **The `.s-*` swatch has to be suppressed.** Several are near-black, and
+   multiplying a timber slat against a near-black slat drawing is mud.
+   `.surface.is-cut::before { display: none }`.
+3. **The image must sit above `.surface::after`**, the light wash at z-index
+   2. Set `position: static` it paints underneath and the sample comes out
+   hazed; `position: relative; z-index: 3` is what keeps it in the flex
+   centring and above the wash.
+
+Parallax is off for `.is-cut`: a `contain` image inside padding has no
+overflow to spend, so the 1.14 scale pushes the sample past its mount and the
+surface clips it.
+
+**The seven room photographs keep the old treatment** — `object-fit: cover`,
+the drawn swatch behind, the inset frame on dark. There is no white to drop
+and multiply would only darken someone's finished room. Get the flag wrong in
+that direction and you mud a real photograph.
 
 **The nineteen drawn material swatches are load-bearing, not decoration.**
 `.s-felt`, `.s-slat`, `.s-wedge` and the rest are the `::before` of

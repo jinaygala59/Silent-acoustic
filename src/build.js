@@ -305,7 +305,7 @@ const roomdex = (base = 'projects.html') => {
 };
 
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
-  <div class="card-surface surface ${p.surf}">
+  <div class="card-surface surface ${p.surf}${p.cut ? ' is-cut' : ''}">
     <img src="${up}assets/img/products/${p.slug}-card.webp" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

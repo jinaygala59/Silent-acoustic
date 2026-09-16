@@ -77,7 +77,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-baffle" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-baffle" data-mat="cloud" data-anim="frame">
           <img src="../assets/img/products/acoustic-ceiling-baffle-hero.webp" alt="Acoustic Ceiling Baffle" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-baffle-1.webp" alt="Acoustic Ceiling Baffle — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-baffle-2.webp" alt="Acoustic Ceiling Baffle — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-ceiling-baffle-3.webp" alt="Acoustic Ceiling Baffle — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>

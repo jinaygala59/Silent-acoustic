@@ -77,7 +77,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-wedge" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-wedge is-cut" data-mat="foam" data-anim="frame">
           <img src="../assets/img/products/acoustic-wedge-foam-hero.webp" alt="Acoustic Wedge Foam" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-wedge-foam-1.webp" alt="Acoustic Wedge Foam — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wedge-foam-2.webp" alt="Acoustic Wedge Foam — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wedge-foam-3.webp" alt="Acoustic Wedge Foam — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
@@ -115,7 +120,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <hr class="rule">
     <h2 class="sub-h mb-l">Others in Acoustic Foam</h2>
     <div class="grid g3" data-stagger><a class="card" data-anim="rise" data-mat="foam" href="../products/acoustic-pyramid-foam.html">
-  <div class="card-surface surface s-pyramid">
+  <div class="card-surface surface s-pyramid is-cut">
     <img src="../assets/img/products/acoustic-pyramid-foam-card.webp" alt="Acoustic Pyramid Foam" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

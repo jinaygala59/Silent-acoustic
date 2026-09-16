@@ -74,7 +74,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface s-glass" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface s-glass is-cut" data-mat="proof" data-anim="frame">
           <img src="../assets/img/products/soundproof-window-hero.webp" alt="Soundproof Window" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/soundproof-window-1.webp" alt="Soundproof Window — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/soundproof-window-2.webp" alt="Soundproof Window — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/soundproof-window-3.webp" alt="Soundproof Window — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
@@ -119,7 +124,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </a>
 <a class="card" data-anim="rise" data-mat="proof" href="../products/polyblock-membrane.html">
-  <div class="card-surface surface s-mlv">
+  <div class="card-surface surface s-mlv is-cut">
     <img src="../assets/img/products/polyblock-membrane-card.webp" alt="Polyblock Membrane" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">

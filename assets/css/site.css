@@ -1059,8 +1059,78 @@ section { padding-block: var(--pad-y); }
   object-fit: cover; object-position: center;
   display: block;
 }
+/* ================== THE SAMPLE SITS ON ITS MATERIAL =====================
+   Twelve of the nineteen catalogue shots are cut out on pure white. The old
+   treatment put a soft inset frame around that white rectangle so it did not
+   punch a hole in the page — a patch on the symptom. This removes the white
+   instead.
+
+   `mix-blend-mode: multiply` is the whole trick: white multiplied by anything
+   is that thing, so the backdrop shows straight through the cut-out's
+   background and only the product survives. What it multiplies against has to
+   be LIGHT, which is why `.is-cut` suppresses the drawn `.s-*` swatch — those
+   are the real material temperatures and several are near-black, and
+   multiplying a timber slat against a near-black slat drawing gives mud. The
+   ground here is the same material colour taken to a 12% tint, so a wood card
+   sits on warm paper and a foam card on cold, without either going dark.
+
+   `object-fit: contain` plus padding is what makes it read as a specimen on a
+   mount rather than a photograph cropped to a box.
+
+   THERE IS NO DROP SHADOW ON THE SAMPLE, and two separate reasons say there
+   cannot be. `filter` on a blended element puts it in its own compositing
+   group, and the blend then has nothing to multiply against — measured, not
+   guessed: three cards side by side with filter on, filter off and parallax
+   toggled, and only the one without a filter dropped its white. And it would
+   not have worked anyway: these shots are opaque JPEG-style rasters with no
+   alpha channel, so `drop-shadow` traces the image's RECTANGLE rather than
+   the product's silhouette — a hard-edged box shadow around a shape that is
+   no longer visible. The lit-mount feel comes from `.surface::after`, the
+   vignette the component already had.
+
+   ONLY CUT-OUTS. `is-cut` comes from `PRODUCTS[].cut` in content.js, which is
+   measured off the asset — see the note there, and recompute it when a card
+   image changes. The seven room photographs keep `object-fit: cover` and the
+   drawn swatch behind them, because there is no white to drop and multiply
+   would only darken someone's finished room.
+
+   The selector is `.surface`, not `.card-surface`, so the product detail
+   page's `.pd-hero` gets the same treatment. That is measured too: the
+   `-hero.webp` assets classify identically to the `-card.webp` ones, the
+   same twelve, so one flag drives both.
+
+   The isolation is deliberate: `.surface` already sets `isolation: isolate`,
+   so the blend is confined to the card and can never reach the page ground. */
+.surface.is-cut {
+  /* The literal is the fallback for a browser without color-mix; it is the
+     PET tint, the commonest of the five, so a fallback card is plausible
+     rather than obviously wrong. 20% is where the mount starts reading as a
+     colour rather than as an off-white — 12% was tried and disappeared. */
+  background-color: #E7E9E8;
+  background-color: color-mix(in oklab, var(--mat, #7C8380) 20%, #FFFFFF);
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(0.9rem, 3vw, 1.6rem);
+}
+/* The drawn swatch is the thing being replaced here — without this it would
+   paint over the tint and the sample would multiply against a near-black
+   ground, which is mud. */
+.surface.is-cut::before { display: none; }
+.surface.is-cut > img {
+  /* `relative`, not `static`: the image has to keep its place in the flex
+     centring AND sit above `.surface::after`, the light wash at z-index 2.
+     Left static it painted below the wash and the sample came out hazed. */
+  position: relative; z-index: 3; inset: auto;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+/* The inset frame below exists for a white rectangle that is no longer there,
+   and over a multiplied sample it reads as a smudge along the bottom edge. */
+.dark .surface.is-cut::after { display: none; }
+
 /* Many of their catalogue shots are cut out on white. On the dark ground a
-   raw white rectangle punches a hole in the page, so those get a soft inset
+   raw white rectangle punches a hole in the page, so those that are NOT
+   handled by `.is-cut` above — the seven room photographs — get a soft inset
    frame rather than sitting flush. */
 .dark .card-surface::after,
 .dark .gal-surface::after {
@@ -1659,6 +1729,31 @@ section { padding-block: var(--pad-y); }
    the hero's own ombre rather than a plinth of its own — a separate fill here
    read as a flat pale slab with nothing in it, and section rhythm on this site
    is carried by rule, space and type, not by stacking grounds. */
+/* ---------------------- the material rule and the plinth -----------------
+   Direction B's two structural moves on the hero. The rule closes the
+   photograph with the five material colours; the plinth puts the client's
+   four counters on the deeper of the two grounds so the banner ends on a
+   definite edge instead of dissolving into the page.
+
+   THE PLINTH IS ONLY SAFE BECAUSE `.hero-rail` IS EXCLUDED FROM `mDrift`.
+   CLAUDE.md carries a warning not to give this rail a background, and the
+   reason was real: `mDrift` fades `.hero .wrap` to opacity 0.25 over the
+   first 78vh of scroll, and the rail is a `.hero .wrap`, so a ground on it
+   used to fade with it and whatever sat behind read straight back through.
+   The rule is `.hero .wrap:not(.hero-rail)` now, so the rail no longer
+   drifts and can hold a fill. If that selector is ever widened again, this
+   plinth starts ghosting on scroll — check them together. */
+.mat-rule { display: flex; height: 6px; }
+.mat-rule > i { display: block; }
+
+.hero-rail {
+  background: var(--ombre-dark), var(--paper);
+  /* full-bleed: the rail is a .wrap, so its own gutters stay, but the fill
+     has to reach both edges or it reads as a floating slab. */
+  max-width: none; width: 100%;
+  padding-inline: var(--gut);
+  border-bottom: 1px solid var(--paper-edge);
+}
 .hero-specs {
   margin-top: clamp(3.5rem, 7vw, 5.5rem);
   border-top: 1px solid var(--paper-edge);

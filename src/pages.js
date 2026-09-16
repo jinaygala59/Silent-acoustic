@@ -18,6 +18,12 @@ const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
      const TREAT_N = C.PRODUCTS.length - PROOF_N;
    — and it should be derived like that again, never typed. */
 
+/* The same map `MAT` in src/build.js uses to put a material marker on a card.
+   It is repeated rather than exported because the two are read in different
+   files and a one-line map is cheaper to keep than an export; if a sixth
+   family ever appears, both have to learn about it. */
+const MATKEY = { panels: 'pet', ceiling: 'cloud', foam: 'foam', wood: 'wood', proof: 'proof' };
+
 const FOUNDED = 2006;
 const YEARS = new Date().getFullYear() - FOUNDED;
 
@@ -222,6 +228,18 @@ built.push(page({
       </div>
     </div>
   </div>
+  </div>
+  <!-- THE FIVE MATERIALS AS A RULE, closing the banner. Each segment is
+       weighted by how many products that family holds, counted at build time,
+       so the band is a reading of the range rather than five equal stripes.
+       It is the site's own colour rule stated once, at full width: colour
+       means which material you are looking at, and nothing else on the page
+       is allowed to use these five. Decorative, so aria-hidden. -->
+  <div class="mat-rule" aria-hidden="true">
+    ${CATEGORIES.map(c => {
+      const n = PRODUCTS.filter(p => p.cat === c.id).length;
+      return `<i style="flex:${n};background:var(--mat-${MATKEY[c.id]})"></i>`;
+    }).join('')}
   </div>
   <div class="wrap hero-rail">
     <dl class="hero-specs hero-specs-4" data-in style="--d:800">
@@ -475,7 +493,12 @@ PRODUCTS.forEach(p => {
   <div class="wrap">
     <div class="pd-grid">
       <div>
-        <div class="pd-hero surface ${p.surf}" data-anim="frame">
+        <!-- data-mat is what resolves the material colour for the .is-cut
+             mount. Without it every detail hero falls back to the PET grey
+             and a timber sample sits on a cold ground. Same attribute the
+             cards carry; there it also draws the marker, here it only
+             tints the mount. -->
+        <div class="pd-hero surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}" data-anim="frame">
           <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
         </div>
         ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
