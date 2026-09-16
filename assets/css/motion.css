@@ -482,13 +482,17 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
    be named — the rail's own text tokens are dark now and would sit on cyan at
    3.6:1. The opacity: 0.92 that used to soften the note is gone too: it
    composited --paper-hi down to 4.02:1, under AA. */
-.fam-all { background: var(--brand-deep); border-color: var(--brand-deep); color: var(--paper-hi); }
+/* --brand, NOT --brand-deep. `--brand-deep` is the raw logo cyan now and it
+   is reserved for BUTTONS, where a dark label on it reads 6.74:1. This is a
+   card, it carries white, and white on the cyan is 2.62:1 — so it takes the
+   text-safe darkened cyan instead, where white reads 7.72:1. */
+.fam-all { background: var(--brand); border-color: var(--brand); color: var(--paper-hi); }
 .fam-all .fam-body { justify-content: center; gap: 1rem; padding: 2rem 1.6rem; }
 .fam-all h3 { font-size: var(--t-h2); line-height: 0.98; color: var(--paper-hi); }
 .fam-all .fam-n,
 .fam-all .fam-note,
 .fam-all .card-foot { color: var(--paper-hi); }
-.fam-all:hover { border-color: var(--paper-hi); }
+.fam-all:hover { background: var(--brand-lift); border-color: var(--on-light); }
 
 /* a hint that the rail is not the end of the row */
 .rail-hint {

@@ -466,22 +466,41 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
-**THE DIRECTION IS "WORKSHOP": warm paper, timber and rust, and colour still
-means material.** It replaced "Coefficient", a cool slate ramp, in a
-deliberate full-site restyle — the client asked for a genuinely new look with
-every word, figure and photograph held identical. If you see `#E6F0F5`,
-`#0F172A`, `#3F4C5E`, `#094A68`, Bricolage Grotesque or Public Sans anywhere
-in a note, that reference is stale.
+**THE DIRECTION IS "WORKSHOP", AND ITS COLOUR IS THE CLIENT'S OWN.** The
+structure — hard 2px rules, offset blocks, Instrument Serif over Karla — was
+chosen off a canvas of three. The palette went through the warm paper and
+rust the sketch proposed, and that was reported back as feeling off. It was:
+the logo is cyan, and a rust accent fights it on every screen it appears on.
+The ground is a cool neutral now and **the accent is the logo**.
 
 | role | token | value |
 |---|---|---|
-| page wash | `body` ramp | `#F7F2E8` → `#F3EDE0` → `#EDE5D6` → `#E7DECE` |
-| card / panel | `--paper-hi` | `#FBF7F0` |
-| ink | `--on-light` | `#221E18` |
-| muted | `--on-light-mute` | `#564E41` |
-| links, labels | `--brand` | `#843E23` |
-| hover | `--brand-lift` | `#6B321B` |
-| pill FILL only | `--brand-deep` | `#9C4A2A` |
+| page wash | `body` ramp | `#F7F9FA` → `#F1F4F6` → `#EAEEF1` → `#E3E8EB` |
+| card / panel | `--paper-hi` | `#FDFEFE` |
+| ink | `--on-light` | `#14181B` |
+| muted | `--on-light-mute` | `#4A5157` |
+| links, labels | `--brand` | `#08597A` |
+| hover | `--brand-lift` | `#074E6B` |
+| **BUTTON FILL only** | `--brand-deep` | `#1CABDE` — the raw logo cyan |
+
+**THE BUTTONS ARE THE LOGO'S OWN CYAN AND THEIR LABELS ARE DARK.** That is
+forced, not styled: white on `#1CABDE` is **2.65:1** and fails outright,
+`--on-light` on it is **6.74:1**. Every other filled control on this site had
+carried white, so five places had to be moved off it in one pass —
+`.btn-primary`, the nav's restatement of it, `.hero-nav-btn`, `.float` and
+`::selection`. Two more, `.fam-all` and `.review-avatar`, took `--brand`
+instead: they are a card and a monogram, not buttons, and the cyan is
+reserved. **If the fill is ever darkened so a white label fits, it stops
+being the logo's colour and the reason for using it goes with it.**
+
+`--brand-mark` is the same cyan and has exactly one job beyond the logo
+asset: `.btn-primary:hover`, because the fill IS that colour now and the
+hover has nowhere brighter to go. It is still never type and never a
+hairline — 2.53:1 on paper, and under the 3:1 a UI component needs.
+
+(The warm palette — `#F2ECE1`, `#221E18`, `#564E41`, rust `#843E23` — lasted
+one commit. If you see those, the reference is stale. So is anything naming
+`#E6F0F5`, `#094A68`, Bricolage Grotesque or Public Sans.)
 
 **Type is Instrument Serif over Karla**, set in `site.css` with the Google
 Fonts URL as `FONTS` in `src/build.js` — change both together.
@@ -513,14 +532,19 @@ own — `--ombre-light` lifts toward cream, `--ombre-dark` deepens toward ink:
 | `--ombre-light` | `rgba(255,253,248, .55 / .30 / .10)` |
 | `--ombre-dark`  | `rgba(34,30,24, .030 / .055 / .085)` |
 
-**THE PAGE WASH'S BOTTOM STOP IS SOLVED, NOT CHOSEN.** `#E7DECE`. The binding
+**THE PAGE WASH'S BOTTOM STOP IS SOLVED, NOT CHOSEN.** `#E3E8EB`. The binding
 case is muted copy on a `.dark` section, over the wash's deepest stop, with a
 grid line directly under it — three darkenings stacked, compositing to
-`rgb(204,196,181)`, where `--on-light-mute` reads **4.74:1**. One step deeper
-on either the stop or the mute puts the site under the floor. `--brand`'s own
-worst case is the same kind of spot: `#843E23` on `rgb(214,205,190)` at
-**4.95:1**, which is `.note-go` on the blog index and the gallery link on the
-homepage.
+`rgb(199,204,207)`, where `--on-light-mute` reads **4.97:1**. `--brand`'s own
+worst case is the same kind of spot — `.note-go` on the blog index and the
+gallery link on the homepage — at **4.76:1**.
+
+**THE PAGE OMBRE IS ON `body`, NOT ON THE SECTIONS, and that is the thing
+that bites during a palette change.** The first sweep after swapping every
+token returned **239 failures** against a ground that was not in the new
+palette anywhere: the four-stop ramp on `body` had not been touched, and the
+sections only veil it. Swapping it took 239 to 2. Change the tokens and the
+`body` ramp in the same edit, always.
 
 **The "too white" bug is worth understanding before you undo the separation.**
 `--ombre-dark` was once a byte-for-byte alias of `--ombre-light`, so `.dark`
@@ -640,6 +664,21 @@ materials library rather than a grid of failed images. Each item's class
 comes from its own data (`PRODUCTS[].surf`, `CATEGORIES[].surf`,
 `SECTORS[].surf`) — never hard-code `s-plate` across the templates, which a
 pass did once and which silently blanked every surface on the site.
+
+**MOTION ADDED WITH THE PALETTE.** All four hero counters count up now, not
+just the derived years figure — the digits animate inside a `.tick` span and
+the client's own "+" sits outside it, unanimated, so what counts is their
+number and what is appended is their punctuation. And the offset block got
+its press: hover lifts the block away from its shadow, `:active` drops it the
+whole way INTO the shadow (`translate3d(4px,4px,0)` with the shadow at 0),
+which is what a physical key does and what a blurred shadow cannot do. Down
+is 90ms, back is 260ms — a control that takes as long to depress as to
+return feels mushy.
+
+**The reverb-tail echoes are gone** — two partly-opaque copies of the hero's
+last word travelling out from behind it. That read as a tail in a geometric
+grotesque and as a word printed twice off-register in an italic serif.
+Markup, CSS and both keyframes deleted; `.decay` itself stays.
 
 **The accent is the client's blue — one hue, at three exposures.**
 The whole `--brand-*` ramp is the logo cyan `#1CABDE` (hue ~202°) darkened

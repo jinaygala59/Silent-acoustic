@@ -250,14 +250,25 @@ built.push(page({
   <div class="wrap hero-rail">
     <dl class="hero-specs hero-specs-4" data-in style="--d:800">
       ${SITE.stats.map(st => {
-        /* The one derived figure counts up; the three quoted ones do not,
-           because `data-count-to` takes an integer and "2035+" is a string
-           the client publishes with its plus sign attached. Counting to 2035
-           and then appending a + would also be a different claim from the one
-           they make. */
+        /* ALL FOUR COUNT UP NOW. The figure and its suffix are split rather
+           than the string being handed to the counter whole: `data-count-to`
+           takes an integer, and the client writes their numbers with the
+           plus attached ("2035+"). The digits animate inside the span and
+           the "+" sits outside it, unanimated — so what counts is their
+           figure and what is appended is their punctuation. A counter that
+           ran to 2035 and then printed a "+" of its own would be making a
+           different claim from the one they publish.
+
+           `v` is split, never reformatted: anything that is not a leading
+           run of digits is carried through as-is, so a future "7 (Q3)" or
+           "20+ yrs" still renders correctly and simply counts the number at
+           the front. */
+        const m = st.years ? null : String(st.v).match(/^(\d+)(.*)$/);
         const fig = st.years
           ? `<span class="tick" data-count-to="${YEARS}">${YEARS}</span>+`
-          : esc(st.v);
+          : m
+            ? `<span class="tick" data-count-to="${m[1]}">${m[1]}</span>${esc(m[2])}`
+            : esc(st.v);
         return `<div class="hero-spec"><dt>${esc(st.label)}</dt><dd>${fig}</dd></div>`;
       }).join('\n      ')}
     </dl>
