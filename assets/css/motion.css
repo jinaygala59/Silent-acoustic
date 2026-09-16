@@ -559,12 +559,26 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     .rail-sticky .card-body { flex-shrink: 0; }
     /* The surface is what gives way on a short window — the copy is the part
        that has to stay readable, so it never does. `.card-surface` ships with
-       `aspect-ratio: 4/3` and `flex: none`, both of which would refuse to
-       shrink; inside the pin it has to be allowed to. */
+       `flex: none`, which would refuse to shrink; inside the pin it has to be
+       allowed to.
+
+       THE ASPECT RATIO STAYS. An earlier version of this rule also set
+       `aspect-ratio: auto`, on the reasoning that a fixed ratio cannot
+       shrink. It can — `flex: 0 1 auto` shrinks a ratio-derived basis
+       perfectly well — and removing it broke the rail in a way that only
+       showed on half the cards:
+
+         · An `.is-cut` surface centres its sample as an in-flow flex child,
+           so it has intrinsic content height and survived at 262px.
+         · A photo surface's `<img>` is `position: absolute`, so the box has
+           no in-flow content at all. With the ratio gone it had no height
+           source left and collapsed to `min-height` — 64px — leaving a
+           sliver of photograph above a card of empty space.
+
+       Measured at 1440x900: cut-outs 262px, photographs 64px, in the same
+       row. Do not take the ratio off again. */
     .rail-sticky .fam-surface { flex: 0 1 auto; min-height: 4rem; }
-    .rail-sticky .card-surface {
-      flex: 0 1 auto; min-height: 4rem; aspect-ratio: auto;
-    }
+    .rail-sticky .card-surface { flex: 0 1 auto; min-height: 4rem; }
     .rail-track {
       animation: mRail linear both;
       animation-timeline: --rail;
