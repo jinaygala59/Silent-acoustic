@@ -782,6 +782,34 @@ section { padding-block: var(--pad-y); }
    below them differ. .split is the default pair; .stack runs the whole head
    down the left at full measure; .mid centres it and is used once, on Voices,
    where the content below is full-width quote rows. */
+/* ------------------------------ the founder -----------------------------
+   A statement block, not a section head. See the note above the HOME block in
+   src/pages.js for why this exists: the split head bottom-aligns its two
+   columns, so a short name beside three long paragraphs left a screen-high
+   void and pinned the heading to the floor of it.
+
+   The grid is two columns with the head and the opening paragraph spanning
+   both. Everything after the first paragraph flows into the pair, so the
+   shape is driven by how much the client wrote rather than by a count baked
+   in here — one paragraph fills the lead slot and the columns collapse to
+   nothing; five fills both columns evenly. */
+.founder {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 5vw, 4.5rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 56rem) {
+  .founder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .founder-head, .founder-lead { grid-column: 1 / -1; }
+}
+.founder-head { margin-bottom: clamp(0.5rem, 1.5vw, 1rem); }
+.founder-head h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
+/* Wider than `.lead`'s default measure because it spans both columns — at
+   46ch it would have sat as a short stub over a full-width rule. 74ch is
+   long for body copy and right for one opening paragraph at lead size. */
+.founder-lead { max-width: 74ch; }
+.founder > .muted { max-width: var(--measure); margin: 0; }
+
 .section-head.stack { grid-template-columns: 1fr; gap: 0; }
 .section-head.stack .lead { margin-top: 1.25rem; max-width: 52ch; }
 .section-head.mid {

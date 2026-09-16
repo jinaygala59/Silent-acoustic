@@ -247,8 +247,19 @@ list, `choreoBand()`, the `--choreo` timeline and all six `mChoreo*` keyframes
 are deleted. There is no dead code to revive. If a pinned piece is wanted in
 that slot again, write it against the current vocabulary.
 
-What sits there now is `clientWall()` — the fifty client logos the client
-already publishes on their own homepage, as a flat grid of white tiles. It is
+Two sections sit in its place. `workBand()` puts the WORK back — removing the
+choreography had quietly taken the homepage's only project photography with
+it, and a rebuilt page with none of the client's 170 rooms on it is most of
+why the site was reported as feeling "very simple". It is the ordinary `.gal`
+component from the projects page, showing **one project per room type for
+every type with more than one completed project**. That rule yields nine,
+which is exactly what the 3-column grid wants: the feature tile eats four
+cells, so `4 + (n - 1)` has to divide by three. `workBand()` returns an empty
+string rather than a ragged final row if that ever stops holding — make the
+breakage loud, do not trim to fit.
+
+Then `clientWall()` — the fifty client logos the client already publishes on
+their own homepage, as a flat grid of white tiles. It is
 deliberately **not** a marquee: a marquee of client names was on this page
 once (`.ticker`) and was removed for duplicating the gallery below it. See the
 `.client-wall` block in `site.css` for why the tiles are `--paper-hi` when
@@ -464,7 +475,7 @@ adjacent `.dark` sections, and none starts a section at pure white. Sequences
 (P=page-head, L=light, D=dark, C=cta):
 
 ```
-index     H L D L D L L D C        products  P D L D L D L C
+index     H L D L D L D L D C      products  P D L D L D L C
 projects  P D L D C                about     P D L D C
 blog      P D C                    contact   P L
 ```
@@ -706,9 +717,19 @@ because `.panel` and the roomdex rows were both tried and both removed.
 **Section shapes are deliberately varied.** The page used to be one shape
 repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
 product rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
-`.cat-grid`, `.notes`, and `.client-wall`. Reach for an existing shape before
-adding a grid of equal cards — three of the four most recent fixes were
-removing one.
+`.cat-grid`, `.notes`, `.founder` and `.client-wall`. Reach for an existing
+shape before adding a grid of equal cards — three of the four most recent
+fixes were removing one.
+
+**`.founder` exists because `.section-head.split` bottom-aligns its columns.**
+`.section-head` sets `align-items: end`, which is right for a heading beside
+one lead paragraph and wrong for a heading beside three. The client's founder
+statement made the row ~900px tall, and `end` pinned a two-word name to the
+floor of it — a screen-high empty field with the copy squeezed down the right
+edge. It was reported as "this section feels empty", and it was. `.founder`
+runs the head full width, the first paragraph under it as the lead, and the
+rest in two columns. Before putting long copy in a `.split` head, check what
+the short column does.
 
 **The `.ticker` marquee (a port of replit.com's `LogoBlock`, 24 client project
 names scrolling past "N rooms photographed") was removed by request from the

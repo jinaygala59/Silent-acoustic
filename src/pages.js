@@ -23,6 +23,75 @@ const YEARS = new Date().getFullYear() - FOUNDED;
 
 const built = [];
 
+/* ------------------------------ selected work ----------------------------
+   THE HOMEPAGE HAD NO PROJECT PHOTOGRAPHY AT ALL, and that is the single
+   biggest reason it read as thin. The pinned choreography that was removed by
+   request WAS the work section — four finished rooms and a link to the
+   gallery — and the client wall took its slot. So the logos arrived and the
+   work left with the animation, which nobody asked for. Measured on the
+   rebuilt page: nine sections, and not one of the 170 project photographs
+   appeared on any of them.
+
+   This puts the work back without putting the pin back. It is the ordinary
+   `.gal` component from the projects page — same markup, same feature tile,
+   same lightbox link — so there is no new layout to maintain and a click
+   through to the full gallery is one link away.
+
+   WHICH NINE IS A RULE, NOT A TASTE. One project per room type, for every
+   type the client has completed more than one of, ordered by how many they
+   have done. Three things fall out of that and all three are deliberate:
+   the range is visible (nine different kinds of room, not nine conference
+   rooms), the feature tile is whatever they actually do most rather than
+   whatever photographs best, and the count lands on nine — which is exactly
+   what the 3-column grid wants, because the feature tile eats four cells and
+   `4 + (n-1)` has to divide by three. Add projects and this stays correct on
+   its own; the only way to break it is to give a tenth room type a second
+   project, which moves the grid to twelve and wants three more tiles.
+
+   Multiplex & Cinema is the one type left out, on one completed project. It
+   is in the gallery, and the link below goes there. */
+const workBand = () => {
+  const counts = {};
+  PROJECTS.forEach(pr => { counts[pr.sec] = (counts[pr.sec] || 0) + 1; });
+  const picks = Object.keys(counts)
+    .filter(sec => counts[sec] > 1)
+    .sort((a, b) => counts[b] - counts[a])
+    .map(sec => PROJECTS.find(pr => pr.sec === sec))
+    .filter(Boolean);
+  /* The feature tile is a 2x2 and the grid is three wide, so the tile count
+     has to satisfy (4 + n - 1) % 3 === 0. Rather than trim to fit and show a
+     silently different set, drop the section — a ragged final row on the
+     homepage is worse than no section, and this makes the breakage loud. */
+  if ((picks.length + 3) % 3 !== 0) return '';
+  return `
+<section class="dark railed" aria-labelledby="work-h">
+  <div class="wrap">
+    <span class="rail-label">Work</span>
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-anim="fade">Selected work</p>
+        <h2 id="work-h" data-anim="reveal">${picks.length} room types.</h2>
+      </div>
+      <p class="lead" data-anim="fade"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
+    </div>
+    <div class="gal" data-stagger>
+      ${picks.map(pr => `<article class="gal-item" data-anim="tile">
+        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
+          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
+            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+          </div>
+        </a>
+        <div class="gal-cap">
+          <h3>${esc(pr.n)}</h3>
+          <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
+        </div>
+      </article>`).join('\n      ')}
+    </div>
+  </div>
+</section>`;
+};
+
+
 /* ----------------------------- the client wall ---------------------------
    THE PINNED SCROLL CHOREOGRAPHY THAT USED TO SIT HERE IS GONE, by request.
    It was a 300vh section with a sticky 100vh child in which four project
@@ -70,6 +139,22 @@ const clientWall = () => `
 
 
 /* =============================== HOME ==================================== */
+/* THE FOUNDER BLOCK IS NOT A `.section-head.split`, AND THAT IS THE FIX FOR A
+   REAL BUG. It was one: heading left, copy right. That shape is drawn for a
+   heading and ONE lead paragraph, and `.section-head` sets `align-items: end`
+   so the two columns meet at the bottom of the row. Drop three long
+   paragraphs into the right column and the row becomes ~900px tall, the
+   left column holds an eyebrow and a two-word name — and `end` pins that pair
+   to the very bottom. The result was a screen-high empty field with the
+   client's founder statement crammed into a narrow gutter down the right
+   edge. It looked broken because it was.
+
+   `.founder` is a shape of its own: the head runs full width at the top, the
+   client's first paragraph runs under it as the lead, and the remaining two
+   sit side by side. The band fills, the measure stays readable, and nothing
+   is bottom-aligned. It adapts to the copy — one paragraph or five, it still
+   works — which the split head could not. */
+
 /* THE HERO HEADLINE ROTATES WITH THE PHOTOGRAPH, which is how the client's
    own site runs its hero, and porting their three banners without their
    captions would have stranded three sector labels on the cutting-room floor.
@@ -158,19 +243,12 @@ built.push(page({
 <section class="light railed dip-sec">
   <div class="wrap">
     <span class="rail-label">The distinction</span>
-    <div class="section-head split">
-      <div>
+    <div class="founder">
+      <div class="founder-head">
         <p class="eyebrow" data-anim="fade">Founder &middot; since ${FOUNDED}</p>
-        <!-- The heading is the name and nothing else, deliberately. The
-             client's first sentence opens "Ravi Sebastian, Founder of Silence
-             Acoustic, brings more than 20 years…", so a heading that restated
-             the role read the phrase twice in two lines. Their copy is not
-             edited to fix that; the heading gets out of its way instead. -->
         <h2 data-anim="reveal">${esc(FOUNDER.name)}</h2>
       </div>
-      <div class="stack stack-m founder-copy">
-        ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n        ')}
-      </div>
+      ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead founder-lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n      ')}
     </div>
   </div>
   <div class="diptych">
@@ -249,6 +327,8 @@ ${famRail()}
     </div>
   </div>
 </section>
+
+${workBand()}
 
 ${clientWall()}
 
