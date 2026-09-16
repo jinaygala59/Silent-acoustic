@@ -185,6 +185,21 @@
       "source": "/acoustic-wood",
       "destination": "/projects",
       "permanent": true
+    },
+    {
+      "source": "/sports-hall-acoustic-panels-gym-acoustics-noise-control",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/radio-station-tv-channels-acoustic-treatment",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/recording-studio-acoustic-treatment-panels",
+      "destination": "/projects",
+      "permanent": true
     }
   ],
   "headers": [

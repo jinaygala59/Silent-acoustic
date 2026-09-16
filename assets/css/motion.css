@@ -313,6 +313,21 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   .hero-slide:nth-child(2) { animation-delay: -18s; }
   .hero-slide:nth-child(3) { animation-delay: -9s; }
 
+  /* The client's headline for each banner, on the SAME keyframes and the SAME
+     negative delays as the photograph it belongs to. That is not a stylistic
+     echo — it is the synchronisation. Change the duration or a delay here and
+     you have to change it on `.hero-slide` in the same edit, or a headline
+     will outlive its picture and describe the wrong room for nine seconds.
+
+     Note `.hero-say:nth-child(1)` is stated rather than left to the base
+     rule: the first block ships with `.is-on`, which makes it opaque, so
+     without an explicit animation it would stay opaque under the other two
+     as they faded in. The three are peers here; `.is-on` only decides the
+     pre-animation and no-JS state. */
+  .hero-say { animation: mHeroFade 27s linear infinite; }
+  .hero-say:nth-child(2) { animation-delay: -18s; }
+  .hero-say:nth-child(3) { animation-delay: -9s; }
+
   /* Load-time entrance, NOT a scroll reveal. Both the hero and the page-head
      are above the fold, so there is no scroll for a view() timeline to run
      against — and .page-head is overflow: hidden, where view() never advances
@@ -420,6 +435,27 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   width: max-content; max-width: none;
 }
 
+/* THE RAIL CARRIES PRODUCT CARDS NOW, and they are the same `.card` the
+   products page uses — not a copy of it. Only what a flex track needs is
+   restated: don't grow, don't shrink, take a fixed width, snap. Everything
+   else — the drawn material surface, the NRC bar, the material marker, the
+   hover lift, the dark-ground fill — is inherited from the card rules in
+   site.css and stays in step with them.
+
+   This rule lives in motion.css rather than site.css for the same reason
+   `.fam` does: the rail is a structural section that only exists because of
+   the pin, and it is kept next to the pin that drives it.
+
+   The width is a notch under `.fam`'s. A family card carried a two-line note
+   held open whether the family needed it or not; a product card carries a
+   name and a one-line tag, so it reads cramped at 23rem and settled at 21rem
+   — and eleven cards at 21rem is the difference between a rail that pins in
+   2100px and one that hits the 2600px ceiling. */
+.rail-track .card {
+  scroll-snap-align: start;
+  flex: none; width: clamp(15rem, 58vw, 21rem);
+}
+
 .fam {
   scroll-snap-align: start;
   flex: none; width: clamp(16rem, 60vw, 23rem);
@@ -494,12 +530,27 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 
 @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    /* The pin is a fixed 1200px of scroll rather than a multiple of the
-       viewport height, because the distance the track has to travel is set by
-       viewport *width*, not height. A `vh` figure that felt 1:1 on a laptop
-       turned into a long slow drag on a tall display. */
+    /* The pin is measured in px rather than as a multiple of the viewport
+       height, because the distance the track has to travel is set by viewport
+       *width*, not height. A `vh` figure that felt 1:1 on a laptop turned into
+       a long slow drag on a tall display.
+
+       IT IS PER-CARD NOW instead of a flat 1200px. `mRail` already scales its
+       travel to the track (`100vw - 100%`), but the scroll it was driven over
+       did not scale with it, so changing how many cards are on the rail
+       silently changed how fast it moved. The rail carried six items and
+       1200px, which is the 200px per item this reproduces; `--rail-n` is set
+       on the section in src/build.js from the actual card count, and the
+       fallback keeps a hand-written rail working.
+
+       Bounds, so a data change cannot produce an absurd section: never
+       shorter than 900px (below that the travel outruns the scroll and the
+       cards blur past), never longer than 2600px (past that a homepage
+       section has stopped being a rail and become a detour). All nineteen
+       products would want ~4800px and hit the ceiling — which is the reason
+       the rail shows ten, not because the clamp would break. */
     .rail-sec {
-      height: calc(100vh + 1200px);
+      height: calc(100vh + clamp(900px, var(--rail-n, 6) * 200px, 2600px));
       view-timeline-name: --rail, --box;
       view-timeline-axis: block;
     }
@@ -521,9 +572,18 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
        must give way. On a short window the surface is what shrinks — the copy
        is the part that has to stay readable, so it never does. */
     .rail-track { height: 100%; }
-    .rail-sticky .fam { height: 100%; }
-    .rail-sticky .fam-body { flex-shrink: 0; }
+    .rail-sticky .fam,
+    .rail-sticky .card { height: 100%; }
+    .rail-sticky .fam-body,
+    .rail-sticky .card-body { flex-shrink: 0; }
+    /* The surface is what gives way on a short window — the copy is the part
+       that has to stay readable, so it never does. `.card-surface` ships with
+       `aspect-ratio: 4/3` and `flex: none`, both of which would refuse to
+       shrink; inside the pin it has to be allowed to. */
     .rail-sticky .fam-surface { flex: 0 1 auto; min-height: 4rem; }
+    .rail-sticky .card-surface {
+      flex: 0 1 auto; min-height: 4rem; aspect-ratio: auto;
+    }
     .rail-track {
       animation: mRail linear both;
       animation-timeline: --rail;
@@ -535,205 +595,25 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 }
 
 /* ====================== the scroll choreography =========================
-   Four finished rooms that trade places, stack, and resolve into one at full
-   bleed — the piece that introduces the Work gallery.
+   REMOVED. A 300vh section with a sticky 100vh child, in which four project
+   photographs traded places, stacked at the centre and the last opened to
+   full bleed — a port of a framer-motion component to this engine, driven by
+   a named `--choreo` timeline because `.choreo-pin` was `overflow: hidden`.
 
-   Read this block the way you read the family rail: what follows immediately
-   below is the DEFAULT, and it is a plain captioned 2x2 grid in a normal
-   light section. Narrow viewports, reduced motion and Firefox all stop there
-   and get something readable. The pin is layered on top further down and is
-   the only part that can fail. */
+   It was deleted by request, not disabled, and everything it owned went with
+   it: `.choreo` / `.choreo-pin` / `.choreo-copy` / `.choreo-stage` /
+   `.choreo-plate` / `.choreo-surface` / `.choreo-foot` / the `.at-*`
+   positions, the `--choreo` timeline, and the `mChoreoTL` / `mChoreoBR` /
+   `mChoreoBL` / `mChoreoHero` / `mChoreoCopy` / `mChoreoCap` keyframes. The
+   `choreoBand()` builder and the `CHOREO` slug list are gone from
+   src/pages.js in the same pass. There is no dead code left to revive; if a
+   pinned piece is wanted here again, write it fresh.
 
-/* `section` carries the global vertical rhythm; the pin needs it off, because
-   .choreo-pin is the box that has to fit the viewport exactly. Same trade the
-   family rail makes, and for the same reason. */
-.choreo { padding-block: 0; }
-.choreo-pin { padding-block: var(--pad-y); }
+   The family rail above is now the only pinned section on the site, which
+   means the note in CLAUDE.md about "a second pin" and about `.rail-sec`
+   being the control to check when a pin looks broken no longer has a second
+   subject. `.rail-sec` is the only one. */
 
-.choreo-copy { margin-bottom: clamp(2rem, 4vw, 3rem); }
-.choreo-copy h2 { font-size: var(--t-h2); margin-top: 0.85rem; }
-/* This had no rule at all. .choreo-copy carries .wrap and .choreo-stage sets
-   its own padding-inline, so the foot was the one child of the pin with no
-   gutter: it sat hard against x=0, and on the desktop path — where
-   .choreo-copy goes position: absolute and leaves the flow — it rose to the
-   top of the pin and printed straight through the eyebrow. */
-.choreo-foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding-inline: var(--gut); }
-
-.choreo-stage {
-  display: grid; gap: clamp(1rem, 2vw, 1.5rem);
-  padding-inline: var(--gut);
-}
-@media (min-width: 40rem) { .choreo-stage { grid-template-columns: 1fr 1fr; } }
-
-.choreo-plate { margin: 0; display: flex; flex-direction: column; gap: 0.8rem; }
-.choreo-surface {
-  aspect-ratio: 3 / 2; border-radius: var(--r); overflow: hidden;
-}
-/* This section is `.dark`, so the figcaption would inherit --on-dark and be
-   fine. Both colours are named anyway: in the pinned variant below the hero
-   caption becomes a chip on its own fill, and a caption whose colour is
-   inherited from two different grounds is exactly the failure the family rail
-   and the gallery cards already hit once. */
-.choreo-plate figcaption {
-  display: flex; flex-direction: column; gap: 0.25rem;
-  font-family: var(--mono); font-size: var(--t-mono); line-height: 1.45;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--on-dark-mute);
-}
-.choreo-plate figcaption b {
-  font-weight: inherit; letter-spacing: 0.1em; color: var(--on-dark);
-}
-
-/* ---- the pin. Everything above still stands if this block never applies. --
-   Gated at 48rem for the same reason as the family rail: below it the stage
-   would be four postage stamps, and the 36vw plate is meaningless on a phone.
-
-   The plates take the NAMED `--choreo` timeline, never `view()`. They sit
-   inside .choreo-pin, which is `overflow: hidden` and therefore a scroll
-   container — a `view()` timeline declared in here never advances and every
-   plate would sit frozen at its start state, invisible. Same reason the hero
-   wall borrows `--hero`. */
-@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    /* 300vh total: 100vh of viewport plus 200vh of travel, which is exactly
-       the `contain` range the plates animate over. Unlike the family rail
-       this one IS a multiple of viewport height — the distance everything
-       moves is set in vh and vw, so it scales with the window rather than
-       fighting it. */
-    .choreo {
-      height: 300vh;
-      view-timeline-name: --choreo;
-      view-timeline-axis: block;
-    }
-    .choreo-pin {
-      position: sticky; top: 0;
-      height: 100vh; overflow: hidden;
-      /* clears the site header, which can return over the pin at any moment
-         if the reader scrolls up inside it */
-      padding: 6rem 0 0;
-    }
-
-    .choreo-stage {
-      position: absolute; inset: 0;
-      display: block; padding: 0;
-    }
-    .choreo-plate {
-      position: absolute; left: 50%; top: 50%;
-      width: 36vw; height: 24vh;
-      /* the -50%/-50% centring lives in the margins, not in a transform,
-         because `transform` is what the keyframes drive */
-      margin-left: -18vw; margin-top: -12vh;
-      display: block;
-      border-radius: var(--r); overflow: hidden;
-      box-shadow: 0 18px 40px -22px rgba(16, 23, 27, 0.34);
-      animation: linear both;
-      animation-timeline: --choreo;
-      animation-range: contain 0% contain 100%;
-      will-change: transform, opacity;
-    }
-    .choreo-plate .choreo-surface {
-      aspect-ratio: auto; height: 100%; border-radius: 0;
-    }
-    .choreo-plate .choreo-surface img { height: 100%; width: 100%; object-fit: cover; }
-
-    .choreo-copy {
-      position: absolute; left: 0; right: 0; top: 6rem;
-      z-index: 50; margin: 0;
-      animation: mChoreoCopy linear both;
-      animation-timeline: --choreo;
-      animation-range: contain 0% contain 100%;
-    }
-    /* pinned to the opposite corner from the hero plate's caption chip, which
-       sits bottom-left, so the two never meet */
-    .choreo-foot {
-      position: absolute; right: 0; bottom: 0; z-index: 60; margin: 0;
-      padding: 1rem clamp(1.5rem, 5vw, 5rem) 1.5rem;
-    }
-
-    .at-tl { z-index: 10; animation-name: mChoreoTL; }
-    .at-br { z-index: 20; animation-name: mChoreoBR; }
-    .at-bl { z-index: 30; animation-name: mChoreoBL; }
-    .at-tr { z-index: 40; animation-name: mChoreoHero; }
-
-    /* The three plates under the hero are read out by their alt text; their
-       captions would be text over a photograph, which has no measurable
-       contrast on this site. Hidden the way .vh hides things — off screen,
-       still announced — rather than with display: none. */
-    .at-tl figcaption, .at-br figcaption, .at-bl figcaption {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-    }
-    /* The hero's caption is the one that stays, and it is a solid chip on
-       --ink rather than text laid over the photograph, so the pair it
-       actually measures against is the same --on-dark/--ink the rest of the
-       section uses. */
-    .at-tr figcaption {
-      position: absolute; z-index: 5; left: 0; bottom: 0;
-      gap: 0.3rem;
-      padding: 1rem clamp(1.5rem, 5vw, 5rem) 1.25rem;
-      background: var(--paper-hi);
-      border-top: 1px solid var(--paper-edge);
-      border-right: 1px solid var(--paper-edge);
-      animation: mChoreoCap linear both;
-      animation-timeline: --choreo;
-      animation-range: contain 0% contain 100%;
-    }
-  }
-}
-
-/* Phase 1 (0-30%): the two diagonal plates trade ends of their own column.
-   Phase 2 (35-65%): all four close on the centre and stack.
-   Phase 3 (70-90%): the top plate opens to full bleed and the rest fade. */
-@keyframes mChoreoTL {
-  0%        { transform: translate3d(-20vw, -14vh, 0); opacity: 1; }
-  30%, 35%  { transform: translate3d(-20vw,  14vh, 0); opacity: 1; }
-  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
-  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
-}
-@keyframes mChoreoBR {
-  0%        { transform: translate3d( 20vw,  14vh, 0); opacity: 1; }
-  30%, 35%  { transform: translate3d( 20vw, -14vh, 0); opacity: 1; }
-  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
-  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
-}
-@keyframes mChoreoBL {
-  0%, 35%   { transform: translate3d(-20vw,  14vh, 0); opacity: 1; }
-  65%, 75%  { transform: translate3d(0, 0, 0); opacity: 1; }
-  85%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
-}
-/* The hero animates its own box rather than scaling, so the photograph is
-   never distorted. width/height are layout properties, but this element is
-   absolutely positioned — the layout it dirties is its own, and there is
-   exactly one of it. The margins carry the centring, so they have to track
-   the size: margin is always minus half. */
-@keyframes mChoreoHero {
-  0%, 35% {
-    transform: translate3d(20vw, -14vh, 0);
-    width: 36vw; height: 24vh; margin-left: -18vw; margin-top: -12vh;
-    border-radius: var(--r);
-  }
-  65%, 70% {
-    transform: translate3d(0, 0, 0);
-    width: 36vw; height: 24vh; margin-left: -18vw; margin-top: -12vh;
-    border-radius: var(--r);
-  }
-  90%, 100% {
-    transform: translate3d(0, 0, 0);
-    width: 100vw; height: 100vh; margin-left: -50vw; margin-top: -50vh;
-    border-radius: 0;
-  }
-}
-/* The heading leaves once the plates start closing on it — it would otherwise
-   sit on top of the stack, and then on top of the full-bleed photograph. */
-@keyframes mChoreoCopy {
-  0%, 30%   { opacity: 1; transform: translate3d(0, 0, 0); }
-  55%, 100% { opacity: 0; transform: translate3d(0, -2rem, 0); }
-}
-/* and the hero names itself only once it is the whole screen */
-@keyframes mChoreoCap {
-  0%, 88%   { opacity: 0; }
-  100%      { opacity: 1; }
-}
 
 /* ========================= the process spine ===========================
    Seven steps that gate each other, so the rule between them is drawn as you
@@ -863,6 +743,42 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
       view-timeline-name: --box;
       view-timeline-axis: block;
     }
+
+    /* A CARD ON THE FAMILY RAIL MUST NOT PUBLISH ITS OWN `--box`, and this is
+       the one exception to the rule above. `--box` is looked up by nearest
+       ancestor, so a `.card` publishing it means every consumer inside that
+       card — the NRC bar, the card's own reveal — measures against the
+       CARD's pass through its scrollport. Everywhere else on the site that is
+       exactly right. Inside `.rail-viewport` it is broken: that element is
+       `overflow-x: auto / overflow-y: hidden`, so it is a scroll container on
+       the block axis as well, and a block-axis ViewTimeline measured against
+       a port that never scrolls vertically FREEZES at whatever value it
+       resolved to and never moves again.
+
+       Measured at 375x700 before this rule existed: every bar on the rail sat
+       at `scaleX(0.967)` with its timeline pinned at 50.8131%, at the top of
+       the page, in the middle of the rail, and 9,728px past it at the bottom
+       of the document. The card reveals were frozen at the same 50.8131%, and
+       only rendered because that number happens to fall past the end of
+       `mRise`'s range. A different viewport resolves a different constant,
+       and a low one would have held the cards at `opacity: 0`.
+
+       THE NRC BAR IS WHY THIS IS URGENT RATHER THAN COSMETIC. It is the one
+       fail-unsafe animation on the site (see the note beside `mLine`): a fill
+       that does not reach `scaleX(1)` UNDERSTATES a real published absorption
+       figure, so 0.967 was drawing 0.85 NRC as roughly 0.82. That is a
+       content error, not a visual one.
+
+       `none` here makes the lookup walk past the card to `.rail-sec`, which
+       publishes `--box` — from the `section` rule above at every width, and
+       from `view-timeline-name: --rail, --box` inside the pin. `.rail-sec` is
+       not inside the horizontal scroller, so its timeline resolves against
+       the document and advances normally. The consumers then read the
+       SECTION's pass through the viewport, which is what `.fam` always did.
+
+       Verify after touching this: scroll past the rail and check that every
+       `.rail-track .nrc-track > i` reads `matrix(1, 0, 0, 1, 0, 0)`. */
+    .rail-track .card { view-timeline-name: none; }
   }
 }
 
@@ -952,9 +868,11 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
    holds. A dead timeline here costs a little depth; it can never uncover an
    edge or strand an image.
 
-   `.fam-surface` and `.choreo-surface` are excluded on purpose: the first
-   lives in a horizontally-scrolling rail where vertical drift means nothing,
-   and the second already animates its own size on the `--choreo` timeline. */
+   `.fam-surface` is excluded on purpose: it lives in a horizontally-scrolling
+   rail where vertical drift means nothing. `.rail-track .card-surface` has to
+   be excluded for the same reason, and cannot be by leaving it out of the
+   list — `.card-surface > img` matches it — so it is switched off explicitly
+   in the rule that follows the parallax block. */
 @keyframes mPara {
   from { transform: translate3d(0, calc(var(--para-y) * -1), 0) scale(var(--para-s)); }
   to   { transform: translate3d(0, var(--para-y), 0) scale(var(--para-s)); }
@@ -1004,6 +922,13 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
     .gal-item:hover > .gal-surface > img { transform: none; }
     .gal-surface { transition: transform 240ms var(--ease); }
     .gal-item:hover > .gal-surface { transform: scale(1.035); }
+
+    /* The product cards on the family rail take no parallax, for the reason
+       `.fam-surface` takes none: the rail travels sideways, so a vertical
+       drift keyed to the section's pass through the viewport is motion with
+       nothing to read it against. It cannot simply be left out of the list
+       above — `.card-surface > img` matches these — so it is switched off. */
+    .rail-track .card-surface > img { animation: none; transform: none; }
   }
 }
 
@@ -1286,30 +1211,35 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
   .tlink:hover::after { opacity: 0; }
 }
 
-/* ------------------ the two set-pieces, on a phone -----------------------
-   `.fam` and `.choreo-plate` had no reveal at all, and the reason was
-   invisible from the markup: on a wide screen ALL of their motion comes from
-   their pins, so nobody noticed that below the pin breakpoint both sections
-   were completely static. A phone got a horizontal rail of six panels and a
-   2x2 grid of four photographs, neither of which moved.
+/* -------------------- the set-piece, on a phone --------------------------
+   `.fam` had no reveal at all, and the reason was invisible from the markup:
+   on a wide screen ALL of its motion comes from the pin, so nobody noticed
+   that below the pin breakpoint the section was completely static. A phone
+   got a horizontal rail of six panels, none of which moved.
 
-   `.fam` needs `--box` rather than the `view()` that `[data-anim]` sets up.
-   `.rail-viewport` is `overflow-x: auto` at every width — it is the snap rail
-   on a phone and the pinned track on a desktop — so it is a scroll container
-   either way, and a `view()` timeline inside one never advances. The panels
-   would hold their start state and read as SIX MISSING CARDS. The attribute
-   selector raises specificity above the base `[data-anim]` rule; the pin is
-   untouched by this because the pin animates `.rail-track`, the parent.
+   Anything inside the rail needs `--box` rather than the `view()` that
+   `[data-anim]` sets up. `.rail-viewport` is `overflow-x: auto` at every
+   width — it is the snap rail on a phone and the pinned track on a desktop —
+   so it is a scroll container either way, and a `view()` timeline inside one
+   never advances. The cards would hold their start state and read as MISSING
+   CARDS, which is `[data-anim="rise"]` at opacity 0. The attribute selector
+   raises specificity above the base `[data-anim]` rule; the pin is untouched
+   by this because the pin animates `.rail-track`, the parent.
 
-   `.choreo-plate` needs no such override. It takes plain `[data-anim]`, and
-   above 48rem every property that rule sets — name, timeline and range — is
-   restated by the `.choreo-plate` / `.at-*` rules inside the pin block, which
-   are later in this file at equal specificity. Do not add a
-   `.choreo-plate[data-anim]` rule: at 0,2,0 it would outrank `.choreo-plate`
-   and steal the `--choreo` timeline off the pin. */
+   `.rail-track .card[data-anim]` IS THE SAME BUG, ONE COMPONENT LATER. The
+   rail carried five `.fam` panels when this rule was written and carries ten
+   `.card`s now, and `.card` is the shared product card — it takes plain
+   `[data-anim="rise"]` everywhere else on the site, where `view()` resolves
+   fine because nothing above it is a scroll container. Inside the rail it is
+   not fine. Scoping to `.rail-track` is deliberate: this must not reach the
+   cards on the products page, which are in an ordinary grid and want
+   `view()`. The second entry that `.rail-sec` publishes on
+   `view-timeline-name: --rail, --box` is what these resolve against — drop
+   it and every card in the rail goes invisible. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .fam[data-anim] {
+    .fam[data-anim],
+    .rail-track .card[data-anim] {
       animation-timeline: --box;
       animation-range: entry 12% cover 42%;
     }

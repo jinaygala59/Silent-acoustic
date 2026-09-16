@@ -1071,17 +1071,28 @@ section { padding-block: var(--pad-y); }
 }
 .site-head .wrap {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 1.5rem; min-height: 5.25rem;
+  gap: 1.5rem; min-height: 5.75rem;
 }
 .brand {
   display: inline-flex; align-items: center; gap: 0.7rem;
   text-decoration: none; flex: none;
 }
 /* The logo is the client's own asset — never restyled, only scaled. Height is
-   fixed and width follows, so the lockup can never distort. */
-.brand-logo { height: 2rem; width: auto; flex: none; }
+   fixed and width follows, so the lockup can never distort.
+
+   The header carries the FULL lockup now, tagline and all, which is what the
+   live site does. That sets the floor on this height: at 2rem the tagline
+   ("Innovating Sound In A Better Way", roughly 1/7 of the artwork's height)
+   rendered at under 5px and read as a grey smear. 2.75rem puts it near 6.5px
+   — still small, but drawn rather than mushed, and it is the same call the
+   client's own header makes. `.site-head .wrap` min-height went 5.25rem to
+   5.75rem to keep the bar's breathing room around it. Below 30rem it scales
+   to 2.1rem so the lockup can share the bar with the menu button; the tagline
+   is decorative at that size, which is acceptable because the company name
+   above it is still perfectly legible and the <img> alt carries both. */
+.brand-logo { height: 2.75rem; width: auto; flex: none; }
 .brand-logo-full { height: 3.25rem; width: auto; flex: none; }
-@media (max-width: 30rem) { .brand-logo { height: 1.6rem; } }
+@media (max-width: 30rem) { .brand-logo { height: 2.1rem; } }
 .brand:hover .brand-logo, .brand:hover .brand-logo-full { opacity: 0.85; }
 .brand-logo, .brand-logo-full { transition: opacity 200ms var(--ease); }
 
@@ -1322,6 +1333,26 @@ section { padding-block: var(--pad-y); }
   transition: opacity 420ms var(--ease);
 }
 .hero-media.is-manual .hero-slide.is-on { opacity: 1; }
+
+/* THE HEADLINE FOLLOWS THE PHOTOGRAPH, and it follows it by the same two
+   mechanisms in the same order: hidden by default here, cross-faded by
+   motion.css, overridden by .is-manual when the reader takes an arrow.
+
+   `.hero-say` is the copy block's exact counterpart to `.hero-slide`, with
+   one difference that matters. The default hidden state is keyed to
+   `:not(.is-on)` rather than to `+ .hero-say`, because the copy blocks are
+   grid-stacked in one cell and JS moves `.is-on` between them — sibling
+   order stops describing which one is showing the moment an arrow is
+   pressed. The markup ships `.is-on` on the first block, so with no CSS
+   animation and no JS at all the hero is one headline over one photograph,
+   which is the same fail-safe the slides have. */
+.hero-say:not(.is-on) { opacity: 0; }
+.is-manual .hero-say {
+  animation: none;
+  opacity: 0;
+  transition: opacity 420ms var(--ease);
+}
+.is-manual .hero-say.is-on { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .hero-media.is-manual .hero-slide { transition-duration: 1ms; }
 }
@@ -1477,13 +1508,31 @@ section { padding-block: var(--pad-y); }
    The alphas are tuned, not maximal. The first pass ran 0.74 -> 0.64 and put
    the lead at 8.67:1 — nearly double the floor, and it flattened the
    photograph to the point where the banner stopped reading as a room. These
-   values clear AA with margin while leaving the picture legible. Measured at
-   375x682, darkest pixel under the words:
+   values clear AA with margin while leaving the picture legible.
+
+   THE THREE BANNERS ARE THE CLIENT'S OWN, ported from their live site, and
+   they were measured before they went in — darkest composited pixel under
+   each word, both gradients replicated on a canvas over the real image, at
+   both widths. Nothing in the scrim changed to accommodate them:
+
+                          ----- 1440x900 -----   ----- 375x682 -----
+                          eye    h1   lead  dec   eye    h1   lead  dec
+     recording-studio    10.01 10.42  5.87 6.87  6.92  7.30  7.41 6.73
+     office-conference    5.85  5.36  5.78 3.13  8.02  5.96  6.08 3.77
+     auditorium           6.31  4.97  5.46 3.55  7.14  7.33  5.79 4.53
+
+   Worst text pair 4.97:1 (auditorium h1, desktop), worst mute 3.13:1
+   (office-conference .decay, desktop). The mute column is --mark-banner on
+   .decay and is LARGE TEXT ONLY — 3:1 is its floor, not 4.5, and 3.13 clears
+   it by very little. That is the tightest number on the site now. A darker
+   banner, or shrinking .hero-title further, takes it under.
+
+   The previous set measured, for reference, at 375x682 only:
        adani-bkc-mumbai    eye 13.70  h1 9.08  lead 5.82  decay 5.60
        atlas-pune          eye  8.62  h1 6.80  lead 6.29  decay 8.31
        meraki-arean        eye  6.86  h1 6.84  lead 7.00  decay 4.15
-   Worst text pair 5.82:1, worst mute 4.15:1. Re-measure per word, not per
-   element box, against the darkest pixel — see the note in motion.css. */
+   Re-measure per word, not per element box, against the darkest pixel — see
+   the note in motion.css. */
 @media (max-width: 63.999rem) {
   .hero-media::after {
     background:
@@ -1518,12 +1567,43 @@ section { padding-block: var(--pad-y); }
   .hero-top > .wrap { padding-right: calc(42% + var(--gut)); }
 }
 
-h1.hero-title {
-  font-size: var(--t-hero);
+/* THE THREE HEADLINES ARE STACKED IN ONE GRID CELL, not absolutely
+   positioned. That is the whole reason the lead and the buttons under them
+   hold still while the banner turns: a grid track sized by its tallest child
+   reserves the height of the longest headline once, at layout time, and the
+   other two fade inside a box that was already that tall. Position: absolute
+   would collapse the container to zero and drag the rest of the hero up.
+
+   Only one of the three is visible at a time, so `align-items: start` keeps
+   them all hanging from the same top edge rather than centring the short one
+   against the tall one's box. */
+.hero-copy { display: grid; align-items: start; }
+.hero-say { grid-area: 1 / 1; }
+
+/* THE CLIENT'S HEADLINES ARE SENTENCES, NOT TWO-WORD SLOGANS, and that is why
+   the banner type is smaller than --t-hero. "Sound, put in its place." was 24
+   characters and sat at 7rem across 14ch on two lines. The longest of the
+   three replacing it — "Where Superior Acoustics Meet Elegant Design" — is
+   44, and at those settings it ran to four lines and pushed the lead and both
+   buttons off a 900px screen.
+
+   Only two things can absorb that, and only one of them is safe. Widening the
+   column is not: `.hero-top > .wrap` is held to `padding-right: 42% + gut`
+   because that is where the 102deg scrim still has alpha to spare, and type
+   past it sits on the bare photograph. So the type comes down instead —
+   4.25rem at the top end against 7rem, which holds all three headlines to two
+   lines at 1440 and three at 64rem, inside the measured column.
+
+   If a future headline is longer than 44 characters this will break again,
+   and the fix is the copy or another step down here — not a wider column. */
+.hero-title {
+  font-family: var(--display); font-weight: var(--w-display);
+  font-variation-settings: 'wdth' var(--wd-hero), 'opsz' 96;
+  font-size: clamp(2.25rem, 1.15rem + 4.15vw, 4.25rem);
   letter-spacing: -0.03em;
-  line-height: 0.9;
-  margin-block: 2rem 2.75rem;
-  max-width: 14ch;
+  line-height: 0.94;
+  margin-block: 1.75rem 2.5rem;
+  max-width: 24ch;
 }
 
 /* Stacked, deliberately. Lead and buttons side by side was the first attempt
@@ -1568,6 +1648,9 @@ h1.hero-title {
    tracks. The first is wider because it carries the longest caption. */
 @media (min-width: 64rem) {
   .hero-specs { grid-template-columns: 1.35fr 1fr 1fr; }
+  /* Four of the client's own counters, so four tracks. The first is no longer
+     the widest — every caption in this set is short — so they are even. */
+  .hero-specs-4 { grid-template-columns: repeat(4, 1fr); }
 }
 .hero-spec { padding: 2.25rem 1.5rem 0 0; position: relative; }
 @media (min-width: 48rem) {
@@ -2492,6 +2575,67 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
    scroll-snaps horizontally under 60rem, which is where a row of three stops
    fitting; raise the item count and the same markup can become a real
    carousel. */
+/* ========================= the client wall ==============================
+   Fifty client logos, on tiles. This replaced the pinned scroll
+   choreography; see the note beside `clientWall()` in src/pages.js for why it
+   is a grid and not a marquee.
+
+   THE TILE IS WHITE AND THE GROUND IS NOT, and that is the whole design.
+   Every logo is somebody else's artwork drawn for a white background — half
+   of them are flat JPEGs with the white baked in, so they cannot be knocked
+   out or tinted without wrecking them. Trying to sit them directly on the
+   ombre would have given fifty pale rectangles of slightly the wrong white on
+   a slate ground. Giving them a real white tile makes the mismatch the
+   design: a wall of mounted plates.
+
+   `--paper-hi`, not the `--paper-sub` the bento tiles take. That is the one
+   place on this site where pure white is right, because it is the ground the
+   artwork was drawn on, not a card colour chosen for tone.
+
+   `object-fit: contain` and a fixed aspect ratio, so a wide wordmark and a
+   square crest occupy the same plate and the wall reads as a grid rather
+   than as fifty differently-sized pictures. The source files are all
+   402x162, but that is the client's own normalisation and this must not
+   depend on it — a logo added at another size still lands correctly. */
+.client-wall {
+  list-style: none; margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding: 0;
+  display: grid; gap: clamp(0.5rem, 1.2vw, 0.875rem);
+  /* auto-fit, so fifty is not a magic number anywhere. At 1280 this settles
+     on six columns; the floor is what stops a logo being shrunk past
+     readability on a phone, where it gives two. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+}
+.client {
+  background: var(--paper-hi);
+  border: 1px solid var(--paper-edge);
+  border-radius: calc(var(--r) * 0.5);
+  aspect-ratio: 5 / 2;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0.75rem 0.9rem;
+  /* No shadow. Fifty lifted plates is a quilt; these are flat objects on a
+     ground, which is the rule the cards, panels and filter pills follow. */
+}
+.client img {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain; display: block;
+  /* THE LOGOS ARE THE ONLY COLOUR ON THIS SITE THAT IS NOT OURS, and fifty
+     brand palettes at once would shout down a page whose whole scheme is one
+     hue at three exposures. They are desaturated at rest and come back on
+     hover, which also gives the wall something to do without moving.
+
+     Not greyscale(1): several of these are single-colour marks that vanish
+     into a mid-grey smudge when fully desaturated, and a dozen are fine
+     line-drawn crests that were already close to invisible at this size.
+     0.62 keeps enough hue to tell Radio Mirchi's red from Federal Bank's
+     blue while letting the wall read as one texture; 0.82 was tried first
+     and flattened the whole grid to pencil. */
+  filter: grayscale(0.62);
+  opacity: 0.92;
+  transition: filter 260ms var(--ease), opacity 260ms var(--ease);
+}
+.client:hover img, .client:focus-within img { filter: grayscale(0); opacity: 1; }
+
 .reviews {
   display: grid; gap: clamp(1rem, 2vw, 1.5rem);
   /* THREE COLUMNS, EXPLICITLY, BECAUSE THERE ARE EXACTLY THREE TESTIMONIALS.

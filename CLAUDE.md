@@ -35,6 +35,21 @@ the repo root or in `products/` — `node build.js` overwrites them.**
 Adding a product or project is a `src/content.js` edit plus `node build.js` —
 cards, detail pages, filters, counts and the sitemap all follow automatically.
 
+**The homepage rail shows PRODUCTS, not the five families.** Both the "five
+families" framing and the "manufactured in our own facility in Mumbai" claim
+were removed by client request, in the same brief that cut the *In-house* and
+*Verified* tiles from the About page. Do not reinstate either anywhere — they
+were also cleared from the products page head, the About meta description and
+the `Manufacture` process step, none of which the brief marked but all of
+which carried the same claim. The products page still groups by family: that
+is its navigation, and it was explicitly left alone.
+
+Which ten products appear on the rail is **derived, not chosen** — each
+family's own `img` field already names its most recognisable member, so
+`railPicks()` takes that one and the next in the family, two per family. It is
+ten and not nineteen because the pin scales at 200px of scroll per card
+(`--rail-n`, clamped 900–2600px) and nineteen would want ~4800px.
+
 ## Non-obvious things that will bite you
 
 **The motion vocabulary is seven words, and two of them were dead.** `fade`,
@@ -132,6 +147,32 @@ second entry in the list (`view-timeline-name: --rail, --box`) rather than
 losing the first — drop that second entry and the dashes and bars inside
 `.rail-sec`, `.page-head` and `.cta-band` silently stop.
 
+**A `--box` publisher inside a scroll container publishes a FROZEN timeline,
+and there is exactly one exception in the stylesheet because of it.**
+`.rail-track .card { view-timeline-name: none; }`. The family rail carries
+product cards now, and `.card` is in the publisher list above — so each card
+published its own `--box`, and every consumer inside it (the NRC bar, the
+card's own reveal) measured against the *card's* pass through its scrollport.
+That scrollport is `.rail-viewport`, which is `overflow-x: auto` /
+`overflow-y: hidden` and therefore a scroll container on the **block** axis
+too. A block-axis `ViewTimeline` measured against a port that never scrolls
+vertically does not fail loudly: it **freezes** at whatever constant it first
+resolved to and never moves again.
+
+Measured at 375×700 before the fix: every bar on the rail sat at
+`scaleX(0.967)` with its timeline pinned at `50.8131%` — at the top of the
+page, in the middle of the rail, and 9,728px past it at the bottom of the
+document. Because the NRC bar is the site's one fail-unsafe animation, that
+was drawing a published 0.85 as roughly 0.82. The card reveals were frozen at
+the same constant and only rendered because 50.8% happens to fall past the end
+of `mRise`'s range; a viewport that resolved a lower constant would have held
+ten cards at `opacity: 0`.
+
+`none` makes the lookup walk past the card to `.rail-sec`, which is outside
+the horizontal scroller and whose timeline advances normally. **The general
+rule: if you put a `--box` publisher inside a scroll container, suppress its
+name or its descendants inherit a frozen clock.**
+
 **The NRC bar is the one fail-UNSAFE animation on the site.** Everything else
 degrades to "visible and static". The bar's fill draws with `scaleX(0 → 1)`
 on `--box`, so if that timeline ever fails to resolve, the fill holds
@@ -142,9 +183,10 @@ animating it would be a layout pass per frame on up to nineteen cards; the
 transform scales the fill inside the width the figure sets, so the published
 number still decides where the bar ends. The range closes early (`cover 52%`)
 so the bar is full and stays full for most of the scroll. If you touch
-`--box`, re-check the bars on `products.html` and a product detail page
-specifically — 13 on the first, 4 on the second, all of which must reach
-`matrix(1, 0, 0, 1, 0, 0)`.
+`--box`, re-check the bars on `products.html`, a product detail page **and the
+homepage family rail** — 13, 4 and 8 respectively, all of which must reach
+`matrix(1, 0, 0, 1, 0, 0)`. The rail is the one that has already broken once;
+see the frozen-timeline note under `--box` above.
 
 **Verifying any of this from the browser pane needs paint between the scroll
 and the read.** Two separate traps, on top of the pinned-section one below.
@@ -196,28 +238,34 @@ which silently ate the entire engine-2 block and made a working stylesheet
 look broken for three rounds. `src/designboard.js` carries the same warning
 for the same reason.
 
-**The scroll choreography is a second pin, and it is measured in the page.**
-`.choreo` (homepage, immediately before the Work gallery) is a 300vh section
-with a sticky 100vh child: four project photographs trade places, stack at the
-centre, and the last opens to full bleed. It is a port of a framer-motion
-component to the site's own engine — no library, no dependency.
+**The scroll choreography is gone, and the client wall replaced it.**
+`.choreo` was a 300vh section with a sticky 100vh child in which four project
+photographs traded places, stacked at the centre and the last opened to full
+bleed — a port of a framer-motion component to this engine. It was **removed
+by request**, and removed rather than disabled: the markup, the `CHOREO` slug
+list, `choreoBand()`, the `--choreo` timeline and all six `mChoreo*` keyframes
+are deleted. There is no dead code to revive. If a pinned piece is wanted in
+that slot again, write it against the current vocabulary.
 
-Two things about it are load-bearing. The plates take the **named** `--choreo`
-timeline, never `view()`, because `.choreo-pin` is `overflow: hidden` (see the
-next note). And the hero plate animates its own `width`/`height`/`margin`
-rather than scaling, so the photograph is never distorted — the margins carry
-the centring, so they must track the size at every keyframe: margin is always
-minus half. Below 48rem, under reduced motion, or without native scroll
-timelines, the identical markup is a plain captioned 2×2 grid. That is the
-default; the pin is layered on top, exactly like the family rail.
+What sits there now is `clientWall()` — the fifty client logos the client
+already publishes on their own homepage, as a flat grid of white tiles. It is
+deliberately **not** a marquee: a marquee of client names was on this page
+once (`.ticker`) and was removed for duplicating the gallery below it. See the
+`.client-wall` block in `site.css` for why the tiles are `--paper-hi` when
+nothing else on the site is.
 
-**You cannot verify either pin from a hidden browser pane.** Scroll-driven
+**`.rail-sec` is now the ONLY pin on the site.** Anywhere this file used to
+say "either pin" or "a second pin", there is one.
+
+**You cannot verify the pin from a hidden browser pane.** Scroll-driven
 animations are not sampled when the pane is not painting: `currentTime` reads
 `null`, transforms read `none`, and `requestAnimationFrame` never fires, so
-every rAF-based probe times out. The pre-existing `.rail-sec` behaves
-identically, which is the control to check before concluding new code is
-broken. Screenshots only capture the paint at load, so a scrolled screenshot
-comes back blank — move the section to the top of `<main>` instead.
+every rAF-based probe times out. Screenshots only capture the paint at load,
+so a scrolled screenshot comes back blank — move the section to the top of
+`<main>` instead, or take **two** screenshots in separate calls: the first
+comes back as a flat pale rectangle and the second has the real paint. That
+second-screenshot trick is the cheapest way through and it works for the rail,
+the client wall and the NRC bars alike.
 
 **`view()` cannot resolve inside `overflow: hidden`.** An `overflow: hidden`
 ancestor is a scroll container, so a `view()` timeline on anything inside one
@@ -255,6 +303,17 @@ grepping the built HTML for `class="dark"` under-reports which sections are
 affected, because `.rail-sec` takes the deep ground from its own rule rather
 than the class — measure `getComputedStyle(section).backgroundImage` instead.
 
+
+**The hero's spec rail carries the client's own four counters now** — 2035+
+Project Completed, 20+ Years of Experience, 20+ Team Strength, 7 Project
+Running — transcribed from the band on their live site, labels in their
+wording. They live in `SITE.stats`. Two of them cannot be checked from this
+repo and one goes stale on its own: *Project Running* is a snapshot of one
+week's workload, not a cumulative total. Ask before a rebuild if it has been a
+while, and do not round it up. Only *Years of Experience* is derived (from
+`FOUNDED`); the other three are quoted strings, which is why they do not
+count up — `data-count-to` takes an integer and "2035+" is the client's own
+figure with its plus sign attached.
 
 **The hero's spec rail spans the full width, and the sample band must not.**
 The band (`.hero-wall`) used to run the whole height of the hero, so the rail's
@@ -331,6 +390,35 @@ Everything factual on this site came from the client's own live site, crawled
 from their sitemap. **Do not invent product specifications, project names,
 testimonials or blog posts.** An earlier pass did, and all of it had to be
 replaced. If a figure is not published, leave the row out.
+
+**THE RULE IS WIDER THAN SPECS: DO NOT COMPOSE SECTION COPY EITHER.** The
+client's instruction is "only take info from the existing website". A
+plausible-sounding caption is the easiest thing in the world to write and the
+hardest to spot afterwards, because nothing about it looks wrong. Three went
+in during the banner pass and all three had to come back out:
+
+- **Sub-captions under the four hero counters** — "Across India since 2006",
+  "Designers, fabricators and installers", "On site at the time of writing".
+  The client's band carries a figure and a label, nothing else. The third was
+  an invention about their current workload.
+- **A heading and lead for the client wall** — "Trusted by / 50 clients, 20
+  years / Broadcasters, banks, universities, studios and developers — rooms we
+  have designed, supplied and fitted." Their own strip has *no heading at
+  all*, and that last clause asserted a working relationship with each of
+  fifty named companies that nothing supports.
+- **A products page-head lead** — written to replace the one carrying the
+  removed manufacturing claim. Their /our-products page carries no lead copy,
+  so there was nothing to take.
+
+All three are now a label and a count, or nothing. **A count read off the data
+is a fact; a sentence about what the count means is copy, and copy needs a
+source.** If a section looks bare without one, that is the correct appearance
+of a section the client has not written yet — ask them for the words.
+
+Note what this does NOT cover: a large amount of prose from earlier passes is
+still written-not-client — every product `lead` and `body`, `PROCESS`, the
+About page's four commitments, most section headings. That is flagged under
+*Still outstanding* and is a separate decision from this rule.
 
 - `specs` on each product — transcribed from their product pages
 - `PROJECTS` — their projects gallery, with their captions and sector labels
@@ -490,21 +578,45 @@ The cost, stated plainly: the effective floor is now ~0.53, so over a
 pure-black image the title would sit near 3.6:1 and the lead would be
 marginal.
 **The banner's contrast is a property of the current photograph, not of the
-scrim.** Measured against the real composite — both gradients replicated on a
-canvas over the actual image, sampled inside the eyebrow, h1 and lead boxes —
-text is **5.34:1** — eyebrow 9.06, h1 5.34, lead 5.70 — and the mute
-**3.24:1**.
+scrim.**
 
-**Re-run the canvas measurement whenever you change the image** — do not
-assume it holds. The current banner (`adani-bkc-mumbai`) is 0.396 overall and
-0.472 across the left half; the darkest in the set are around 0.05. It is a
-pale image and that is fine, but only because the falloff is shaped around
-the type column rather than the whole frame. A darker image would also work;
-a paler one would not.
+**THE BANNERS ARE THE CLIENT'S OWN THREE, ported from their live site**
+(`assets/img/banners/`: `recording-studio`, `office-conference`,
+`auditorium`), and each was measured against the real composite — both
+gradients replicated on a canvas over the actual image, darkest pixel under
+every *word* — before it went in. Nothing in the scrim was changed to
+accommodate them. The full table lives beside `.hero-media::after` in
+`site.css`; the summary is worst text **4.97:1** (auditorium h1, desktop) and
+worst mute **3.13:1** (office-conference `.decay`, desktop).
 
-`--mark-banner` at 3.24:1 now clears the **large-text threshold only**, which
-`.decay` satisfies at hero size. Do not put it on anything body-sized in the
-banner.
+**Re-run the canvas measurement whenever you change an image** — do not assume
+it holds. `--mark-banner` on `.decay` clears the **large-text threshold only**
+(3:1), and 3.13 clears it by very little: that is the tightest number on the
+site. A darker banner, or a smaller `.hero-title`, takes it under. Do not put
+`--mark-banner` on anything body-sized in the banner.
+
+**THE HEADLINE ROTATES WITH THE PHOTOGRAPH**, because the client's own hero
+does and porting their pictures without their captions would have stranded
+three sector labels. Four things about `.hero-copy` are load-bearing and all
+four are written out above the HOME block in `src/pages.js`: only slide one is
+the `<h1>` (the other two are `<p class="hero-title">`, so the document has
+one main heading); slides two and three are permanently `aria-hidden` because
+CSS cannot update ARIA and the arrows announce the change themselves; the
+three blocks are **grid-stacked**, not absolutely positioned, so the hero
+reserves the tallest headline once and the lead below never moves; and the
+load-in belongs to slide one only.
+
+The synchronisation is two matched sets of keyframes in `motion.css` —
+`.hero-slide` and `.hero-say`, same duration, same negative delays. **Change
+one and you must change the other in the same edit**, or a headline outlives
+its picture and describes the wrong room for nine seconds.
+
+`.hero-title` is **4.25rem at the top end, not `--t-hero`'s 7rem**. The
+client's longest line is 44 characters against the 24 the slot was drawn for,
+and at 7rem it ran to four lines and pushed the lead and both buttons off a
+900px screen. The column cannot be widened to absorb it — `padding-right: 42%
++ gut` is where the scrim still has alpha to spare — so the type came down
+instead.
 
 The automated check below **cannot see any of this** — it scores CSS grounds
 only — so `.hero-top` is excluded from it and verified separately. Setting
@@ -582,13 +694,21 @@ because `.panel` and the roomdex rows were both tried and both removed.
   stops the large flat ground reading as screen fill. Removing it flattens
   the site.
 - The logo is the client's asset. Scale it, never restyle or recolour it.
+  **Both header and footer carry the full lockup, tagline included**, which is
+  what the live site's own header does. The header used to take
+  `logo-mark.png` — the same artwork with "Innovating Sound In A Better Way"
+  cropped off — because the tagline is unreadable at 32px. The fix was the
+  bar, not the artwork: `.brand-logo` is 2.75rem and `.site-head .wrap`
+  min-height went 5.25 to 5.75rem. `logo-mark.png` is still in `assets/img`
+  for whoever decides the bar has to shrink again; shipping an illegible line
+  of type is the wrong answer.
 
 **Section shapes are deliberately varied.** The page used to be one shape
 repeated. Each block now has its own: `.diptych`, the pinned `.rail-sec`
-family rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
-`.cat-grid`, `.notes`, and the pinned `.choreo` scroll choreography. Reach for
-an existing shape before adding a grid of equal cards — two of the three most
-recent fixes were removing one.
+product rail, `.roomdex`, `.process-grid`, `.voices`, `.statement`,
+`.cat-grid`, `.notes`, and `.client-wall`. Reach for an existing shape before
+adding a grid of equal cards — three of the four most recent fixes were
+removing one.
 
 **The `.ticker` marquee (a port of replit.com's `LogoBlock`, 24 client project
 names scrolling past "N rooms photographed") was removed by request from the
@@ -653,16 +773,27 @@ background down the ancestor chain, parses the stops out of a gradient ground
 and **scores against the worst one**, and applies the WCAG large-text
 allowance.
 
-Two things will make it lie to you, and both bit during this pass:
+Three things will make it lie to you, and all three have bitten:
 
 1. **It cannot see photographs.** It scores CSS grounds only, so text over the
-   hero banner, gallery surfaces, product heroes and the choreography plates
-   must be excluded — their contrast is guaranteed by a designed scrim
-   instead. Score them and you get false failures; "fix" those and you break
-   the hero.
+   hero banner, gallery surfaces and product heroes must be excluded — their
+   contrast is guaranteed by a designed scrim instead. Score them and you get
+   false failures; "fix" those and you break the hero.
 2. **It skips `opacity: 0` elements**, which below the fold is most of the
-   page. Force the reveals off first, or you are checking the hero and
-   nothing else:
+   page. Force the reveals off first (the snippet is below), or you are
+   checking the hero and nothing else.
+3. **A gradient stop is not the same thing as a ground, and the drafting grid
+   is the trap.** `.hero`, `body` and the paper sections carry
+   `linear-gradient(var(--grid-line) 1px, transparent 1px)` tiled at 64px —
+   a 1px hairline covering 1.6% of the box. A walker that follows the
+   documented rule ("parse the stops out of a gradient ground and score
+   against the worst one") treats that hairline as full coverage and reports
+   the entire hero spec rail at **4.03:1**. It is not a real failure: no glyph
+   sits entirely on a 1px line, and the ground the type actually composites
+   against is the ombre. Skip any gradient layer whose stop positions are
+   given in `px` — those are textures; the ombres are all `%`. This cost a
+   full round of investigating a "regression" that was present, unchanged, on
+   the committed build.
 
 ```js
 document.querySelectorAll('[data-anim],[data-in]').forEach(e => {
@@ -678,6 +809,20 @@ If you change a token, re-run it rather than eyeballing.
 - **Contact form has no endpoint.** Set `SITE.formEndpoint` in `src/content.js`
   (Web3Forms key or Formspree URL) and rebuild. Until then it falls back to the
   visitor's mail client.
+- **Two of the four hero counters cannot be verified from this repo, and one
+  goes stale on its own.** `SITE.stats` carries the client's published *Team
+  Strength* (20+) and *Project Running* (7). The second is a snapshot of one
+  week's workload. Confirm both with the client before a release, and do not
+  adjust either by guesswork.
+- **The fifty client logos are other companies' trademarks.** They are on this
+  site because the client already publishes them on theirs — this is a port,
+  not a new claim made on their behalf. If a listed organisation asks to come
+  off, delete its row in `CLIENTS` and its file in `assets/img/clients`;
+  nothing else references either. Two display names could not be recovered
+  from the client's own filenames and were read off the artwork
+  (`Clients-page-images-12.png` is DBS, `Doorsha.jpg` is Doordarshan); three
+  more were misspellings corrected the same way. Those are recorded in
+  `src/content.js` so nobody "corrects" them back.
 - Process steps and the About page's four commitments (`src/pages.js`, the
   "Four things we will not do" section) are written copy, not client-confirmed.
   They include a promise to re-measure and fix a room that misses its target.

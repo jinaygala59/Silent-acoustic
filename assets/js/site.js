@@ -316,6 +316,14 @@
      announces nothing. That is the easiest way to get this wrong. */
   var media = document.querySelector('.hero-media');
   var slides = media ? [].slice.call(media.querySelectorAll('.hero-slide')) : [];
+  /* The headline blocks are the slides' twins: same count, same order, and
+     index i addresses the pair. They are NOT inside .hero-media — that
+     subtree is aria-hidden decoration and the copy is the page's actual
+     words — so they are collected separately and `.is-manual` goes on
+     .hero-top, the nearest ancestor of both. */
+  var stage = document.querySelector('.hero-top');
+  var says = stage ? [].slice.call(stage.querySelectorAll('.hero-say')) : [];
+  var paired = says.length === slides.length;
 
   if (media && media.parentNode && slides.length > 1) {
     var manual = false;
@@ -338,11 +346,35 @@
     live.setAttribute('aria-live', 'polite');
 
     function step(by) {
-      if (!manual) { manual = true; at = showing(); media.classList.add('is-manual'); }
+      if (!manual) {
+        manual = true;
+        at = showing();
+        media.classList.add('is-manual');
+        /* .hero-top, so the same class gates both the photograph and the
+           headline. The old code put it on .hero-media only, which was
+           correct while .hero-media was the only thing that moved. */
+        if (stage) { stage.classList.add('is-manual'); }
+      }
       slides[at].classList.remove('is-on');
+      if (paired) { says[at].classList.remove('is-on'); }
       at = (at + by + slides.length) % slides.length;
       slides[at].classList.add('is-on');
-      live.textContent = 'Banner image ' + (at + 1) + ' of ' + slides.length;
+      if (paired) { says[at].classList.add('is-on'); }
+
+      /* Announce the slide the reader has just moved to by its own words, not
+         as "image 2 of 3". The headline blocks are aria-hidden — only the
+         first is a real heading in the document — so without this the reader
+         gets a count and no idea what changed on screen. */
+      var label = 'Banner image ' + (at + 1) + ' of ' + slides.length;
+      if (paired) {
+        var t = says[at].querySelector('.hero-title');
+        var e = says[at].querySelector('.eyebrow');
+        if (t) {
+          label = (e ? e.textContent.trim() + '. ' : '') + t.textContent.trim()
+            + ' (' + (at + 1) + ' of ' + slides.length + ')';
+        }
+      }
+      live.textContent = label;
     }
 
     function button(label, path, by) {

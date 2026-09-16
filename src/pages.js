@@ -1,6 +1,6 @@
 const C = require('./content.js');
 const B = require('./build.js');
-const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
+const { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
 const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
 
 /* "20+ yrs" was typed, next to "since 2006" which is the client's published
@@ -8,57 +8,94 @@ const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
    in 2027 the sentence is still right and the figure is not. It is derived
    now, so a rebuild is all it takes. Same arithmetic, no new claim — 2006 is
    theirs, the subtraction is ours. */
-/* The split the distinction section quotes. Counted, never typed — add a
-   soundproofing product and both halves of that copy correct themselves. */
-const PROOF_N = C.PRODUCTS.filter(p => p.cat === 'proof').length;
-const TREAT_N = C.PRODUCTS.length - PROOF_N;
+/* PROOF_N / TREAT_N ARE GONE. They counted the absorb/block split ("— 15 of
+   our 19 products" / "— the other 4") for the two halves of the diptych, so
+   the copy corrected itself when a product was added. The client replaced
+   both paragraphs with their own text, which does not quote the split, and a
+   derived constant nothing renders is worse than no constant. If a future
+   line wants the figure back, it is two lines:
+     const PROOF_N = C.PRODUCTS.filter(p => p.cat === 'proof').length;
+     const TREAT_N = C.PRODUCTS.length - PROOF_N;
+   — and it should be derived like that again, never typed. */
 
 const FOUNDED = 2006;
 const YEARS = new Date().getFullYear() - FOUNDED;
 
 const built = [];
 
-/* ----------------------------- the choreography --------------------------
-   Introduces the Work gallery: four finished rooms trade places, stack, and
-   the last one opens to full bleed. Slugs only — every name, location and
-   sector is read back out of PROJECTS, so this block cannot drift from the
-   client's data. Array order is z-order and stage position: back to front,
-   and the last entry is the one that expands. */
-const CHOREO = [
-  'action-voice-studio-khar-mumbai',
-  'accenture-vikroli',
-  '88-pictures-mumbai',
-  'ravindra-natya-mandir-prabhadevi',
-];
+/* ----------------------------- the client wall ---------------------------
+   THE PINNED SCROLL CHOREOGRAPHY THAT USED TO SIT HERE IS GONE, by request.
+   It was a 300vh section with a sticky 100vh child in which four project
+   photographs traded places, stacked, and the last opened to full bleed — a
+   port of a framer-motion component to this site's own engine. It is deleted,
+   not commented out: `.choreo` markup, the `CHOREO` slug list and the whole
+   choreography block in motion.css went with it. If a pinned piece is wanted
+   again, write it against the current motion vocabulary rather than reviving
+   that one.
 
-const choreoBand = () => {
-  const picks = CHOREO.map(s => PROJECTS.find(p => p.s === s)).filter(Boolean);
-  /* A stage missing a plate reads as broken rather than shorter, and the
-     positions below are hard-coded to four. Drop the section instead. */
-  if (picks.length !== 4) return '';
-  const at = ['tl', 'br', 'bl', 'tr'];
-  return `
-<section class="light choreo" aria-labelledby="choreo-h">
-  <div class="choreo-pin">
-    <div class="wrap choreo-copy">
-      <p class="eyebrow">Selected work</p>
-      <h2 id="choreo-h">Four rooms,<br>one way of working.</h2>
+   WHAT REPLACES IT IS THE CLIENT LIST, which the client's own site carries as
+   a 50-slide swiper and this site did not carry at all. It is a grid, not a
+   marquee, and that is deliberate: a marquee of client names was on this
+   homepage once (the `.ticker` port of replit.com's LogoBlock) and was
+   removed for duplicating the gallery underneath it in motion instead of as
+   photographs. A grid says the same thing without moving, every name is
+   readable at once, and it does not need JavaScript.
+
+   The wall sits directly above the Work gallery, where the choreography did,
+   because the order is the argument: here is who, then here are the rooms.
+
+   IT CARRIES ALMOST NO COPY, AND THAT IS THE POINT. The client's own page
+   runs this strip with NO heading at all — the logos sit under the contact
+   block unlabelled. A first pass gave it an eyebrow ("Trusted by"), a
+   headline and a lead describing the fifty as "broadcasters, banks,
+   universities, studios and developers — rooms we have designed, supplied
+   and fitted". Every word of that was composed here, and the last clause
+   asserted a working relationship with each of fifty named companies that
+   nothing in the client's material supports. It is gone. What is left is the
+   section label the site's own furniture provides and a count read off
+   CLIENTS.length. Do not write a lead for this section; if one is wanted,
+   the words have to come from the client. */
+const clientWall = () => `
+<section class="light railed clients-sec" aria-labelledby="clients-h">
+  <div class="wrap">
+    <span class="rail-label">Clients</span>
+    <div class="section-head">
+      <h2 id="clients-h" data-anim="reveal">${CLIENTS.length} clients.</h2>
     </div>
-    <div class="choreo-stage">
-      ${picks.map((pr, i) => `<figure class="choreo-plate at-${at[i]}" data-anim="rise">
-        <div class="choreo-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-          <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-        </div>
-        <figcaption><b>${esc(pr.n)}</b>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</figcaption>
-      </figure>`).join('\n      ')}
-    </div>
-    <p class="choreo-foot"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
+    <ul class="client-wall" data-stagger>
+      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
+    </ul>
   </div>
 </section>`;
-};
 
 
 /* =============================== HOME ==================================== */
+/* THE HERO HEADLINE ROTATES WITH THE PHOTOGRAPH, which is how the client's
+   own site runs its hero, and porting their three banners without their
+   captions would have stranded three sector labels on the cutting-room floor.
+   Four things about `.hero-copy` are load-bearing:
+
+   · ONLY THE FIRST SLIDE IS THE <h1>. The other two are <p class="hero-title">
+     — same type, no heading semantics. Three h1s is the obvious way to build
+     this and it is wrong: the page would carry three competing main headings
+     and a screen reader would announce two that nobody can see. The h1 is the
+     client's own first-slide line, so the page still has a real heading.
+   · SLIDES TWO AND THREE ARE aria-hidden, permanently. Which one is on screen
+     changes on a CSS animation, and CSS cannot update ARIA — so rather than
+     let the accessibility tree drift out of step with the page, the rotating
+     copy is decoration and the arrows announce the change themselves. That
+     announcement is built in assets/js/site.js and reads the slide's own
+     words, not "image 2 of 3".
+   · The copy blocks are GRID-STACKED, not absolutely positioned, so the hero
+     reserves the height of the LONGEST headline once and the lead and buttons
+     below never move as the banner turns.
+   · The load-in (.hl / [data-in] / the .echo reverb tails) belongs to slide
+     one only. A tail that fires once at page load and never again would read
+     as a glitch on slides two and three; they cross-fade in already composed.
+
+   The synchronisation between headline and photograph is two matched sets of
+   keyframes in motion.css — same duration, same negative delays. Change one
+   and you must change the other in the same edit. */
 built.push(page({
   file: 'index.html', active: 'index.html',
   title: 'Silence Acoustic — Acoustic Treatment & Soundproofing, Mumbai',
@@ -67,19 +104,31 @@ built.push(page({
 <section class="hero">
   <div class="hero-top">
   <div class="hero-media" aria-hidden="true">
-    <div class="hero-slide"><img src="assets/img/projects/adani-bkc-mumbai.webp"
-         alt="" width="760" height="569" fetchpriority="high" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/projects/atlas-pune.webp"
-         alt="" width="760" height="570" fetchpriority="low" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/projects/meraki-arean-mumbai.webp"
-         alt="" width="760" height="570" fetchpriority="low" decoding="async"></div>
+    ${BANNERS.map((b, i) => `<div class="hero-slide"><img src="assets/img/banners/${b.img}.webp"
+         alt="" width="${b.w}" height="${b.h}" ${i ? 'fetchpriority="low" loading="lazy"' : 'fetchpriority="high"'} decoding="async"></div>`).join('\n    ')}
   </div>
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
-    <h1 class="hero-title">
-      <span class="hl"><span style="--d:120">Sound, put</span></span>
-      <span class="hl"><span style="--d:240">in its <span class="decay">place.<i class="echo e1" aria-hidden="true">place.</i><i class="echo e2" aria-hidden="true">place.</i></span></span></span>
-    </h1>
+    <!-- The headline rotates with the photograph. Only slide one is the h1 —
+         see the HOME note at the top of src/pages.js before editing. -->
+    <div class="hero-copy">
+      ${BANNERS.map((b, i) => {
+        const words = b.title.split(' ');
+        const last = words.pop();
+        const decay = i === 0
+          ? `<span class="decay">${esc(last)}<i class="echo e1" aria-hidden="true">${esc(last)}</i><i class="echo e2" aria-hidden="true">${esc(last)}</i></span>`
+          : `<span class="decay">${esc(last)}</span>`;
+        const head = `${esc(words.join(' '))} ${decay}`;
+        return i === 0
+          ? `<div class="hero-say is-on">
+        <p class="eyebrow" data-in style="--d:60">${esc(b.sector)} &middot; Mumbai</p>
+        <h1 class="hero-title"><span class="hl"><span style="--d:160">${head}</span></span></h1>
+      </div>`
+          : `<div class="hero-say" aria-hidden="true">
+        <p class="eyebrow">${esc(b.sector)} &middot; Mumbai</p>
+        <p class="hero-title">${head}</p>
+      </div>`;
+      }).join('\n      ')}
+    </div>
     <div class="hero-foot">
       <p class="lead hero-lead" data-in style="--d:520">We measure the room, design the treatment, manufacture the panels and install them ourselves — then measure again to prove it worked.</p>
       <div class="row hero-cta" data-in style="--d:640">
@@ -90,10 +139,18 @@ built.push(page({
   </div>
   </div>
   <div class="wrap hero-rail">
-    <dl class="hero-specs" data-in style="--d:800">
-      <div class="hero-spec"><dt>Experience</dt><dd><span class="tick" data-count-to="${YEARS}">${YEARS}</span>+ yrs<small>Designing and installing acoustic products since ${FOUNDED}</small></dd></div>
-      <div class="hero-spec"><dt>Manufacturing</dt><dd>In-house<small>CNC cutting, UV printing and assembly</small></dd></div>
-      <div class="hero-spec"><dt>Site survey</dt><dd>Free<small>Within Mumbai and the MMR</small></dd></div>
+    <dl class="hero-specs hero-specs-4" data-in style="--d:800">
+      ${SITE.stats.map(st => {
+        /* The one derived figure counts up; the three quoted ones do not,
+           because `data-count-to` takes an integer and "2035+" is a string
+           the client publishes with its plus sign attached. Counting to 2035
+           and then appending a + would also be a different claim from the one
+           they make. */
+        const fig = st.years
+          ? `<span class="tick" data-count-to="${YEARS}">${YEARS}</span>+`
+          : esc(st.v);
+        return `<div class="hero-spec"><dt>${esc(st.label)}</dt><dd>${fig}</dd></div>`;
+      }).join('\n      ')}
     </dl>
   </div>
 </section>
@@ -103,10 +160,17 @@ built.push(page({
     <span class="rail-label">The distinction</span>
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-anim="fade">Since ${FOUNDED}</p>
-        <h2 data-anim="reveal">What ${YEARS} years actually buys you.</h2>
+        <p class="eyebrow" data-anim="fade">Founder &middot; since ${FOUNDED}</p>
+        <!-- The heading is the name and nothing else, deliberately. The
+             client's first sentence opens "Ravi Sebastian, Founder of Silence
+             Acoustic, brings more than 20 years…", so a heading that restated
+             the role read the phrase twice in two lines. Their copy is not
+             edited to fix that; the heading gets out of its way instead. -->
+        <h2 data-anim="reveal">${esc(FOUNDER.name)}</h2>
       </div>
-      <p class="lead" data-anim="fade">${SITE.projectsCompleted} installations. ${PROJECTS.length} of those rooms photographed on this site. ${SECTORS.length} room types, each designed to its own number. Long enough to tell which of two very different problems you have before anyone quotes you — and long enough to know that getting that one wrong is a wall covered in wasted money.</p>
+      <div class="stack stack-m founder-copy">
+        ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n        ')}
+      </div>
     </div>
   </div>
   <div class="diptych">
@@ -118,7 +182,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>The room is loud with its own sound. We measure it, set a target, and absorb to it — ${TREAT_N} of our ${PRODUCTS.length} products.</p>
+      <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
       <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
     </div>
   </a>
@@ -130,7 +194,7 @@ built.push(page({
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>The sound is somebody else's. Mass, isolation and sealing, never absorption — the other ${PROOF_N}.</p>
+      <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
       <span class="tlink">Membranes, doors and windows ${ARROW}</span>
     </div>
   </a>
@@ -147,7 +211,10 @@ ${famRail()}
         <p class="eyebrow" data-anim="fade">Where we work</p>
         <h2 data-anim="reveal">Every project type has a number to hit.</h2>
       </div>
-      <p class="lead" data-anim="fade">A studio and a sports hall both need treating, but they need opposite things. We design to the target for the room's actual use, not to a coverage percentage.</p>
+      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. The heading
+           above it is ours and was left alone: the brief marked the paragraph
+           for replacement, not the whole block. -->
+      <p class="lead" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
     </div>
     ${roomdex()}
   </div>
@@ -183,7 +250,7 @@ ${famRail()}
   </div>
 </section>
 
-${choreoBand()}
+${clientWall()}
 
 
 <section class="dark railed">
@@ -210,6 +277,23 @@ ${ctaBand()}`
 
 
 /* ============================= PRODUCTS INDEX ============================ */
+/* THE PAGE-HEAD LEAD IS A COUNT AND NOTHING ELSE, deliberately. It used to
+   name five families and say every product is made in their own facility in
+   Mumbai — both of which the client asked to stop publishing, though this was
+   not one of the two places their brief marked. The replacement written here
+   ("…for absorbing sound inside a room and for blocking it between two…")
+   was then composed rather than sourced, which is the other thing not to do:
+   the client's own /our-products page carries no lead copy at all, so there
+   was nothing to take. A count is a fact from the data. If this page wants a
+   sentence, get it from the client.
+
+   THE REASONING IS A JS COMMENT, NOT AN HTML ONE, deliberately. An HTML
+   comment inside these template literals ships to the browser, so explaining
+   the removal in the markup would have put the removed sentence back into the
+   page source for anyone who reads it. The family grouping BELOW is
+   untouched — `fampick`, the per-family sections and the filters are this
+   page's navigation, and the brief asked for the product pages to be kept as
+   they are. */
 built.push(page({
   file: 'products.html', active: 'products.html',
   title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
@@ -219,7 +303,7 @@ built.push(page({
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">Catalogue</p>
     <h1 data-in style="--d:170">Products</h1>
-    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products across five families. Every one is manufactured or assembled in our own facility in Mumbai, and every one can be made to a size, colour or cut pattern that is not on this page.</p>
+    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products.</p>
   </div>
 </section>
 
@@ -416,15 +500,31 @@ ${ctaBand()}`
 }));
 
 /* ================================= ABOUT ================================ */
+/* TWO BENTO TILES WERE REMOVED BY REQUEST and are not coming back on their
+   own. One asserted in-house manufacturing, the other that every finished
+   room is re-measured against its target after handover. Both are claims the
+   client does not want published; the first was cut from the homepage rail in
+   the same brief, and the second is the promise CLAUDE.md already flags as
+   written copy rather than client-confirmed. Do not reinstate either without
+   being asked for it by name.
+
+   Kept as a JS comment rather than an HTML one on purpose: an HTML comment in
+   these template literals ships, and the point of removing a claim is that it
+   stops being in the page. */
 built.push(page({
   file: 'about.html', active: 'about.html',
   title: 'About Silence Acoustic — Acoustics, Mumbai',
-  desc: 'Twenty years in acoustics, since 2006. We manufacture acoustic material in our own facility and install it ourselves — supplier and installer in one company, with 2035+ projects completed across India.',
+  /* Rewritten from the client's own replacement copy, and for the same reason
+     the page-head h1 was: the old description was a summary of three
+     paragraphs that no longer exist, and it repeated the manufacturing claim
+     into every search result. A description is published text — it just is
+     not published on the page. */
+  desc: 'Two decades of expertise in acoustic products and solutions. Acoustic treatment, soundproofing and high-performance acoustic products across offices, auditoriums, studios and hospitality, with 2035+ projects delivered across India.',
   body: `
 <section class="page-head">
   <div class="wrap">
     <p class="eyebrow" data-in style="--d:60">About</p>
-    <h1 data-in style="--d:170">Twenty years in acoustics,<br>as both supplier and installer.</h1>
+    <h1 data-in style="--d:170">${esc(ABOUT_INTRO.h1)}</h1>
   </div>
 </section>
 
@@ -434,10 +534,11 @@ built.push(page({
     <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
       <div class="stack stack-m">
         <p class="eyebrow" data-anim="fade">Since 2006</p>
-        <h2 data-anim="reveal">Supplier and installer,<br>not one or the other.</h2>
-        <p class="muted">In acoustics since 2006 &mdash; twenty years, and more than 2,035 rooms completed across India.</p>
-        <p class="muted">We are the supplier: the material is made in our own facility, not bought in and resold, so a custom size or a routed pattern is a production decision rather than an import lead time.</p>
-        <p class="muted">And we are the installer: our own crews in Mumbai and Maharashtra, certified teams elsewhere. So if a room misses its target, fixing it is our problem &mdash; not a negotiation between two suppliers.</p>
+        <h2 data-anim="reveal">${esc(ABOUT_INTRO.h2).replace(/\n/g, '<br>')}</h2>
+        <!-- CLIENT-SUPPLIED COPY. One long paragraph by their choice; it is
+             split for reading only where their own sentences end, and no
+             words are added, cut or reordered. -->
+        ${ABOUT_INTRO.body.split(/(?<=\.)\s+(?=With 2,035|From offices|Our commitment)/).map(para => `<p class="muted">${esc(para)}</p>`).join('\n        ')}
       </div>
       <div>
         <!-- Deliberately the same material twice: slat samples as we make them,
@@ -471,16 +572,8 @@ built.push(page({
       </div>
       <div class="bento-i" data-anim="rise"><b>20+</b><span>Years in acoustics</span></div>
       <div class="bento-i" data-anim="rise"><b>98%</b><span>Customer satisfaction</span></div>
-      <div class="bento-i" data-anim="rise"><b>${PRODUCTS.length}</b><span>Products, ${CATEGORIES.length} families</span></div>
+      <div class="bento-i" data-anim="rise"><b>${PRODUCTS.length}</b><span>Products in the range</span></div>
       <div class="bento-i" data-anim="rise"><b>${PROJECTS.length}</b><span>Rooms photographed</span></div>
-      <div class="bento-i bento-wide" data-anim="rise">
-        <b>In-house</b><span>Made in Mumbai</span>
-        <small>Manufactured in our own facility and installed by our own crews, pan-India.</small>
-      </div>
-      <div class="bento-i bento-wide" data-anim="rise">
-        <b>Verified</b><span>Measured against target</span>
-        <small>We return with the meter after handover and check the room against the number it was designed to.</small>
-      </div>
     </div>
   </div>
 </section>

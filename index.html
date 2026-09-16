@@ -37,7 +37,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <header class="site-head">
     <div class="wrap">
       <a class="brand" href="index.html" aria-label="Silence Acoustic — home">
-        <img class="brand-logo" src="assets/img/logo-mark.png" alt="Silence Acoustic" width="613" height="108" fetchpriority="high">
+        <img class="brand-logo" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
         <span class="nav-toggle-bars"></span>
@@ -58,19 +58,30 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <section class="hero">
   <div class="hero-top">
   <div class="hero-media" aria-hidden="true">
-    <div class="hero-slide"><img src="assets/img/projects/adani-bkc-mumbai.webp"
-         alt="" width="760" height="569" fetchpriority="high" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/projects/atlas-pune.webp"
-         alt="" width="760" height="570" fetchpriority="low" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/projects/meraki-arean-mumbai.webp"
-         alt="" width="760" height="570" fetchpriority="low" decoding="async"></div>
+    <div class="hero-slide"><img src="assets/img/banners/recording-studio.webp"
+         alt="" width="1600" height="612" fetchpriority="high" decoding="async"></div>
+    <div class="hero-slide"><img src="assets/img/banners/office-conference.webp"
+         alt="" width="1600" height="731" fetchpriority="low" loading="lazy" decoding="async"></div>
+    <div class="hero-slide"><img src="assets/img/banners/auditorium.webp"
+         alt="" width="1600" height="731" fetchpriority="low" loading="lazy" decoding="async"></div>
   </div>
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
-    <h1 class="hero-title">
-      <span class="hl"><span style="--d:120">Sound, put</span></span>
-      <span class="hl"><span style="--d:240">in its <span class="decay">place.<i class="echo e1" aria-hidden="true">place.</i><i class="echo e2" aria-hidden="true">place.</i></span></span></span>
-    </h1>
+    <!-- The headline rotates with the photograph. Only slide one is the h1 —
+         see the HOME note at the top of src/pages.js before editing. -->
+    <div class="hero-copy">
+      <div class="hero-say is-on">
+        <p class="eyebrow" data-in style="--d:60">Recording Studio &middot; Mumbai</p>
+        <h1 class="hero-title"><span class="hl"><span style="--d:160">Silence That Speaks <span class="decay">Style<i class="echo e1" aria-hidden="true">Style</i><i class="echo e2" aria-hidden="true">Style</i></span></span></span></h1>
+      </div>
+      <div class="hero-say" aria-hidden="true">
+        <p class="eyebrow">Offices &middot; Mumbai</p>
+        <p class="hero-title">Designed for Sound. Crafted for <span class="decay">Spaces.</span></p>
+      </div>
+      <div class="hero-say" aria-hidden="true">
+        <p class="eyebrow">Auditorium &middot; Mumbai</p>
+        <p class="hero-title">Where Superior Acoustics Meet Elegant <span class="decay">Design</span></p>
+      </div>
+    </div>
     <div class="hero-foot">
       <p class="lead hero-lead" data-in style="--d:520">We measure the room, design the treatment, manufacture the panels and install them ourselves — then measure again to prove it worked.</p>
       <div class="row hero-cta" data-in style="--d:640">
@@ -81,10 +92,11 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
   </div>
   <div class="wrap hero-rail">
-    <dl class="hero-specs" data-in style="--d:800">
-      <div class="hero-spec"><dt>Experience</dt><dd><span class="tick" data-count-to="20">20</span>+ yrs<small>Designing and installing acoustic products since 2006</small></dd></div>
-      <div class="hero-spec"><dt>Manufacturing</dt><dd>In-house<small>CNC cutting, UV printing and assembly</small></dd></div>
-      <div class="hero-spec"><dt>Site survey</dt><dd>Free<small>Within Mumbai and the MMR</small></dd></div>
+    <dl class="hero-specs hero-specs-4" data-in style="--d:800">
+      <div class="hero-spec"><dt>Project Completed</dt><dd>2035+</dd></div>
+      <div class="hero-spec"><dt>Years of Experience</dt><dd><span class="tick" data-count-to="20">20</span>+</dd></div>
+      <div class="hero-spec"><dt>Team Strength</dt><dd>20+</dd></div>
+      <div class="hero-spec"><dt>Project Running</dt><dd>7</dd></div>
     </dl>
   </div>
 </section>
@@ -94,10 +106,19 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <span class="rail-label">The distinction</span>
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-anim="fade">Since 2006</p>
-        <h2 data-anim="reveal">What 20 years actually buys you.</h2>
+        <p class="eyebrow" data-anim="fade">Founder &middot; since 2006</p>
+        <!-- The heading is the name and nothing else, deliberately. The
+             client's first sentence opens "Ravi Sebastian, Founder of Silence
+             Acoustic, brings more than 20 years…", so a heading that restated
+             the role read the phrase twice in two lines. Their copy is not
+             edited to fix that; the heading gets out of its way instead. -->
+        <h2 data-anim="reveal">Ravi Sebastian</h2>
       </div>
-      <p class="lead" data-anim="fade">2035+ installations. 170 of those rooms photographed on this site. 10 room types, each designed to its own number. Long enough to tell which of two very different problems you have before anyone quotes you — and long enough to know that getting that one wrong is a wall covered in wasted money.</p>
+      <div class="stack stack-m founder-copy">
+        <p class="lead" data-anim="fade">Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments.</p>
+        <p class="muted" data-anim="fade">His practical expertise and technical leadership have shaped Silence Acoustic into a trusted provider of professional acoustic treatment and soundproofing solutions. Our team leverages this experience to diagnose unique acoustic problems and to design solutions that balance performance, functionality, aesthetics, and durability.</p>
+        <p class="muted" data-anim="fade">Built on a foundation of industry knowledge and proven project delivery, the Silence Acoustic product range is engineered to deliver optimal acoustic performance while meeting the specific requirements of each space. We offer tailored solutions that integrate seamlessly with architects, deliver measurable acoustic improvements, and stand up to long-term use.</p>
+      </div>
     </div>
   </div>
   <div class="diptych">
@@ -109,7 +130,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <div class="dip-body">
       <p class="eyebrow">Inside the room</p>
       <h2>Acoustic treatment</h2>
-      <p>The room is loud with its own sound. We measure it, set a target, and absorb to it — 15 of our 19 products.</p>
+      <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
       <span class="tlink">Panels, ceilings and foam <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
   </a>
@@ -121,81 +142,171 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <div class="dip-body">
       <p class="eyebrow">Between rooms</p>
       <h2>Soundproofing</h2>
-      <p>The sound is somebody else's. Mass, isolation and sealing, never absorption — the other 4.</p>
+      <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
       <span class="tlink">Membranes, doors and windows <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
   </a>
   </div>
 </section>
 
-<section class="rail-sec" aria-labelledby="families">
+<section class="rail-sec" aria-labelledby="families" style="--rail-n:11">
   <div class="rail-sticky">
     <div class="wrap">
       <div class="rail-head">
         <div>
-          <p class="eyebrow" data-anim="fade">19 products, five families</p>
+          <p class="eyebrow" data-anim="fade">19 products</p>
           <h2 id="families" data-anim="reveal">Everything we make and fit.</h2>
         </div>
-        <p class="lead" data-anim="fade">Manufactured in our own facility in Mumbai. Custom sizes, colours, cut patterns and printing are standard work here, not a special request.</p>
+        <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. -->
+        <p class="lead" data-anim="fade">Innovative acoustic products designed for superior sound absorption and effective acoustic control. Combining performance, durability, and aesthetics to create acoustically balanced environments.</p>
       </div>
     </div>
     <div class="rail-viewport">
       <div class="rail-track">
-        <a class="fam" data-anim="rise" data-mat="pet" href="products.html#panels">
-          <div class="fam-surface surface s-groove">
-            <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">01 &middot; 8 products</span>
-            <h3>Acoustic Panels</h3>
-            <p class="fam-note">Wall-mounted absorbers, decorative and plain.</p>
-            <span class="card-foot">See the family <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
-        <a class="fam" data-anim="rise" data-mat="cloud" href="products.html#ceiling">
-          <div class="fam-surface surface s-baffle">
-            <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">02 &middot; 2 products</span>
-            <h3>Acoustic Ceilings</h3>
-            <p class="fam-note">Suspended clouds and baffles for open volumes.</p>
-            <span class="card-foot">See the family <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
-        <a class="fam" data-anim="rise" data-mat="foam" href="products.html#foam">
-          <div class="fam-surface surface s-wedge">
-            <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">03 &middot; 2 products</span>
-            <h3>Acoustic Foam</h3>
-            <p class="fam-note">Profiled PU foam for critical listening rooms.</p>
-            <span class="card-foot">See the family <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
-        <a class="fam" data-anim="rise" data-mat="wood" href="products.html#wood">
-          <div class="fam-surface surface s-slat">
-            <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">04 &middot; 3 products</span>
-            <h3>Acoustic Wood</h3>
-            <p class="fam-note">Slatted, perforated and wood-wool systems.</p>
-            <span class="card-foot">See the family <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
-        <a class="fam" data-anim="rise" data-mat="proof" href="products.html#proof">
-          <div class="fam-surface surface s-door">
-            <img src="assets/img/products/soundproof-door-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">05 &middot; 4 products</span>
-            <h3>Soundproofing</h3>
-            <p class="fam-note">Blocking sound between rooms, not inside one.</p>
-            <span class="card-foot">See the family <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
+        <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-designer-panel.html">
+  <div class="card-surface surface s-groove">
+    <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="Acoustic Designer Panel" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Panels</span>
+    <h3>Acoustic Designer Panel</h3>
+    <p>CNC-cut patterns: V-groove, U-groove, fluted, bespoke</p>
+    <div class="nrc nrc-sm" data-mat="pet">
+    <div class="nrc-track"><i style="--v:85%"></i></div>
+    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-polyester-panel.html">
+  <div class="card-surface surface s-felt">
+    <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="Acoustic Polyester Panel" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Panels</span>
+    <h3>Acoustic Polyester Panel</h3>
+    <p>PET felt board for walls and ceilings</p>
+    <div class="nrc nrc-sm" data-mat="pet">
+    <div class="nrc-track"><i style="--v:85%"></i></div>
+    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="cloud" href="products/acoustic-ceiling-baffle.html">
+  <div class="card-surface surface s-baffle">
+    <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="Acoustic Ceiling Baffle" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Ceilings</span>
+    <h3>Acoustic Ceiling Baffle</h3>
+    <p>Vertical fins for tall, hard rooms</p>
+    <div class="nrc nrc-sm" data-mat="cloud">
+    <div class="nrc-track"><i style="--v:85%"></i></div>
+    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="cloud" href="products/acoustic-ceiling-cloud.html">
+  <div class="card-surface surface s-cloud">
+    <img src="assets/img/products/acoustic-ceiling-cloud-card.webp" alt="Acoustic Ceiling Cloud" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Ceilings</span>
+    <h3>Acoustic Ceiling Cloud</h3>
+    <p>Horizontal absorbers hung below a hard soffit</p>
+    <div class="nrc nrc-sm" data-mat="cloud">
+    <div class="nrc-track"><i style="--v:85%"></i></div>
+    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-wedge-foam.html">
+  <div class="card-surface surface s-wedge">
+    <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="Acoustic Wedge Foam" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Foam</span>
+    <h3>Acoustic Wedge Foam</h3>
+    <p>Directional wedge profile for first reflections</p>
+    <div class="nrc nrc-sm" data-mat="foam">
+    <div class="nrc-track"><i style="--v:90%"></i></div>
+    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-pyramid-foam.html">
+  <div class="card-surface surface s-pyramid">
+    <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="Acoustic Pyramid Foam" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Foam</span>
+    <h3>Acoustic Pyramid Foam</h3>
+    <p>Profiled PU foam for control rooms and booths</p>
+    <div class="nrc nrc-sm" data-mat="foam">
+    <div class="nrc-track"><i style="--v:90%"></i></div>
+    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wooden-slats.html">
+  <div class="card-surface surface s-slat">
+    <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic Wooden Slats" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Wood</span>
+    <h3>Acoustic Wooden Slats</h3>
+    <p>Veneered slat planks on an acoustic felt backing</p>
+    <div class="nrc nrc-sm" data-mat="wood">
+    <div class="nrc-track"><i style="--v:85%"></i></div>
+    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.85</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wood-wool-panel.html">
+  <div class="card-surface surface s-wool">
+    <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="Acoustic Wood Wool Panel" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Acoustic Wood</span>
+    <h3>Acoustic Wood Wool Panel</h3>
+    <p>Magnesite-bonded wood fibre, robust and paintable</p>
+    <div class="nrc nrc-sm" data-mat="wood">
+    <div class="nrc-track"><i style="--v:90%"></i></div>
+    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
+  </div>
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="proof" href="products/soundproof-door.html">
+  <div class="card-surface surface s-door">
+    <img src="assets/img/products/soundproof-door-card.webp" alt="Soundproof Door" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Soundproofing</span>
+    <h3>Soundproof Door</h3>
+    <p>Sealed heavy doorset, 60 or 100 mm leaf</p>
+    
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
+        <a class="card" data-anim="rise" data-mat="proof" href="products/polysynth-wool.html">
+  <div class="card-surface surface s-batt">
+    <img src="assets/img/products/polysynth-wool-card.webp" alt="PolySynth Wool" width="800" height="600" loading="lazy" decoding="async">
+  </div>
+  <div class="card-body">
+    <span class="card-cat">Soundproofing</span>
+    <h3>PolySynth Wool</h3>
+    <p>Non-itch polyester insulation roll for cavities</p>
+    
+    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</a>
         <a class="fam fam-all" data-anim="rise" href="products.html">
           <div class="fam-body">
             <span class="fam-n" style="color:inherit">The full catalogue</span>
@@ -218,7 +329,10 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         <p class="eyebrow" data-anim="fade">Where we work</p>
         <h2 data-anim="reveal">Every project type has a number to hit.</h2>
       </div>
-      <p class="lead" data-anim="fade">A studio and a sports hall both need treating, but they need opposite things. We design to the target for the room's actual use, not to a coverage percentage.</p>
+      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. The heading
+           above it is ours and was left alone: the brief marked the paragraph
+           for replacement, not the whole block. -->
+      <p class="lead" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
     </div>
     <div class="rdx-table">
       <p class="rdx-cols" data-anim="fade">
@@ -325,7 +439,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         <div class="step" data-anim="fade"><h3>Measurement &amp; report</h3><p>Reverberation time by octave band, background noise level, and the transfer paths between rooms. You get the numbers, not an opinion.</p></div>
         <div class="step" data-anim="fade"><h3>Design &amp; specification</h3><p>A treatment layout drawn to your architect's plan, with the material, area and expected result stated per surface. Two rounds of revision are included.</p></div>
         <div class="step" data-anim="fade"><h3>Quotation</h3><p>Itemised by product and area, with installation, transport and taxes separated. No lump sums that hide what you are paying for.</p></div>
-        <div class="step" data-anim="fade"><h3>Manufacture</h3><p>Cutting, routing, printing and assembly in our own facility. Custom work is proofed with you before it goes on the machine.</p></div>
+        <div class="step" data-anim="fade"><h3>Manufacture</h3><p>Cutting, routing, printing and assembly to the signed-off design. Custom work is proofed with you before it goes on the machine.</p></div>
         <div class="step" data-anim="fade"><h3>Installation</h3><p>Fitted by our own crews across Mumbai and Maharashtra, and by certified installation teams elsewhere in India. Either way they work to the drawing and to your site timings, including nights and weekends.</p></div>
         <div class="step" data-anim="fade"><h3>Verification</h3><p>We measure the finished room against the design target and hand over the report. If it misses, we fix it — that is what the design fee bought.</p></div>
       </div>
@@ -348,39 +462,64 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 </section>
 
 
-<section class="light choreo" aria-labelledby="choreo-h">
-  <div class="choreo-pin">
-    <div class="wrap choreo-copy">
-      <p class="eyebrow">Selected work</p>
-      <h2 id="choreo-h">Four rooms,<br>one way of working.</h2>
+<section class="light railed clients-sec" aria-labelledby="clients-h">
+  <div class="wrap">
+    <span class="rail-label">Clients</span>
+    <div class="section-head">
+      <h2 id="clients-h" data-anim="reveal">50 clients.</h2>
     </div>
-    <div class="choreo-stage">
-      <figure class="choreo-plate at-tl" data-anim="rise">
-        <div class="choreo-surface surface s-wedge">
-          <img src="assets/img/projects/action-voice-studio-khar-mumbai.webp" alt="Action Voice Studio, Khar Mumbai" width="760" height="507" loading="lazy" decoding="async">
-        </div>
-        <figcaption><b>Action Voice Studio</b>Khar Mumbai &middot; Recording Studio</figcaption>
-      </figure>
-      <figure class="choreo-plate at-br" data-anim="rise">
-        <div class="choreo-surface surface s-perf">
-          <img src="assets/img/projects/accenture-vikroli.webp" alt="Accenture, Vikroli" width="760" height="507" loading="lazy" decoding="async">
-        </div>
-        <figcaption><b>Accenture</b>Vikroli &middot; Classroom &amp; Training Rooms</figcaption>
-      </figure>
-      <figure class="choreo-plate at-bl" data-anim="rise">
-        <div class="choreo-surface surface s-param">
-          <img src="assets/img/projects/88-pictures-mumbai.webp" alt="88 Pictures, Mumbai" width="760" height="507" loading="lazy" decoding="async">
-        </div>
-        <figcaption><b>88 Pictures</b>Mumbai &middot; Conference Room &amp; Cabin</figcaption>
-      </figure>
-      <figure class="choreo-plate at-tr" data-anim="rise">
-        <div class="choreo-surface surface s-slat">
-          <img src="assets/img/projects/ravindra-natya-mandir-prabhadevi.webp" alt="Ravindra Natya mandir, Prabhadevi" width="760" height="507" loading="lazy" decoding="async">
-        </div>
-        <figcaption><b>Ravindra Natya mandir</b>Prabhadevi &middot; Auditorium &amp; Halls</figcaption>
-      </figure>
-    </div>
-    <p class="choreo-foot"><a class="tlink" href="projects.html">All 170 in the gallery <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <ul class="client-wall" data-stagger>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-mirchi.webp" alt="98.3 FM Radio Mirchi" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/accenture.webp" alt="Accenture" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/aegon-religare.webp" alt="Aegon Religare Life Insurance" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/abp-ananda.webp" alt="ABP Ananda" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/atlas-copco.webp" alt="Atlas Copco" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/awfis.webp" alt="Awfis" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/barbeque-nation.webp" alt="Barbeque Nation" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bajaj-finserv.webp" alt="Bajaj Finserv" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/balaji-telefilms.webp" alt="Balaji Telefilms" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bd-somani.webp" alt="B. D. Somani International School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bnhs.webp" alt="BNHS India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bombay-gymkhana.webp" alt="Bombay Gymkhana" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bookmyshow.webp" alt="BookMyShow" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/chatrabhuj-narsee.webp" alt="Chatrabhuj Narsee School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/dbs.webp" alt="DBS" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/doordarshan.webp" alt="Doordarshan" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/edelweiss.webp" alt="Edelweiss Broking" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/euroschool.webp" alt="EuroSchool" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/federal-bank.webp" alt="Federal Bank" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/gaudium.webp" alt="The Gaudium School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/gitam.webp" alt="GITAM University" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/iit-bombay.webp" alt="IIT Bombay" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/ict.webp" alt="Institute of Chemical Technology" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jai-hind-college.webp" alt="Jai Hind College" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jaro-education.webp" alt="Jaro Education" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jbcn.webp" alt="JBCN International School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/kk-cinemas.webp" alt="KK Cinemas" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/larsen-toubro.webp" alt="Larsen &amp; Toubro" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/lodha.webp" alt="Lodha" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mithibai-college.webp" alt="Mithibai College" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mscert.webp" alt="MSCERT" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mumbai-university.webp" alt="University of Mumbai" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/nsci.webp" alt="National Sports Club of India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/pepsico.webp" alt="PepsiCo" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/piramal-realty.webp" alt="Piramal Realty" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/prudential.webp" alt="Prudential" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-city.webp" alt="Radio City" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-nasha.webp" alt="Radio Nasha" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/rbl-bank.webp" alt="RBL Bank" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/red-fm.webp" alt="Red FM 93.5" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/reliance-entertainment.webp" alt="Reliance Entertainment" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sahara-star.webp" alt="Sahara Star" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sbi.webp" alt="State Bank of India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sm-shetty.webp" alt="S. M. Shetty" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/starwing.webp" alt="Starwing Developers" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/tata-cliq.webp" alt="Tata CLiQ" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/tata-power.webp" alt="Tata Power" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/teleperformance.webp" alt="Teleperformance" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/thakur.webp" alt="Thakur" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/times-of-india.webp" alt="The Times of India" width="402" height="162" loading="lazy" decoding="async"></li>
+    </ul>
   </div>
 </section>
 

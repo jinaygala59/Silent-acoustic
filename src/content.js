@@ -33,6 +33,37 @@ const SITE = {
      the gallery (170). Do not use one where the other belongs. */
   projectsCompleted: '2035+',
 
+  /* ---- THE HERO STAT RAIL ----------------------------------------------
+     These four are the client's own homepage counters, transcribed from the
+     band on silenceacoustic.com: "2035+ Project Completed / 20+ Years of
+     Experience / 20+ Team Strength / 7 Project Running". Their labels are
+     kept in the client's own wording (singular "Project Completed", not
+     "Projects") because they are quoted figures, not our copy.
+
+     Two of them are NOT derivable from anything else in this file and cannot
+     be checked from the repo: team strength and projects currently running.
+     `running` in particular goes stale on its own — it is a snapshot of one
+     week's workload, not a cumulative total. Ask the client before a rebuild
+     if it has been a while, and do not "round it up" here.
+
+     `years` is derived from FOUNDED in src/pages.js and passes through here
+     only so the four sit together; do not type a number into it.
+
+     THERE ARE NO SUB-CAPTIONS AND THERE MUST NOT BE. Each counter is a figure
+     and the client's own label, nothing else, because that is all their band
+     carries. A first pass added a line under each one ("Across India since
+     2006", "Designers, fabricators and installers", "On site at the time of
+     writing") and every one of those was written here rather than taken from
+     the client — the third was an outright invention about their current
+     workload. They are removed. If a caption is wanted, get the words from
+     the client; do not compose one. */
+  stats: [
+    { v: '2035+', label: 'Project Completed' },
+    { v: null,    label: 'Years of Experience', years: true },
+    { v: '20+',   label: 'Team Strength' },
+    { v: '7',     label: 'Project Running' },
+  ],
+
   /* ---- CONTACT FORM: the one setting that makes enquiries arrive ----
      Paste either a Web3Forms access key (https://web3forms.com, free) or a
      full Formspree URL (https://formspree.io/f/xxxx). Rebuild and it is live.
@@ -40,6 +71,141 @@ const SITE = {
      they typed pre-filled — nothing is lost, but nothing reaches an inbox
      automatically either. */
   formEndpoint: '',
+};
+
+/* ---- CLIENTS ------------------------------------------------------------
+   THE FIFTY LOGOS THE CLIENT ALREADY PUBLISHES on the homepage of
+   silenceacoustic.com, in their own order (theirs is alphabetical by
+   filename, which is why 98.3 FM leads). Artwork is theirs, downloaded from
+   their own uploads and converted to WebP at 402x162.
+
+   THESE ARE OTHER COMPANIES' TRADEMARKS. They are on this site because they
+   are on the client's site — porting a page the client already publishes,
+   not making a new claim on their behalf. If a listed organisation ever asks
+   to come off, the fix is to delete the row here and the file in
+   assets/img/clients; nothing else references either.
+
+   `n` IS A DISPLAY NAME, NOT THE CLIENT'S ALT TEXT. Theirs is the WordPress
+   filename ("accenture", "Babique-nation", "Clients page images-12") and it
+   goes straight into the alt attribute, so it had to be readable. Each name
+   here was read off the artwork itself. Two were not recoverable from the
+   filename at all and are recorded so nobody "corrects" them back:
+     Clients-page-images-12.png  is the DBS bank logo
+     Doorsha.jpg                 is Doordarshan
+   Three more were misspellings fixed against the artwork: Babique -> Barbeque
+   Nation, Bajaj-finserve -> Bajaj Finserv, Gitam-univerity -> GITAM.
+
+   THE COUNT IS NEVER TYPED. The section head reads CLIENTS.length. */
+const CLIENTS = [
+  { s: 'radio-mirchi',             n: '98.3 FM Radio Mirchi' },
+  { s: 'accenture',                n: 'Accenture' },
+  { s: 'aegon-religare',           n: 'Aegon Religare Life Insurance' },
+  { s: 'abp-ananda',               n: 'ABP Ananda' },
+  { s: 'atlas-copco',              n: 'Atlas Copco' },
+  { s: 'awfis',                    n: 'Awfis' },
+  { s: 'barbeque-nation',          n: 'Barbeque Nation' },
+  { s: 'bajaj-finserv',            n: 'Bajaj Finserv' },
+  { s: 'balaji-telefilms',         n: 'Balaji Telefilms' },
+  { s: 'bd-somani',                n: 'B. D. Somani International School' },
+  { s: 'bnhs',                     n: 'BNHS India' },
+  { s: 'bombay-gymkhana',          n: 'Bombay Gymkhana' },
+  { s: 'bookmyshow',               n: 'BookMyShow' },
+  { s: 'chatrabhuj-narsee',        n: 'Chatrabhuj Narsee School' },
+  { s: 'dbs',                      n: 'DBS' },
+  { s: 'doordarshan',              n: 'Doordarshan' },
+  { s: 'edelweiss',                n: 'Edelweiss Broking' },
+  { s: 'euroschool',               n: 'EuroSchool' },
+  { s: 'federal-bank',             n: 'Federal Bank' },
+  { s: 'gaudium',                  n: 'The Gaudium School' },
+  { s: 'gitam',                    n: 'GITAM University' },
+  { s: 'iit-bombay',               n: 'IIT Bombay' },
+  { s: 'ict',                      n: 'Institute of Chemical Technology' },
+  { s: 'jai-hind-college',         n: 'Jai Hind College' },
+  { s: 'jaro-education',           n: 'Jaro Education' },
+  { s: 'jbcn',                     n: 'JBCN International School' },
+  { s: 'kk-cinemas',               n: 'KK Cinemas' },
+  { s: 'larsen-toubro',            n: 'Larsen & Toubro' },
+  { s: 'lodha',                    n: 'Lodha' },
+  { s: 'mithibai-college',         n: 'Mithibai College' },
+  { s: 'mscert',                   n: 'MSCERT' },
+  { s: 'mumbai-university',        n: 'University of Mumbai' },
+  { s: 'nsci',                     n: 'National Sports Club of India' },
+  { s: 'pepsico',                  n: 'PepsiCo' },
+  { s: 'piramal-realty',           n: 'Piramal Realty' },
+  { s: 'prudential',               n: 'Prudential' },
+  { s: 'radio-city',               n: 'Radio City' },
+  { s: 'radio-nasha',              n: 'Radio Nasha' },
+  { s: 'rbl-bank',                 n: 'RBL Bank' },
+  { s: 'red-fm',                   n: 'Red FM 93.5' },
+  { s: 'reliance-entertainment',   n: 'Reliance Entertainment' },
+  { s: 'sahara-star',              n: 'Sahara Star' },
+  { s: 'sbi',                      n: 'State Bank of India' },
+  { s: 'sm-shetty',                n: 'S. M. Shetty' },
+  { s: 'starwing',                 n: 'Starwing Developers' },
+  { s: 'tata-cliq',                n: 'Tata CLiQ' },
+  { s: 'tata-power',               n: 'Tata Power' },
+  { s: 'teleperformance',          n: 'Teleperformance' },
+  { s: 'thakur',                   n: 'Thakur' },
+  { s: 'times-of-india',           n: 'The Times of India' },
+];
+
+/* ---- HERO BANNERS -------------------------------------------------------
+   THE CLIENT'S OWN HOMEPAGE SLIDER, ported by request. Photographs, sector
+   labels and headlines are all transcribed from silenceacoustic.com — the
+   three `pxl-item` slides in their hero. Do not rewrite the headlines: they
+   are the client's marketing copy, capitalisation included.
+
+     Recording-studio-1.jpg  -> banners/recording-studio.webp
+     Banner-5.jpg            -> banners/office-conference.webp
+     Banner-4.jpg            -> banners/auditorium.webp
+
+   THE SCRIM DOES NOT GUARANTEE AN ARBITRARY PHOTOGRAPH (see the hero notes in
+   CLAUDE.md). Every one of these three was measured against the real
+   composite before it went in, at 1440 and at 375, and the figures are
+   recorded beside `.hero-media::after` in site.css. If you swap one, measure
+   the replacement the same way — a darker picture than these will take the
+   headline under the floor and nothing automated will catch it.
+
+   `w`/`h` are the intrinsic pixels of the WebP, needed so the banner reserves
+   its box before the image lands. */
+const BANNERS = [
+  /* No `alt` field: the banner photographs are decorative. `.hero-media`
+     carries aria-hidden and each <img> ships alt="", which is correct — the
+     sector and the headline beside the picture already say what it is. An
+     alt written here would also have been a description composed rather than
+     taken from the client, which is the thing this file exists to prevent. */
+  { img: 'recording-studio',  w: 1600, h: 612, sector: 'Recording Studio', title: 'Silence That Speaks Style' },
+  { img: 'office-conference', w: 1600, h: 731, sector: 'Offices',          title: 'Designed for Sound. Crafted for Spaces.' },
+  { img: 'auditorium',        w: 1600, h: 731, sector: 'Auditorium',       title: 'Where Superior Acoustics Meet Elegant Design' },
+];
+
+/* ---- FOUNDER ------------------------------------------------------------
+   CLIENT-SUPPLIED COPY. Verbatim from the change brief, including the figures
+   ("more than 20 years", "over 2,035 projects"). Ravi Sebastian is a real,
+   named person; do not embellish his biography, invent credentials, or add a
+   portrait. Everything here came from the client in writing.
+
+   The 2,035 figure is the same number as SITE.projectsCompleted, stated the
+   client's own way for prose. Do not wire one to the other — the brief writes
+   it with a comma and no plus, and that is their sentence. */
+const FOUNDER = {
+  name: 'Ravi Sebastian',
+  role: 'Founder, Silence Acoustic',
+  body: [
+    'Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments.',
+    'His practical expertise and technical leadership have shaped Silence Acoustic into a trusted provider of professional acoustic treatment and soundproofing solutions. Our team leverages this experience to diagnose unique acoustic problems and to design solutions that balance performance, functionality, aesthetics, and durability.',
+    'Built on a foundation of industry knowledge and proven project delivery, the Silence Acoustic product range is engineered to deliver optimal acoustic performance while meeting the specific requirements of each space. We offer tailored solutions that integrate seamlessly with architects, deliver measurable acoustic improvements, and stand up to long-term use.',
+  ],
+};
+
+/* ---- ABOUT-PAGE INTRO ---------------------------------------------------
+   CLIENT-SUPPLIED COPY, verbatim from the change brief. One paragraph; it
+   replaced three of ours that made the supplier-and-installer argument. The
+   figures ("20+ years", "2,035+ projects") are theirs as written. */
+const ABOUT_INTRO = {
+  h1: 'Two Decades of Expertise in Acoustic Product and Solutions',
+  h2: 'Two decades of expertise,\nin product and in solutions.',
+  body: 'Silence Acoustic is a professionally driven acoustic and soundproofing solutions company, built on 20+ years of industry expertise under the leadership of our Founder, Ravi Sebastian. With 2,035+ projects successfully delivered, we bring extensive experience in acoustic treatment, soundproofing, and high-performance acoustic products across diverse applications. From offices, auditoriums, studios, hospitality spaces, and commercial environments to specialised projects, we combine technical expertise, quality materials, precision installation, and innovative design to create spaces with superior sound control, clarity, comfort, and privacy. Our commitment is to deliver engineered acoustic solutions that perform, endure, and seamlessly integrate with the aesthetics of every space.',
 };
 
 const NAV = [
@@ -465,7 +631,12 @@ const PROCESS = [
   { h: 'Measurement & report', p: 'Reverberation time by octave band, background noise level, and the transfer paths between rooms. You get the numbers, not an opinion.' },
   { h: 'Design & specification', p: 'A treatment layout drawn to your architect\'s plan, with the material, area and expected result stated per surface. Two rounds of revision are included.' },
   { h: 'Quotation', p: 'Itemised by product and area, with installation, transport and taxes separated. No lump sums that hide what you are paying for.' },
-  { h: 'Manufacture', p: 'Cutting, routing, printing and assembly in our own facility. Custom work is proofed with you before it goes on the machine.' },
+  /* "in our own facility" was cut here. The client asked twice in one brief to
+     stop publishing the in-house-manufacturing claim — once on the homepage
+     rail, once on the About bento — and a process step asserting a facility
+     is the same claim in a quieter place. What the step actually promises the
+     buyer is the proofing, and that is untouched. */
+  { h: 'Manufacture', p: 'Cutting, routing, printing and assembly to the signed-off design. Custom work is proofed with you before it goes on the machine.' },
   { h: 'Installation', p: 'Fitted by our own crews across Mumbai and Maharashtra, and by certified installation teams elsewhere in India. Either way they work to the drawing and to your site timings, including nights and weekends.' },
   { h: 'Verification', p: 'We measure the finished room against the design target and hand over the report. If it misses, we fix it — that is what the design fee bought.' },
 ];
@@ -718,4 +889,4 @@ const FAQ = [
   { q: 'Can acoustic treatments be customized for interior design?', a: 'Yes. Our fabric-wrapped panels and acoustic tiles come in hundreds of colours, patterns and textures, and we work directly with interior designers on the look.' },
 ];
 
-module.exports = { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };
+module.exports = { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };

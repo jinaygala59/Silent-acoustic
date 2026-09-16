@@ -23,10 +23,18 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
                       rather than a supporting one. */
 const FONTS = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap';
 
-/* The real Silence Acoustic logo. Two lockups, each in a knockout variant:
-   the header drops the tagline (it is illegible at 32px), the footer keeps it.
-   Sources: silenceacoustic.com/wp-content/uploads/2026/05/for-website-01-scaled.png */
-const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}assets/img/logo-mark.png" alt="Silence Acoustic" width="613" height="108" fetchpriority="high">`;
+/* The real Silence Acoustic logo. Two lockups, each in a knockout variant.
+   Source: silenceacoustic.com/wp-content/uploads/2026/05/for-website-01-scaled.png
+
+   BOTH HEADER AND FOOTER NOW CARRY THE FULL LOCKUP, tagline included, by
+   request — that is what the live site puts in its own header. The header
+   used to take `logo-mark.png`, the same artwork with "Innovating Sound In A
+   Better Way" cropped off, because the tagline is unreadable at the 32px the
+   bar was drawn at. The fix is the bar, not the artwork: `.brand-logo` is
+   44px now and the header padding was opened to match. If you shrink it
+   back, go back to logo-mark.png rather than shipping an illegible line of
+   type — logo-mark.png is kept in assets/img for exactly that. */
+const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">`;
 const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
 
 const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -313,40 +321,74 @@ const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="
 
    This used to be all nineteen product cards stacked down the page, which made
    the homepage eleven thousand pixels long and told a first-time visitor
-   nothing about how the range is organised. It is now five family panels on a
-   rail that travels sideways while the section is pinned — every product is
-   still named, in a third of the height.
+   nothing about how the range is organised. It became five family panels on a
+   rail that travels sideways while the section is pinned.
+
+   IT IS PRODUCTS AGAIN NOW — ten of them — BY REQUEST, and the two things the
+   client asked to lose are worth stating so they do not creep back:
+
+     1. THE WORD "FAMILIES" IS GONE FROM THIS SECTION. Not the concept — the
+        products page still groups by family and the filters still work — but
+        the homepage no longer opens by asking a stranger to learn a taxonomy
+        before they can see a panel. The eyebrow counts products.
+     2. "MANUFACTURED IN OUR OWN FACILITY IN MUMBAI" IS GONE. That was a
+        manufacturing claim, and the client does not want it published. The
+        same claim was cut from the About page's bento in the same pass. Do
+        not reinstate either without being asked.
+
+   WHY TEN AND NOT NINETEEN. The rail's travel is `100vw - 100%` — it scales
+   itself to whatever the track measures — but the scroll distance it is
+   driven over does not, and nineteen cards need roughly 4800px of travel.
+   Pinning a homepage section for five screens is not a rail, it is a
+   detour. Ten cards plus the catalogue card sit at about 2100px, which is
+   why `--rail-n` exists below.
+
+   WHICH TEN IS DERIVED, NOT CHOSEN. Each family's own `img` field already
+   names its most recognisable member — that pick was made once, in the data,
+   when the family cards needed a photograph. This takes that product first
+   and the next one in the family after it, two per family. Add a product to
+   content.js and this stays correct on its own; change a family's `img` and
+   the rail follows it.
+
+   The card is `productCard()`, the same component the products page uses. It
+   was tempting to keep the bespoke `.fam` markup and just retitle it, and
+   that would have silently dropped the NRC bar and the material marker from
+   ten cards — the two things that make this range look measured rather than
+   decorative. The rail styles the shared card instead; see `.rail-track .card`
+   in site.css.
 
    The markup is a plain horizontal snap rail. The pin is added by motion.css
    only where it can be driven natively; narrow screens, unsupported browsers
    and reduced-motion users get the rail itself, which works fine. */
-const famRail = () => `<section class="rail-sec" aria-labelledby="families">
+const RAIL_PER_FAMILY = 2;
+const railPicks = () => {
+  const out = [];
+  CATEGORIES.forEach(cat => {
+    const items = PRODUCTS.filter(p => p.cat === cat.id);
+    const lead = items.find(p => p.slug === cat.img);
+    const rest = items.filter(p => p !== lead);
+    out.push(...[lead, ...rest].filter(Boolean).slice(0, RAIL_PER_FAMILY));
+  });
+  return out;
+};
+
+const famRail = () => {
+  const picks = railPicks();
+  return `<section class="rail-sec" aria-labelledby="families" style="--rail-n:${picks.length + 1}">
   <div class="rail-sticky">
     <div class="wrap">
       <div class="rail-head">
         <div>
-          <p class="eyebrow" data-anim="fade">${PRODUCTS.length} products, five families</p>
+          <p class="eyebrow" data-anim="fade">${PRODUCTS.length} products</p>
           <h2 id="families" data-anim="reveal">Everything we make and fit.</h2>
         </div>
-        <p class="lead" data-anim="fade">Manufactured in our own facility in Mumbai. Custom sizes, colours, cut patterns and printing are standard work here, not a special request.</p>
+        <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. -->
+        <p class="lead" data-anim="fade">Innovative acoustic products designed for superior sound absorption and effective acoustic control. Combining performance, durability, and aesthetics to create acoustically balanced environments.</p>
       </div>
     </div>
     <div class="rail-viewport">
       <div class="rail-track">
-        ${CATEGORIES.map((cat, i) => {
-          const items = PRODUCTS.filter(p => p.cat === cat.id);
-          return `<a class="fam" data-anim="rise" data-mat="${MAT[cat.id] || 'pet'}" href="products.html#${cat.id}">
-          <div class="fam-surface surface ${cat.surf}">
-            <img src="assets/img/products/${cat.img}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          </div>
-          <div class="fam-body">
-            <span class="fam-n">${String(i + 1).padStart(2, '0')} &middot; ${items.length} products</span>
-            <h3>${esc(cat.name)}</h3>
-            <p class="fam-note">${esc(cat.note)}.</p>
-            <span class="card-foot">See the family ${ARROW}</span>
-          </div>
-        </a>`;
-        }).join('\n        ')}
+        ${picks.map(p => productCard(p)).join('\n        ')}
         <a class="fam fam-all" data-anim="rise" href="products.html">
           <div class="fam-body">
             <span class="fam-n" style="color:inherit">The full catalogue</span>
@@ -360,6 +402,7 @@ const famRail = () => `<section class="rail-sec" aria-labelledby="families">
     <div class="wrap"><p class="rail-hint">Scroll sideways</p></div>
   </div>
 </section>`;
+};
 
 const ctaBand = (up = '') => `<section class="cta-band">
   <div class="wrap">
