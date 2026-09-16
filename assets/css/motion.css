@@ -222,27 +222,11 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 .hl { display: block; clip-path: inset(-0.32em -100% -0.34em 0); }
 
 .hero-title .decay { position: relative; display: inline-block; }
-/* Real elements rather than `content: attr()` pseudo-elements, so the word is
-   announced once instead of three times. */
-.hero-title .echo {
-  position: absolute; left: 0; top: 0;
-  /* A tail is the same sound quieter, not a different one — so the ghosts are
-     the same warm neutral the word is, not the cyan. The cyan is reserved for
-     interactive things (rule 2), and as decoration here it also tinted the
-     overlap blue, which is what made the blur read as a rendering fault. */
-  font-style: normal; color: var(--on-light-mute);
-  opacity: 0; pointer-events: none; white-space: nowrap;
-}
-
 @keyframes mHeroLine { from { opacity: 0; transform: translate3d(0, 105%, 0); } }
 @keyframes mHeroIn   { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
-@keyframes mTail1 {
-  0%   { opacity: 0.42; transform: translate3d(0.30em, 0, 0); }
-  100% { opacity: 0;    transform: translate3d(0.54em, 0, 0); }
+
 }
-@keyframes mTail2 {
-  0%   { opacity: 0.22; transform: translate3d(0.62em, 0, 0); }
-  100% { opacity: 0;    transform: translate3d(1.02em, 0, 0); }
+
 }
 /* Scrolling out of the hero: the wall keeps moving after the copy has gone,
    so the section has depth rather than being one flat plate. */
@@ -343,13 +327,6 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     animation: mHeroLine 900ms var(--m-in) both;
     animation-delay: calc(var(--d, 0) * 1ms);
   }
-  /* Held until the word itself has landed. "place." is the second line
-     (--d:240) running mHeroLine for 900ms, so it is not fully opaque until
-     ~1140ms; starting the tails at 640ms put two ghosts on screen while the
-     real word was still faded out, and they read as the headline rather than
-     as its echo. */
-  .hero-title .e1 { animation: mTail1 1100ms var(--m-in) 1000ms both; }
-  .hero-title .e2 { animation: mTail2 1500ms var(--m-in) 1000ms both; }
 
   /* Inner page headers land the same way the hero does, without needing an
      attribute on every one of them — they are always the first thing on the
@@ -613,7 +590,6 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
    means the note in CLAUDE.md about "a second pin" and about `.rail-sec`
    being the control to check when a pin looks broken no longer has a second
    subject. `.rail-sec` is the only one. */
-
 
 /* ========================= the process spine ===========================
    Seven steps that gate each other, so the rule between them is drawn as you
@@ -1157,7 +1133,6 @@ a.card:hover .card-surface, .fam:hover .fam-surface { transform: scale(1.03); }
     }
   }
 }
-
 
 /* =========================================================================
    HOVER IS FOR DEVICES THAT HOVER

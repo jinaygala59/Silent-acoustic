@@ -17,11 +17,23 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
    the mono labels as a colleague instead of a guest.
 
    Archivo           headlines and figures. One weight, still the point: a
-                      display face is sized, not bolded.
-   Instrument Sans    body and UI. Neutral enough to stay out of the way.
-   IBM Plex Mono      labels, specs, buttons — now the dominant register
-                      rather than a supporting one. */
-const FONTS = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap';
+   THE PAIRING IS INSTRUMENT SERIF + KARLA (the "Workshop" direction).
+
+   Instrument Serif   display. One weight, one italic, no axes — which is the
+                      whole point: hierarchy here is SIZE, not width or
+                      weight. See the note in site.css about `--wd-*`, which
+                      this face does not have and which are now inert.
+   Karla              body, UI and labels. It carries `--mono` too, as Public
+                      Sans did before it: the token name survives because 46
+                      call sites use it, and columns of figures line up with
+                      `font-variant-numeric: tabular-nums`, never a
+                      monospaced face.
+
+   CHANGE THIS AND site.css's --display/--body/--mono IN THE SAME EDIT.
+   (Bricolage Grotesque + Public Sans, Archivo + Instrument Sans, and IBM
+   Plex Sans + Mono were the previous pairings; all three references are
+   stale.) */
+const FONTS = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
 
 /* The real Silence Acoustic logo. Two lockups, each in a knockout variant.
    Source: silenceacoustic.com/wp-content/uploads/2026/05/for-website-01-scaled.png

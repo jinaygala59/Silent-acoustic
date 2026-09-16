@@ -466,19 +466,65 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
-**The direction is "Coefficient": two light grounds, and colour means
-material.** The ground is a cool slate ramp with text at `--on-light`
-`#0F172A` and muted at `--on-light-mute` `#3F4C5E`. There are **two ombres,
+**THE DIRECTION IS "WORKSHOP": warm paper, timber and rust, and colour still
+means material.** It replaced "Coefficient", a cool slate ramp, in a
+deliberate full-site restyle — the client asked for a genuinely new look with
+every word, figure and photograph held identical. If you see `#E6F0F5`,
+`#0F172A`, `#3F4C5E`, `#094A68`, Bricolage Grotesque or Public Sans anywhere
+in a note, that reference is stale.
+
+| role | token | value |
+|---|---|---|
+| page wash | `body` ramp | `#F7F2E8` → `#F3EDE0` → `#EDE5D6` → `#E7DECE` |
+| card / panel | `--paper-hi` | `#FBF7F0` |
+| ink | `--on-light` | `#221E18` |
+| muted | `--on-light-mute` | `#564E41` |
+| links, labels | `--brand` | `#843E23` |
+| hover | `--brand-lift` | `#6B321B` |
+| pill FILL only | `--brand-deep` | `#9C4A2A` |
+
+**Type is Instrument Serif over Karla**, set in `site.css` with the Google
+Fonts URL as `FONTS` in `src/build.js` — change both together.
+
+**HIERARCHY IS SIZE NOW, NOT WIDTH.** Instrument Serif has ONE weight and no
+variable axes, so `--wd-hero` / `--wd-h2` / `--wd-h3` / `--wd-label` and every
+`font-variation-settings` that names `wdth` are INERT — harmless, because a
+browser ignores an axis the font does not have, but they no longer do
+anything. `--w-display` is 400 for the same reason: asking for 600 would have
+the browser synthesise a fake bold. Do not reach for a heavier weight; reach
+for a size.
+
+**THE HARD RULE AND THE OFFSET BLOCK ARE THE DEVICE.** `--r` is `0`, cards and
+panels carry `border: 2px solid var(--on-light)`, and `--lift` is
+`4px 4px 0 #221E18` rather than a soft shadow. Hover moves the block
+UP-AND-LEFT into a deeper offset (`translate3d(-3px,-3px,0)` with
+`--lift-2`), not up into a blur — with a hard shadow the old `translateY`
+read as the card sliding off its own drawing.
+
+The ground is a warm paper ramp with text at `--on-light`
+`#221E18` and muted at `--on-light-mute` `#564E41`. There are **two ombres,
 and they are not the same**:
 
-| token | stops | luminance |
-|---|---|---|
-| `--ombre-light` | `#EDF1F5` → `#DFE6ED` → `#C2CCD8` | 0.875 / 0.784 / 0.596 |
-| `--ombre-dark`  | `#DDE4EC` → `#CED7E1` → `#B0BCCB` | 0.769 / 0.672 / 0.495 |
+The two ombres are TRANSLUCENT VEILS over the body wash, not grounds of their
+own — `--ombre-light` lifts toward cream, `--ombre-dark` deepens toward ink:
 
-**This was the "too white" bug, and it is worth understanding before you
-undo it.** `--ombre-dark` used to be a byte-for-byte alias of
-`--ombre-light`, so `.dark` and `.light` rendered identically. Measured on
+| token | stops |
+|---|---|
+| `--ombre-light` | `rgba(255,253,248, .55 / .30 / .10)` |
+| `--ombre-dark`  | `rgba(34,30,24, .030 / .055 / .085)` |
+
+**THE PAGE WASH'S BOTTOM STOP IS SOLVED, NOT CHOSEN.** `#E7DECE`. The binding
+case is muted copy on a `.dark` section, over the wash's deepest stop, with a
+grid line directly under it — three darkenings stacked, compositing to
+`rgb(204,196,181)`, where `--on-light-mute` reads **4.74:1**. One step deeper
+on either the stop or the mute puts the site under the floor. `--brand`'s own
+worst case is the same kind of spot: `#843E23` on `rgb(214,205,190)` at
+**4.95:1**, which is `.note-go` on the blog index and the gallery link on the
+homepage.
+
+**The "too white" bug is worth understanding before you undo the separation.**
+`--ombre-dark` was once a byte-for-byte alias of `--ombre-light`, so `.dark`
+and `.light` rendered identically. Measured on
 the homepage, all nine sections below the hero read 1.000 / 0.954 / 0.657 —
 the same gradient nine times — and because it started at `#FFFFFF` you met
 pure white nine times scrolling down. Every contrast check passed the whole

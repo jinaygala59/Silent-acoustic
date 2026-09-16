@@ -77,14 +77,14 @@
      merely modified; and re-run the token-pair scan afterwards, because a
      half-reverted ramp fails in exactly the places a class-name grep does
      not look. */
-  --ink-deep:   #CBD5E1;   /* deepest ground on the site — 12.02:1 under --on-light */
-  --ink:        #F8FAFC;
-  --ink-lift:   #FFFFFF;
+  --ink-deep:   #CFC3AE;   /* deepest ground on the site — 12.02:1 under --on-light */
+  --ink:        #FBF7F0;
+  --ink-lift:   #FFFDF8;
   /* Card fill on a .dark ground. Toned with --paper-sub below — 19 product
      cards at pure white were as much of the "too white" as the ground was. */
-  --ink-panel:  #EAF3F7;
-  --ink-raise:  #F8FAFC;
-  --ink-edge:   #94A3B8;
+  --ink-panel:  #FBF7F0;
+  --ink-raise:  #FBF7F0;
+  --ink-edge:   #CFC3AE;
 
   /* -- paper: cool slate, the datasheet ---------------------------------
      Deliberately short of white. Screen-white next to real product photos
@@ -93,10 +93,10 @@
      that preceded it: the ground is now a desaturated slate so the one warm
      accent below has something to be warm *against*. A warm ground under a
      warm accent flattens both. */
-  --paper-hi:   #FFFFFF;
+  --paper-hi:   #FBF7F0;
   /* Body ground and form-field fill. */
-  --paper:      #E6F0F5;
-  --paper-lo:   #CBD5E1;   /* 1.48:1 end to end. Shallower than the 1.60:1 the
+  --paper:      #F2ECE1;
+  --paper-lo:   #E7DECE;   /* 1.48:1 end to end. Shallower than the 1.60:1 the
                               cyan ramp ran. The ombre is decoration, not the
                               thing carrying section rhythm — that job belongs
                               to the .light/.dark tone step. */
@@ -104,22 +104,22 @@
      near-white rectangle on top of the ground 19 times on the products page
      alone. At 0.88 it still reads as raised above the ground's 0.78 top
      (1.13:1) and its text is unaffected: muted copy on it is 7.75:1. */
-  --paper-sub:  #EAF3F7;
-  --paper-edge: #94A3B8;
+  --paper-sub:  #F6F1E7;
+  --paper-edge: #CFC3AE;
 
   /* -- text ------------------------------------------------------------ */
   /* --on-dark* no longer means "light text". With the dark grounds gone it is
      dark text on the deep ombre, so it resolves to the same values as
      --on-light*. The names survive only so .dark call sites keep working. */
-  --on-dark:      #0F172A;   /* 17.85:1 on --ink-lift, 12.02:1 on --ink-deep */
-  --on-dark-mute: #3F4C5E;   /* darkened with --on-light-mute; see its note */
+  --on-dark:      #221E18;   /* 17.85:1 on --ink-lift, 12.02:1 on --ink-deep */
+  --on-dark-mute: #564E41;   /* darkened with --on-light-mute; see its note */
   /* The banner photograph is the only surface left that needs light text.
      These two are fixed paper tones for that one job — never use them where a
      CSS ground is involved, they are not part of the ramp. */
-  --on-banner:  #0F172A;   /* see the banner note — fixed DARK, not a ground token */
-  --mark-banner: #333E4E;   /* 3.24:1 on the real composite — LARGE TEXT ONLY.
+  --on-banner:  #221E18;   /* see the banner note — fixed DARK, not a ground token */
+  --mark-banner: #3A332A;   /* 3.24:1 on the real composite — LARGE TEXT ONLY.
                               See the banner note before using it anywhere else. */
-  --on-light:      #0F172A;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
+  --on-light:      #221E18;  /* 17.06:1 on --paper, 12.02:1 on --paper-lo */
   /* Darkened from #475569. It was the single thing capping how deep the
      grounds could go: against the new deep ombre's end stop it measured
      4.38:1, below the 4.5 floor, so either the ground stayed pale or this
@@ -129,7 +129,7 @@
      light ramp, 7.41 / 6.61 / 5.04 on the dark one. Still a clear step
      lighter than --mark (#334155), so the marker stays the firmer of the
      two. */
-  --on-light-mute: #3F4C5E;
+  --on-light-mute: #564E41;
 
   /* -- the accent: the client's blue -----------------------------------
      NOTE FOR ANYONE READING AN OLDER VERSION OF THIS FILE: this block has
@@ -154,15 +154,15 @@
      from a safety-orange #EA580C. That was not the brand colour. If you see
      any of those three, the reference is stale — there is no orange on this
      site.) */
-  --brand:      #094A68;   /* the interactive token, text-safe everywhere —
+  --brand:      #843E23;   /* the interactive token, text-safe everywhere —
                               8.86:1 on --paper-hi, 5.48:1 on --paper-lo.
                               This is the one to reach for by default. */
-  --brand-lift: #073349;   /* hover — a step darker, never lighter */
-  --brand-deep: #10789C;   /* solid pill FILL ONLY, carries #FFFFFF at 5.01:1.
+  --brand-lift: #6B321B;   /* hover — a step darker, never lighter */
+  --brand-deep: #9C4A2A;   /* solid pill FILL ONLY, carries #FFFFFF at 5.01:1.
                               It is 3.13:1 on --paper-lo, so it must never be
                               used as a text colour. Fill and white text, or
                               nothing. */
-  --brand-ink:  #094A68;   /* links and labels on any ground — 4.98:1 worst,
+  --brand-ink:  #843E23;   /* links and labels on any ground — 4.98:1 worst,
                               on #B0BCCB, the deepest stop of --ombre-dark */
 
   /* --mark carries figures, hairline rules and markers: the neutral washed
@@ -173,8 +173,8 @@
      nothing has to be read against it. */
   --brand-mark: #1CABDE;
 
-  --mark:       #334155;   /* figures + rules on the deep ombre — 6.97:1 worst */
-  --mark-ink:   #334155;   /* same role on paper — one value now, because both
+  --mark:       #5C5447;   /* figures + rules on the deep ombre — 6.97:1 worst */
+  --mark-ink:   #5C5447;   /* same role on paper — one value now, because both
                               grounds are light. Kept a step stronger than
                               --on-light-mute (#475569) so the marker reads as
                               the firmer of the two. */
@@ -286,12 +286,12 @@
      They must stay TRANSLUCENT. Give either one an opaque colour and the
      section goes back to painting its own ground, the wash stops showing
      through, and the ombre is nine short gradients again. */
-  --ombre-light: linear-gradient(168deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.20) 52%, rgba(255,255,255,0.10) 100%);
-  --ombre-dark:  linear-gradient(168deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 52%, rgba(255,255,255,0.03) 100%);
+  --ombre-light: linear-gradient(168deg, rgba(255,253,248,0.55) 0%, rgba(255,253,248,0.30) 52%, rgba(255,253,248,0.10) 100%);
+  --ombre-dark:  linear-gradient(168deg, rgba(34,30,24,0.030) 0%, rgba(34,30,24,0.055) 52%, rgba(34,30,24,0.085) 100%);
 
   /* -- type ------------------------------------------------------------ */
-  --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
-  --body:    'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --body:    'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif;
   /* NOT MONOSPACE ANY MORE, AND THE NAME IS A LIE KEPT ON PURPOSE. The
      typewriter register is gone from the site: --mono now resolves to the body
      face. The token keeps its name only because 46 rules consume it (32 here,
@@ -306,14 +306,14 @@
      face vary from 16.27px to 25.91px at 40px, a 9.64px spread, which is what
      would otherwise have made the spec columns ragged once the fixed-width
      face went. */
-  --mono:    'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:    'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif;
 
   /* One weight for everything set in the display face — headings, the two
      pull-quotes, the sector and roomdex names, the step numerals. It is a
      token because the rule only holds if it is changed in one place: the
      moment two display weights are in play, hierarchy stops being size and
      space and starts being an argument. */
-  --w-display: 600;
+  --w-display: 400;
 
   /* Hierarchy on this site is WIDTH, not weight. Bricolage Grotesque carries
      a `wdth` axis and an `opsz` axis; the display face stays at one weight
@@ -359,9 +359,9 @@
      control is a full pill. Two tokens, because they are different jobs — a
      pill on a 400px-wide card looks like a lozenge, and a 22px radius on a
      button looks like a mistake. */
-  --r:      22px;              /* cards, panels, media, form fields */
-  --r-sm:   12px;              /* small chips and inline media */
-  --r-pill: 999px;             /* every button, filter and icon control */
+  --r:      0px;                /* cards, panels, media, form fields */
+  --r-sm:   0px;                /* small chips and inline media */
+  --r-pill: 0px;               /* every button, filter and icon control */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* -- elevation --------------------------------------------------------
@@ -377,12 +377,12 @@
      card read as a physical object resting on the page rather than a div with
      a drop-shadow filter. Cost is one extra shadow layer per token — same
      ~200 call sites, nothing added at the component level. */
-  --lift:   0 1px 2px rgba(16, 23, 27, 0.07), 0 8px 20px rgba(16, 23, 27, 0.10);
-  --lift-2: 0 3px 6px rgba(16, 23, 27, 0.09), 0 20px 48px rgba(16, 23, 27, 0.18);
+  --lift:   4px 4px 0 #221E18;
+  --lift-2: 7px 7px 0 #221E18;
   /* These used to be black, for objects standing on a near-black ground.
      Nothing on the site has a dark ground now, so they match --lift. */
-  --lift-d:   0 1px 2px rgba(16, 23, 27, 0.07), 0 8px 20px rgba(16, 23, 27, 0.10);
-  --lift-d-2: 0 3px 6px rgba(16, 23, 27, 0.09), 0 20px 48px rgba(16, 23, 27, 0.18);
+  --lift-d:   4px 4px 0 #221E18;
+  --lift-d-2: 7px 7px 0 #221E18;
 
   /* -- drafting grid ------------------------------------------------------
      The ink for every grid on the site: the 64px graph on the document ground
@@ -407,7 +407,7 @@
 
      The --ripple / --ripple-2 pair that used to sit here is gone with the
      concentric ripple field it fed; nothing referenced it afterwards. */
-  --grid-line: rgba(16, 23, 27, 0.07);
+  --grid-line: rgba(34, 30, 24, 0.055);
 }
 
 /* =========================== reset ====================================== */
@@ -441,11 +441,16 @@ body {
      0.51 at the bottom, travelling 190deg to 222deg of hue on the way. You
      are somewhere different in it on every screen, which is the whole point.
 
-     The bottom stop is pinned at 0.51 luminance and cannot go lower: muted
-     text on it is 4.66:1, and the 4.5 floor is what stops this becoming a
-     dark site. Sections no longer paint their own ground — they veil this
-     one. See --ombre-light / --ombre-dark, which are now translucent. */
-  background-color: #B2CBE7;
+     THE BOTTOM STOP IS SOLVED, NOT CHOSEN, and it is #E7DECE. The binding
+     case is muted copy on a .dark section, over the wash's deepest stop,
+     with a grid line directly beneath it — three darkenings stacked. That
+     composites to rgb(204,196,181), and --on-light-mute at #564E41 reads
+     4.74:1 on it. Going one step deeper on either the stop or the mute puts
+     the site under the 4.5 floor.
+
+     Sections do not paint their own ground — they veil this one. See
+     --ombre-light / --ombre-dark, which are translucent. */
+  background-color: #E7DECE;
   /* A SQUARE GRID over the wash, by request. This replaces the two concentric
      "sound ripple" sources that were here — a grid and a ripple field are both
      figure on the same ground, and running them together read as neither, so
@@ -464,16 +469,16 @@ body {
      The alpha is load-bearing, not taste. A grid line lands under body text
      wherever it crosses one, and it darkens the ground there. Worst case is
      muted copy on a .dark section over the wash's deepest stop, where the
-     white veil is only 0.03 and hides almost nothing: 5.32:1 with no grid,
-     4.68:1 with a line directly beneath the text at the current 0.07. The
-     next steps are 4.60 at 0.08 and 4.51 at 0.09, so the floor is close.
+     ink veil is only 0.085 and the line adds to it: 5.06:1 with no grid,
+     4.74:1 with a line directly beneath the text at the current 0.055. The
+     floor is close — do not raise this alpha without re-running the sweep.
      Cards, panels and fields paint opaque --paper-* fills on top, so only
      text sitting directly on a section ground is affected at all — which is
      leads, headings and the section copy, not anything in a card. */
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(180deg, #D1E9ED 0%, #C7E1EE 34%, #BBD6EA 68%, #B2CBE7 100%);
+    linear-gradient(180deg, #F7F2E8 0%, #F3EDE0 34%, #EDE5D6 68%, #E7DECE 100%);
   background-size: 64px 64px, 64px 64px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
   -webkit-font-smoothing: antialiased;
@@ -708,7 +713,7 @@ p { text-wrap: pretty; }
     z-index: 6;
     margin: 0 calc(var(--gut) * -1) 1.75rem;
     padding: 0.6rem var(--gut);
-    background: rgba(237, 241, 245, 0.92);
+    background: rgba(249, 245, 238, 0.92);
     backdrop-filter: blur(12px) saturate(1.4);
     -webkit-backdrop-filter: blur(12px) saturate(1.4);
     border-block: 1px solid rgba(16, 23, 27, 0.08);
@@ -1106,8 +1111,12 @@ section { padding-block: var(--pad-y); }
      PET tint, the commonest of the five, so a fallback card is plausible
      rather than obviously wrong. 20% is where the mount starts reading as a
      colour rather than as an off-white — 12% was tried and disappeared. */
-  background-color: #E7E9E8;
-  background-color: color-mix(in oklab, var(--mat, #7C8380) 20%, #FFFFFF);
+  background-color: #E8E6E1;
+  /* Mixed into --paper-hi, not pure white. The five material colours are the
+     real material temperatures and do not move, but the thing they are mixed
+     INTO is the site's own card colour — on a warm palette a mount mixed into
+     #FFFFFF reads cold against the card it sits in. */
+  background-color: color-mix(in oklab, var(--mat, #7C8380) 20%, var(--paper-hi));
   display: flex; align-items: center; justify-content: center;
   padding: clamp(0.9rem, 3vw, 1.6rem);
 }
@@ -1161,7 +1170,7 @@ section { padding-block: var(--pad-y); }
   position: sticky; top: 0; z-index: 100;
   /* the same move as the hero scrim: the bar was near-white above a page
      that is not. Tinted to the ground's top stop, alpha unchanged. */
-  background: rgba(237, 241, 245, 0.86);
+  background: rgba(249, 245, 238, 0.86);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border-bottom: 1px solid rgba(16, 23, 27, 0.08);
@@ -1280,19 +1289,23 @@ section { padding-block: var(--pad-y); }
               border-color 260ms var(--ease), transform 260ms var(--ease),
               box-shadow 260ms var(--ease);
 }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); transition-duration: 120ms; }
+/* Same move as the card: up-and-left into a deeper offset, not a float. */
+.btn:hover { transform: translate3d(-2px, -2px, 0); }
+.btn:active { transform: translate3d(0, 0, 0); transition-duration: 120ms; }
 .btn-arrow { transition: transform 260ms var(--ease); }
 .btn:hover .btn-arrow { transform: translateX(4px); }
 
-.btn-primary { background: var(--brand-deep); color: var(--paper-hi); box-shadow: var(--lift); }
-.btn-primary:hover { background: var(--brand-ink); box-shadow: var(--lift-2); }
+/* The rule is on the button too — with a hard offset shadow and no radius,
+   an unbordered fill reads as a sticker rather than a block. */
+.btn-primary { background: var(--brand-deep); color: var(--paper-hi);
+  border-color: var(--on-light); box-shadow: var(--lift); }
+.btn-primary:hover { background: var(--brand-lift); box-shadow: var(--lift-2); }
 
 /* Light is the default ground now — most of the site is paper, not ink — so
    the ghost button defaults to that reading and `.dark`/`.on-dark` is the
    exception, for the handful of contexts still on the material-photo ground
    (diptych, sector tiles, the family rail). */
-.btn-ghost { border-color: var(--paper-edge); color: var(--on-light); }
+.btn-ghost { border-color: var(--on-light); color: var(--on-light); }
 .btn-ghost::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: var(--on-light);
@@ -1334,7 +1347,7 @@ section { padding-block: var(--pad-y); }
    single reason the landing page still read white after the grounds were
    deepened — at 0.82 alpha the wash, not the picture, was what you saw.
 
-   Two changes. The scrim is the page's own light rgb(237,241,245) rather than
+   Two changes. The scrim is the page's own light rgb(249,245,238) rather than
    #FFFFFF, and its alphas are roughly two thirds of what they were: 0.60 /
    0.56 / 0.50 held across the type column, then falling to 0 by the right
    edge so the photograph carries that half outright.
@@ -1565,7 +1578,7 @@ section { padding-block: var(--pad-y); }
 }
 .hero-media::after {
   content: ''; position: absolute; inset: 0;
-  /* THE SCRIM IS THE PAGE'S OWN LIGHT, NOT WHITE. rgb(237,241,245) is the top
+  /* THE SCRIM IS THE PAGE'S OWN LIGHT, NOT WHITE. rgb(249,245,238) is the top
      stop of --ombre-light written out as a literal, because a scrim cannot
      take a gradient token.
 
@@ -1581,11 +1594,11 @@ section { padding-block: var(--pad-y); }
      the hero drifts back to being the whitest thing on the page. */
   background:
     linear-gradient(102deg,
-      rgba(237, 241, 245, 0.60) 0%, rgba(237, 241, 245, 0.56) 34%,
-      rgba(237, 241, 245, 0.50) 55%, rgba(237, 241, 245, 0.12) 78%,
-      rgba(237, 241, 245, 0.00) 100%),
+      rgba(249, 245, 238, 0.60) 0%, rgba(249, 245, 238, 0.56) 34%,
+      rgba(249, 245, 238, 0.50) 55%, rgba(249, 245, 238, 0.12) 78%,
+      rgba(249, 245, 238, 0.00) 100%),
     linear-gradient(180deg,
-      rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.06) 42%, rgba(237, 241, 245, 0.26) 100%);
+      rgba(249, 245, 238, 0.10) 0%, rgba(249, 245, 238, 0.06) 42%, rgba(249, 245, 238, 0.26) 100%);
 }
 /* THE SCRIM ABOVE IS SHAPED FOR THE DESKTOP TYPE COLUMN, WHICH ENDS AT ~52%.
    Below 64rem the copy runs the full width instead — the lead reaches ~91%
@@ -1635,10 +1648,10 @@ section { padding-block: var(--pad-y); }
   .hero-media::after {
     background:
       linear-gradient(102deg,
-        rgba(237, 241, 245, 0.62) 0%, rgba(237, 241, 245, 0.60) 45%,
-        rgba(237, 241, 245, 0.56) 78%, rgba(237, 241, 245, 0.52) 100%),
+        rgba(249, 245, 238, 0.62) 0%, rgba(249, 245, 238, 0.60) 45%,
+        rgba(249, 245, 238, 0.56) 78%, rgba(249, 245, 238, 0.52) 100%),
       linear-gradient(180deg,
-        rgba(237, 241, 245, 0.10) 0%, rgba(237, 241, 245, 0.06) 42%, rgba(237, 241, 245, 0.26) 100%);
+        rgba(249, 245, 238, 0.10) 0%, rgba(249, 245, 238, 0.06) 42%, rgba(249, 245, 238, 0.26) 100%);
   }
 }
 /* The banner is the ONE place on this light-only site with light text, because
@@ -1689,19 +1702,33 @@ section { padding-block: var(--pad-y); }
    column is not: `.hero-top > .wrap` is held to `padding-right: 42% + gut`
    because that is where the 102deg scrim still has alpha to spare, and type
    past it sits on the bare photograph. So the type comes down instead —
-   4.25rem at the top end against 7rem, which holds all three headlines to two
-   lines at 1440 and three at 64rem, inside the measured column.
+   5.25rem at the top end against the 7rem the old grotesque ran at. The
+   ceiling moved up from 4.25rem when the display face became Instrument
+   Serif: a 400-weight serif sets narrower and lighter than Bricolage at 600,
+   so the same number read noticeably smaller on the page.
 
    If a future headline is longer than 44 characters this will break again,
    and the fix is the copy or another step down here — not a wider column. */
 .hero-title {
   font-family: var(--display); font-weight: var(--w-display);
   font-variation-settings: 'wdth' var(--wd-hero), 'opsz' 96;
-  font-size: clamp(2.25rem, 1.15rem + 4.15vw, 4.25rem);
+  font-size: clamp(2.5rem, 1.2rem + 5.1vw, 5.25rem);
   letter-spacing: -0.03em;
   line-height: 0.94;
   margin-block: 1.75rem 2.5rem;
-  max-width: 24ch;
+  /* 20ch, NOT 24ch, AND THIS IS A CONTRAST CONSTRAINT RATHER THAN A
+     TYPOGRAPHIC ONE. `.decay` is the last word of the headline, so it sits at
+     the right end of the longest line — the deepest any type gets into the
+     scrim's falloff. The scrim holds full alpha to 55% and is heading for 0
+     by 78%; at 24ch and 5.25rem the last word reached past 55% and landed on
+     the bare photograph. Measured there: 2.25:1, under even the 3:1
+     large-text floor `--mark-banner` lives by. At 20ch the line breaks
+     before the ramp and the same word scores 4.4:1.
+
+     So: raising `--t-hero` here, or widening this, or widening
+     `.hero-top > .wrap`, all move type into the falloff. Re-measure the
+     three banners after any of them. */
+  max-width: 20ch;
 }
 
 /* Stacked, deliberately. Lead and buttons side by side was the first attempt
@@ -1710,8 +1737,18 @@ section { padding-block: var(--pad-y); }
    left the lead about twelve characters wide. */
 .hero-foot { display: grid; gap: clamp(1.75rem, 3vw, 2.5rem); justify-items: start; }
 /* the echo: the last line decays like a reverb tail. Italic rather than a
-   tone shift — the word leans away instead of merely going grey. */
-.hero-title .decay { font-style: italic; color: var(--on-light-mute); }
+   tone shift — the word leans away instead of merely going grey.
+
+   THE COLOUR IS NOT SET HERE. It used to be — `color: var(--on-light-mute)`
+   — and because this rule comes 76 lines AFTER the `.hero-top` block at
+   equal specificity, it silently overrode `--mark-banner`, the token that
+   exists for exactly this word. Nobody caught it because the two values were
+   close enough on the old palette that the numbers looked plausible; the
+   note in CLAUDE.md said `--mark-banner` carried `.decay` while the page was
+   rendering `--on-light-mute`. On a warm palette they are not close, and the
+   override took the word to 2.25:1 over the office banner — under even the
+   3:1 large-text floor. The colour belongs to the banner block above. */
+.hero-title .decay { font-style: italic; }
 .hero-lead { max-width: 46ch; }
 .hero-cta { margin-top: clamp(2.25rem, 4vw, 3.25rem); gap: 0.85rem; }
 
@@ -1809,7 +1846,7 @@ section { padding-block: var(--pad-y); }
    page by a long shadow rather than a drawn outline. */
 .card {
   display: flex; flex-direction: column;
-  background: var(--paper-sub); border: 1px solid var(--paper-edge);
+  background: var(--paper-hi); border: 2px solid var(--on-light);
   border-radius: var(--r); overflow: hidden;
   text-decoration: none; color: inherit;
   box-shadow: var(--lift);
@@ -1817,15 +1854,18 @@ section { padding-block: var(--pad-y); }
               box-shadow 320ms var(--ease);
 }
 .dark .card {
-  background: var(--ink-panel); border-color: rgba(16, 23, 27, 0.103);
+  background: var(--ink-panel); border-color: var(--on-light);
   box-shadow: var(--lift-d);
 }
+/* THE BLOCK MOVES INTO ITS OWN SHADOW. With a hard offset shadow the old
+   `translateY(-4px)` read as the card sliding off its own drawing; moving
+   UP-AND-LEFT into a bigger offset is the move this device wants. */
 a.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--mark-ink);
+  transform: translate3d(-3px, -3px, 0);
+  border-color: var(--on-light);
   box-shadow: var(--lift-2);
 }
-.dark a.card:hover { border-color: var(--mark); box-shadow: var(--lift-d-2); }
+.dark a.card:hover { border-color: var(--on-light); box-shadow: var(--lift-d-2); }
 
 .card-surface { aspect-ratio: 4 / 3; flex: none; }
 .card-body { padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
@@ -1867,8 +1907,8 @@ a.card:hover .btn-arrow { transform: translateX(4px); }
    hover lift. These used to be inline `border: 1px solid` on a bare article,
    which is why they read as boxes next to the real cards. */
 .panel {
-  background: var(--paper-sub);
-  border: 1px solid var(--paper-edge);
+  background: var(--paper-hi);
+  border: 2px solid var(--on-light);
   border-radius: var(--r);
   overflow: hidden;
   box-shadow: var(--lift);

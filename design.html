@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/motion.css">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
@@ -120,23 +120,23 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <section class="db-block">
     <h2 class="sub-h">The three families</h2>
     <p class="db-note">One role each. Hierarchy in the display face is width, not weight —
-    everything is held at <code>--w-display</code> 600.</p>
+    everything is held at <code>--w-display</code> 400.</p>
     <div class="db-fam">
       <div class="db-spec">
         <span class="db-aa" style="font-family: var(--display)">Aa</span>
         <b>Bricolage Grotesque</b>
         <p class="db-note" style="margin:0.25rem 0 0">Headings, pull-quotes, sector and roomdex names, step numerals.</p>
-        <p class="db-stack">--display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif</p>
+        <p class="db-stack">--display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif</p>
       </div><div class="db-spec">
         <span class="db-aa" style="font-family: var(--body)">Aa</span>
         <b>Public Sans</b>
         <p class="db-note" style="margin:0.25rem 0 0">Running copy, leads, table cells.</p>
-        <p class="db-stack">--body: 'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif</p>
+        <p class="db-stack">--body: 'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif</p>
       </div><div class="db-spec">
         <span class="db-aa" style="font-family: var(--mono)">Aa</span>
         <b>Public Sans</b>
         <p class="db-note" style="margin:0.25rem 0 0">Every label, spec figure, button and filter pill — no longer monospace; the token name is kept only because 46 rules consume it.</p>
-        <p class="db-stack">--mono: 'Public Sans', -apple-system, 'Segoe UI', Roboto, sans-serif</p>
+        <p class="db-stack">--mono: 'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif</p>
       </div>
     </div>
   </section>
@@ -187,44 +187,44 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <section class="db-block">
       <h2 class="sub-h">The ground</h2>
       <p class="db-note">One ramp, near-white to slate. There are no dark sections — <code>.dark</code> and <code>.light</code> resolve to the same steps, and the <code>--ink-*</code> names survive only because call sites use them.</p>
-      <ul class="db-ramp"><li class="db-sw" style="background:#FFFFFF;color:#0F172A">
-        <b>--paper-hi</b><span>#FFFFFF</span>
-      </li><li class="db-sw" style="background:#E6F0F5;color:#0F172A">
-        <b>--paper</b><span>#E6F0F5</span>
-      </li><li class="db-sw" style="background:#EAF3F7;color:#0F172A">
-        <b>--paper-sub</b><span>#EAF3F7</span>
-      </li><li class="db-sw" style="background:#CBD5E1;color:#0F172A">
-        <b>--paper-lo</b><span>#CBD5E1</span>
-      </li><li class="db-sw" style="background:#94A3B8;color:#0F172A">
-        <b>--paper-edge</b><span>#94A3B8</span>
+      <ul class="db-ramp"><li class="db-sw" style="background:#FBF7F0;color:#0F172A">
+        <b>--paper-hi</b><span>#FBF7F0</span>
+      </li><li class="db-sw" style="background:#F2ECE1;color:#0F172A">
+        <b>--paper</b><span>#F2ECE1</span>
+      </li><li class="db-sw" style="background:#F6F1E7;color:#0F172A">
+        <b>--paper-sub</b><span>#F6F1E7</span>
+      </li><li class="db-sw" style="background:#E7DECE;color:#0F172A">
+        <b>--paper-lo</b><span>#E7DECE</span>
+      </li><li class="db-sw" style="background:#CFC3AE;color:#0F172A">
+        <b>--paper-edge</b><span>#CFC3AE</span>
       </li></ul>
     </section>
 
   <section class="db-block">
       <h2 class="sub-h">Text</h2>
       <p class="db-note">The first three are measured against every ground below. The last two are the banner’s own — they sit on a photograph behind a scrim, not on a token ground, so no pair here can state their contrast.</p>
-      <ul class="db-ramp"><li class="db-sw" style="background:#0F172A;color:#FFFFFF">
-        <b>--on-light</b><span>#0F172A</span>
-      </li><li class="db-sw" style="background:#3F4C5E;color:#FFFFFF">
-        <b>--on-light-mute</b><span>#3F4C5E</span>
-      </li><li class="db-sw" style="background:#334155;color:#FFFFFF">
-        <b>--mark-ink</b><span>#334155</span>
-      </li><li class="db-sw" style="background:#0F172A;color:#FFFFFF">
-        <b>--on-banner</b><span>#0F172A</span>
-      </li><li class="db-sw" style="background:#333E4E;color:#FFFFFF">
-        <b>--mark-banner</b><span>#333E4E</span>
+      <ul class="db-ramp"><li class="db-sw" style="background:#221E18;color:#FFFFFF">
+        <b>--on-light</b><span>#221E18</span>
+      </li><li class="db-sw" style="background:#564E41;color:#FFFFFF">
+        <b>--on-light-mute</b><span>#564E41</span>
+      </li><li class="db-sw" style="background:#5C5447;color:#FFFFFF">
+        <b>--mark-ink</b><span>#5C5447</span>
+      </li><li class="db-sw" style="background:#221E18;color:#FFFFFF">
+        <b>--on-banner</b><span>#221E18</span>
+      </li><li class="db-sw" style="background:#3A332A;color:#FFFFFF">
+        <b>--mark-banner</b><span>#3A332A</span>
       </li></ul>
     </section>
 
   <section class="db-block">
       <h2 class="sub-h">The accent — one hue at three exposures</h2>
       <p class="db-note">The client’s logo cyan darkened until it can carry text. <code>--brand-deep</code> is a solid pill fill only. <code>--brand-mark</code> is the raw logo cyan and is never type.</p>
-      <ul class="db-ramp"><li class="db-sw" style="background:#094A68;color:#FFFFFF">
-        <b>--brand</b><span>#094A68</span>
-      </li><li class="db-sw" style="background:#073349;color:#FFFFFF">
-        <b>--brand-lift</b><span>#073349</span>
-      </li><li class="db-sw" style="background:#10789C;color:#FFFFFF">
-        <b>--brand-deep</b><span>#10789C</span>
+      <ul class="db-ramp"><li class="db-sw" style="background:#843E23;color:#FFFFFF">
+        <b>--brand</b><span>#843E23</span>
+      </li><li class="db-sw" style="background:#6B321B;color:#FFFFFF">
+        <b>--brand-lift</b><span>#6B321B</span>
+      </li><li class="db-sw" style="background:#9C4A2A;color:#FFFFFF">
+        <b>--brand-deep</b><span>#9C4A2A</span>
       </li><li class="db-sw" style="background:#1CABDE;color:#0F172A">
         <b>--brand-mark</b><span>#1CABDE</span>
       </li></ul>
@@ -375,66 +375,66 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         <tbody>
           <tr class="">
         <td><code>--on-light</code></td><td><code>--paper-hi</code></td>
-        <td class="db-num">17.85:1</td>
+        <td class="db-num">15.52:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--on-light</code></td><td><code>--paper</code></td>
-        <td class="db-num">15.43:1</td>
+        <td class="db-num">14.10:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--on-light</code></td><td><code>--paper-lo</code></td>
-        <td class="db-num">12.02:1</td>
+        <td class="db-num">12.42:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--on-light-mute</code></td><td><code>--paper-hi</code></td>
-        <td class="db-num">8.73:1</td>
+        <td class="db-num">7.68:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--on-light-mute</code></td><td><code>--paper</code></td>
-        <td class="db-num">7.54:1</td>
-        <td>AA</td>
-      </tr><tr class="">
-        <td><code>--on-light-mute</code></td><td><code>--paper-lo</code></td>
-        <td class="db-num">5.88:1</td>
-        <td>AA</td>
-      </tr><tr class="">
-        <td><code>--mark-ink</code></td><td><code>--paper-hi</code></td>
-        <td class="db-num">10.35:1</td>
-        <td>AA</td>
-      </tr><tr class="">
-        <td><code>--mark-ink</code></td><td><code>--paper</code></td>
-        <td class="db-num">8.95:1</td>
-        <td>AA</td>
-      </tr><tr class="">
-        <td><code>--mark-ink</code></td><td><code>--paper-lo</code></td>
         <td class="db-num">6.97:1</td>
         <td>AA</td>
       </tr><tr class="">
+        <td><code>--on-light-mute</code></td><td><code>--paper-lo</code></td>
+        <td class="db-num">6.14:1</td>
+        <td>AA</td>
+      </tr><tr class="">
+        <td><code>--mark-ink</code></td><td><code>--paper-hi</code></td>
+        <td class="db-num">6.99:1</td>
+        <td>AA</td>
+      </tr><tr class="">
+        <td><code>--mark-ink</code></td><td><code>--paper</code></td>
+        <td class="db-num">6.35:1</td>
+        <td>AA</td>
+      </tr><tr class="">
+        <td><code>--mark-ink</code></td><td><code>--paper-lo</code></td>
+        <td class="db-num">5.59:1</td>
+        <td>AA</td>
+      </tr><tr class="">
         <td><code>--brand</code></td><td><code>--paper-hi</code></td>
-        <td class="db-num">9.58:1</td>
+        <td class="db-num">7.30:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--brand</code></td><td><code>--paper</code></td>
-        <td class="db-num">8.28:1</td>
+        <td class="db-num">6.63:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--brand</code></td><td><code>--paper-lo</code></td>
-        <td class="db-num">6.46:1</td>
+        <td class="db-num">5.84:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--brand-lift</code></td><td><code>--paper</code></td>
-        <td class="db-num">11.49:1</td>
+        <td class="db-num">8.52:1</td>
         <td>AA</td>
       </tr><tr class="">
         <td><code>--brand-ink</code></td><td><code>--paper</code></td>
-        <td class="db-num">8.28:1</td>
+        <td class="db-num">6.63:1</td>
         <td>AA</td>
       </tr>
           <tr><td><code>#FFFFFF</code></td><td><code>--brand-deep</code></td>
-            <td class="db-num">5.01:1</td>
+            <td class="db-num">6.13:1</td>
             <td>AA &mdash; the primary pill, measured against its own fill</td></tr>
           <tr class="db-fail"><td><code>--brand-mark</code></td><td><code>--paper</code></td>
-            <td class="db-num">2.29:1</td>
+            <td class="db-num">2.25:1</td>
             <td>never type &mdash; the logo asset keeps this colour, nothing else reaches for it</td></tr>
         </tbody>
       </table>
@@ -450,7 +450,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     arithmetic has to be redone against black, not against the photograph you like.</p>
 
     <p class="db-note" style="margin-top:1.25rem">Lowest measured pair on this page,
-    excluding the <code>--brand-mark</code> row (never type): <b>5.01:1</b>.
+    excluding the <code>--brand-mark</code> row (never type): <b>5.59:1</b>.
     The banner is measured separately, below.</p>
   </section>
 </div>

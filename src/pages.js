@@ -180,9 +180,9 @@ const clientWall = () => `
    · The copy blocks are GRID-STACKED, not absolutely positioned, so the hero
      reserves the height of the LONGEST headline once and the lead and buttons
      below never move as the banner turns.
-   · The load-in (.hl / [data-in] / the .echo reverb tails) belongs to slide
-     one only. A tail that fires once at page load and never again would read
-     as a glitch on slides two and three; they cross-fade in already composed.
+   · The load-in (.hl and [data-in]) belongs to slide one only. An entrance
+     that fires once at page load and never again would read as a glitch on
+     slides two and three; they cross-fade in already composed.
 
    The synchronisation between headline and photograph is two matched sets of
    keyframes in motion.css — same duration, same negative delays. Change one
@@ -205,9 +205,15 @@ built.push(page({
       ${BANNERS.map((b, i) => {
         const words = b.title.split(' ');
         const last = words.pop();
-        const decay = i === 0
-          ? `<span class="decay">${esc(last)}<i class="echo e1" aria-hidden="true">${esc(last)}</i><i class="echo e2" aria-hidden="true">${esc(last)}</i></span>`
-          : `<span class="decay">${esc(last)}</span>`;
+        /* THE REVERB-TAIL ECHOES ARE GONE. Two partly-opaque copies of the
+           last word used to travel out from behind it on load. That was
+           drawn for Bricolage Grotesque, where a clean geometric letterform
+           trailing itself reads as a tail; in Instrument Serif's italic the
+           same three copies read as a word printed twice slightly off
+           register — a fault, not an effect. `.decay` itself stays: the
+           italic last word in the banner mark is the better half of the idea
+           and needs no animation to work. */
+        const decay = `<span class="decay">${esc(last)}</span>`;
         const head = `${esc(words.join(' '))} ${decay}`;
         return i === 0
           ? `<div class="hero-say is-on">
