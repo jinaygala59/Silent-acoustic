@@ -5,7 +5,12 @@ _iotest.html
 _reducetest.html
 _diag.html
 _mkiotest.js
+_walker.js
+_banner.js
 assets/css/_motion-*.css
+# Claude Design canvas working files — artboards, source photos and a 2.8MB
+# seeded page. Build inputs for the design canvas, not site assets.
+_design
 *.zip
 .DS_Store
 plans
