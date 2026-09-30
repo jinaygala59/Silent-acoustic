@@ -355,8 +355,25 @@
            correct while .hero-media was the only thing that moved. */
         if (stage) { stage.classList.add('is-manual'); }
       }
-      slides[at].classList.remove('is-on');
-      if (paired) { says[at].classList.remove('is-on'); }
+      /* Which way the banner travels, for the slide-in in theme.css. The
+         stylesheet keys off `[data-dir]` being present at all, so an arrow
+         slides and the untouched first load does not — it has nowhere to
+         have come from. Written before the class change so the attribute is
+         already right when the animation starts. */
+      if (stage) { stage.setAttribute('data-dir', by > 0 ? 'next' : 'prev'); }
+
+      /* CLEAR THE WHOLE SET, DO NOT ASSUME `at` HOLDS IT. The markup is
+         asymmetric — `.hero-say` ships its first block with `.is-on` and no
+         `.hero-slide` ships with it at all — so clearing only index `at`
+         left say 0 lit for good whenever the auto rotation had already moved
+         past slide 0 when the reader first reached for an arrow: `at` came
+         back 1 or 2 from showing(), the remove was a no-op, and the page
+         then carried TWO headlines stacked on one photograph. Clearing every
+         index is indifferent to where the class started. */
+      for (var n = 0; n < slides.length; n++) {
+        slides[n].classList.remove('is-on');
+        if (paired) { says[n].classList.remove('is-on'); }
+      }
       at = (at + by + slides.length) % slides.length;
       slides[at].classList.add('is-on');
       if (paired) { says[at].classList.add('is-on'); }

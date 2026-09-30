@@ -962,7 +962,36 @@ a.card:active { transform: none; box-shadow: none; }
    ========================================================================== */
 @keyframes gIn     { from { opacity: 0; translate: 0 26px; } }
 @keyframes gGrow   { from { scale: 0 1; } }
-@keyframes gKen    { 0% { scale: 1; } 33.33% { scale: 1.08; } 95% { scale: 1; } 100% { scale: 1; } }
+/* The banner push-in, now with the rightward travel that makes the rotation
+   read as a SLIDE rather than a dissolve. Every banner moves the same way —
+   right — so the hero has one direction: a photograph drifts right while it
+   is on screen, keeps going as it fades out, waits off to the left while it
+   is hidden, and slides right into place as it fades in.
+
+   THE JUMP AT 33.34% IS INVISIBLE AND HAS TO BE. mHeroFade holds opacity 0
+   from 33.33% to 96.67%, so that is where the slide is re-cocked from +2.6%
+   to -2.6%. Move either number and the reset happens in front of the reader.
+
+   THE SCALE IS NOT DECORATION — IT IS THE TRAVEL'S COVER. An `inset: 0`
+   slide translated by n% exposes n% of `.hero-media`'s #1A1A1A ground at the
+   trailing edge unless the photograph is oversized by at least 2n%. Every
+   row below holds `(scale - 1) / 2 >= |translate|` with margin, and both
+   properties share one easing so the ratio holds between rows too. It does
+   NOT lean on mWall's 1.16 on the <img> for that headroom: mWall is behind
+   `@supports (animation-timeline: view())`, so on Firefox it is not there.
+   Change a translate here and re-check the scale on the same row. */
+@keyframes gKen {
+  0%     { scale: 1.06; translate: 0 0; }        /* settled, just arrived   */
+  30%    { scale: 1.12; translate: 1.4% 0; }     /* drifts right, on screen */
+  33.33% { scale: 1.13; translate: 2.6% 0; }     /* leaves right, fading    */
+  33.34% { scale: 1.06; translate: -2.6% 0; }    /* re-cocked, opacity 0    */
+  96.67% { scale: 1.06; translate: -2.6% 0; }    /* waits off to the left   */
+  100%   { scale: 1.06; translate: 0 0; }        /* slides right, fading in */
+}
+/* The arrow-driven version: one travel, not a loop, so it settles at scale 1
+   instead of gKen's 1.06 floor — nothing follows it that needs the headroom. */
+@keyframes gBannerIn   { from { translate: -2.6% 0; scale: 1.08; } to { translate: 0 0; scale: 1; } }
+@keyframes gBannerBack { from { translate:  2.6% 0; scale: 1.08; } to { translate: 0 0; scale: 1; } }
 @keyframes gDraw   { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes gPar    { from { scale: 1.14; } to { scale: 1; } }
 @keyframes gOpen   { from { opacity: 0; translate: 0 -6px; } }
@@ -995,6 +1024,29 @@ a.card:active { transform: none; box-shadow: none; }
   .hero-slide { animation: mHeroFade 27s linear infinite, gKen 27s ease-in-out infinite; }
   .hero-slide:nth-child(2) { animation-delay: -18s; }
   .hero-slide:nth-child(3) { animation-delay: -9s; }
+
+  /* THE ARROWS SLIDE TOO, AND THEY SLIDE THE WAY THEY POINT. Taking an arrow
+     puts the hero in `.is-manual`, which sets `animation: none` on every
+     slide and hands the change to a 420ms opacity transition — so without
+     this the auto rotation slid and the reader's own click only dissolved.
+     `step()` in site.js writes `data-dir` on `.hero-top`, so forward enters
+     from the left travelling right and back does the reverse.
+
+     Gated on no-preference, unlike the fade it rides on. That fade is
+     deliberately outside the gate — Reduce Motion does not ask for buttons
+     to stop working, and an opacity cross-fade is what `iomin` already
+     allows — but a translate IS movement, so only the travel is dropped
+     there and the arrows keep working as a dissolve.
+
+     Same cover rule as gKen: 1.08 against 2.6% is (1.08-1)/2 = 4% of
+     headroom, and because scale and translate share one easing the ratio
+     holds for every frame between, not just at the ends. */
+  .hero-top[data-dir] .hero-media.is-manual .hero-slide.is-on {
+    animation: gBannerIn 640ms var(--ease) both;
+  }
+  .hero-top[data-dir="prev"] .hero-media.is-manual .hero-slide.is-on {
+    animation-name: gBannerBack;
+  }
   .hero-rule { transform-origin: 50% 50%; animation: gGrow 800ms cubic-bezier(.22,1,.36,1) 480ms both; }
 
   /* 3 · The header settles once you scroll: a soft shadow under the bar */
