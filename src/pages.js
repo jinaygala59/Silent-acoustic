@@ -83,7 +83,7 @@ const visionBand = () => visionParas.length ? `
    off the edge of a strip that is not moving. */
 const clientRows = () => {
   const ROWS = 3, per = Math.ceil(CLIENTS.length / ROWS);
-  const plate = (c, dup) => `<li class="client"${dup ? ' aria-hidden="true" data-dup' : ''}><img src="${asset(`assets/img/clients/${c.s}.webp`)}" alt="${dup ? '' : esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`;
+  const plate = (c, dup) => `<li class="client"${dup ? ' aria-hidden="true" data-dup' : ''}><img src="${asset(`assets/img/marks/${c.s}.webp`)}" alt="${dup ? '' : esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`;
   return `<div class="client-wall client-rows" data-anim="fade">
       ${Array.from({ length: ROWS }, (_, r) => CLIENTS.slice(r * per, (r + 1) * per)).map((row, r) => `<div class="client-row${r % 2 ? ' is-rev' : ''}">
         <ul class="client-track">

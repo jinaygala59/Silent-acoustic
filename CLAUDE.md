@@ -71,14 +71,36 @@ never been there before. Verify this with `curl -sI` on a path you know is
 missing — the header comes back on the 404.
 
 Every `assets/img/**` reference therefore goes through `asset()` as well
-(595 of them across the 28 shipped pages), which both dislodges an
-already-poisoned entry — the URL is new, so the old cache line is never
-consulted — and makes `immutable` honestly true, since the URL now changes
-whenever the bytes do. **Add an `<img>` and it must go through `asset()`.**
-The `og:image` is deliberately left bare: it is an absolute URL read by
-social scrapers, not by the browser cache. `asset()` warns at build time for
-a file it cannot read and serves it unversioned, so a missing photograph is
-loud rather than silent.
+(595 of them across the 28 shipped pages), which makes `immutable` honestly
+true: the URL changes whenever the bytes do. **Add an `<img>` and it must go
+through `asset()`.** The `og:image` is deliberately left bare — it is an
+absolute URL read by social scrapers, not by a cache. `asset()` warns at
+build time for a file it cannot read and serves it unversioned, so a missing
+photograph is loud rather than silent.
+
+**BUT `?v=` CANNOT UN-POISON A CACHED 404, AND THIS IS THE PART THAT COST A
+ROUND OF DEBUGGING.** Vercel's edge **ignores the query string** on a static
+asset — it keys on the path alone. Measured:
+
+```
+bnhs.webp                      200  x-vercel-cache: HIT
+bnhs.webp?v=438363d5           200  x-vercel-cache: HIT
+bnhs.webp?v=totallydifferent   200  x-vercel-cache: HIT
+```
+
+A made-up query is still a HIT, so a fingerprint changes the **browser's**
+cache key and not the **CDN's**. If an edge ever cached a 404 for one of
+these paths, every `?v=` in the world still lands on that same poisoned
+entry, for the full year, and no reload from any visitor can shift it.
+
+**The only thing that makes a genuinely new cache key at every layer is a
+new PATH.** That is why the fifty client logos live at `assets/img/marks/`
+and not `assets/img/clients/` — the rename was the fix when versioning them
+was not enough. It has a second benefit worth keeping in mind before anyone
+renames it back: blocklists and network filters match folder names like
+`/clients/`, `/sponsors/`, `/partners/` and `/ads/`, and a wall of fifty
+corporate logos is precisely what those rules are written for. Do not put
+site content under a folder name that reads like advertising.
 
 **THE STYLESHEETS CARRY `?v=` AND THEY HAVE TO.** `vercel.json` serves
 `/assets/(css|js)/*` with `max-age=2592000` and the filenames never change,
@@ -1294,7 +1316,7 @@ If you change a token, re-run it rather than eyeballing.
 - **The fifty client logos are other companies' trademarks.** They are on this
   site because the client already publishes them on theirs — this is a port,
   not a new claim made on their behalf. If a listed organisation asks to come
-  off, delete its row in `CLIENTS` and its file in `assets/img/clients`;
+  off, delete its row in `CLIENTS` and its file in `assets/img/marks`;
   nothing else references either. Two display names could not be recovered
   from the client's own filenames and were read off the artwork
   (`Clients-page-images-12.png` is DBS, `Doorsha.jpg` is Doordarshan); three

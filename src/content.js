@@ -83,7 +83,7 @@ const SITE = {
    are on the client's site — porting a page the client already publishes,
    not making a new claim on their behalf. If a listed organisation ever asks
    to come off, the fix is to delete the row here and the file in
-   assets/img/clients; nothing else references either.
+   assets/img/marks; nothing else references either.
 
    `n` IS A DISPLAY NAME, NOT THE CLIENT'S ALT TEXT. Theirs is the WordPress
    filename ("accenture", "Babique-nation", "Clients page images-12") and it
