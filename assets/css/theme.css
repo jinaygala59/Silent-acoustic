@@ -522,7 +522,10 @@ a.card:active { transform: none; box-shadow: none; }
 /* The button is the 44px target; the dot people actually see is the
    pseudo-element inside it. */
 .g-car-dot {
-  width: 1.25rem; height: 2.75rem; padding: 0; border: 0;
+  /* 24 x 44. The dots butt together (gap 0), so the width IS the whole
+     target and 20px would sit under the 24px floor with no spacing to make
+     it up. The visible dot stays small — it is the ::before. */
+  width: 1.5rem; height: 2.75rem; padding: 0; border: 0;
   background: none; cursor: pointer; display: grid; place-items: center;
 }
 .g-car-dot::before {

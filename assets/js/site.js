@@ -468,10 +468,16 @@
        track cannot reach, and so can never read as current. */
     function targetFor(i) { return Math.min(i * track.clientWidth, maxScroll()); }
     function current() {
+      var w = track.clientWidth;
+      /* A carousel in a `display: none` branch — a closed accordion, a tab
+         that is not showing — measures zero, and the divide below would then
+         hand back NaN, which reads as neither disabled nor enabled and leaves
+         both arrows live. Answer page 0 until it has a width. */
+      if (!w) { return 0; }
       var ms = maxScroll();
       if (ms <= 1) { return 0; }
       if (track.scrollLeft >= ms - 1) { return pages() - 1; }
-      return Math.round(track.scrollLeft / track.clientWidth);
+      return Math.round(track.scrollLeft / w);
     }
 
     function arrow(d) {
