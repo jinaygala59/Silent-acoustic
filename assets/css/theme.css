@@ -451,6 +451,89 @@ a.card:active { transform: none; box-shadow: none; }
 }
 .g-tile a:hover .g-tile-cap { color: var(--brand); }
 .g-more { margin-top: clamp(2rem, 4vw, 3rem); }
+
+/* PRODUCTS CAROUSEL -------------------------------------------------------
+   Native scroll-snap, not a JS-driven track. The browser does the dragging,
+   the momentum and the snapping, so with `site.js` blocked this is still a
+   draggable, snapping row of ten products rather than a dead grid — the
+   arrows, the dots and the keyboard are the only things the script adds, and
+   it injects them itself so they are never present without their behaviour.
+
+   THE TRACK IS A SCROLL CONTAINER. Nothing inside it may carry `[data-anim]`:
+   a `view()` timeline cannot resolve inside a scroller, so the tile would
+   hold its from-state (opacity 0) for good. That is the frozen-clock trap in
+   CLAUDE.md, which the family rail hit once already. The section's reveal
+   sits on `.g-car`, which is outside the scroller.
+
+   `--car-n` is how many tiles are in view, and it is the ONE number the
+   component is built on: the track's column width, the page size the arrows
+   step by and the number of dots are all derived from it in CSS and in JS
+   (`site.js` reads it back with getComputedStyle). Change it in one place. */
+.g-car { position: relative; }
+
+/* Higher specificity than `.g-tiles` so the 40rem / 64rem `repeat()` rules
+   above cannot win the template back. */
+.g-tiles.g-car-track {
+  --car-n: 2;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% / var(--car-n));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;           /* the dots are the position indicator */
+  -ms-overflow-style: none;
+}
+.g-tiles.g-car-track::-webkit-scrollbar { display: none; }
+.g-car-track > .g-tile { scroll-snap-align: start; min-width: 0; }
+@media (min-width: 40rem) { .g-tiles.g-car-track { --car-n: 3; } }
+@media (min-width: 64rem) { .g-tiles.g-car-track { --car-n: 5; } }
+
+/* While a pointer drag is in progress the snap is suspended — otherwise the
+   browser fights every mousemove by snapping back to the nearest tile. */
+.g-car[data-drag="on"] .g-car-track { scroll-snap-type: none; }
+.g-car[data-drag="on"] .g-tile a { cursor: grabbing; }
+
+/* Controls sit UNDER the track rather than over the photographs: the tiles
+   are square with the caption below, so an overlaid arrow would either cover
+   a product or need the tile's height in CSS, which varies with `--car-n`. */
+.g-car-ctl {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem); margin-top: 1.5rem;
+}
+.g-car-btn {
+  flex: none; width: 2.75rem; height: 2.75rem;      /* 44px touch target */
+  display: grid; place-items: center;
+  border: 0; padding: 0; cursor: pointer;
+  background: var(--night);       /* the logo cyan on this light ground */
+  color: var(--on-night);         /* DARK label — white on cyan is 2.65:1 */
+}
+/* Disabled is a real end-stop, not a dimmed cyan: dropping the opacity of a
+   cyan fill takes the arrow under contrast as well as the fill. */
+.g-car-btn:disabled {
+  background: #FFFFFF; color: #5A646E; cursor: default;   /* 6.03:1 */
+}
+.g-car-btn svg { width: 1.125rem; height: 1.125rem; display: block; }
+/* Colour-only, so it is safe outside the pointer gate — the touch-hover reset
+   at the end of motion.css neutralises `transform` and leaves colour alone. */
+.g-car-btn:not(:disabled):hover { background: var(--brand); color: #FFFFFF; }  /* 7.72:1 */
+
+.g-car-dots { display: flex; align-items: center; gap: 0; list-style: none; padding: 0; margin: 0; }
+/* The button is the 44px target; the dot people actually see is the
+   pseudo-element inside it. */
+.g-car-dot {
+  width: 1.25rem; height: 2.75rem; padding: 0; border: 0;
+  background: none; cursor: pointer; display: grid; place-items: center;
+}
+.g-car-dot::before {
+  content: ""; width: 0.5rem; height: 0.5rem; background: #5A646E;   /* 5.48:1 */
+}
+.g-car-dot[aria-current="true"]::before {
+  background: var(--brand);       /* 7.02:1 — the cyan is 2.53:1 here and
+                                     would miss the 3:1 a UI component needs */
+  width: 1.25rem;
+}
+
 .center-row { justify-content: center; }
 
 /* 3 · why-list: heading left, two-column check list right, on white */
@@ -905,10 +988,29 @@ a.card:active { transform: none; box-shadow: none; }
       animation-range: entry 0% exit 100%;
     }
 
+    /* ...and the same photograph splits open from its centre line — the
+       `open` reveal from motion.css. `.g-intro` is `overflow: hidden`, so a
+       `data-anim` (view()) could not resolve here; this is the same keyframe
+       on the section's `--box`, over the same "start end" -> "center
+       center" range. */
+    .g-intro-media {
+      animation: mOpen linear both;
+      animation-timeline: --box;
+      animation-range: entry 0% cover 50%;
+    }
+
   }
+
+  /* 6 · The carousel's controls. The active dot WIDENS as well as changing
+     colour, so which page you are on is not carried by hue alone. Only the
+     movement is gated here; the colours are named on the component itself,
+     because a colour change is not motion and should survive Reduce Motion
+     (the `iomin` test is "does anything move", and this does not). */
+  .g-car-dot::before { transition: width 320ms var(--ease), background-color 260ms ease; }
+  .g-car-btn { transition: background-color 260ms ease, color 260ms ease; }
 }
 
-/* 6 · Hover, pointer devices only */
+/* 7 · Hover, pointer devices only */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .g-tile-img > img, .g-pj-img > img { transition: scale 700ms cubic-bezier(.22,1,.36,1); }
   .g-tile a:hover .g-tile-img > img,
@@ -976,4 +1078,39 @@ a.card:active { transform: none; box-shadow: none; }
   }
   html.curtain-out::after { animation: gCurtainOut 520ms cubic-bezier(0.65, 0, 0.35, 1) both; }
   html.curtain-in::after  { animation: gCurtainIn  620ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both; }
+}
+
+/* ==========================================================================
+   TILE CURTAIN — the Motion+ `curtains` wipe, scoped to each homepage
+   product tile (by request). Cover → swap → reveal: the panel sweeps in from
+   the right to cover the tile (0–45%), the photograph switches on under it
+   at the midpoint, and the panel carries on LEFT to uncover it (55–100%).
+   The leading edge leans 12deg, as `wipe({ direction: 'left', angle: 12 })`.
+   Staggered along each row by `--wd` (set per tile in src/pages.js).
+   Photographs are hidden ONLY under `.wipe-armed`, which only site.js sets
+   and which it removes if the observer never reports — so without script
+   the tiles are plain and visible.
+   ========================================================================== */
+.g-curtain {
+  position: absolute; z-index: 6; top: 0; bottom: 0; left: -30%; right: -30%;
+  pointer-events: none;
+  background: linear-gradient(90deg, #08597A 0, #08597A 0.6rem, #1CABDE 0.6rem);
+  transform: skewX(-12deg) translateX(130%);
+}
+@keyframes gTileCurtain {
+  0%        { transform: skewX(-12deg) translateX(130%); }
+  45%, 55%  { transform: skewX(-12deg) translateX(0); }
+  100%      { transform: skewX(-12deg) translateX(-130%); }
+}
+@keyframes gTileSwap { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .wipe-armed .g-tile:not(.is-wiped) .g-tile-img > img,
+  .wipe-armed .g-tile:not(.is-wiped) .g-tile-cap { opacity: 0; }
+  .wipe-armed .g-tile.is-wiped .g-curtain {
+    animation: gTileCurtain 1000ms cubic-bezier(0.65, 0, 0.35, 1) var(--wd, 0ms) both;
+  }
+  .wipe-armed .g-tile.is-wiped .g-tile-img > img,
+  .wipe-armed .g-tile.is-wiped .g-tile-cap {
+    animation: gTileSwap 1000ms linear var(--wd, 0ms) both;
+  }
 }

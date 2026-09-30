@@ -63,6 +63,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      rise     cards and panels                      68px + 0.972 scale
      reveal   headings, lifted out of a mask        clip + 0.5em
      frame    material surfaces, uncovered          clip + 1.055 scale
+     open     photographs, split open from centre   clip, both sides
      line     hairline rules, drawn left to right   scaleX
      tile     grid items that assemble              20px + 0.965 scale
      slide-l  a half that enters from the left      -72px + opacity
@@ -87,6 +88,14 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   to   { clip-path: inset(0 0 0 0);    transform: scale(1); }
 }
 @keyframes mLine   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* `open` is a port of a framer-motion `useScroll` + `useTransform` pair
+   (by request): clip-path `inset(0 50% 0 50%)` -> `inset(0)` across
+   offset ["start end", "center center"]. In view() terms that is
+   `entry 0%` (top edge meets the bottom of the viewport) to `cover 50%`
+   (centre meets centre), and useTransform is linear, so the timing is
+   too. Clip only — no opacity, no travel — which is also why the photograph
+   inside can keep its own hover scale. */
+@keyframes mOpen   { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }
 
 /* The two halves of a diptych arrive from the outside in, so the pair reads as
    one gesture closing rather than two blocks appearing. Horizontal travel is
@@ -151,6 +160,7 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     [data-anim="rise"]    { animation-name: mRise; }
     [data-anim="reveal"]  { animation-name: mReveal; }
     [data-anim="frame"]   { animation-name: mFrame; }
+    [data-anim="open"]    { animation-name: mOpen; }
     [data-anim="line"]    { animation-name: mLine; transform-origin: 0 50%; }
     [data-anim="slide-l"] { animation-name: mSlideL; }
     [data-anim="slide-r"] { animation-name: mSlideR; }
@@ -176,6 +186,12 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     [data-stagger="long"] > * {
       animation-range: entry calc(22% + var(--i, 0) * 3%) cover calc(48% + var(--i, 0) * 3%);
     }
+    /* After the stagger rules on purpose: `open` keeps its own range, and a
+       row of them still cascades by the same 7% step. */
+    [data-anim="open"] { animation-range: entry 0% cover 50%; animation-timing-function: linear; }
+    [data-stagger] > [data-anim="open"] {
+      animation-range: entry calc(var(--i, 0) * 7%) cover calc(50% + var(--i, 0) * 7%);
+    }
 
     /* Progress bar — driven by the document's own scroll. */
     .progress > i {
@@ -199,6 +215,8 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
   html.io [data-anim="reveal"].in       { clip-path: inset(-0.3em -100% -0.35em 0); }
   html.io [data-anim="frame"]:not(.in)  { clip-path: inset(0 0 100% 0); transform: scale(1.055); opacity: 1; }
   html.io [data-anim="frame"].in        { clip-path: inset(0 0 0 0); }
+  html.io [data-anim="open"]:not(.in)   { clip-path: inset(0 50% 0 50%); opacity: 1; }
+  html.io [data-anim="open"].in         { clip-path: inset(0 0 0 0); }
   html.io [data-anim="line"]            { transform-origin: 0 50%; opacity: 1; }
   html.io [data-anim="line"]:not(.in)   { transform: scaleX(0); }
 }

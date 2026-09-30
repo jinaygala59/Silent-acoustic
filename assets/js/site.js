@@ -434,4 +434,205 @@
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) { document.documentElement.classList.remove('curtain-out', 'curtain-in'); }
   });
+
+  /* -------------------------- products carousel --------------------------
+     Progressive, like the rest of this file. The row itself is native CSS
+     scroll-snap and is already draggable, snapping and readable with this
+     script blocked — so the arrows, the dots and the keyboard are INJECTED
+     here rather than written into the markup. A control is never on the page
+     without the behaviour behind it.
+
+     `--car-n` (how many tiles are in view) is read back off the track rather
+     than restated here, so the breakpoints live in exactly one place:
+     theme.css. One page is the track's visible width, because each tile is
+     sized `100% / --car-n`. */
+  var smooth = 'scrollBehavior' in document.documentElement.style;
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-carousel]'), function (car) {
+    var track = car.querySelector('.g-car-track');
+    if (!track || !track.children.length) { return; }
+
+    var NS = 'http://www.w3.org/2000/svg';
+    var count = track.children.length;
+
+    function perView() {
+      var n = parseInt(window.getComputedStyle(track).getPropertyValue('--car-n'), 10);
+      return n > 0 ? n : 1;
+    }
+    function pages() { return Math.max(1, Math.ceil(count / perView())); }
+    function maxScroll() { return Math.max(0, track.scrollWidth - track.clientWidth); }
+
+    /* The last page is SHORT whenever the tiles do not divide by `--car-n`
+       (ten tiles, three in view), so its target is clamped to the end of the
+       scroller. Without the clamp the final dot scrolls to a position the
+       track cannot reach, and so can never read as current. */
+    function targetFor(i) { return Math.min(i * track.clientWidth, maxScroll()); }
+    function current() {
+      var ms = maxScroll();
+      if (ms <= 1) { return 0; }
+      if (track.scrollLeft >= ms - 1) { return pages() - 1; }
+      return Math.round(track.scrollLeft / track.clientWidth);
+    }
+
+    function arrow(d) {
+      var s = document.createElementNS(NS, 'svg');
+      s.setAttribute('viewBox', '0 0 20 20');
+      s.setAttribute('aria-hidden', 'true');
+      var p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d);
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', 'currentColor');
+      p.setAttribute('stroke-width', '2');
+      p.setAttribute('stroke-linecap', 'square');
+      s.appendChild(p);
+      return s;
+    }
+    function btn(label, d) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'g-car-btn';
+      b.setAttribute('aria-label', label);
+      b.appendChild(arrow(d));
+      return b;
+    }
+
+    var ctl  = document.createElement('div'); ctl.className = 'g-car-ctl';
+    var prev = btn('Previous products', 'M12 4 L6 10 L12 16');
+    var next = btn('Next products', 'M8 4 L14 10 L8 16');
+    var dots = document.createElement('ul'); dots.className = 'g-car-dots';
+    var live = document.createElement('p');
+    live.className = 'vh';
+    live.setAttribute('aria-live', 'polite');
+
+    ctl.appendChild(prev); ctl.appendChild(dots); ctl.appendChild(next);
+    car.appendChild(ctl); car.appendChild(live);
+
+    /* The dot count follows `--car-n`, so it is rebuilt when a breakpoint
+       changes it — but only then, or every scroll frame would rebuild it. */
+    var built = -1;
+    function buildDots() {
+      var n = pages();
+      if (n === built) { return; }
+      built = n;
+      dots.textContent = '';
+      for (var i = 0; i < n; i++) {
+        var li = document.createElement('li');
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'g-car-dot';
+        b.setAttribute('data-i', String(i));
+        b.setAttribute('aria-label', 'Products, page ' + (i + 1) + ' of ' + n);
+        li.appendChild(b);
+        dots.appendChild(li);
+      }
+    }
+
+    function sync() {
+      buildDots();
+      var i = current(), n = pages();
+      prev.disabled = i <= 0;
+      next.disabled = i >= n - 1;
+      Array.prototype.forEach.call(dots.querySelectorAll('.g-car-dot'), function (b, k) {
+        if (k === i) { b.setAttribute('aria-current', 'true'); }
+        else { b.removeAttribute('aria-current'); }
+      });
+    }
+
+    /* Reduce Motion gets the same paging with no travel — the jump is the
+       destination, not an animation of getting there. */
+    function go(i) {
+      var n = pages();
+      i = Math.max(0, Math.min(i, n - 1));
+      var x = targetFor(i);
+      if (smooth) { track.scrollTo({ left: x, behavior: reduce ? 'auto' : 'smooth' }); }
+      else { track.scrollLeft = x; }
+      live.textContent = 'Page ' + (i + 1) + ' of ' + n;
+    }
+
+    prev.addEventListener('click', function () { go(current() - 1); });
+    next.addEventListener('click', function () { go(current() + 1); });
+    dots.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.g-car-dot') : null;
+      if (b) { go(parseInt(b.getAttribute('data-i'), 10)); }
+    });
+
+    car.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); go(current() - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(current() + 1); }
+    });
+
+    var tick = 0;
+    track.addEventListener('scroll', function () {
+      if (tick) { return; }
+      tick = window.requestAnimationFrame(function () { tick = 0; sync(); });
+    }, { passive: true });
+    window.addEventListener('resize', sync);
+
+    /* MOUSE DRAG. Touch and trackpad already scroll a scroll container
+       natively; dragging with a mouse is the one thing they do not give you,
+       so this is pointerType 'mouse' only and never fights a real touch.
+       Snap is suspended for the duration (`data-drag`), because otherwise the
+       browser pulls back to the nearest tile on every move. */
+    var dragging = false, startX = 0, startLeft = 0, moved = 0;
+
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) { return; }
+      dragging = true; moved = 0;
+      startX = e.clientX; startLeft = track.scrollLeft;
+      car.setAttribute('data-drag', 'on');
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!dragging) { return; }
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > moved) { moved = Math.abs(dx); }
+      track.scrollLeft = startLeft - dx;
+    });
+    function endDrag() {
+      if (!dragging) { return; }
+      dragging = false;
+      car.removeAttribute('data-drag');
+      go(Math.round(track.scrollLeft / track.clientWidth));
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('pointerleave', endDrag);
+    /* A drag that travelled must not ALSO follow the product link under the
+       cursor. Capture phase, so this lands before the page-curtain handler
+       on the document. `moved` resets on the next pointerdown, so a plain
+       click after a drag is not swallowed. */
+    track.addEventListener('click', function (e) {
+      if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+    /* Native image dragging would otherwise take over from the first move. */
+    track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+    sync();
+  });
+
+  /* -------------------------- product-tile curtains ----------------------
+     The homepage product tiles play the curtain wipe as each comes into
+     view — down the page, or sideways through the carousel: a slanted cyan
+     panel covers the tile, the photograph appears under it, the panel
+     carries on left. CSS is the TILE CURTAIN block in theme.css; this only
+     decides WHEN. An IntersectionObserver rather than a view() timeline,
+     because the tiles sit in the carousel's horizontal scroller, where a
+     view() timeline freezes (see CLAUDE.md).
+     `wipe-armed` is what hides the photographs until their turn, and it is
+     set ONLY here. The observer always reports once on observe, so if it is
+     silent after 2s something is broken: the class comes off and every
+     photograph simply shows. */
+  var tileGrid = document.querySelector('.g-tiles');
+  if (tileGrid && curtainOK && 'IntersectionObserver' in window) {
+    var heard = false;
+    var tiles = [].slice.call(tileGrid.querySelectorAll('.g-tile'));
+    tileGrid.classList.add('wipe-armed');
+    var tio = new IntersectionObserver(function (entries) {
+      heard = true;
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-wiped'); tio.unobserve(en.target); }
+      });
+    }, { threshold: 0.35 });
+    tiles.forEach(function (t) { tio.observe(t); });
+    window.setTimeout(function () { if (!heard) { tileGrid.classList.remove('wipe-armed'); } }, 2000);
+  }
 })();

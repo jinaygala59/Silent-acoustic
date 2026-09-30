@@ -52,8 +52,16 @@ ten and not nineteen because the pin scales at 200px of scroll per card
 
 ## Non-obvious things that will bite you
 
-**The motion vocabulary is seven words, and two of them were dead.** `fade`,
-`rise`, `reveal`, `frame`, `line`, `tile` and the `slide-l` / `slide-r` pair.
+**The motion vocabulary is eight words, and two of them were dead.** `fade`,
+`rise`, `reveal`, `frame`, `open`, `line`, `tile` and the `slide-l` / `slide-r` pair.
+`open` (added 30 Sep 2026, a port of a framer-motion `useScroll` clip reveal)
+splits a photograph open from its vertical centre line, `inset(0 50%)` →
+`inset(0)`, linear over `entry 0%` → `cover 50%`. It is on the project tiles
+(homepage and projects page — they no longer use `tile`), the About story
+photographs (which were `frame`) and the product-detail extra shots. The
+homepage intro photograph gets the same keyframe from `theme.css` on `--box`,
+because `.g-intro` is `overflow: hidden`. Like `frame`, its from-state is
+fully clipped, so it is fail-unsafe if its timeline never resolves.
 `line` and `tile` were defined in `motion.css` and referenced by *zero*
 templates — dead motion that read as a complete system. `tile` now belongs to
 the project gallery, which is what its own comment always said it was for.

@@ -90,7 +90,7 @@ const workBand = () => {
       <h2 id="work-h" class="eyebrow center-eyebrow" data-anim="fade">${esc(SITE.name)} projects</h2>
     </div>
     <ul class="g-proj" data-stagger>
-      ${picks.map(pr => `<li class="g-pj" data-anim="tile">
+      ${picks.map(pr => `<li class="g-pj" data-anim="open">
         <a href="projects.html#room=${encodeURIComponent(pr.sec)}">
           <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
             <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
@@ -251,15 +251,32 @@ ${visionBand()}
   <div class="wrap">
     <p class="eyebrow" data-anim="fade">${esc(SITE.name)}</p>
     <h2 id="products-h" data-anim="reveal">Our Products</h2>
-    <ul class="g-tiles" data-stagger>
-      ${railPicks().map(p => `<li class="g-tile" data-anim="rise"><a href="products/${p.slug}.html">
-        <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
-          <img src="assets/img/products/${p.slug}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">${esc(p.name)}</span>
-      </a></li>`).join('\n      ')}
-    </ul>
+    <!-- CAROUSEL. '.g-car-track' is a horizontal SCROLL CONTAINER, so nothing
+         inside it may carry '[data-anim]': a 'view()' timeline cannot resolve
+         in a scroller and the tile would sit at opacity 0 for good (the
+         frozen-clock note in CLAUDE.md, which the family rail already hit
+         once). The reveal is therefore on '.g-car', outside the scroller, and
+         'data-stagger' came off with the per-tile reveals it used to delay.
+
+         The row itself is native scroll-snap, not a JS-driven track: with
+         site.js blocked this is still a draggable, snapping row of ten
+         products. site.js only adds the arrows, the dots and the keyboard. -->
+    <div class="g-car" data-carousel data-anim="rise"
+         role="group" aria-roledescription="carousel" aria-label="Our products">
+      <ul class="g-tiles g-car-track">
+        ${railPicks().map((p, i) => `<li class="g-tile" style="--wd:${(i % 5) * 110}ms"><a href="products/${p.slug}.html">
+          <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
+            <img src="assets/img/products/${p.slug}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">${esc(p.name)}</span>
+        </a></li>`).join('\n        ')}
+      </ul>
+    </div>
     <div class="row g-more" data-anim="fade"><a class="btn btn-ghost" href="products.html">All ${PRODUCTS.length} products ${ARROW}</a></div>
   </div>
 </section>
@@ -375,7 +392,7 @@ const checkIco = '<svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><p
 /* Project tiles with the hover veil. On the projects page they are also the
    gallery: `#gal`, `[data-sector]`, `.gal-zoom` and `.gal-cap` are the hooks
    the filter and the lightbox in site.js read — keep all four. */
-const projTile = (pr, up = '') => `<li class="g-pj" data-anim="tile" data-sector="${esc(pr.sec)}">
+const projTile = (pr, up = '') => `<li class="g-pj" data-anim="open" data-sector="${esc(pr.sec)}">
         <a class="gal-zoom" href="${up}assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
           <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
             <img src="${up}assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
@@ -513,7 +530,7 @@ PRODUCTS.forEach(p => {
         <p class="lead" style="color:var(--on-light)">${esc(p.lead)}</p>
         ${p.body.map(t => `<p>${esc(t)}</p>`).join('\n        ')}
       </div>
-      ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
+      ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot" data-anim="open"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
     </div>
   </div>
 </section>
@@ -629,10 +646,10 @@ built.push(page({
         ${ABOUT_INTRO.body.split(/(?<=\.)\s+(?=With 2,035|From offices|Our commitment)/).map(para => `<p class="muted" data-in style="--d:280">${esc(para)}</p>`).join('\n        ')}
       </div>
       <div class="g-story-media">
-        <div class="surface s-slat" data-anim="frame">
+        <div class="surface s-slat" data-anim="open">
           <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
         </div>
-        <div class="surface s-slat" data-anim="frame">
+        <div class="surface s-slat" data-anim="open">
           <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
         </div>
       </div>

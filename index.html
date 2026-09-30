@@ -139,78 +139,131 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   <div class="wrap">
     <p class="eyebrow" data-anim="fade">Silence Acoustic</p>
     <h2 id="products-h" data-anim="reveal">Our Products</h2>
-    <ul class="g-tiles" data-stagger>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-designer-panel.html">
-        <span class="g-tile-img surface s-groove is-cut" data-mat="pet">
-          <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Designer Panel</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-polyester-panel.html">
-        <span class="g-tile-img surface s-felt is-cut" data-mat="pet">
-          <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Polyester Panel</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-ceiling-baffle.html">
-        <span class="g-tile-img surface s-baffle" data-mat="cloud">
-          <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Ceiling Baffle</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-ceiling-cloud.html">
-        <span class="g-tile-img surface s-cloud" data-mat="cloud">
-          <img src="assets/img/products/acoustic-ceiling-cloud-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Ceiling Cloud</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wedge-foam.html">
-        <span class="g-tile-img surface s-wedge is-cut" data-mat="foam">
-          <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Wedge Foam</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-pyramid-foam.html">
-        <span class="g-tile-img surface s-pyramid is-cut" data-mat="foam">
-          <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Pyramid Foam</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wooden-slats.html">
-        <span class="g-tile-img surface s-slat is-cut" data-mat="wood">
-          <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Wooden Slats</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wood-wool-panel.html">
-        <span class="g-tile-img surface s-wool is-cut" data-mat="wood">
-          <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Acoustic Wood Wool Panel</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/soundproof-door.html">
-        <span class="g-tile-img surface s-door" data-mat="proof">
-          <img src="assets/img/products/soundproof-door-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">Soundproof Door</span>
-      </a></li>
-      <li class="g-tile" data-anim="rise"><a href="products/polysynth-wool.html">
-        <span class="g-tile-img surface s-batt" data-mat="proof">
-          <img src="assets/img/products/polysynth-wool-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
-          <span class="g-plus" aria-hidden="true">+</span>
-        </span>
-        <span class="g-tile-cap">PolySynth Wool</span>
-      </a></li>
-    </ul>
+    <!-- CAROUSEL. '.g-car-track' is a horizontal SCROLL CONTAINER, so nothing
+         inside it may carry '[data-anim]': a 'view()' timeline cannot resolve
+         in a scroller and the tile would sit at opacity 0 for good (the
+         frozen-clock note in CLAUDE.md, which the family rail already hit
+         once). The reveal is therefore on '.g-car', outside the scroller, and
+         'data-stagger' came off with the per-tile reveals it used to delay.
+
+         The row itself is native scroll-snap, not a JS-driven track: with
+         site.js blocked this is still a draggable, snapping row of ten
+         products. site.js only adds the arrows, the dots and the keyboard. -->
+    <div class="g-car" data-carousel data-anim="rise"
+         role="group" aria-roledescription="carousel" aria-label="Our products">
+      <ul class="g-tiles g-car-track">
+        <li class="g-tile" style="--wd:0ms"><a href="products/acoustic-designer-panel.html">
+          <span class="g-tile-img surface s-groove is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Designer Panel</span>
+        </a></li>
+        <li class="g-tile" style="--wd:110ms"><a href="products/acoustic-polyester-panel.html">
+          <span class="g-tile-img surface s-felt is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Polyester Panel</span>
+        </a></li>
+        <li class="g-tile" style="--wd:220ms"><a href="products/acoustic-ceiling-baffle.html">
+          <span class="g-tile-img surface s-baffle" data-mat="cloud">
+            <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Ceiling Baffle</span>
+        </a></li>
+        <li class="g-tile" style="--wd:330ms"><a href="products/acoustic-ceiling-cloud.html">
+          <span class="g-tile-img surface s-cloud" data-mat="cloud">
+            <img src="assets/img/products/acoustic-ceiling-cloud-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Ceiling Cloud</span>
+        </a></li>
+        <li class="g-tile" style="--wd:440ms"><a href="products/acoustic-wedge-foam.html">
+          <span class="g-tile-img surface s-wedge is-cut" data-mat="foam">
+            <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wedge Foam</span>
+        </a></li>
+        <li class="g-tile" style="--wd:0ms"><a href="products/acoustic-pyramid-foam.html">
+          <span class="g-tile-img surface s-pyramid is-cut" data-mat="foam">
+            <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Pyramid Foam</span>
+        </a></li>
+        <li class="g-tile" style="--wd:110ms"><a href="products/acoustic-wooden-slats.html">
+          <span class="g-tile-img surface s-slat is-cut" data-mat="wood">
+            <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wooden Slats</span>
+        </a></li>
+        <li class="g-tile" style="--wd:220ms"><a href="products/acoustic-wood-wool-panel.html">
+          <span class="g-tile-img surface s-wool is-cut" data-mat="wood">
+            <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wood Wool Panel</span>
+        </a></li>
+        <li class="g-tile" style="--wd:330ms"><a href="products/soundproof-door.html">
+          <span class="g-tile-img surface s-door" data-mat="proof">
+            <img src="assets/img/products/soundproof-door-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">Soundproof Door</span>
+        </a></li>
+        <li class="g-tile" style="--wd:440ms"><a href="products/polysynth-wool.html">
+          <span class="g-tile-img surface s-batt" data-mat="proof">
+            <img src="assets/img/products/polysynth-wool-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
+                 IntersectionObserver in site.js, not a view() timeline, so it
+                 is safe inside the carousel's scroller. -->
+            <span class="g-curtain" aria-hidden="true"></span>
+          </span>
+          <span class="g-tile-cap">PolySynth Wool</span>
+        </a></li>
+      </ul>
+    </div>
     <div class="row g-more" data-anim="fade"><a class="btn btn-ghost" href="products.html">All 19 products <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
   </div>
 </section>
@@ -305,7 +358,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
       <h2 id="work-h" class="eyebrow center-eyebrow" data-anim="fade">Silence Acoustic projects</h2>
     </div>
     <ul class="g-proj" data-stagger>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Conference%20Room%20%26%20Cabin">
           <span class="g-pj-img surface s-param">
             <img src="assets/img/projects/88-pictures-mumbai.webp" alt="88 Pictures, Mumbai" width="760" height="507" loading="lazy" decoding="async">
@@ -319,7 +372,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Mumbai &middot; Conference Room &amp; Cabin</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Office%20Space">
           <span class="g-pj-img surface s-felt">
             <img src="assets/img/projects/abc-fitness-orbit-hyderabad.webp" alt="ABC Fitness Orbit, Hyderabad" width="760" height="507" loading="lazy" decoding="async">
@@ -333,7 +386,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Hyderabad &middot; Office Space</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Recording%20Studio">
           <span class="g-pj-img surface s-wedge">
             <img src="assets/img/projects/3n-studio-andheri-mumbai.webp" alt="3n Studio Andheri, Mumbai" width="760" height="507" loading="lazy" decoding="async">
@@ -347,7 +400,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Mumbai &middot; Recording Studio</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Auditorium%20%26%20Halls">
           <span class="g-pj-img surface s-slat">
             <img src="assets/img/projects/artillery-museum-nashik.webp" alt="Artillery Museum, Nashik" width="760" height="507" loading="lazy" decoding="async">
@@ -361,7 +414,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Nashik &middot; Auditorium &amp; Halls</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Classroom%20%26%20Training%20Rooms">
           <span class="g-pj-img surface s-perf">
             <img src="assets/img/projects/accenture-vikroli.webp" alt="Accenture, Vikroli" width="760" height="507" loading="lazy" decoding="async">
@@ -375,7 +428,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Vikroli &middot; Classroom &amp; Training Rooms</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Home%20Theatres">
           <span class="g-pj-img surface s-emboss">
             <img src="assets/img/projects/residential-home-theater-hyderabad.webp" alt="Residential Home Theater, Hyderabad" width="760" height="507" loading="lazy" decoding="async">
@@ -389,7 +442,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Hyderabad &middot; Home Theatres</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=TV%20Channels%20%26%20Radio%20Station">
           <span class="g-pj-img surface s-pyramid">
             <img src="assets/img/projects/red-fm-mumbai.webp" alt="Red FM, Mumbai" width="760" height="507" loading="lazy" decoding="async">
@@ -403,7 +456,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Mumbai &middot; TV Channels &amp; Radio Station</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Hotels%20%26%20Clubs">
           <span class="g-pj-img surface s-door">
             <img src="assets/img/projects/amethhyyst-lounge-bar-mumbai.webp" alt="Amethhyyst Lounge Bar, Mumbai" width="760" height="507" loading="lazy" decoding="async">
@@ -417,7 +470,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
           <span class="g-pj-sub">Mumbai &middot; Hotels &amp; Clubs</span>
         </a>
       </li>
-      <li class="g-pj" data-anim="tile">
+      <li class="g-pj" data-anim="open">
         <a href="projects.html#room=Indoor%20Sports">
           <span class="g-pj-img surface s-baffle">
             <img src="assets/img/projects/bhoomi-celestia-malad.webp" alt="Bhoomi Celestia, Malad" width="760" height="507" loading="lazy" decoding="async">
