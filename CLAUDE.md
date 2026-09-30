@@ -594,9 +594,10 @@ its published value.
 the end of `theme.css`, not in `motion.css`. It is: load-in entrances for
 `.g-head` / `.pd-top` / `.g-story` `[data-in]` (these had none — `[data-in]`
 was only wired for `.hero` and the retired `.page-head`) and the products
-photo strip; a slow push-in (`gKen`) on each banner photograph, on the SAME
-27s period and negative delays as `mHeroFade`, applied to `.hero-slide` only
-so the slide/headline sync is untouched; the headline rule growing in; a
+photo strip; a push-in AND a rightward slide (`gKen`) on each banner
+photograph, with the matching headline travel (`gSay`) beside it, both on the
+SAME 15s period and negative delays as `mHeroFade` — 5s a photograph across
+three, by request; the headline rule growing in; a
 header shadow on `head-solid`; icons and check marks drawing in on `view()`
 (`pathLength="1"` in the markup); the intro photograph easing out of a 1.14
 zoom on `--box`; and pointer-only hover motion (tile zoom, veil words rising,
@@ -952,10 +953,20 @@ three blocks are **grid-stacked**, not absolutely positioned, so the hero
 reserves the tallest headline once and the lead below never moves; and the
 load-in belongs to slide one only.
 
-The synchronisation is two matched sets of keyframes in `motion.css` —
-`.hero-slide` and `.hero-say`, same duration, same negative delays. **Change
-one and you must change the other in the same edit**, or a headline outlives
-its picture and describes the wrong room for nine seconds.
+The synchronisation is two matched sets of keyframes — `.hero-slide` and
+`.hero-say`, same duration, same negative delays. **Change one and you must
+change the other in the same edit**, or a headline outlives its picture and
+describes the wrong room for five seconds.
+
+It is now **15s, 5s a photograph** (asked for: "the images should change
+within 5 seconds"), and the period is written in FOUR places, not two:
+`.hero-slide` and `.hero-say` in `motion.css`, and the same two restated in
+`theme.css` to hang `gKen` and `gSay` off them. `theme.css` loads last and
+wins, so changing only `motion.css` moves the headlines and leaves the
+photographs behind. All four together, every time. The percentages inside
+`mHeroFade`, `gKen` and `gSay` are shares of the loop and do not change with
+the period — including the `33.34%` re-cock, which must stay inside the
+stretch where `mHeroFade` holds opacity 0 or the reset is visible.
 
 `.hero-title` is **4.25rem at the top end, not `--t-hero`'s 7rem**. The
 client's longest line is 44 characters against the 24 the slot was drawn for,

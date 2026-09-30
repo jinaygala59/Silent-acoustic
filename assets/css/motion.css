@@ -260,7 +260,13 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* ---- the banner cross-fade -------------------------------------------
-     Three photographs, 9s each on a 27s loop. Deliberately NOT inside the
+     Three photographs, 5s each on a 15s loop (asked for: "the images should
+     change within 5 seconds"). The percentages below are shares of the loop,
+     not seconds, so they did not move when the period did — but the four
+     numbers that ARE seconds did, and they live in two files: this one and
+     the `.hero-slide` / `.hero-say` overrides in theme.css, which restate
+     the period to hang gKen and gSay off it. All four change together or a
+     headline outlives its photograph. Deliberately NOT inside the
      scroll-timeline @supports block further down: this is a plain time-based
      animation and Firefox should get it too. It IS inside the reduced-motion
      gate, because content that changes on its own is exactly what that
@@ -311,9 +317,9 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
     96.67% { opacity: 0; }
     100%   { opacity: 1; }
   }
-  .hero-slide { animation: mHeroFade 27s linear infinite; }
-  .hero-slide:nth-child(2) { animation-delay: -18s; }
-  .hero-slide:nth-child(3) { animation-delay: -9s; }
+  .hero-slide { animation: mHeroFade 15s linear infinite; }
+  .hero-slide:nth-child(2) { animation-delay: -10s; }
+  .hero-slide:nth-child(3) { animation-delay: -5s; }
 
   /* The client's headline for each banner, on the SAME keyframes and the SAME
      negative delays as the photograph it belongs to. That is not a stylistic
@@ -326,9 +332,9 @@ html:has(.nav[data-open="true"]) .site-head { transform: none !important; }
      without an explicit animation it would stay opaque under the other two
      as they faded in. The three are peers here; `.is-on` only decides the
      pre-animation and no-JS state. */
-  .hero-say { animation: mHeroFade 27s linear infinite; }
-  .hero-say:nth-child(2) { animation-delay: -18s; }
-  .hero-say:nth-child(3) { animation-delay: -9s; }
+  .hero-say { animation: mHeroFade 15s linear infinite; }
+  .hero-say:nth-child(2) { animation-delay: -10s; }
+  .hero-say:nth-child(3) { animation-delay: -5s; }
 
   /* Load-time entrance, NOT a scroll reveal. Both the hero and the page-head
      are above the fold, so there is no scroll for a view() timeline to run

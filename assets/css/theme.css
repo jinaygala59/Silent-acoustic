@@ -992,6 +992,23 @@ a.card:active { transform: none; box-shadow: none; }
    instead of gKen's 1.06 floor — nothing follows it that needs the headroom. */
 @keyframes gBannerIn   { from { translate: -2.6% 0; scale: 1.08; } to { translate: 0 0; scale: 1; } }
 @keyframes gBannerBack { from { translate:  2.6% 0; scale: 1.08; } to { translate: 0 0; scale: 1; } }
+/* The headline's travel. Same six stops and the same 33.34% re-cock as gKen,
+   so the words leave and arrive with their own photograph — but FLAT from 0%
+   to 30%, where gKen drifts. That stretch is the whole time the headline is
+   legible, and the one thing a reader must not have to do is follow moving
+   type. All the movement is in the two changeover windows, where mHeroFade
+   has the block at or near opacity 0. */
+@keyframes gSay {
+  0%     { translate: 0 0; }           /* arrived                          */
+  30%    { translate: 0 0; }           /* still — this is the reading time */
+  33.33% { translate: 2.5rem 0; }      /* leaves right, fading             */
+  33.34% { translate: -2.5rem 0; }     /* re-cocked, opacity 0             */
+  96.67% { translate: -2.5rem 0; }     /* waits off to the left            */
+  100%   { translate: 0 0; }           /* slides right, fading in          */
+}
+/* The arrow-driven headline travel: one trip, no loop, no re-cock. */
+@keyframes gSayIn   { from { translate: -2.5rem 0; } to { translate: 0 0; } }
+@keyframes gSayBack { from { translate:  2.5rem 0; } to { translate: 0 0; } }
 @keyframes gDraw   { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes gPar    { from { scale: 1.14; } to { scale: 1; } }
 @keyframes gOpen   { from { opacity: 0; translate: 0 -6px; } }
@@ -1015,15 +1032,36 @@ a.card:active { transform: none; box-shadow: none; }
   .g-strip-i:nth-child(2) { animation-delay: 120ms; }
   .g-strip-i:nth-child(3) { animation-delay: 240ms; }
 
-  /* 2 · The banner photographs breathe: a slow push-in while each is on
-     screen, eased back while it is hidden. SAME 27s period and SAME negative
-     delays as mHeroFade, so the zoom rides with its own slide — the
-     slide/headline sync in motion.css is untouched (this is on the
-     photograph wrapper only). `scale`, so it composes with mWall's
-     scroll-driven `transform` on the <img>. */
-  .hero-slide { animation: mHeroFade 27s linear infinite, gKen 27s ease-in-out infinite; }
-  .hero-slide:nth-child(2) { animation-delay: -18s; }
-  .hero-slide:nth-child(3) { animation-delay: -9s; }
+  /* 2 · The banner photographs breathe and travel: a push-in while each is
+     on screen, and the rightward slide in gKen. 15s, matching motion.css —
+     5s a photograph across three.
+
+     THE TWO RULES BELOW ARE ONE EDIT, NOT TWO. Each restates mHeroFade's
+     period so a second animation can hang off it, so each is capable of
+     drifting away from the other and from motion.css. The headline carries
+     the client's own words for the room in the photograph; if the periods
+     disagree it describes the wrong room until the two loops happen to meet
+     again. Period and both delays are identical on both, and on mHeroFade in
+     motion.css. Change one, change all three. */
+  .hero-slide { animation: mHeroFade 15s linear infinite, gKen 15s ease-in-out infinite; }
+  .hero-slide:nth-child(2) { animation-delay: -10s; }
+  .hero-slide:nth-child(3) { animation-delay: -5s; }
+
+  /* The words slide with the picture. gSay holds the headline STILL for the
+     whole time it is legible and moves it only on the change — text that
+     drifts under the eye while you are reading it is a different and worse
+     effect than a slider. No scale, either: scaling type resamples the
+     glyphs and the headline is the largest text on the site.
+
+     rem, not %, because a % here is a share of the copy block's own width,
+     which is a clamp() that changes with the viewport — the travel would be
+     wider on a desktop than a phone for no reason. Nothing to expose behind
+     it, so this needs none of gKen's cover arithmetic; `.hero-top` is
+     `overflow: hidden` and the block is grid-stacked, so the travel cannot
+     spill or shift the layout. */
+  .hero-say { animation: mHeroFade 15s linear infinite, gSay 15s var(--ease) infinite; }
+  .hero-say:nth-child(2) { animation-delay: -10s; }
+  .hero-say:nth-child(3) { animation-delay: -5s; }
 
   /* THE ARROWS SLIDE TOO, AND THEY SLIDE THE WAY THEY POINT. Taking an arrow
      puts the hero in `.is-manual`, which sets `animation: none` on every
@@ -1043,6 +1081,16 @@ a.card:active { transform: none; box-shadow: none; }
      holds for every frame between, not just at the ends. */
   .hero-top[data-dir] .hero-media.is-manual .hero-slide.is-on {
     animation: gBannerIn 640ms var(--ease) both;
+  }
+  /* The words travel with the picture on an arrow too, the same way and over
+     the same 640ms. They are NOT inside `.hero-media` — that subtree is
+     aria-hidden decoration and these are the page's real words — so this is
+     a second selector rather than a wider one. rem, as in gSay. */
+  .hero-top[data-dir] .hero-say.is-on {
+    animation: gSayIn 640ms var(--ease) both;
+  }
+  .hero-top[data-dir="prev"] .hero-say.is-on {
+    animation-name: gSayBack;
   }
   .hero-top[data-dir="prev"] .hero-media.is-manual .hero-slide.is-on {
     animation-name: gBannerBack;
