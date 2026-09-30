@@ -88,8 +88,8 @@ const FONTS = 'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,30
    44px now and the header padding was opened to match. If you shrink it
    back, go back to logo-mark.png rather than shipping an illegible line of
    type — logo-mark.png is kept in assets/img for exactly that. */
-const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">`;
-const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
+const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}${asset('assets/img/logo-full.png')}" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">`;
+const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}${asset('assets/img/logo-full.png')}" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
 
 const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -244,8 +244,8 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <link rel="stylesheet" href="${up}${asset('assets/css/site.css')}">
 <link rel="stylesheet" href="${up}${asset('assets/css/motion.css')}">
 <link rel="stylesheet" href="${up}${asset('assets/css/theme.css')}">
-<link rel="icon" href="${up}assets/img/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="${up}assets/img/favicon.png">
+<link rel="icon" href="${up}${asset('assets/img/favicon.png')}" type="image/png">
+<link rel="apple-touch-icon" href="${up}${asset('assets/img/favicon.png')}">
 <meta property="og:image" content="${SITE.url}/assets/img/logo-full.png">
 ${HEAD_BOOT}
 <script type="application/ld+json">${jsonLd()}</script>
@@ -372,7 +372,7 @@ const roomdex = (base = 'projects.html') => {
 
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
   <div class="card-surface surface ${p.surf}${p.cut ? ' is-cut' : ''}">
-    <img src="${up}assets/img/products/${p.slug}-card.webp" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
+    <img src="${up}${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
     <span class="card-cat">${esc(CATEGORIES.find(c => c.id === p.cat).name)}</span>
@@ -488,4 +488,4 @@ const ctaBand = (up = '') => `<section class="cta-band g-tint">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, page, productCard, famRail, railPicks, ctaBand, header, footer, nrcBar, nrcOf, roomdex, MAT };
+module.exports = { ROOT, esc, ARROW, asset, page, productCard, famRail, railPicks, ctaBand, header, footer, nrcBar, nrcOf, roomdex, MAT };

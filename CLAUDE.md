@@ -52,6 +52,34 @@ ten and not nineteen because the pin scales at 200px of scroll per card
 
 ## Non-obvious things that will bite you
 
+**A 404 UNDER `/assets/img/` IS CACHED FOR A YEAR, AND THAT IS WHY THE
+PHOTOGRAPHS CARRY `?v=` TOO.** `vercel.json` gives `/assets/img/(.*)` the
+header `public, max-age=31536000, immutable`, and Vercel applies it to the
+**response**, not to the file — so a request that misses returns
+
+```
+HTTP/2 404
+cache-control: public, max-age=31536000, immutable
+```
+
+and the browser files that 404 away for twelve months. The filenames never
+changed, so nothing could ever dislodge it: that browser had permanently
+decided the picture does not exist. It showed up as the fifty client logos
+rendering as broken-image icons with their alt text, on a deploy where all
+fifty returned 200 to `curl` and rendered perfectly in a browser that had
+never been there before. Verify this with `curl -sI` on a path you know is
+missing — the header comes back on the 404.
+
+Every `assets/img/**` reference therefore goes through `asset()` as well
+(595 of them across the 28 shipped pages), which both dislodges an
+already-poisoned entry — the URL is new, so the old cache line is never
+consulted — and makes `immutable` honestly true, since the URL now changes
+whenever the bytes do. **Add an `<img>` and it must go through `asset()`.**
+The `og:image` is deliberately left bare: it is an absolute URL read by
+social scrapers, not by the browser cache. `asset()` warns at build time for
+a file it cannot read and serves it unversioned, so a missing photograph is
+loud rather than silent.
+
 **THE STYLESHEETS CARRY `?v=` AND THEY HAVE TO.** `vercel.json` serves
 `/assets/(css|js)/*` with `max-age=2592000` and the filenames never change,
 so a browser that has been here before keeps its copy of `site.css` and

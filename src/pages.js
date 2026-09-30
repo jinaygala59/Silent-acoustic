@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, railPicks, ctaBand, nrcBar } = B;
+const { esc, ARROW, asset, page, productCard, railPicks, ctaBand, nrcBar } = B;
 
 /* "20+ yrs" was typed, next to "since 2006" which is the client's published
    fact. Two ways of saying the same thing, one of which goes stale on its own:
@@ -83,7 +83,7 @@ const visionBand = () => visionParas.length ? `
    off the edge of a strip that is not moving. */
 const clientRows = () => {
   const ROWS = 3, per = Math.ceil(CLIENTS.length / ROWS);
-  const plate = (c, dup) => `<li class="client"${dup ? ' aria-hidden="true" data-dup' : ''}><img src="assets/img/clients/${c.s}.webp" alt="${dup ? '' : esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`;
+  const plate = (c, dup) => `<li class="client"${dup ? ' aria-hidden="true" data-dup' : ''}><img src="${asset(`assets/img/clients/${c.s}.webp`)}" alt="${dup ? '' : esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`;
   return `<div class="client-wall client-rows" data-anim="fade">
       ${Array.from({ length: ROWS }, (_, r) => CLIENTS.slice(r * per, (r + 1) * per)).map((row, r) => `<div class="client-row${r % 2 ? ' is-rev' : ''}">
         <ul class="client-track">
@@ -120,7 +120,7 @@ const workBand = () => {
       ${picks.map(pr => `<li class="g-pj" data-anim="open">
         <a href="projects.html#room=${encodeURIComponent(pr.sec)}">
           <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+            <img src="${asset(`assets/img/projects/${pr.s}.webp`)}" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
             <span class="g-pj-over" aria-hidden="true">
               <span class="g-pj-t">${esc(pr.n)}</span>
               <span class="g-pj-rule"></span>
@@ -192,7 +192,7 @@ built.push(page({
 <section class="hero">
   <div class="hero-top">
   <div class="hero-media" aria-hidden="true">
-    ${BANNERS.map((b, i) => `<div class="hero-slide"><img src="assets/img/banners/${b.img}.webp"
+    ${BANNERS.map((b, i) => `<div class="hero-slide"><img src="${asset(`assets/img/banners/${b.img}.webp`)}"
          alt="" width="${b.w}" height="${b.h}" ${i ? 'fetchpriority="low" loading="lazy"' : 'fetchpriority="high"'} decoding="async"></div>`).join('\n    ')}
   </div>
   <div class="wrap">
@@ -241,7 +241,7 @@ built.push(page({
 <!-- 1 · INTRO. Copy over a photograph that fills the right half. -->
 <section class="g-intro" aria-labelledby="intro-h">
   <div class="g-intro-media" aria-hidden="true">
-    <img src="assets/img/projects/z3-powai.webp" alt="" width="760" height="570" loading="lazy" decoding="async">
+    <img src="${asset('assets/img/projects/z3-powai.webp')}" alt="" width="760" height="570" loading="lazy" decoding="async">
   </div>
   <div class="wrap">
     <div class="g-intro-copy">
@@ -293,7 +293,7 @@ ${visionBand()}
       <ul class="g-tiles g-car-track">
         ${railPicks().map(p => `<li class="g-tile"><a href="products/${p.slug}.html">
           <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
-            <img src="assets/img/products/${p.slug}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <img src="${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="" width="800" height="600" loading="lazy" decoding="async">
             <span class="g-plus" aria-hidden="true">+</span>
           </span>
           <span class="g-tile-cap">${esc(p.name)}</span>
@@ -436,9 +436,9 @@ const checkIco = '<svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><p
    gallery: `#gal`, `[data-sector]`, `.gal-zoom` and `.gal-cap` are the hooks
    the filter and the lightbox in site.js read — keep all four. */
 const projTile = (pr, up = '') => `<li class="g-pj" data-anim="open" data-sector="${esc(pr.sec)}">
-        <a class="gal-zoom" href="${up}assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
+        <a class="gal-zoom" href="${up}${asset(`assets/img/projects/${pr.s}.webp`)}" aria-label="View the photograph of ${esc(pr.n)} at full size">
           <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-            <img src="${up}assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+            <img src="${up}${asset(`assets/img/projects/${pr.s}.webp`)}" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
             <span class="g-pj-over" aria-hidden="true">
               <span class="g-pj-t">${esc(pr.n)}</span>
               <span class="g-pj-rule"></span>
@@ -470,7 +470,7 @@ built.push(page({
   desc: '19 acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Made in Mumbai.',
   body: `
 <div class="g-strip" aria-hidden="true">
-  ${stripPicks.map((p, i) => `<div class="g-strip-i"><img src="assets/img/products/${p.slug}-hero.webp" alt="" width="1600" height="1000" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></div>`).join('\n  ')}
+  ${stripPicks.map((p, i) => `<div class="g-strip-i"><img src="${asset(`assets/img/products/${p.slug}-hero.webp`)}" alt="" width="1600" height="1000" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></div>`).join('\n  ')}
 </div>
 ${gHead({
   eyebrow: 'Catalogue', h1: 'Products', lead: `${PRODUCTS.length} products.`, center: true,
@@ -558,7 +558,7 @@ PRODUCTS.forEach(p => {
       </div>
       <!-- data-mat resolves the material colour for the .is-cut mount. -->
       <div class="pd-hero surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}" data-anim="frame">
-        <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
+        <img src="../${asset(`assets/img/products/${p.slug}-hero.webp`)}" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
       </div>
     </div>
   </div>
@@ -573,7 +573,7 @@ PRODUCTS.forEach(p => {
         <p class="lead" style="color:var(--on-light)">${esc(p.lead)}</p>
         ${p.body.map(t => `<p>${esc(t)}</p>`).join('\n        ')}
       </div>
-      ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot" data-anim="open"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
+      ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot" data-anim="open"><img src="../${asset(`assets/img/products/${p.slug}-${n}.webp`)}" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
     </div>
   </div>
 </section>
@@ -690,10 +690,10 @@ built.push(page({
       </div>
       <div class="g-story-media">
         <div class="surface s-slat" data-anim="open">
-          <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
+          <img src="${asset('assets/img/products/acoustic-wooden-slats-card.webp')}" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
         </div>
         <div class="surface s-slat" data-anim="open">
-          <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
+          <img src="${asset('assets/img/projects/upl-metro-juinagar-navi-mumbai.webp')}" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
