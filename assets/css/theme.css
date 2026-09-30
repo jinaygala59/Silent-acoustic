@@ -1001,10 +1001,37 @@ a.card:active { transform: none; box-shadow: none; }
 @keyframes gSay {
   0%     { translate: 0 0; }           /* arrived                          */
   30%    { translate: 0 0; }           /* still — this is the reading time */
-  33.33% { translate: 2.5rem 0; }      /* leaves right, fading             */
-  33.34% { translate: -2.5rem 0; }     /* re-cocked, opacity 0             */
-  96.67% { translate: -2.5rem 0; }     /* waits off to the left            */
+  31.5%  { translate: 2.5rem 0; }      /* leaves right, fading             */
+  31.6%  { translate: -2.5rem 0; }     /* re-cocked, opacity 0             */
+  98.2%  { translate: -2.5rem 0; }     /* waits off to the left            */
   100%   { translate: 0 0; }           /* slides right, fading in          */
+}
+
+/* THE WORDS FADE THROUGH; THE PHOTOGRAPHS CROSS-FADE. Both still run on one
+   period and one set of delays — the sync CLAUDE.md insists on is timing,
+   and that is untouched — but they cannot share an opacity curve.
+
+   mHeroFade overlaps by design: two photographs are both part-opaque at the
+   changeover, because a gap would show `.hero-media`'s #1A1A1A between them.
+   Run the HEADLINES on that same curve and you get two headlines and two
+   eyebrows at ~50% on top of each other, which on a phone is unreadable —
+   the title wraps to three lines there, so the two sets interleave rather
+   than merely overlapping. Measured at the worst frame: 0.49 and 0.51.
+
+   So the outgoing headline is fully out (31.5%) BEFORE the incoming starts
+   in. The three blocks are offset by exactly a third, so the incoming is at
+   31.5% + 66.67% = 98.17% of its own loop at that moment: starting its rise
+   at 98.2% clears the outgoing by 0.03% of the loop, about 5ms, which reads
+   as continuous while never drawing both at once. Those two numbers are a
+   matched pair — move one and you either reopen the overlap or leave a
+   visible hole with no headline. gSay's stops above were moved onto the same
+   two boundaries so the travel and the fade start and finish together. */
+@keyframes gSayFade {
+  0%     { opacity: 1; }
+  30%    { opacity: 1; }               /* legible, still                   */
+  31.5%  { opacity: 0; }               /* fully out before the next begins */
+  98.2%  { opacity: 0; }
+  100%   { opacity: 1; }
 }
 /* The arrow-driven headline travel: one trip, no loop, no re-cock. */
 @keyframes gSayIn   { from { translate: -2.5rem 0; } to { translate: 0 0; } }
@@ -1059,7 +1086,7 @@ a.card:active { transform: none; box-shadow: none; }
      it, so this needs none of gKen's cover arithmetic; `.hero-top` is
      `overflow: hidden` and the block is grid-stacked, so the travel cannot
      spill or shift the layout. */
-  .hero-say { animation: mHeroFade 15s linear infinite, gSay 15s var(--ease) infinite; }
+  .hero-say { animation: gSayFade 15s linear infinite, gSay 15s var(--ease) infinite; }
   .hero-say:nth-child(2) { animation-delay: -10s; }
   .hero-say:nth-child(3) { animation-delay: -5s; }
 

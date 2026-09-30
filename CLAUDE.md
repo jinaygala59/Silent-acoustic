@@ -953,10 +953,24 @@ three blocks are **grid-stacked**, not absolutely positioned, so the hero
 reserves the tallest headline once and the lead below never moves; and the
 load-in belongs to slide one only.
 
-The synchronisation is two matched sets of keyframes — `.hero-slide` and
-`.hero-say`, same duration, same negative delays. **Change one and you must
+The synchronisation is **timing, not curve**: `.hero-slide` and `.hero-say`
+share a duration and a set of negative delays. **Change one and you must
 change the other in the same edit**, or a headline outlives its picture and
 describes the wrong room for five seconds.
+
+What they deliberately do NOT share is the opacity keyframe. The photographs
+run `mHeroFade`, which OVERLAPS on purpose — two are part-opaque at the
+changeover because a gap would show `.hero-media`'s `#1A1A1A` between them.
+The headlines run `gSayFade`, which does not overlap at all: the outgoing is
+fully out at 31.5% before the incoming starts rising at 98.2%. Running the
+words on the photographs' curve put two headlines and two eyebrows at ~0.49
+and ~0.51 on top of each other, which on a phone is unreadable — the title
+wraps to three lines there, so the two sets interleave rather than merely
+overlapping. Those two percentages are a matched pair (the blocks are offset
+by exactly a third, so 31.5 + 66.67 = 98.17); move one and you either reopen
+the overlap or leave a visible hole with no headline at all. Verified by
+stepping the whole loop: 0 frames of 1001 draw two headlines, and the
+photographs still hold 0.999 coverage.
 
 It is now **15s, 5s a photograph** (asked for: "the images should change
 within 5 seconds"), and the period is written in FOUR places, not two:
