@@ -1178,36 +1178,96 @@ a.card:active { transform: none; box-shadow: none; }
 }
 
 /* ==========================================================================
-   TILE CURTAIN — the Motion+ `curtains` wipe, scoped to each homepage
-   product tile (by request). Cover → swap → reveal: the panel sweeps in from
-   the right to cover the tile (0–45%), the photograph switches on under it
-   at the midpoint, and the panel carries on LEFT to uncover it (55–100%).
-   The leading edge leans 12deg, as `wipe({ direction: 'left', angle: 12 })`.
-   Staggered along each row by `--wd` (set per tile in src/pages.js).
-   Photographs are hidden ONLY under `.wipe-armed`, which only site.js sets
-   and which it removes if the observer never reports — so without script
-   the tiles are plain and visible.
+   STICKY REVEAL FOOTER (by request, after Motion's "Footer: Sticky reveal" —
+   a sticky under-page footer that fades and scales in as scroll uncovers
+   it). Built here, not installed: that is a React/shadcn component and this
+   is a static site.
+
+   How: the footer is `position: sticky; bottom: 0` UNDER `main`, and `main`
+   is an opaque layer above it — so the footer is always there, hidden, and
+   the page lifts off it as you reach the end. Its contents scale and fade
+   in over exactly the distance that uncovers it: `main` publishes `--main`,
+   and the range ends at `--foot-end`, the footer's height as a share of the
+   viewport, which site.js measures.
+
+   ONLY under `html.foot-reveal`, which site.js sets only while the footer
+   fits in 85% of the viewport. A footer taller than the screen (phones)
+   would have its top permanently cut off by a sticky bottom edge, so there
+   it stays an ordinary footer. No script: ordinary footer.
    ========================================================================== */
-.g-curtain {
-  position: absolute; z-index: 6; top: 0; bottom: 0; left: -30%; right: -30%;
-  pointer-events: none;
-  background: linear-gradient(90deg, #08597A 0, #08597A 0.6rem, #1CABDE 0.6rem);
-  transform: skewX(-12deg) translateX(130%);
+html.foot-reveal main {
+  position: relative; z-index: 1;
+  background: #F3F4F7;
+  box-shadow: 0 28px 44px -26px rgba(14, 26, 31, 0.42);
 }
-@keyframes gTileCurtain {
-  0%        { transform: skewX(-12deg) translateX(130%); }
-  45%, 55%  { transform: skewX(-12deg) translateX(0); }
-  100%      { transform: skewX(-12deg) translateX(-130%); }
+html.foot-reveal .site-foot { position: sticky; bottom: 0; z-index: 0; }
+@keyframes gFootIn {
+  from { opacity: 0.25; scale: 0.94; translate: 0 48px; }
+  to   { opacity: 1;    scale: 1;    translate: 0 0; }
 }
-@keyframes gTileSwap { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
 @media (prefers-reduced-motion: no-preference) {
-  .wipe-armed .g-tile:not(.is-wiped) .g-tile-img > img,
-  .wipe-armed .g-tile:not(.is-wiped) .g-tile-cap { opacity: 0; }
-  .wipe-armed .g-tile.is-wiped .g-curtain {
-    animation: gTileCurtain 1000ms cubic-bezier(0.65, 0, 0.35, 1) var(--wd, 0ms) both;
-  }
-  .wipe-armed .g-tile.is-wiped .g-tile-img > img,
-  .wipe-armed .g-tile.is-wiped .g-tile-cap {
-    animation: gTileSwap 1000ms linear var(--wd, 0ms) both;
+  @supports (animation-timeline: view()) {
+    /* `--main` is published by <main> but read by the footer, which is its
+       SIBLING. A named timeline is only visible to the publisher's own
+       descendants, so without `timeline-scope` on the shared parent the
+       footer finds no timeline and the animation simply finishes (measured:
+       timeline null, progress 1). Hoisting the name to <body> fixes it. */
+    html.foot-reveal body { timeline-scope: --main; }
+    html.foot-reveal main { view-timeline-name: --main; }
+    html.foot-reveal .site-foot > .wrap {
+      transform-origin: 50% 100%;
+      animation: gFootIn linear both;
+      animation-timeline: --main;
+      animation-range: exit 0% exit var(--foot-end, 60%);
+    }
   }
 }
+@media print {
+  html.foot-reveal main { box-shadow: none; }
+  html.foot-reveal .site-foot { position: static; }
+}
+
+/* ==========================================================================
+   STICKY REVEAL BANNER — the footer's reveal, mirrored onto the homepage
+   hero (by request). The banner is `position: sticky; top: 0` and every
+   section after it is an opaque layer above it, so the page slides UP OVER
+   the banner instead of the banner scrolling away. As it is covered the
+   banner recedes: `.hero-top` scales down a touch and a veil darkens it,
+   over the first `--hero-h` of scroll (its own height, set by site.js).
+
+   `scale` (the individual property) on `.hero-top`, so it composes with
+   mDrift's `transform`/opacity on the copy, mWall's on the <img> and gKen's
+   `scale` on each slide — four animations, four different elements or
+   properties. The veil is `.hero-top::after`, above the photograph and
+   below the copy (z 2; the copy's .wrap is z 3).
+
+   ONLY under `html.hero-reveal`, which site.js sets only while the banner
+   fits the viewport. A sticky banner taller than the screen would never
+   show its lower part — the headline button included — so there it is an
+   ordinary banner. No script: ordinary banner.
+   ========================================================================== */
+html.hero-reveal .hero { position: sticky; top: 0; z-index: 0; }
+html.hero-reveal main > :not(.hero) { position: relative; z-index: 1; }
+html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5); }
+.hero-top::after {
+  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: #0C0C0C; opacity: 0;
+}
+@keyframes gHeroBack { to { scale: 0.93; } }
+@keyframes gHeroDim  { to { opacity: 0.55; } }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    html.hero-reveal .hero-top {
+      transform-origin: 50% 30%;
+      animation: gHeroBack linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px var(--hero-h, 90vh);
+    }
+    html.hero-reveal .hero-top::after {
+      animation: gHeroDim linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px var(--hero-h, 90vh);
+    }
+  }
+}
+@media print { html.hero-reveal .hero { position: static; } }

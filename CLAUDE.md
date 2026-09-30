@@ -631,17 +631,34 @@ Transition was tried first and removed** — Chrome/Edge 126+ and Safari 18.2+
 only, and skipped under the OS reduced-motion setting, which is why it was
 reported as not working.
 
-**The same curtain wipe plays on each homepage product tile** (asked for
-"in the products on home page"). Each `.g-tile` carries a `.g-curtain` span;
-as a tile comes into view — down the page or sideways through the carousel —
-the panel sweeps in from the right to cover it, the photograph and caption
-switch on at the midpoint, and the panel carries on left (`gTileCurtain` /
-`gTileSwap`, TILE CURTAIN block in `theme.css`), staggered 110ms along a row
-by `--wd`. **It is triggered by an IntersectionObserver in `site.js`, not a
-`view()` timeline, because the tiles live inside the carousel's horizontal
-scroller** — the frozen-clock trap. Photographs are hidden only under
-`.wipe-armed`, which only that script sets and removes again if the observer
-never reports.
+**The product-tile curtain wipe was removed by request** (30 Sep 2026). The
+`.g-curtain` spans, the `wipe-armed` observer in `site.js` and the TILE
+CURTAIN block in `theme.css` are all deleted, not disabled. The page-to-page
+curtain (`curtain-out` / `curtain-in`) is separate and stays.
+
+**Sticky reveal footer, site-wide** (after Motion's "Footer: Sticky reveal",
+which is a paid React/shadcn component — built here instead). The footer is
+`position: sticky; bottom: 0` beneath an opaque, shadowed `<main>`, so the
+page lifts off it at the end; its contents fade and scale in over exactly the
+uncovered distance (`gFootIn` on `--main`, ranged `exit 0%` → `exit
+var(--foot-end)`). Three things are load-bearing: **`timeline-scope: --main`
+on `<body>`** — the footer is `<main>`'s SIBLING, and without hoisting the
+name it finds no timeline and the animation just sits finished (measured);
+**`--foot-end`** is the footer's height as a share of the viewport, set by
+`site.js`; and **`html.foot-reveal` is only set while the footer fits in 85%
+of the viewport**, because a footer taller than the screen (every phone:
+1611px at 375×812) would have its top cut off by a sticky bottom edge. No
+script, or too tall: an ordinary footer.
+
+**Sticky reveal banner** — the footer's reveal mirrored onto the homepage
+hero. `.hero` is `position: sticky; top: 0` under every later `main` child
+(`position: relative; z-index: 1`), so the page slides up over the banner;
+as it is covered `.hero-top` scales to 0.93 and its `::after` veil darkens to
+0.55, on `scroll(root block)` over `--hero-h` (the banner's height, set by
+`site.js`). Uses the individual `scale` property so it composes with mDrift,
+mWall and gKen. Gated by `html.hero-reveal`, set only while the banner fits
+the viewport (it does on desktop and on a 375×812 phone); a taller banner
+would never show its button. No script: ordinary banner.
 
 Everything from here down to *Content provenance* describes the Workshop
 direction that `theme.css` sits on top of. The mechanisms (motion, `--box`,

@@ -615,30 +615,38 @@
     sync();
   });
 
-  /* -------------------------- product-tile curtains ----------------------
-     The homepage product tiles play the curtain wipe as each comes into
-     view — down the page, or sideways through the carousel: a slanted cyan
-     panel covers the tile, the photograph appears under it, the panel
-     carries on left. CSS is the TILE CURTAIN block in theme.css; this only
-     decides WHEN. An IntersectionObserver rather than a view() timeline,
-     because the tiles sit in the carousel's horizontal scroller, where a
-     view() timeline freezes (see CLAUDE.md).
-     `wipe-armed` is what hides the photographs until their turn, and it is
-     set ONLY here. The observer always reports once on observe, so if it is
-     silent after 2s something is broken: the class comes off and every
-     photograph simply shows. */
-  var tileGrid = document.querySelector('.g-tiles');
-  if (tileGrid && curtainOK && 'IntersectionObserver' in window) {
-    var heard = false;
-    var tiles = [].slice.call(tileGrid.querySelectorAll('.g-tile'));
-    tileGrid.classList.add('wipe-armed');
-    var tio = new IntersectionObserver(function (entries) {
-      heard = true;
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('is-wiped'); tio.unobserve(en.target); }
-      });
-    }, { threshold: 0.35 });
-    tiles.forEach(function (t) { tio.observe(t); });
-    window.setTimeout(function () { if (!heard) { tileGrid.classList.remove('wipe-armed'); } }, 2000);
+  /* -------------------------- sticky reveal footer ----------------------
+     Turns the sticky under-page footer on only while it fits the screen,
+     and tells the CSS how far the reveal runs (the footer's height as a
+     percentage of the viewport). See STICKY REVEAL FOOTER in theme.css. */
+  var foot = document.querySelector('.site-foot');
+  if (foot) {
+    var root = document.documentElement;
+    var fitFoot = function () {
+      var h = foot.offsetHeight, vh = window.innerHeight;
+      var fits = h > 0 && h <= vh * 0.85;
+      root.classList.toggle('foot-reveal', fits);
+      if (fits) { root.style.setProperty('--foot-end', Math.min(100, (h / vh) * 100).toFixed(2) + '%'); }
+    };
+    fitFoot();
+    window.addEventListener('resize', fitFoot);
+    window.addEventListener('load', fitFoot);
+  }
+
+  /* -------------------------- sticky reveal banner ----------------------
+     The homepage banner pins while the page slides over it — only while it
+     fits the screen. See STICKY REVEAL BANNER in theme.css. */
+  var heroEl = document.querySelector('.hero');
+  if (heroEl) {
+    var rootEl = document.documentElement;
+    var fitHero = function () {
+      var h = heroEl.offsetHeight;
+      var fits = h > 0 && h <= window.innerHeight;
+      rootEl.classList.toggle('hero-reveal', fits);
+      if (fits) { rootEl.style.setProperty('--hero-h', h + 'px'); }
+    };
+    fitHero();
+    window.addEventListener('resize', fitHero);
+    window.addEventListener('load', fitHero);
   }
 })();

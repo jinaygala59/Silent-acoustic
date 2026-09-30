@@ -291,14 +291,10 @@ ${visionBand()}
     <div class="g-car" data-carousel data-anim="rise"
          role="group" aria-roledescription="carousel" aria-label="Our products">
       <ul class="g-tiles g-car-track">
-        ${railPicks().map((p, i) => `<li class="g-tile" style="--wd:${(i % 5) * 110}ms"><a href="products/${p.slug}.html">
+        ${railPicks().map(p => `<li class="g-tile"><a href="products/${p.slug}.html">
           <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
             <img src="assets/img/products/${p.slug}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
             <span class="g-plus" aria-hidden="true">+</span>
-            <!-- The curtain wipe (TILE CURTAIN in theme.css). Played by an
-                 IntersectionObserver in site.js, not a view() timeline, so it
-                 is safe inside the carousel's scroller. -->
-            <span class="g-curtain" aria-hidden="true"></span>
           </span>
           <span class="g-tile-cap">${esc(p.name)}</span>
         </a></li>`).join('\n        ')}
