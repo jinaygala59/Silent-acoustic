@@ -6,7 +6,7 @@
 <title>Silence Acoustic — Acoustic Treatment &amp; Soundproofing, Mumbai</title>
 <meta name="description" content="Acoustic panels, ceilings, foam and soundproofing for auditoriums, studios, offices and homes. Designed, made and installed by our own team in Mumbai.">
 <link rel="canonical" href="https://silenceacoustic.com/index.html">
-<meta name="theme-color" content="#F8FAFC">
+<meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Silence Acoustic">
 <meta property="og:title" content="Silence Acoustic — Acoustic Treatment &amp; Soundproofing, Mumbai">
@@ -15,13 +15,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/motion.css">
+<link rel="stylesheet" href="assets/css/theme.css">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
 <script>(function(d){d.classList.remove('no-js');
+try{if(sessionStorage.getItem('g-curtain')){sessionStorage.removeItem('g-curtain');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('curtain-in');
+setTimeout(function(){d.classList.remove('curtain-in')},1400)}}}catch(e){}
 try{if(!('IntersectionObserver' in window))return;
 var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
@@ -34,7 +38,14 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-head">
+<div class="topbar">
+    <div class="wrap">
+      <a href="tel:+918108400566">+91 81084 00566</a>
+      <a href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a>
+      <a href="contact.html">Book a free site survey</a>
+    </div>
+  </div>
+  <header class="site-head">
     <div class="wrap">
       <a class="brand" href="index.html" aria-label="Silence Acoustic — home">
         <img class="brand-logo" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">
@@ -71,520 +82,398 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <div class="hero-copy">
       <div class="hero-say is-on">
         <p class="eyebrow" data-in style="--d:60">Recording Studio &middot; Mumbai</p>
-        <h1 class="hero-title"><span class="hl"><span style="--d:160">Silence That Speaks <span class="decay">Style</span></span></span></h1>
+        <h1 class="hero-title"><span class="hl"><span style="--d:160"><span class="hero-strong">Silence That</span> <span class="decay">Speaks Style</span></span></span></h1>
       </div>
       <div class="hero-say" aria-hidden="true">
         <p class="eyebrow">Offices &middot; Mumbai</p>
-        <p class="hero-title">Designed for Sound. Crafted for <span class="decay">Spaces.</span></p>
+        <p class="hero-title"><span class="hero-strong">Designed for Sound.</span> <span class="decay">Crafted for Spaces.</span></p>
       </div>
       <div class="hero-say" aria-hidden="true">
         <p class="eyebrow">Auditorium &middot; Mumbai</p>
-        <p class="hero-title">Where Superior Acoustics Meet Elegant <span class="decay">Design</span></p>
+        <p class="hero-title"><span class="hero-strong">Where Superior Acoustics</span> <span class="decay">Meet Elegant Design</span></p>
       </div>
     </div>
     <div class="hero-foot">
-      <p class="lead hero-lead" data-in style="--d:520">We measure the room, design the treatment, manufacture the panels and install them ourselves — then measure again to prove it worked.</p>
-      <div class="row hero-cta" data-in style="--d:640">
+      <span class="hero-rule" aria-hidden="true"></span>
+      <div class="row hero-cta" data-in style="--d:520">
         <a class="btn btn-primary" href="contact.html">Book a free site survey <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a class="btn btn-ghost" href="products.html">See the products <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
   </div>
   </div>
-  <!-- THE FIVE MATERIALS AS A RULE, closing the banner. Each segment is
-       weighted by how many products that family holds, counted at build time,
-       so the band is a reading of the range rather than five equal stripes.
-       It is the site's own colour rule stated once, at full width: colour
-       means which material you are looking at, and nothing else on the page
-       is allowed to use these five. Decorative, so aria-hidden. -->
-  <div class="mat-rule" aria-hidden="true">
-    <i style="flex:8;background:var(--mat-pet)"></i><i style="flex:2;background:var(--mat-cloud)"></i><i style="flex:2;background:var(--mat-foam)"></i><i style="flex:3;background:var(--mat-wood)"></i><i style="flex:4;background:var(--mat-proof)"></i>
+</section>
+
+<!-- 1 · INTRO. Copy over a photograph that fills the right half. -->
+<section class="g-intro" aria-labelledby="intro-h">
+  <div class="g-intro-media" aria-hidden="true">
+    <img src="assets/img/projects/z3-powai.webp" alt="" width="760" height="570" loading="lazy" decoding="async">
   </div>
-  <div class="wrap hero-rail">
-    <dl class="hero-specs hero-specs-4" data-in style="--d:800">
-      <div class="hero-spec"><dt>Project Completed</dt><dd><span class="tick" data-count-to="2035">2035</span>+</dd></div>
-      <div class="hero-spec"><dt>Years of Experience</dt><dd><span class="tick" data-count-to="20">20</span>+</dd></div>
-      <div class="hero-spec"><dt>Team Strength</dt><dd><span class="tick" data-count-to="20">20</span>+</dd></div>
-      <div class="hero-spec"><dt>Project Running</dt><dd><span class="tick" data-count-to="7">7</span></dd></div>
+  <div class="wrap">
+    <div class="g-intro-copy">
+      <p class="eyebrow" data-anim="fade">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
+      <h2 id="intro-h" data-anim="reveal">Silence Acoustic</h2>
+      <p class="muted" data-anim="fade">Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments.</p>
+      <div class="row" data-anim="fade"><a class="btn btn-primary" href="about.html">About us <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTERS. The client's own figures (SITE.stats), counting up as they
+     scroll into view. Three of the four, as asked: Project Running is a
+     one-week snapshot and stays off the homepage. -->
+<section class="night g-count" aria-label="Silence Acoustic in numbers">
+  <div class="wrap">
+    <dl class="g-count-row">
+      <div class="g-count-i" data-anim="fade"><dd><span class="tick" data-count-to="2035">2035</span>+</dd><dt>Project Completed</dt></div>
+      <div class="g-count-i" data-anim="fade"><dd><span class="tick" data-count-to="20">20</span>+</dd><dt>Years of Experience</dt></div>
+      <div class="g-count-i" data-anim="fade"><dd><span class="tick" data-count-to="20">20</span>+</dd><dt>Team Strength</dt></div>
     </dl>
   </div>
 </section>
 
-<section class="light railed dip-sec">
+
+
+<!-- 2 · OUR PRODUCTS. Photograph tiles with a centred caption. Products, not
+     families — see the rail note in CLAUDE.md; the ten are railPicks(). -->
+<section class="g-products" aria-labelledby="products-h">
   <div class="wrap">
-    <span class="rail-label">The distinction</span>
-    <div class="founder">
-      <div class="founder-head">
-        <p class="eyebrow" data-anim="fade">Founder &middot; since 2006</p>
-        <h2 data-anim="reveal">Ravi Sebastian</h2>
-      </div>
-      <p class="lead founder-lead" data-anim="fade">Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments.</p>
-      <p class="muted" data-anim="fade">His practical expertise and technical leadership have shaped Silence Acoustic into a trusted provider of professional acoustic treatment and soundproofing solutions. Our team leverages this experience to diagnose unique acoustic problems and to design solutions that balance performance, functionality, aesthetics, and durability.</p>
-      <p class="muted" data-anim="fade">Built on a foundation of industry knowledge and proven project delivery, the Silence Acoustic product range is engineered to deliver optimal acoustic performance while meeting the specific requirements of each space. We offer tailored solutions that integrate seamlessly with architects, deliver measurable acoustic improvements, and stand up to long-term use.</p>
-    </div>
-  </div>
-  <div class="diptych">
-  <a class="dip" href="products.html#panels" data-anim="slide-l">
-    <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/z3-powai.webp" alt=""
-           width="760" height="570" loading="lazy" decoding="async">
-    </div>
-    <div class="dip-body">
-      <p class="eyebrow">Inside the room</p>
-      <h2>Acoustic treatment</h2>
-      <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
-      <span class="tlink">Panels, ceilings and foam <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-  </a>
-  <a class="dip" href="products.html#proof" data-anim="slide-r">
-    <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/swarsamwad-studio-mumbai.webp" alt=""
-           width="760" height="570" loading="lazy" decoding="async">
-    </div>
-    <div class="dip-body">
-      <p class="eyebrow">Between rooms</p>
-      <h2>Soundproofing</h2>
-      <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
-      <span class="tlink">Membranes, doors and windows <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-  </a>
+    <p class="eyebrow" data-anim="fade">Silence Acoustic</p>
+    <h2 id="products-h" data-anim="reveal">Our Products</h2>
+    <ul class="g-tiles" data-stagger>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-designer-panel.html">
+        <span class="g-tile-img surface s-groove is-cut" data-mat="pet">
+          <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Designer Panel</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-polyester-panel.html">
+        <span class="g-tile-img surface s-felt is-cut" data-mat="pet">
+          <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Polyester Panel</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-ceiling-baffle.html">
+        <span class="g-tile-img surface s-baffle" data-mat="cloud">
+          <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Ceiling Baffle</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-ceiling-cloud.html">
+        <span class="g-tile-img surface s-cloud" data-mat="cloud">
+          <img src="assets/img/products/acoustic-ceiling-cloud-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Ceiling Cloud</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wedge-foam.html">
+        <span class="g-tile-img surface s-wedge is-cut" data-mat="foam">
+          <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Wedge Foam</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-pyramid-foam.html">
+        <span class="g-tile-img surface s-pyramid is-cut" data-mat="foam">
+          <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Pyramid Foam</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wooden-slats.html">
+        <span class="g-tile-img surface s-slat is-cut" data-mat="wood">
+          <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Wooden Slats</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/acoustic-wood-wool-panel.html">
+        <span class="g-tile-img surface s-wool is-cut" data-mat="wood">
+          <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Acoustic Wood Wool Panel</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/soundproof-door.html">
+        <span class="g-tile-img surface s-door" data-mat="proof">
+          <img src="assets/img/products/soundproof-door-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">Soundproof Door</span>
+      </a></li>
+      <li class="g-tile" data-anim="rise"><a href="products/polysynth-wool.html">
+        <span class="g-tile-img surface s-batt" data-mat="proof">
+          <img src="assets/img/products/polysynth-wool-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">PolySynth Wool</span>
+      </a></li>
+    </ul>
+    <div class="row g-more" data-anim="fade"><a class="btn btn-ghost" href="products.html">All 19 products <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
   </div>
 </section>
 
-<section class="rail-sec" aria-labelledby="families" style="--rail-n:11">
-  <div class="rail-sticky">
-    <div class="wrap">
-      <div class="rail-head">
-        <div>
-          <p class="eyebrow" data-anim="fade">19 products</p>
-          <h2 id="families" data-anim="reveal">Everything we make and fit.</h2>
-        </div>
-        <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. -->
-        <p class="lead" data-anim="fade">Innovative acoustic products designed for superior sound absorption and effective acoustic control. Combining performance, durability, and aesthetics to create acoustically balanced environments.</p>
-      </div>
+<!-- 3 · WHY / WHERE. Heading left, a two-column list right. The list is the
+     ten room types with completed-project counts, counted from PROJECTS. -->
+<section class="g-why" aria-labelledby="why-h">
+  <div class="wrap">
+    <div class="g-why-head">
+      <p class="eyebrow" data-anim="fade">Where we work</p>
+      <h2 id="why-h" data-anim="reveal">Every project type has a number to hit.</h2>
+      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. -->
+      <p class="muted" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
     </div>
-    <div class="rail-viewport">
-      <div class="rail-track">
-        <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-designer-panel.html">
-  <div class="card-surface surface s-groove is-cut">
-    <img src="assets/img/products/acoustic-designer-panel-card.webp" alt="Acoustic Designer Panel" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Panels</span>
-    <h3>Acoustic Designer Panel</h3>
-    <p>CNC-cut patterns: V-groove, U-groove, fluted, bespoke</p>
-    <div class="nrc nrc-sm" data-mat="pet">
-    <div class="nrc-track"><i style="--v:85%"></i></div>
-    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="pet" href="products/acoustic-polyester-panel.html">
-  <div class="card-surface surface s-felt is-cut">
-    <img src="assets/img/products/acoustic-polyester-panel-card.webp" alt="Acoustic Polyester Panel" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Panels</span>
-    <h3>Acoustic Polyester Panel</h3>
-    <p>PET felt board for walls and ceilings</p>
-    <div class="nrc nrc-sm" data-mat="pet">
-    <div class="nrc-track"><i style="--v:85%"></i></div>
-    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="cloud" href="products/acoustic-ceiling-baffle.html">
-  <div class="card-surface surface s-baffle">
-    <img src="assets/img/products/acoustic-ceiling-baffle-card.webp" alt="Acoustic Ceiling Baffle" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Ceilings</span>
-    <h3>Acoustic Ceiling Baffle</h3>
-    <p>Vertical fins for tall, hard rooms</p>
-    <div class="nrc nrc-sm" data-mat="cloud">
-    <div class="nrc-track"><i style="--v:85%"></i></div>
-    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="cloud" href="products/acoustic-ceiling-cloud.html">
-  <div class="card-surface surface s-cloud">
-    <img src="assets/img/products/acoustic-ceiling-cloud-card.webp" alt="Acoustic Ceiling Cloud" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Ceilings</span>
-    <h3>Acoustic Ceiling Cloud</h3>
-    <p>Horizontal absorbers hung below a hard soffit</p>
-    <div class="nrc nrc-sm" data-mat="cloud">
-    <div class="nrc-track"><i style="--v:85%"></i></div>
-    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.6 (9 mm) / up to 0.85 (12 mm)</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-wedge-foam.html">
-  <div class="card-surface surface s-wedge is-cut">
-    <img src="assets/img/products/acoustic-wedge-foam-card.webp" alt="Acoustic Wedge Foam" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Foam</span>
-    <h3>Acoustic Wedge Foam</h3>
-    <p>Directional wedge profile for first reflections</p>
-    <div class="nrc nrc-sm" data-mat="foam">
-    <div class="nrc-track"><i style="--v:90%"></i></div>
-    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="foam" href="products/acoustic-pyramid-foam.html">
-  <div class="card-surface surface s-pyramid is-cut">
-    <img src="assets/img/products/acoustic-pyramid-foam-card.webp" alt="Acoustic Pyramid Foam" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Foam</span>
-    <h3>Acoustic Pyramid Foam</h3>
-    <p>Profiled PU foam for control rooms and booths</p>
-    <div class="nrc nrc-sm" data-mat="foam">
-    <div class="nrc-track"><i style="--v:90%"></i></div>
-    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wooden-slats.html">
-  <div class="card-surface surface s-slat is-cut">
-    <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic Wooden Slats" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Wood</span>
-    <h3>Acoustic Wooden Slats</h3>
-    <p>Veneered slat planks on an acoustic felt backing</p>
-    <div class="nrc nrc-sm" data-mat="wood">
-    <div class="nrc-track"><i style="--v:85%"></i></div>
-    <p class="nrc-fig"><b>0.85</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.85</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="wood" href="products/acoustic-wood-wool-panel.html">
-  <div class="card-surface surface s-wool is-cut">
-    <img src="assets/img/products/acoustic-wood-wool-panel-card.webp" alt="Acoustic Wood Wool Panel" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Acoustic Wood</span>
-    <h3>Acoustic Wood Wool Panel</h3>
-    <p>Magnesite-bonded wood fibre, robust and paintable</p>
-    <div class="nrc nrc-sm" data-mat="wood">
-    <div class="nrc-track"><i style="--v:90%"></i></div>
-    <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
-  </div>
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="proof" href="products/soundproof-door.html">
-  <div class="card-surface surface s-door">
-    <img src="assets/img/products/soundproof-door-card.webp" alt="Soundproof Door" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Soundproofing</span>
-    <h3>Soundproof Door</h3>
-    <p>Sealed heavy doorset, 60 or 100 mm leaf</p>
-    
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="card" data-anim="rise" data-mat="proof" href="products/polysynth-wool.html">
-  <div class="card-surface surface s-batt">
-    <img src="assets/img/products/polysynth-wool-card.webp" alt="PolySynth Wool" width="800" height="600" loading="lazy" decoding="async">
-  </div>
-  <div class="card-body">
-    <span class="card-cat">Soundproofing</span>
-    <h3>PolySynth Wool</h3>
-    <p>Non-itch polyester insulation roll for cavities</p>
-    
-    <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </div>
-</a>
-        <a class="fam fam-all" data-anim="rise" href="products.html">
-          <div class="fam-body">
-            <span class="fam-n" style="color:inherit">The full catalogue</span>
-            <h3>Every spec, in one place.</h3>
-            <p class="fam-note">NRC, STC, thickness, fire rating and panel sizes for all 19.</p>
-            <span class="card-foot">Open the catalogue <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="wrap"><p class="rail-hint">Scroll sideways</p></div>
+    <ul class="g-checks" data-stagger>
+      <li data-anim="fade"><a href="projects.html#room=Auditorium%20%26%20Halls">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Auditorium &amp; Halls</b><small>20 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Recording%20Studio">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Recording Studio</b><small>28 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Home%20Theatres">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Home Theatres</b><small>7 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Office%20Space">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Office Space</b><small>34 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Classroom%20%26%20Training%20Rooms">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Classroom &amp; Training Rooms</b><small>8 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Conference%20Room%20%26%20Cabin">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Conference Room &amp; Cabin</b><small>55 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Multiplex%20%26%20Cinema">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Multiplex &amp; Cinema</b><small>1 project</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Hotels%20%26%20Clubs">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Hotels &amp; Clubs</b><small>6 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=Indoor%20Sports">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>Indoor Sports</b><small>4 projects</small></span>
+      </a></li>
+      <li data-anim="fade"><a href="projects.html#room=TV%20Channels%20%26%20Radio%20Station">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>TV Channels &amp; Radio Station</b><small>7 projects</small></span>
+      </a></li>
+    </ul>
   </div>
 </section>
 
-<section class="light railed">
+<!-- 4 · THE DARK BAND. Three columns: icon, capitals heading, paragraph.
+     All three paragraphs are the client's own words (the diptych copy and
+     the products lead from the change brief). The icons are drawn here. -->
+<section class="night g-band" aria-label="What we do">
   <div class="wrap">
-    <span class="rail-label">Projects</span>
-    <div class="rdx-intro">
-      <div>
-        <p class="eyebrow" data-anim="fade">Where we work</p>
-        <h2 data-anim="reveal">Every project type has a number to hit.</h2>
-      </div>
-      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. The heading
-           above it is ours and was left alone: the brief marked the paragraph
-           for replacement, not the whole block. -->
-      <p class="lead" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
-    </div>
-    <div class="rdx-table">
-      <p class="rdx-cols" data-anim="fade">
-        <span>Ten project types</span>
-        <span>170 rooms photographed</span>
-      </p>
-      <ol class="roomdex" data-stagger="long">
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Auditorium%20%26%20Halls">
-        <span class="rdx-fig">20</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Auditorium &amp; Halls</span>
-          <span class="rdx-note">Speech clarity front to back, with enough life for music.</span>
-        </span>
-        <span class="rdx-swatch surface s-slat" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Recording%20Studio">
-        <span class="rdx-fig">28</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Recording Studio</span>
-          <span class="rdx-note">Dead enough to hear the source, not the room.</span>
-        </span>
-        <span class="rdx-swatch surface s-wedge" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Home%20Theatres">
-        <span class="rdx-fig">7</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Home Theatres</span>
-          <span class="rdx-note">Controlled early reflections and a clean centre image.</span>
-        </span>
-        <span class="rdx-swatch surface s-emboss" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Office%20Space">
-        <span class="rdx-fig">34</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Office Space</span>
-          <span class="rdx-note">Fewer overheard conversations across an open floor.</span>
-        </span>
-        <span class="rdx-swatch surface s-felt" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Classroom%20%26%20Training%20Rooms">
-        <span class="rdx-fig">8</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Classroom &amp; Training Rooms</span>
-          <span class="rdx-note">Every seat hears the teacher without strain.</span>
-        </span>
-        <span class="rdx-swatch surface s-perf" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Conference%20Room%20%26%20Cabin">
-        <span class="rdx-fig">55</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Conference Room &amp; Cabin</span>
-          <span class="rdx-note">Video calls that do not sound like a stairwell.</span>
-        </span>
-        <span class="rdx-swatch surface s-param" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Multiplex%20%26%20Cinema">
-        <span class="rdx-fig">1</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Multiplex &amp; Cinema</span>
-          <span class="rdx-note">Dialogue intelligibility and isolation between screens.</span>
-        </span>
-        <span class="rdx-swatch surface s-baffle" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Hotels%20%26%20Clubs">
-        <span class="rdx-fig">6</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Hotels &amp; Clubs</span>
-          <span class="rdx-note">Music contained, guest rooms quiet.</span>
-        </span>
-        <span class="rdx-swatch surface s-door" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=Indoor%20Sports">
-        <span class="rdx-fig">4</span>
-        <span class="rdx-body">
-          <span class="rdx-name">Indoor Sports</span>
-          <span class="rdx-note">Whistles and shouting that do not turn to noise.</span>
-        </span>
-        <span class="rdx-swatch surface s-baffle" aria-hidden="true"></span>
-      </a></li>
-      <li class="rdx" data-anim="fade"><a href="projects.html#room=TV%20Channels%20%26%20Radio%20Station">
-        <span class="rdx-fig">7</span>
-        <span class="rdx-body">
-          <span class="rdx-name">TV Channels &amp; Radio Station</span>
-          <span class="rdx-note">Studios quiet enough for an open mic.</span>
-        </span>
-        <span class="rdx-swatch surface s-pyramid" aria-hidden="true"></span>
-      </a></li>
-      </ol>
-    </div>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Method</span>
-    <div class="process-grid">
-      <div class="process-aside">
-        <p class="eyebrow" data-anim="fade">How a project runs</p>
-        <h2 data-anim="reveal">Seven steps, in this order.</h2>
-        <p class="lead" data-anim="fade">Each one gates the next. We do not cut material before the design is signed off, and we do not hand over before the finished room has been measured against the target.</p>
-      </div>
-      <div class="steps steps-spine">
-        <div class="step" data-anim="fade"><h3>Site survey</h3><p>We come to the room, measure it, and listen to it. Free within Mumbai and the MMR, and chargeable against travel elsewhere in India — refunded if the project proceeds.</p></div>
-        <div class="step" data-anim="fade"><h3>Measurement &amp; report</h3><p>Reverberation time by octave band, background noise level, and the transfer paths between rooms. You get the numbers, not an opinion.</p></div>
-        <div class="step" data-anim="fade"><h3>Design &amp; specification</h3><p>A treatment layout drawn to your architect's plan, with the material, area and expected result stated per surface. Two rounds of revision are included.</p></div>
-        <div class="step" data-anim="fade"><h3>Quotation</h3><p>Itemised by product and area, with installation, transport and taxes separated. No lump sums that hide what you are paying for.</p></div>
-        <div class="step" data-anim="fade"><h3>Manufacture</h3><p>Cutting, routing, printing and assembly to the signed-off design. Custom work is proofed with you before it goes on the machine.</p></div>
-        <div class="step" data-anim="fade"><h3>Installation</h3><p>Fitted by our own crews across Mumbai and Maharashtra, and by certified installation teams elsewhere in India. Either way they work to the drawing and to your site timings, including nights and weekends.</p></div>
-        <div class="step" data-anim="fade"><h3>Verification</h3><p>We measure the finished room against the design target and hand over the report. If it misses, we fix it — that is what the design fee bought.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="light statement">
-  <div class="wrap">
-    <p class="eyebrow" data-anim="fade">Instead of a case study</p>
-    <h2 class="statement-h" data-anim="reveal">Ask a client<br>who had <span class="statement-em">your problem.</span></h2>
-    <div class="statement-grid">
-      <p class="lead" data-anim="fade">Our written case studies are still being put together. Rather than show you our version, we will put you in touch with a client in your sector — an auditorium, a studio, a corporate floor, a school — and you can ask them how it went.</p>
-      <div class="row" data-anim="fade">
-        <a class="btn btn-primary" href="contact.html">Request references <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a class="btn btn-ghost" href="projects.html">Room types we treat <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
+    <div class="g-cols" data-stagger>
+      <a class="g-col" href="products.html#panels" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M6 24h4M14 14v20M22 8v32M30 14v20M38 20v8M42 24h0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <h3>Acoustic treatment</h3>
+        <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
+        <span class="tlink">Panels, ceilings and foam <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="g-col" href="products.html#proof" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M8 8h12v32H8zM28 8h12v32H28zM20 24h8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <h3>Soundproofing</h3>
+        <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
+        <span class="tlink">Membranes, doors and windows <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="g-col" href="products.html" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M6 6h16v16H6zM26 6h16v16H26zM6 26h16v16H6zM26 26h16v16H26z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <h3>Acoustic products</h3>
+        <p>Innovative acoustic products designed for superior sound absorption and effective acoustic control. Combining performance, durability, and aesthetics to create acoustically balanced environments.</p>
+        <span class="tlink">The full catalogue <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
 
-<section class="dark railed" aria-labelledby="work-h">
+<section class="g-work" aria-labelledby="work-h">
   <div class="wrap">
-    <span class="rail-label">Work</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Selected work</p>
-        <h2 id="work-h" data-anim="reveal">9 room types.</h2>
-      </div>
-      <p class="lead" data-anim="fade"><a class="tlink" href="projects.html">All 170 in the gallery <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <div class="g-work-head">
+      <h2 id="work-h" class="eyebrow center-eyebrow" data-anim="fade">Silence Acoustic projects</h2>
     </div>
-    <div class="gal" data-stagger>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/88-pictures-mumbai.webp" aria-label="View the photograph of 88 Pictures at full size">
-          <div class="gal-surface surface s-param">
+    <ul class="g-proj" data-stagger>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Conference%20Room%20%26%20Cabin">
+          <span class="g-pj-img surface s-param">
             <img src="assets/img/projects/88-pictures-mumbai.webp" alt="88 Pictures, Mumbai" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">88 Pictures</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">88 Pictures</span>
+          <span class="g-pj-sub">Mumbai &middot; Conference Room &amp; Cabin</span>
         </a>
-        <div class="gal-cap">
-          <h3>88 Pictures</h3>
-          <p>Mumbai &middot; Conference Room &amp; Cabin</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/abc-fitness-orbit-hyderabad.webp" aria-label="View the photograph of ABC Fitness Orbit at full size">
-          <div class="gal-surface surface s-felt">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Office%20Space">
+          <span class="g-pj-img surface s-felt">
             <img src="assets/img/projects/abc-fitness-orbit-hyderabad.webp" alt="ABC Fitness Orbit, Hyderabad" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">ABC Fitness Orbit</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">ABC Fitness Orbit</span>
+          <span class="g-pj-sub">Hyderabad &middot; Office Space</span>
         </a>
-        <div class="gal-cap">
-          <h3>ABC Fitness Orbit</h3>
-          <p>Hyderabad &middot; Office Space</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/3n-studio-andheri-mumbai.webp" aria-label="View the photograph of 3n Studio Andheri at full size">
-          <div class="gal-surface surface s-wedge">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Recording%20Studio">
+          <span class="g-pj-img surface s-wedge">
             <img src="assets/img/projects/3n-studio-andheri-mumbai.webp" alt="3n Studio Andheri, Mumbai" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">3n Studio Andheri</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">3n Studio Andheri</span>
+          <span class="g-pj-sub">Mumbai &middot; Recording Studio</span>
         </a>
-        <div class="gal-cap">
-          <h3>3n Studio Andheri</h3>
-          <p>Mumbai &middot; Recording Studio</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/artillery-museum-nashik.webp" aria-label="View the photograph of Artillery Museum at full size">
-          <div class="gal-surface surface s-slat">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Auditorium%20%26%20Halls">
+          <span class="g-pj-img surface s-slat">
             <img src="assets/img/projects/artillery-museum-nashik.webp" alt="Artillery Museum, Nashik" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Artillery Museum</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Artillery Museum</span>
+          <span class="g-pj-sub">Nashik &middot; Auditorium &amp; Halls</span>
         </a>
-        <div class="gal-cap">
-          <h3>Artillery Museum</h3>
-          <p>Nashik &middot; Auditorium &amp; Halls</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/accenture-vikroli.webp" aria-label="View the photograph of Accenture at full size">
-          <div class="gal-surface surface s-perf">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Classroom%20%26%20Training%20Rooms">
+          <span class="g-pj-img surface s-perf">
             <img src="assets/img/projects/accenture-vikroli.webp" alt="Accenture, Vikroli" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Accenture</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Accenture</span>
+          <span class="g-pj-sub">Vikroli &middot; Classroom &amp; Training Rooms</span>
         </a>
-        <div class="gal-cap">
-          <h3>Accenture</h3>
-          <p>Vikroli &middot; Classroom &amp; Training Rooms</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/residential-home-theater-hyderabad.webp" aria-label="View the photograph of Residential Home Theater at full size">
-          <div class="gal-surface surface s-emboss">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Home%20Theatres">
+          <span class="g-pj-img surface s-emboss">
             <img src="assets/img/projects/residential-home-theater-hyderabad.webp" alt="Residential Home Theater, Hyderabad" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Residential Home Theater</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Residential Home Theater</span>
+          <span class="g-pj-sub">Hyderabad &middot; Home Theatres</span>
         </a>
-        <div class="gal-cap">
-          <h3>Residential Home Theater</h3>
-          <p>Hyderabad &middot; Home Theatres</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/red-fm-mumbai.webp" aria-label="View the photograph of Red FM at full size">
-          <div class="gal-surface surface s-pyramid">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=TV%20Channels%20%26%20Radio%20Station">
+          <span class="g-pj-img surface s-pyramid">
             <img src="assets/img/projects/red-fm-mumbai.webp" alt="Red FM, Mumbai" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Red FM</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Red FM</span>
+          <span class="g-pj-sub">Mumbai &middot; TV Channels &amp; Radio Station</span>
         </a>
-        <div class="gal-cap">
-          <h3>Red FM</h3>
-          <p>Mumbai &middot; TV Channels &amp; Radio Station</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/amethhyyst-lounge-bar-mumbai.webp" aria-label="View the photograph of Amethhyyst Lounge Bar at full size">
-          <div class="gal-surface surface s-door">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Hotels%20%26%20Clubs">
+          <span class="g-pj-img surface s-door">
             <img src="assets/img/projects/amethhyyst-lounge-bar-mumbai.webp" alt="Amethhyyst Lounge Bar, Mumbai" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Amethhyyst Lounge Bar</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Amethhyyst Lounge Bar</span>
+          <span class="g-pj-sub">Mumbai &middot; Hotels &amp; Clubs</span>
         </a>
-        <div class="gal-cap">
-          <h3>Amethhyyst Lounge Bar</h3>
-          <p>Mumbai &middot; Hotels &amp; Clubs</p>
-        </div>
-      </article>
-      <article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/bhoomi-celestia-malad.webp" aria-label="View the photograph of Bhoomi Celestia at full size">
-          <div class="gal-surface surface s-baffle">
+      </li>
+      <li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=Indoor%20Sports">
+          <span class="g-pj-img surface s-baffle">
             <img src="assets/img/projects/bhoomi-celestia-malad.webp" alt="Bhoomi Celestia, Malad" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">Bhoomi Celestia</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">Bhoomi Celestia</span>
+          <span class="g-pj-sub">Malad &middot; Indoor Sports</span>
         </a>
-        <div class="gal-cap">
-          <h3>Bhoomi Celestia</h3>
-          <p>Malad &middot; Indoor Sports</p>
+      </li>
+    </ul>
+    <div class="row g-more center-row" data-anim="fade"><a class="btn btn-primary" href="projects.html">All 170 projects <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS — verbatim from TESTIMONIALS; monograms, never faces. -->
+<section class="dark g-voices" aria-labelledby="voices-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-anim="fade">In their words</p>
+      <h2 id="voices-h" data-anim="reveal">What consultants and clients say.</h2>
+    </div>
+    <div class="reviews" data-stagger>
+      <figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">U</span>
+          <span class="review-who"><b>Urmil Vaidhya</b><span>AV &amp; Architecture Acoustics Design Consultant</span></span>
         </div>
-      </article>
+        <blockquote>It was great working experience with Silence Acoustics team for my acoustic project design every time. Their finishing work and skill technician leads the project work every time smoothly with my clients</blockquote>
+      </figure>
+      <figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">J</span>
+          <span class="review-who"><b>Jatin Patel</b><span>President, Rotary Club of Bombay North West- Malad</span></span>
+        </div>
+        <blockquote>The Acoustic have Improved Tremendously and our speaker System also working Good. Well Job done and in a limited Timeframe. We appreciate your Humble and Dedicated Service.</blockquote>
+      </figure>
+      <figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">H</span>
+          <span class="review-who"><b>Hudson Taylor</b><span>Owner, Hummingbird &amp; Professor in Audio &amp; Acoustics, XIM university</span></span>
+        </div>
+        <blockquote>Silence Acoustic provided complete design and construction supervision. We described our requirements, and they suggested several ideas. We selected one and the project turned out to be excellent. They were very good with their work. Before plans were drawn, they had a site survey, elevations, views, etc. It was joy working with Silence Acoustic</blockquote>
+      </figure>
     </div>
   </div>
 </section>
 
-
-<section class="light railed clients-sec" aria-labelledby="clients-h">
+<!-- CLIENT LOGOS — CLIENTS, as on the client's own homepage. A count and
+     nothing else is said about them (see the provenance rule). -->
+<section class="light g-clients" aria-labelledby="clients-home-h">
   <div class="wrap">
-    <span class="rail-label">Clients</span>
-    <div class="section-head">
-      <h2 id="clients-h" data-anim="reveal">50 clients.</h2>
-    </div>
+    <h2 id="clients-home-h" class="eyebrow center-eyebrow" data-anim="fade">50 clients</h2>
     <ul class="client-wall" data-stagger>
       <li class="client" data-anim="fade"><img src="assets/img/clients/radio-mirchi.webp" alt="98.3 FM Radio Mirchi" width="402" height="162" loading="lazy" decoding="async"></li>
       <li class="client" data-anim="fade"><img src="assets/img/clients/accenture.webp" alt="Accenture" width="402" height="162" loading="lazy" decoding="async"></li>
@@ -639,65 +528,12 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     </ul>
   </div>
 </section>
-
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Clients</span>
-    <div class="section-head mid">
-      <p class="eyebrow" data-anim="fade">In their words</p>
-      <h2 data-anim="reveal">What consultants and clients say.</h2>
-    </div>
-    <div class="reviews" data-stagger>
-      <figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">U</span>
-          <span class="review-who"><b>Urmil Vaidhya</b><span>AV &amp; Architecture Acoustics Design Consultant</span></span>
-        </div>
-        <blockquote>It was great working experience with Silence Acoustics team for my acoustic project design every time. Their finishing work and skill technician leads the project work every time smoothly with my clients</blockquote>
-      </figure>
-      <figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">J</span>
-          <span class="review-who"><b>Jatin Patel</b><span>President, Rotary Club of Bombay North West- Malad</span></span>
-        </div>
-        <blockquote>The Acoustic have Improved Tremendously and our speaker System also working Good. Well Job done and in a limited Timeframe. We appreciate your Humble and Dedicated Service.</blockquote>
-      </figure>
-      <figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">H</span>
-          <span class="review-who"><b>Hudson Taylor</b><span>Owner, Hummingbird &amp; Professor in Audio &amp; Acoustics, XIM university</span></span>
-        </div>
-        <blockquote>Silence Acoustic provided complete design and construction supervision. We described our requirements, and they suggested several ideas. We selected one and the project turned out to be excellent. They were very good with their work. Before plans were drawn, they had a site survey, elevations, views, etc. It was joy working with Silence Acoustic</blockquote>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section class="cta-band">
-  <div class="wrap">
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Start here</p>
-        <h2 data-anim="reveal">Tell us what the room is doing wrong.</h2>
-      </div>
-      <div class="stack stack-m">
-        <p class="lead" data-anim="fade">Send the dimensions and what the space is used for. Clap once in the empty room and send us the voice note — that ten-second clip tells us more than most briefs do.</p>
-        <div class="row" data-anim="fade">
-          <a class="btn btn-primary" href="contact.html">Book a free site survey <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <a class="btn btn-ghost" href="tel:+918108400566">+91 81084 00566</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 </main>
 <footer class="site-foot">
     <div class="wrap">
       <div class="foot-grid" data-stagger>
         <div data-anim="fade">
           <a class="brand" href="index.html" aria-label="Silence Acoustic — home"><img class="brand-logo-full" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy"></a>
-          <p class="foot-blurb">Acoustic design, treatment and soundproofing. Measured, manufactured and installed by our own team, from Mumbai across India.</p>
         </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>

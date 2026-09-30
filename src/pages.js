@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
-const { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, page, productCard, famRail, ctaBand, nrcBar, roomdex } = B;
+const { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
+const { esc, ARROW, page, productCard, railPicks, ctaBand, nrcBar } = B;
 
 /* "20+ yrs" was typed, next to "since 2006" which is the client's published
    fact. Two ways of saying the same thing, one of which goes stale on its own:
@@ -28,6 +28,17 @@ const FOUNDED = 2006;
 const YEARS = new Date().getFullYear() - FOUNDED;
 
 const built = [];
+
+/* OUR VISION — renders only when the client's text is in content.js. */
+const visionParas = [].concat(VISION.body || []).map(t => String(t).trim()).filter(Boolean);
+const visionBand = () => visionParas.length ? `
+<section class="dark g-vision" aria-labelledby="vision-h">
+  <div class="wrap">
+    <h2 id="vision-h" class="eyebrow center-eyebrow" data-anim="fade">Our vision</h2>
+    ${visionParas.map((t, i) => `<p class="${i === 0 ? 'g-vision-lead' : 'muted g-vision-more'}" data-anim="fade">${esc(t)}</p>`).join('\n    ')}
+  </div>
+</section>` : '';
+
 
 /* ------------------------------ selected work ----------------------------
    THE HOMEPAGE HAD NO PROJECT PHOTOGRAPHY AT ALL, and that is the single
@@ -68,80 +79,39 @@ const workBand = () => {
      has to satisfy (4 + n - 1) % 3 === 0. Rather than trim to fit and show a
      silently different set, drop the section — a ragged final row on the
      homepage is worse than no section, and this makes the breakage loud. */
-  if ((picks.length + 3) % 3 !== 0) return '';
+  /* The grid is a plain 3-up now (the reference layout has no feature tile),
+     so the count has to divide by three. Same rule as before: drop the
+     section rather than show a ragged row. */
+  if (picks.length % 3 !== 0) return '';
   return `
-<section class="dark railed" aria-labelledby="work-h">
+<section class="g-work" aria-labelledby="work-h">
   <div class="wrap">
-    <span class="rail-label">Work</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Selected work</p>
-        <h2 id="work-h" data-anim="reveal">${picks.length} room types.</h2>
-      </div>
-      <p class="lead" data-anim="fade"><a class="tlink" href="projects.html">All ${PROJECTS.length} in the gallery ${ARROW}</a></p>
+    <div class="g-work-head">
+      <h2 id="work-h" class="eyebrow center-eyebrow" data-anim="fade">${esc(SITE.name)} projects</h2>
     </div>
-    <div class="gal" data-stagger>
-      ${picks.map(pr => `<article class="gal-item" data-anim="tile">
-        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
-          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
+    <ul class="g-proj" data-stagger>
+      ${picks.map(pr => `<li class="g-pj" data-anim="tile">
+        <a href="projects.html#room=${encodeURIComponent(pr.sec)}">
+          <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
             <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-          </div>
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">${esc(pr.n)}</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+          <span class="g-pj-cap">${esc(pr.n)}</span>
+          <span class="g-pj-sub">${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</span>
         </a>
-        <div class="gal-cap">
-          <h3>${esc(pr.n)}</h3>
-          <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
-        </div>
-      </article>`).join('\n      ')}
-    </div>
+      </li>`).join('\n      ')}
+    </ul>
+    <div class="row g-more center-row" data-anim="fade"><a class="btn btn-primary" href="projects.html">All ${PROJECTS.length} projects ${ARROW}</a></div>
   </div>
 </section>`;
 };
 
 
-/* ----------------------------- the client wall ---------------------------
-   THE PINNED SCROLL CHOREOGRAPHY THAT USED TO SIT HERE IS GONE, by request.
-   It was a 300vh section with a sticky 100vh child in which four project
-   photographs traded places, stacked, and the last opened to full bleed — a
-   port of a framer-motion component to this site's own engine. It is deleted,
-   not commented out: `.choreo` markup, the `CHOREO` slug list and the whole
-   choreography block in motion.css went with it. If a pinned piece is wanted
-   again, write it against the current motion vocabulary rather than reviving
-   that one.
-
-   WHAT REPLACES IT IS THE CLIENT LIST, which the client's own site carries as
-   a 50-slide swiper and this site did not carry at all. It is a grid, not a
-   marquee, and that is deliberate: a marquee of client names was on this
-   homepage once (the `.ticker` port of replit.com's LogoBlock) and was
-   removed for duplicating the gallery underneath it in motion instead of as
-   photographs. A grid says the same thing without moving, every name is
-   readable at once, and it does not need JavaScript.
-
-   The wall sits directly above the Work gallery, where the choreography did,
-   because the order is the argument: here is who, then here are the rooms.
-
-   IT CARRIES ALMOST NO COPY, AND THAT IS THE POINT. The client's own page
-   runs this strip with NO heading at all — the logos sit under the contact
-   block unlabelled. A first pass gave it an eyebrow ("Trusted by"), a
-   headline and a lead describing the fifty as "broadcasters, banks,
-   universities, studios and developers — rooms we have designed, supplied
-   and fitted". Every word of that was composed here, and the last clause
-   asserted a working relationship with each of fifty named companies that
-   nothing in the client's material supports. It is gone. What is left is the
-   section label the site's own furniture provides and a count read off
-   CLIENTS.length. Do not write a lead for this section; if one is wanted,
-   the words have to come from the client. */
-const clientWall = () => `
-<section class="light railed clients-sec" aria-labelledby="clients-h">
-  <div class="wrap">
-    <span class="rail-label">Clients</span>
-    <div class="section-head">
-      <h2 id="clients-h" data-anim="reveal">${CLIENTS.length} clients.</h2>
-    </div>
-    <ul class="client-wall" data-stagger>
-      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
-    </ul>
-  </div>
-</section>`;
+/* The client wall moved to the About page (a near-black logo strip there). */
 
 
 /* =============================== HOME ==================================== */
@@ -203,8 +173,13 @@ built.push(page({
          see the HOME note at the top of src/pages.js before editing. -->
     <div class="hero-copy">
       ${BANNERS.map((b, i) => {
+        /* Architectural layout: the client's headline is set as two lines, a
+           bold first half over a light second half, split at the word
+           midpoint. The words and their order are untouched — this is
+           typesetting, not copy. */
         const words = b.title.split(' ');
-        const last = words.pop();
+        const cut = Math.ceil(words.length / 2);
+        const last = words.splice(cut).join(' ');
         /* THE REVERB-TAIL ECHOES ARE GONE. Two partly-opaque copies of the
            last word used to travel out from behind it on load. That was
            drawn for Bricolage Grotesque, where a clean geometric letterform
@@ -214,7 +189,7 @@ built.push(page({
            italic last word in the banner mark is the better half of the idea
            and needs no animation to work. */
         const decay = `<span class="decay">${esc(last)}</span>`;
-        const head = `${esc(words.join(' '))} ${decay}`;
+        const head = `<span class="hero-strong">${esc(words.join(' '))}</span> ${decay}`;
         return i === 0
           ? `<div class="hero-say is-on">
         <p class="eyebrow" data-in style="--d:60">${esc(b.sector)} &middot; Mumbai</p>
@@ -227,151 +202,391 @@ built.push(page({
       }).join('\n      ')}
     </div>
     <div class="hero-foot">
-      <p class="lead hero-lead" data-in style="--d:520">We measure the room, design the treatment, manufacture the panels and install them ourselves — then measure again to prove it worked.</p>
-      <div class="row hero-cta" data-in style="--d:640">
+      <span class="hero-rule" aria-hidden="true"></span>
+      <div class="row hero-cta" data-in style="--d:520">
         <a class="btn btn-primary" href="contact.html">Book a free site survey ${ARROW}</a>
-        <a class="btn btn-ghost" href="products.html">See the products ${ARROW}</a>
       </div>
     </div>
   </div>
   </div>
-  <!-- THE FIVE MATERIALS AS A RULE, closing the banner. Each segment is
-       weighted by how many products that family holds, counted at build time,
-       so the band is a reading of the range rather than five equal stripes.
-       It is the site's own colour rule stated once, at full width: colour
-       means which material you are looking at, and nothing else on the page
-       is allowed to use these five. Decorative, so aria-hidden. -->
-  <div class="mat-rule" aria-hidden="true">
-    ${CATEGORIES.map(c => {
-      const n = PRODUCTS.filter(p => p.cat === c.id).length;
-      return `<i style="flex:${n};background:var(--mat-${MATKEY[c.id]})"></i>`;
-    }).join('')}
-  </div>
-  <div class="wrap hero-rail">
-    <dl class="hero-specs hero-specs-4" data-in style="--d:800">
-      ${SITE.stats.map(st => {
-        /* ALL FOUR COUNT UP NOW. The figure and its suffix are split rather
-           than the string being handed to the counter whole: `data-count-to`
-           takes an integer, and the client writes their numbers with the
-           plus attached ("2035+"). The digits animate inside the span and
-           the "+" sits outside it, unanimated — so what counts is their
-           figure and what is appended is their punctuation. A counter that
-           ran to 2035 and then printed a "+" of its own would be making a
-           different claim from the one they publish.
+</section>
 
-           `v` is split, never reformatted: anything that is not a leading
-           run of digits is carried through as-is, so a future "7 (Q3)" or
-           "20+ yrs" still renders correctly and simply counts the number at
-           the front. */
+<!-- 1 · INTRO. Copy over a photograph that fills the right half. -->
+<section class="g-intro" aria-labelledby="intro-h">
+  <div class="g-intro-media" aria-hidden="true">
+    <img src="assets/img/projects/z3-powai.webp" alt="" width="760" height="570" loading="lazy" decoding="async">
+  </div>
+  <div class="wrap">
+    <div class="g-intro-copy">
+      <p class="eyebrow" data-anim="fade">Acoustic treatment &amp; soundproofing &middot; Mumbai</p>
+      <h2 id="intro-h" data-anim="reveal">${esc(SITE.name)}</h2>
+      <p class="muted" data-anim="fade">${esc(FOUNDER.body[0])}</p>
+      <div class="row" data-anim="fade"><a class="btn btn-primary" href="about.html">About us ${ARROW}</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTERS. The client's own figures (SITE.stats), counting up as they
+     scroll into view. Three of the four, as asked: Project Running is a
+     one-week snapshot and stays off the homepage. -->
+<section class="night g-count" aria-label="Silence Acoustic in numbers">
+  <div class="wrap">
+    <dl class="g-count-row">
+      ${SITE.stats.filter(st => st.label !== 'Project Running').map(st => {
         const m = st.years ? null : String(st.v).match(/^(\d+)(.*)$/);
         const fig = st.years
           ? `<span class="tick" data-count-to="${YEARS}">${YEARS}</span>+`
-          : m
-            ? `<span class="tick" data-count-to="${m[1]}">${m[1]}</span>${esc(m[2])}`
-            : esc(st.v);
-        return `<div class="hero-spec"><dt>${esc(st.label)}</dt><dd>${fig}</dd></div>`;
+          : m ? `<span class="tick" data-count-to="${m[1]}">${m[1]}</span>${esc(m[2])}` : esc(st.v);
+        return `<div class="g-count-i" data-anim="fade"><dd>${fig}</dd><dt>${esc(st.label)}</dt></div>`;
       }).join('\n      ')}
     </dl>
   </div>
 </section>
 
-<section class="light railed dip-sec">
+${visionBand()}
+
+<!-- 2 · OUR PRODUCTS. Photograph tiles with a centred caption. Products, not
+     families — see the rail note in CLAUDE.md; the ten are railPicks(). -->
+<section class="g-products" aria-labelledby="products-h">
   <div class="wrap">
-    <span class="rail-label">The distinction</span>
-    <div class="founder">
-      <div class="founder-head">
-        <p class="eyebrow" data-anim="fade">Founder &middot; since ${FOUNDED}</p>
-        <h2 data-anim="reveal">${esc(FOUNDER.name)}</h2>
-      </div>
-      ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead founder-lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n      ')}
-    </div>
-  </div>
-  <div class="diptych">
-  <a class="dip" href="products.html#panels" data-anim="slide-l">
-    <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/z3-powai.webp" alt=""
-           width="760" height="570" loading="lazy" decoding="async">
-    </div>
-    <div class="dip-body">
-      <p class="eyebrow">Inside the room</p>
-      <h2>Acoustic treatment</h2>
-      <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
-      <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
-    </div>
-  </a>
-  <a class="dip" href="products.html#proof" data-anim="slide-r">
-    <div class="dip-surface" aria-hidden="true">
-      <img src="assets/img/projects/swarsamwad-studio-mumbai.webp" alt=""
-           width="760" height="570" loading="lazy" decoding="async">
-    </div>
-    <div class="dip-body">
-      <p class="eyebrow">Between rooms</p>
-      <h2>Soundproofing</h2>
-      <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
-      <span class="tlink">Membranes, doors and windows ${ARROW}</span>
-    </div>
-  </a>
+    <p class="eyebrow" data-anim="fade">${esc(SITE.name)}</p>
+    <h2 id="products-h" data-anim="reveal">Our Products</h2>
+    <ul class="g-tiles" data-stagger>
+      ${railPicks().map(p => `<li class="g-tile" data-anim="rise"><a href="products/${p.slug}.html">
+        <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
+          <img src="assets/img/products/${p.slug}-card.webp" alt="" width="800" height="600" loading="lazy" decoding="async">
+          <span class="g-plus" aria-hidden="true">+</span>
+        </span>
+        <span class="g-tile-cap">${esc(p.name)}</span>
+      </a></li>`).join('\n      ')}
+    </ul>
+    <div class="row g-more" data-anim="fade"><a class="btn btn-ghost" href="products.html">All ${PRODUCTS.length} products ${ARROW}</a></div>
   </div>
 </section>
 
-${famRail()}
-
-<section class="light railed">
+<!-- 3 · WHY / WHERE. Heading left, a two-column list right. The list is the
+     ten room types with completed-project counts, counted from PROJECTS. -->
+<section class="g-why" aria-labelledby="why-h">
   <div class="wrap">
-    <span class="rail-label">Projects</span>
-    <div class="rdx-intro">
-      <div>
-        <p class="eyebrow" data-anim="fade">Where we work</p>
-        <h2 data-anim="reveal">Every project type has a number to hit.</h2>
-      </div>
-      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. The heading
-           above it is ours and was left alone: the brief marked the paragraph
-           for replacement, not the whole block. -->
-      <p class="lead" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
+    <div class="g-why-head">
+      <p class="eyebrow" data-anim="fade">Where we work</p>
+      <h2 id="why-h" data-anim="reveal">Every project type has a number to hit.</h2>
+      <!-- CLIENT-SUPPLIED COPY, verbatim from the change brief. -->
+      <p class="muted" data-anim="fade">We cater to a wide range of spaces with customised acoustic and soundproofing solutions &mdash; from auditoriums and offices to studios, restaurants, homes, and commercial spaces.</p>
     </div>
-    ${roomdex()}
+    <ul class="g-checks" data-stagger>
+      ${SECTORS.map(sec => {
+        const n = PROJECTS.filter(pr => pr.sec === sec.name).length;
+        return `<li data-anim="fade"><a href="projects.html#room=${encodeURIComponent(sec.name)}">
+        <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+        <span><b>${esc(sec.name)}</b><small>${n} ${n === 1 ? 'project' : 'projects'}</small></span>
+      </a></li>`;
+      }).join('\n      ')}
+    </ul>
   </div>
 </section>
 
-<section class="dark railed">
+<!-- 4 · THE DARK BAND. Three columns: icon, capitals heading, paragraph.
+     All three paragraphs are the client's own words (the diptych copy and
+     the products lead from the change brief). The icons are drawn here. -->
+<section class="night g-band" aria-label="What we do">
   <div class="wrap">
-    <span class="rail-label">Method</span>
-    <div class="process-grid">
-      <div class="process-aside">
-        <p class="eyebrow" data-anim="fade">How a project runs</p>
-        <h2 data-anim="reveal">Seven steps, in this order.</h2>
-        <p class="lead" data-anim="fade">Each one gates the next. We do not cut material before the design is signed off, and we do not hand over before the finished room has been measured against the target.</p>
-      </div>
-      <div class="steps steps-spine">
-        ${PROCESS.map(s => `<div class="step" data-anim="fade"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join('\n        ')}
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="light statement">
-  <div class="wrap">
-    <p class="eyebrow" data-anim="fade">Instead of a case study</p>
-    <h2 class="statement-h" data-anim="reveal">Ask a client<br>who had <span class="statement-em">your problem.</span></h2>
-    <div class="statement-grid">
-      <p class="lead" data-anim="fade">Our written case studies are still being put together. Rather than show you our version, we will put you in touch with a client in your sector — an auditorium, a studio, a corporate floor, a school — and you can ask them how it went.</p>
-      <div class="row" data-anim="fade">
-        <a class="btn btn-primary" href="contact.html">Request references ${ARROW}</a>
-        <a class="btn btn-ghost" href="projects.html">Room types we treat ${ARROW}</a>
-      </div>
+    <div class="g-cols" data-stagger>
+      <a class="g-col" href="products.html#panels" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M6 24h4M14 14v20M22 8v32M30 14v20M38 20v8M42 24h0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <h3>Acoustic treatment</h3>
+        <p>Transform your space with Acoustic Treatment designed to control sound, reduce echoes, and enhance clarity.</p>
+        <span class="tlink">Panels, ceilings and foam ${ARROW}</span>
+      </a>
+      <a class="g-col" href="products.html#proof" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M8 8h12v32H8zM28 8h12v32H28zM20 24h8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <h3>Soundproofing</h3>
+        <p>Effective Soundproofing minimises unwanted noise by preventing sound from entering or escaping a space.</p>
+        <span class="tlink">Membranes, doors and windows ${ARROW}</span>
+      </a>
+      <a class="g-col" href="products.html" data-anim="rise">
+        <svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M6 6h16v16H6zM26 6h16v16H26zM6 26h16v16H6zM26 26h16v16H26z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <h3>Acoustic products</h3>
+        <p>Innovative acoustic products designed for superior sound absorption and effective acoustic control. Combining performance, durability, and aesthetics to create acoustically balanced environments.</p>
+        <span class="tlink">The full catalogue ${ARROW}</span>
+      </a>
     </div>
   </div>
 </section>
 
 ${workBand()}
 
-${clientWall()}
-
-
-<section class="dark railed">
+<!-- TESTIMONIALS — verbatim from TESTIMONIALS; monograms, never faces. -->
+<section class="dark g-voices" aria-labelledby="voices-h">
   <div class="wrap">
-    <span class="rail-label">Clients</span>
-    <div class="section-head mid">
+    <div class="section-head">
+      <p class="eyebrow" data-anim="fade">In their words</p>
+      <h2 id="voices-h" data-anim="reveal">What consultants and clients say.</h2>
+    </div>
+    <div class="reviews" data-stagger>
+      ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
+        <div class="review-head">
+          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
+          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
+        </div>
+        <blockquote>${esc(t.q)}</blockquote>
+      </figure>`).join('\n      ')}
+    </div>
+  </div>
+</section>
+
+<!-- CLIENT LOGOS — CLIENTS, as on the client's own homepage. A count and
+     nothing else is said about them (see the provenance rule). -->
+<section class="light g-clients" aria-labelledby="clients-home-h">
+  <div class="wrap">
+    <h2 id="clients-home-h" class="eyebrow center-eyebrow" data-anim="fade">${CLIENTS.length} clients</h2>
+    <ul class="client-wall" data-stagger>
+      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>`
+}));
+
+
+/* ============================ INNER PAGES ================================
+   Every inner page follows the reference layout (glydearchitectural.com.au),
+   by request: no dark title banner — each page opens on a LIGHT intro
+   (eyebrow, large title, lead, optionally a photograph beside it), then
+   alternating grey / white sections, near-black bands for columns of short
+   items, and the accent-tinted contact band at the foot (`ctaBand()`).
+   Only the layout was taken. All copy below was already on this site. */
+
+/* The light page intro. `img` puts a photograph in the right half. */
+const gHead = ({ eyebrow, h1, lead = '', img = '', imgAlt = '', extra = '', center = false, up = '' }) => `
+<section class="g-head${img ? ' has-img' : ''}${center ? ' is-center' : ''}">
+  <div class="wrap">
+    <div class="g-head-copy">
+      <p class="eyebrow" data-in style="--d:60">${eyebrow}</p>
+      <h1 data-in style="--d:170">${h1}</h1>
+      ${lead ? `<p class="lead" data-in style="--d:280">${lead}</p>` : ''}
+      ${extra}
+    </div>
+    ${img ? `<div class="g-head-media" data-in style="--d:240"><img src="${up}${img}" alt="${esc(imgAlt)}" width="760" height="570" fetchpriority="high" decoding="async"></div>` : ''}
+  </div>
+</section>`;
+
+const checkIco = '<svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>';
+
+/* Project tiles with the hover veil. On the projects page they are also the
+   gallery: `#gal`, `[data-sector]`, `.gal-zoom` and `.gal-cap` are the hooks
+   the filter and the lightbox in site.js read — keep all four. */
+const projTile = (pr, up = '') => `<li class="g-pj" data-anim="tile" data-sector="${esc(pr.sec)}">
+        <a class="gal-zoom" href="${up}assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
+          <span class="g-pj-img surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
+            <img src="${up}assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
+            <span class="g-pj-over" aria-hidden="true">
+              <span class="g-pj-t">${esc(pr.n)}</span>
+              <span class="g-pj-rule"></span>
+              <span class="g-pj-btn">View</span>
+            </span>
+          </span>
+        </a>
+        <div class="gal-cap">
+          <h3 class="g-pj-cap">${esc(pr.n)}</h3>
+          <p class="g-pj-sub">${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
+        </div>
+      </li>`;
+
+/* ============================= PRODUCTS INDEX ============================ */
+/* THE PAGE-HEAD LEAD IS A COUNT AND NOTHING ELSE, deliberately — the client's
+   /our-products page carries no lead copy, and the old one repeated the
+   removed manufacturing claim. See the provenance section of CLAUDE.md.
+   (A JS comment, not an HTML one: an HTML comment would ship the removed
+   sentence in the page source.) The family grouping is this page's
+   navigation and is kept.
+
+   The reference category page opens on a strip of three photographs. These
+   are the first three products whose own shot is a photograph of a fitted
+   room rather than a cut-out — derived from `cut`, not chosen. */
+const stripPicks = PRODUCTS.filter(p => !p.cut).slice(0, 3);
+built.push(page({
+  file: 'products.html', active: 'products.html',
+  title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
+  desc: '19 acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Made in Mumbai.',
+  body: `
+<div class="g-strip" aria-hidden="true">
+  ${stripPicks.map((p, i) => `<div class="g-strip-i"><img src="assets/img/products/${p.slug}-hero.webp" alt="" width="1600" height="1000" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></div>`).join('\n  ')}
+</div>
+${gHead({
+  eyebrow: 'Catalogue', h1: 'Products', lead: `${PRODUCTS.length} products.`, center: true,
+  extra: `<nav class="fampick" data-in style="--d:390" aria-label="Jump to a product family">
+      ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)} <b>${PRODUCTS.filter(p => p.cat === c.id).length}</b></a>`).join('\n      ')}
+    </nav>`,
+})}
+
+${CATEGORIES.map((cat, i) => `
+<section class="${i % 2 ? 'dark' : 'light'} railed" id="${cat.id}">
+  <div class="wrap">
+    <span class="rail-label">${esc(cat.name)}</span>
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-anim="fade">${PRODUCTS.filter(p => p.cat === cat.id).length} products</p>
+        <h2 data-anim="reveal">${esc(cat.name)}</h2>
+      </div>
+      <p class="lead" data-anim="fade">${esc(cat.note)}.</p>
+    </div>
+    <div class="grid g3 cat-grid" data-stagger>${PRODUCTS.filter(p => p.cat === cat.id).map(p => productCard(p)).join('\n')}</div>
+  </div>
+</section>`).join('')}
+
+<section class="night">
+  <div class="wrap">
+    <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4.5rem)">
+      <div class="stack stack-m">
+        <p class="eyebrow" data-anim="fade">Which family do you need</p>
+        <h2 data-anim="reveal">Absorb, block, or both</h2>
+        <p class="muted" style="max-width:var(--measure)">Panels, ceilings, foam and wood all <em>absorb</em> — they change how the room you are standing in sounds. Membranes, doors and windows <em>block</em> — they stop sound moving between two rooms. Most real projects need some of each, and the split is the first thing our survey settles.</p>
+      </div>
+      <div>
+        <table class="spec" data-anim="fade">
+          <caption>Quick guide</caption>
+          <tbody>
+            <tr><th>Room echoes, calls sound hollow</th><td>Panels or ceilings</td></tr>
+            <tr><th>Critical listening, small room</th><td>Foam + traps</td></tr>
+            <tr><th>Needs to look like an interior</th><td>Wood or designer</td></tr>
+            <tr><th>High, hard, noisy volume</th><td>Baffles</td></tr>
+            <tr><th>Noise from next door or outside</th><td>Soundproofing</td></tr>
+          </tbody>
+        </table>
+        <p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5;max-width:var(--measure)">Every figure on the product pages is Silence Acoustic&rsquo;s own published specification. We confirm them against your project and supply test reports on request.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+${ctaBand()}`
+}));
+
+/* ============================ PRODUCT DETAIL ============================= */
+/* Reference product-page order: photographic intro · white overview ·
+   near-black band of short items · technical information · related.
+   The intro puts the product's OWN photograph beside the copy on the
+   near-black ground rather than under it: twelve of the nineteen shots are
+   cut-outs on white, which cannot sit full-bleed behind type, and a room
+   photograph from the gallery would imply an installation nobody claimed. */
+PRODUCTS.forEach(p => {
+  const cat = CATEGORIES.find(c => c.id === p.cat);
+  const related = PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 3);
+  built.push(page({
+    file: `products/${p.slug}.html`, active: 'products.html', depth: 1,
+    title: `${p.name} | Silence Acoustic, Mumbai`,
+    desc: `${p.name}: ${p.tag}. Supplied and installed across India by Silence Acoustic, Mumbai.`,
+    body: `
+<section class="night pd-top">
+  <div class="wrap">
+    <div class="pd-top-grid">
+      <div class="pd-top-copy">
+        <p class="eyebrow" data-in style="--d:60">${esc(cat.name)}</p>
+        <h1 data-in style="--d:170">${esc(p.name)}</h1>
+        <p class="lead" data-in style="--d:280">${esc(p.tag)}</p>
+        ${nrcBar(p, 'nrc-lead')}
+        <div class="row" data-in style="--d:360;margin-top:2rem">
+          <a class="btn btn-primary" href="../contact.html">Request a quote ${ARROW}</a>
+          <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
+        </div>
+        <nav class="crumbs" data-in style="--d:420" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span aria-hidden="true">/</span>
+          <a href="../products.html">Products</a><span aria-hidden="true">/</span>
+          <a href="../products.html#${cat.id}">${esc(cat.name)}</a><span aria-hidden="true">/</span>
+          <span>${esc(p.name)}</span>
+        </nav>
+      </div>
+      <!-- data-mat resolves the material colour for the .is-cut mount. -->
+      <div class="pd-hero surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}" data-anim="frame">
+        <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="pd-over${p.shots && p.shots.length ? ' has-shots' : ''}">
+      <div class="pd-body">
+        <p class="eyebrow" data-anim="fade">Overview</p>
+        <h2 data-anim="reveal">${esc(p.name)}</h2>
+        <p class="lead" style="color:var(--on-light)">${esc(p.lead)}</p>
+        ${p.body.map(t => `<p>${esc(t)}</p>`).join('\n        ')}
+      </div>
+      ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
+    </div>
+  </div>
+</section>
+
+<section class="night g-band">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">Typical applications</p>
+    <ul class="g-apps" data-stagger>
+      ${p.apps.map(a => `<li data-anim="fade">${checkIco}<span>${esc(a)}</span></li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="pd-tech">
+      <div>
+        <p class="eyebrow" data-anim="fade">Technical information</p>
+        <h2 data-anim="reveal">Specification</h2>
+        <p class="muted" style="font-size:.9375rem;margin-top:1.25rem;line-height:1.6;max-width:34ch">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
+      </div>
+      <table class="spec">
+        <caption class="vh">Specification</caption>
+        <tbody data-stagger="long">
+          ${Object.entries(p.specs).map(([k, v]) => `<tr data-anim="fade"><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('\n          ')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+${related.length ? `<section class="dark pd-related">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">${esc(cat.name)}</p>
+    <h2 class="mb-l" data-anim="reveal">Others in ${esc(cat.name)}</h2>
+    <div class="grid g3" data-stagger>${related.map(r => productCard(r, '../')).join('\n')}</div>
+  </div>
+</section>` : ''}
+
+${ctaBand('../')}`
+  }));
+});
+
+/* =============================== PROJECTS =============================== */
+built.push(page({
+  file: 'projects.html', active: 'projects.html',
+  title: 'Projects & Room Types | Silence Acoustic',
+  desc: 'Acoustic treatment for auditoriums, recording studios, offices, schools, sports halls, hotels and home theatres. Each room designed to its own target.',
+  body: `
+${gHead({
+  eyebrow: 'Selected work', h1: 'Projects',
+  lead: `${SITE.projectsCompleted} completed installations across ten room types, ${PROJECTS.length} of them photographed here — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.`,
+})}
+
+<section class="light">
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="Filter projects by room type">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">All &middot; ${PROJECTS.length}</button>
+      ${SECTORS.map(sec => {
+        const n = PROJECTS.filter(pr => pr.sec === sec.name).length;
+        return n ? `<button class="filter" type="button" data-filter="${esc(sec.name)}" aria-pressed="false">${esc(sec.name)} &middot; ${n}</button>` : '';
+      }).filter(Boolean).join('\n      ')}
+    </div>
+    <ul class="g-proj" id="gal" data-stagger>
+      ${PROJECTS.map(pr => projTile(pr)).join('\n      ')}
+    </ul>
+    <p class="form-status" id="gal-count" role="status" aria-live="polite" style="margin-top:1.5rem"></p>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="section-head">
       <p class="eyebrow" data-anim="fade">In their words</p>
       <h2 data-anim="reveal">What consultants and clients say.</h2>
     </div>
@@ -390,317 +605,92 @@ ${clientWall()}
 ${ctaBand()}`
 }));
 
+/* ================================= ABOUT ================================ */
+/* TWO BENTO TILES WERE REMOVED BY REQUEST and are not coming back on their
+   own (in-house manufacturing; re-measuring every room after handover). The
+   "We make it / We fit it" captions under the two photographs went for the
+   same reason when the page took the reference layout: the first asserted
+   manufacturing. JS comment, not HTML, so the claim is not in the source.
 
-/* ============================= PRODUCTS INDEX ============================ */
-/* THE PAGE-HEAD LEAD IS A COUNT AND NOTHING ELSE, deliberately. It used to
-   name five families and say every product is made in their own facility in
-   Mumbai — both of which the client asked to stop publishing, though this was
-   not one of the two places their brief marked. The replacement written here
-   ("…for absorbing sound inside a room and for blocking it between two…")
-   was then composed rather than sourced, which is the other thing not to do:
-   the client's own /our-products page carries no lead copy at all, so there
-   was nothing to take. A count is a fact from the data. If this page wants a
-   sentence, get it from the client.
-
-   THE REASONING IS A JS COMMENT, NOT AN HTML ONE, deliberately. An HTML
-   comment inside these template literals ships to the browser, so explaining
-   the removal in the markup would have put the removed sentence back into the
-   page source for anyone who reads it. The family grouping BELOW is
-   untouched — `fampick`, the per-family sections and the filters are this
-   page's navigation, and the brief asked for the product pages to be kept as
-   they are. */
+   Reference about-page order: story + photographs on grey · a near-black
+   strip of logos · a two-part story with figures · the contact band. */
 built.push(page({
-  file: 'products.html', active: 'products.html',
-  title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
-  desc: '19 acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Made in Mumbai.',
+  file: 'about.html', active: 'about.html',
+  title: 'About Silence Acoustic — Acoustics, Mumbai',
+  desc: 'Two decades of expertise in acoustic products and solutions. Acoustic treatment, soundproofing and high-performance acoustic products across offices, auditoriums, studios and hospitality, with 2035+ projects delivered across India.',
   body: `
-<section class="page-head">
+<section class="light g-story">
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Catalogue</p>
-    <h1 data-in style="--d:170">Products</h1>
-    <p class="lead" data-in style="--d:280">${PRODUCTS.length} products.</p>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Families</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">Pick a family</p>
-        <h2 class="sub-h" data-anim="reveal">Five families, ${PRODUCTS.length} products</h2>
-      </div>
-      <p class="lead" data-anim="fade">Jump straight to the range you need, or keep scrolling to see all of them in order.</p>
-    </div>
-    <nav class="fampick" data-anim="fade" aria-label="Jump to a product family">
-      ${CATEGORIES.map(c => `<a href="#${c.id}">${esc(c.name)} <b>${PRODUCTS.filter(p => p.cat === c.id).length}</b></a>`).join('\n      ')}
-    </nav>
-  </div>
-</section>
-
-${CATEGORIES.map((cat, i) => `
-<section class="${i % 2 ? 'dark' : 'light'} railed" id="${cat.id}">
-  <div class="wrap">
-    <span class="rail-label">${esc(cat.name)}</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">${PRODUCTS.filter(p => p.cat === cat.id).length} products</p>
-        <h2 data-anim="reveal">${esc(cat.name)}</h2>
-      </div>
-      <p class="lead" data-anim="fade">${esc(cat.note)}.</p>
-    </div>
-    <div class="grid g3 cat-grid" data-stagger>${PRODUCTS.filter(p => p.cat === cat.id).map(p => productCard(p)).join('\n')}</div>
-  </div>
-</section>`).join('')}
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Selecting</span>
-    <div class="grid g2" data-stagger style="align-items:start">
+    <div class="g-story-grid">
       <div class="stack stack-m">
-        <p class="eyebrow" data-anim="fade">Which family do you need</p>
-        <h2 class="sub-h" data-anim="reveal">Absorb, block, or both</h2>
-        <p class="muted" style="max-width:var(--measure)">Panels, ceilings, foam and wood all <em>absorb</em> — they change how the room you are standing in sounds. Membranes, doors and windows <em>block</em> — they stop sound moving between two rooms. Most real projects need some of each, and the split is the first thing our survey settles.</p>
+        <p class="eyebrow" data-in style="--d:60">About &middot; since ${FOUNDED}</p>
+        <h1 data-in style="--d:170">${esc(ABOUT_INTRO.h1)}</h1>
+        <!-- CLIENT-SUPPLIED COPY. Split only where their own sentences end. -->
+        ${ABOUT_INTRO.body.split(/(?<=\.)\s+(?=With 2,035|From offices|Our commitment)/).map(para => `<p class="muted" data-in style="--d:280">${esc(para)}</p>`).join('\n        ')}
       </div>
-      <div>
-        <table class="spec" data-anim="fade">
-          <caption>Quick guide</caption>
-          <tbody>
-            <tr><th>Room echoes, calls sound hollow</th><td>Panels or ceilings</td></tr>
-            <tr><th>Critical listening, small room</th><td>Foam + traps</td></tr>
-            <tr><th>Needs to look like an interior</th><td>Wood or designer</td></tr>
-            <tr><th>High, hard, noisy volume</th><td>Baffles</td></tr>
-            <tr><th>Noise from next door or outside</th><td>Soundproofing</td></tr>
-          </tbody>
-        </table>
-<p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5;max-width:var(--measure)">Every figure on the product pages is Silence Acoustic&rsquo;s own published specification. We confirm them against your project and supply test reports on request.</p>
+      <div class="g-story-media">
+        <div class="surface s-slat" data-anim="frame">
+          <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
+        </div>
+        <div class="surface s-slat" data-anim="frame">
+          <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-${ctaBand()}`
-}));
+${visionBand()}
 
-/* ============================ PRODUCT DETAIL ============================= */
-PRODUCTS.forEach(p => {
-  const cat = CATEGORIES.find(c => c.id === p.cat);
-  const related = PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 3);
-  built.push(page({
-    file: `products/${p.slug}.html`, active: 'products.html', depth: 1,
-    title: `${p.name} | Silence Acoustic, Mumbai`,
-    desc: `${p.name}: ${p.tag}. Supplied and installed across India by Silence Acoustic, Mumbai.`,
-    body: `
-<section class="page-head">
+<!-- The logo strip. No lead: the client's own strip carries no heading, and
+     a count read off CLIENTS is the only thing said about it. -->
+<section class="night g-logos" aria-labelledby="clients-h">
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">${esc(cat.name)}</p>
-    <h1 data-in style="--d:170">${esc(p.name)}</h1>
-    <p class="lead" data-in style="--d:280">${esc(p.tag)}</p>
-    ${nrcBar(p, 'nrc-lead')}
-    <nav class="crumbs" data-in style="--d:390" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a><span aria-hidden="true">/</span>
-      <a href="../products.html">Products</a><span aria-hidden="true">/</span>
-      <a href="../products.html#${cat.id}">${esc(cat.name)}</a><span aria-hidden="true">/</span>
-      <span>${esc(p.name)}</span>
-    </nav>
+    <h2 id="clients-h" class="eyebrow center-eyebrow on-night" data-anim="fade">${CLIENTS.length} clients</h2>
+    <ul class="client-wall" data-stagger>
+      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="g-8-4">
+      <div class="founder">
+        <div class="founder-head">
+          <p class="eyebrow" data-anim="fade">Founder &middot; since ${FOUNDED}</p>
+          <h2 data-anim="reveal">${esc(FOUNDER.name)}</h2>
+        </div>
+        ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead founder-lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n        ')}
+      </div>
+      <div class="bento bento-col" data-stagger>
+        <div class="bento-i" data-anim="rise"><b>${SITE.projectsCompleted}</b><span>Installations completed</span></div>
+        <div class="bento-i" data-anim="rise"><b>20+</b><span>Years in acoustics</span></div>
+        <div class="bento-i" data-anim="rise"><b>98%</b><span>Customer satisfaction</span></div>
+        <div class="bento-i" data-anim="rise"><b>${PRODUCTS.length}</b><span>Products in the range</span></div>
+        <div class="bento-i" data-anim="rise"><b>${PROJECTS.length}</b><span>Rooms photographed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="night">
+  <div class="wrap">
+    <div class="process-grid">
+      <div class="process-aside">
+        <p class="eyebrow" data-anim="fade">How a project runs</p>
+        <h2 data-anim="reveal">Seven steps, in this order.</h2>
+        <p class="lead" data-anim="fade">Each one gates the next. We do not cut material before the design is signed off, and we do not hand over before the finished room has been measured against the target.</p>
+      </div>
+      <div class="steps steps-spine">
+        ${PROCESS.map(s => `<div class="step" data-anim="fade"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join('\n        ')}
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="light">
   <div class="wrap">
-    <div class="pd-grid">
-      <div>
-        <!-- data-mat is what resolves the material colour for the .is-cut
-             mount. Without it every detail hero falls back to the PET grey
-             and a timber sample sits on a cold ground. Same attribute the
-             cards carry; there it also draws the marker, here it only
-             tints the mount. -->
-        <div class="pd-hero surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}" data-anim="frame">
-          <img src="../assets/img/products/${p.slug}-hero.webp" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
-        </div>
-        ${p.shots && p.shots.length ? `<div class="pd-gallery">${p.shots.map((n, i) => `<figure class="pd-shot"><img src="../assets/img/products/${p.slug}-${n}.webp" alt="${esc(p.name)} — view ${i + 2}" width="800" height="600" loading="lazy" decoding="async"></figure>`).join('')}</div>` : ''}
-        <div class="pd-body" style="margin-top:clamp(2rem,4vw,3rem)">
-          <p class="lead" style="color:var(--on-light)">${esc(p.lead)}</p>
-          ${p.body.map(t => `<p>${esc(t)}</p>`).join('\n          ')}
-          <h2>Typical applications</h2>
-          <ul class="pills">${p.apps.map(a => `<li>${esc(a)}</li>`).join('')}</ul>
-        </div>
-      </div>
-      <aside class="pd-aside">
-        <table class="spec">
-          <caption>Specification</caption>
-          <tbody data-stagger="long">
-            ${Object.entries(p.specs).map(([k, v]) => `<tr data-anim="fade"><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('\n            ')}
-          </tbody>
-        </table>
-        <p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
-        <a class="btn btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center" href="../contact.html">Request a quote ${ARROW}</a>
-        <a class="btn btn-ghost on-light" style="margin-top:.6rem;width:100%;justify-content:center" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
-      </aside>
-    </div>
-
-    ${related.length ? `<div class="pd-related">
-    <hr class="rule">
-    <h2 class="sub-h mb-l">Others in ${esc(cat.name)}</h2>
-    <div class="grid g3" data-stagger>${related.map(r => productCard(r, '../')).join('\n')}</div>
-    </div>` : ''}
-  </div>
-</section>
-
-${ctaBand('../')}`
-  }));
-});
-
-/* =============================== PROJECTS =============================== */
-built.push(page({
-  file: 'projects.html', active: 'projects.html',
-  title: 'Projects & Room Types | Silence Acoustic',
-  desc: 'Acoustic treatment for auditoriums, recording studios, offices, schools, sports halls, hotels and home theatres. Each room designed to its own target.',
-  body: `
-<section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Selected work</p>
-    <h1 data-in style="--d:170">Projects</h1>
-    <p class="lead" data-in style="--d:280">${SITE.projectsCompleted} completed installations across ten room types, ${PROJECTS.length} of them photographed here — from Ravindra Natya Mandir and Sena Bhavan to corporate floors for Accenture, Microsoft and Bajaj, and recording studios across Mumbai.</p>
-  </div>
-</section>
-
-<section class="light railed">
-  <div class="wrap">
-    <span class="rail-label">Gallery</span>
-    <div class="section-head split">
-      <div>
-        <p class="eyebrow" data-anim="fade">${PROJECTS.length} rooms photographed</p>
-        <h2 data-anim="reveal">Rooms we have finished.</h2>
-      </div>
-      <p class="lead" data-anim="fade">Auditoriums, broadcast studios, corporate floors, schools and homes — across Mumbai, Maharashtra and the rest of India. Filter by room type, or ask us for a reference in your sector.</p>
-    </div>
-
-    <div class="filters" role="group" aria-label="Filter projects by room type">
-      <button class="filter" type="button" data-filter="all" aria-pressed="true">All &middot; ${PROJECTS.length}</button>
-      ${SECTORS.map(sec => {
-        const n = PROJECTS.filter(pr => pr.sec === sec.name).length;
-        return n ? `<button class="filter" type="button" data-filter="${esc(sec.name)}" aria-pressed="false">${esc(sec.name)} &middot; ${n}</button>` : '';
-      }).filter(Boolean).join('\n      ')}
-    </div>
-
-    <div class="gal" id="gal" data-stagger>
-      ${PROJECTS.map(pr => `<article class="gal-item" data-anim="tile" data-sector="${esc(pr.sec)}">
-        <a class="gal-zoom" href="assets/img/projects/${pr.s}.webp" aria-label="View the photograph of ${esc(pr.n)} at full size">
-          <div class="gal-surface surface ${(SECTORS.find(x => x.name === pr.sec) || {}).surf || 's-plate'}">
-            <img src="assets/img/projects/${pr.s}.webp" alt="${esc(pr.n)}${pr.l ? ', ' + esc(pr.l) : ''}" width="760" height="507" loading="lazy" decoding="async">
-          </div>
-        </a>
-        <div class="gal-cap">
-          <h3>${esc(pr.n)}</h3>
-          <p>${pr.l ? esc(pr.l) + ' &middot; ' : ''}${esc(pr.sec)}</p>
-        </div>
-      </article>`).join('\n      ')}
-    </div>
-    <p class="form-status" id="gal-count" role="status" aria-live="polite" style="margin-top:1.5rem"></p>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Clients</span>
-    <div class="reviews" data-stagger>
-      ${TESTIMONIALS.map(t => `<figure class="review" data-anim="fade">
-        <div class="review-head">
-          <span class="review-avatar" aria-hidden="true">${esc(t.n.trim()[0].toUpperCase())}</span>
-          <span class="review-who"><b>${esc(t.n)}</b><span>${esc(t.r)}</span></span>
-        </div>
-        <blockquote>${esc(t.q)}</blockquote>
-      </figure>`).join('\n      ')}
-    </div>
-  </div>
-</section>
-
-${ctaBand()}`
-}));
-
-/* ================================= ABOUT ================================ */
-/* TWO BENTO TILES WERE REMOVED BY REQUEST and are not coming back on their
-   own. One asserted in-house manufacturing, the other that every finished
-   room is re-measured against its target after handover. Both are claims the
-   client does not want published; the first was cut from the homepage rail in
-   the same brief, and the second is the promise CLAUDE.md already flags as
-   written copy rather than client-confirmed. Do not reinstate either without
-   being asked for it by name.
-
-   Kept as a JS comment rather than an HTML one on purpose: an HTML comment in
-   these template literals ships, and the point of removing a claim is that it
-   stops being in the page. */
-built.push(page({
-  file: 'about.html', active: 'about.html',
-  title: 'About Silence Acoustic — Acoustics, Mumbai',
-  /* Rewritten from the client's own replacement copy, and for the same reason
-     the page-head h1 was: the old description was a summary of three
-     paragraphs that no longer exist, and it repeated the manufacturing claim
-     into every search result. A description is published text — it just is
-     not published on the page. */
-  desc: 'Two decades of expertise in acoustic products and solutions. Acoustic treatment, soundproofing and high-performance acoustic products across offices, auditoriums, studios and hospitality, with 2035+ projects delivered across India.',
-  body: `
-<section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">About</p>
-    <h1 data-in style="--d:170">${esc(ABOUT_INTRO.h1)}</h1>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Company</span>
-    <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
-      <div class="stack stack-m">
-        <p class="eyebrow" data-anim="fade">Since 2006</p>
-        <h2 data-anim="reveal">${esc(ABOUT_INTRO.h2).replace(/\n/g, '<br>')}</h2>
-        <!-- CLIENT-SUPPLIED COPY. One long paragraph by their choice; it is
-             split for reading only where their own sentences end, and no
-             words are added, cut or reordered. -->
-        ${ABOUT_INTRO.body.split(/(?<=\.)\s+(?=With 2,035|From offices|Our commitment)/).map(para => `<p class="muted">${esc(para)}</p>`).join('\n        ')}
-      </div>
-      <div>
-        <!-- Deliberately the same material twice: slat samples as we make them,
-             then the same slats fitted on a wall. It is the supplier/installer
-             point made in pictures rather than in another paragraph. -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-          <figure class="stack" style="margin:0;gap:0.5rem">
-            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
-              <img src="assets/img/products/acoustic-wooden-slats-card.webp"
-                   alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We make it</figcaption>
-          </figure>
-          <figure class="stack" style="margin:0;gap:0.5rem">
-            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
-              <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp"
-                   alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We fit it</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-
-    <p class="eyebrow" data-anim="fade" style="margin-top:clamp(3rem,6vw,4.5rem)">At a glance</p>
-    <div class="bento" data-stagger>
-      <div class="bento-i bento-lg" data-anim="rise">
-        <b>${SITE.projectsCompleted}</b>
-        <span>Installations completed</span>
-        <small>Across ${SECTORS.length} room types since 2006, ${PROJECTS.length} of them photographed on this site.</small>
-      </div>
-      <div class="bento-i" data-anim="rise"><b>20+</b><span>Years in acoustics</span></div>
-      <div class="bento-i" data-anim="rise"><b>98%</b><span>Customer satisfaction</span></div>
-      <div class="bento-i" data-anim="rise"><b>${PRODUCTS.length}</b><span>Products in the range</span></div>
-      <div class="bento-i" data-anim="rise"><b>${PROJECTS.length}</b><span>Rooms photographed</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="light railed">
-  <div class="wrap">
-    <span class="rail-label">Principles</span>
     <div class="section-head split">
       <div>
         <p class="eyebrow" data-anim="fade">How we work</p>
@@ -708,11 +698,11 @@ built.push(page({
       </div>
       <p class="lead" data-anim="fade">Stated plainly, because each one is something the industry does routinely and we think it is why clients end up disappointed.</p>
     </div>
-    <div class="steps" data-stagger="long">
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Sell foam as soundproofing</h3><p style="grid-column:1;grid-row:2;max-width:70ch">If your problem is the neighbour, we will tell you that panels will not fix it — even when panels are the cheaper order and the easier sale.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Quote a lump sum</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Drop the material at your gate</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Supplying the panels is half a job. We fit them too, to the drawing and to your site timings, and we stay on after handover for support and maintenance. If you only want the material, say so and we will price it that way &mdash; but the default is that we finish what we make.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Hand over unmeasured</h3><p style="grid-column:1;grid-row:2;max-width:70ch">We measure the finished room against the design target and give you the report. If it misses, we come back and fix it. That is what the design fee bought.</p></div>
+    <div class="g-cols g-cols-4" data-stagger>
+      <div class="g-col" data-anim="fade"><h3>Sell foam as soundproofing</h3><p>If your problem is the neighbour, we will tell you that panels will not fix it — even when panels are the cheaper order and the easier sale.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Quote a lump sum</h3><p>Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Drop the material at your gate</h3><p>Supplying the panels is half a job. We fit them too, to the drawing and to your site timings, and we stay on after handover for support and maintenance. If you only want the material, say so and we will price it that way &mdash; but the default is that we finish what we make.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Hand over unmeasured</h3><p>We measure the finished room against the design target and give you the report. If it misses, we come back and fix it. That is what the design fee bought.</p></div>
     </div>
   </div>
 </section>
@@ -721,22 +711,19 @@ ${ctaBand()}`
 }));
 
 /* ================================= NOTES ================================ */
+/* The FAQ takes the reference's accordion rows. <details> needs no script. */
 built.push(page({
   file: 'blog.html', active: 'blog.html',
   title: 'Acoustics Notes & Guides | Silence Acoustic',
   desc: 'Plain-language notes on room acoustics from Silence Acoustic, Mumbai — starting with a beginner\'s guide to acoustic polyester panels and how they work.',
   body: `
-<section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Notes</p>
-    <h1 data-in style="--d:170">Working notes on acoustics</h1>
-    <p class="lead" data-in style="--d:280">What we find ourselves explaining on site, written down. No product pitches — if a note ends with "and that is why you need us", we have not written it properly.</p>
-  </div>
-</section>
+${gHead({
+  eyebrow: 'Notes', h1: 'Working notes on acoustics',
+  lead: 'What we find ourselves explaining on site, written down. No product pitches — if a note ends with "and that is why you need us", we have not written it properly.',
+})}
 
-<section class="dark railed">
+<section class="light">
   <div class="wrap">
-    <span class="rail-label">Articles</span>
     <ol class="notes">
       ${POSTS.map((post, i) => `<li class="note${i === 0 ? ' note-lead' : ''}" data-anim="fade">
         <a href="${post.slug}.html">
@@ -754,17 +741,16 @@ built.push(page({
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark">
   <div class="wrap">
-    <span class="rail-label">Questions</span>
-    <div class="section-head split">
+    <div class="g-faq-grid">
       <div>
-        <p class="eyebrow" data-anim="fade">Frequently asked</p>
+        <p class="eyebrow" data-anim="fade">FAQ</p>
         <h2 data-anim="reveal">The things clients ask first.</h2>
       </div>
-    </div>
-    <div class="steps" data-stagger="long">
-      ${FAQ.map(f => `<div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1;font-size:1.125rem">${esc(f.q)}</h3><p style="grid-column:1;grid-row:2;max-width:70ch">${esc(f.a)}</p></div>`).join('\n      ')}
+      <div class="g-faq" data-stagger>
+        ${FAQ.map((f, i) => `<details class="g-faq-i" data-anim="fade"${i === 0 ? ' open' : ''}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('\n        ')}
+      </div>
     </div>
   </div>
 </section>
@@ -773,10 +759,7 @@ ${ctaBand()}`
 }));
 
 /* ----------------------------- ARTICLE PAGES ---------------------------- */
-/* Every block reveals on scroll. The article was the one page on the site
-   with no motion at all -- 75 elements, none of them animated -- which read
-   as a different site once you arrived from anywhere else. Headings take
-   `reveal` (the clip-wipe) and prose takes `fade`, so the structure of the
+/* Headings take `reveal` and prose takes `fade`, so the structure of the
    piece is what moves rather than every paragraph doing the same thing. */
 const blocks = (body) => body.map(b => {
   if (b[0] === 'h2') return `<h2 data-anim="reveal">${esc(b[1])}</h2>`;
@@ -792,17 +775,14 @@ POSTS.forEach(post => {
     title: `${post.t.replace(/\s*—.*$/, '')} | Silence Acoustic`.slice(0, 62),
     desc: post.d.slice(0, 158),
     body: `
-<section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">${esc(post.tag)} &middot; ${esc(post.read)} read</p>
-    <h1 data-in style="--d:170">${esc(post.t)}</h1>
-    <nav class="crumbs" data-in style="--d:280" aria-label="Breadcrumb">
+${gHead({
+  eyebrow: `${esc(post.tag)} &middot; ${esc(post.read)} read`, h1: esc(post.t),
+  extra: `<nav class="crumbs" data-in style="--d:280" aria-label="Breadcrumb">
       <a href="index.html">Home</a><span aria-hidden="true">/</span>
       <a href="blog.html">Notes</a><span aria-hidden="true">/</span>
       <span>Published ${esc(post.dateLabel)}</span>
-    </nav>
-  </div>
-</section>
+    </nav>`,
+})}
 
 <section class="light">
   <div class="wrap">
@@ -827,26 +807,24 @@ ${ctaBand()}`
 });
 
 /* ================================ CONTACT =============================== */
+/* Reference contact-page order: title and intro, the form beside the office
+   contact blocks, then a grey section of short items. */
 const roomOptions = SECTORS.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('\n              ');
 built.push(page({
   file: 'contact.html', active: 'contact.html',
   title: 'Contact & Free Site Survey | Silence Acoustic',
   desc: 'Book a free acoustic site survey in Mumbai and the MMR. Call +91 81084 00566 or send your room details and we will come and measure.',
   body: `
-<section class="page-head">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Contact</p>
-    <h1 data-in style="--d:170">Tell us about the space.</h1>
-  </div>
-</section>
+${gHead({
+  eyebrow: 'Contact', h1: 'Tell us about the space.',
+  lead: 'The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.',
+})}
 
-<section class="light railed">
+<section class="dark g-contact">
   <div class="wrap">
-    <span class="rail-label">Enquiry</span>
-    <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2.5rem,5vw,4.5rem)">
+    <div class="g-contact-grid">
       <div data-anim="fade">
-        <h2 class="sub-h mb-s">Send the details</h2>
-        <p class="lead" style="margin-bottom:2rem">The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.</p>
+        <h2 class="sub-h mb-m">Send the details</h2>
         <form class="form" id="enquiry" data-endpoint="${esc(SITE.formEndpoint || '')}" data-to="${SITE.email}" novalidate>
           <div class="field half"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field half"><label for="f-org">Company or practice</label><input id="f-org" name="org" type="text" autocomplete="organization"></div>
@@ -871,32 +849,39 @@ built.push(page({
         </form>
       </div>
 
-      <div class="stack stack-l" data-stagger>
-        <div data-anim="fade">
-          <h2 class="sub-h mb-m">Direct</h2>
-          <ul class="contact-list">
-            <li><span class="k">Phone &amp; WhatsApp</span><a class="v" href="tel:${SITE.phoneHref}">${SITE.phone}</a></li>
-            <li><span class="k">General enquiries</span><a class="v" href="mailto:${SITE.email}">${SITE.email}</a></li>
-            <li><span class="k">Drawings &amp; tenders</span><a class="v" href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a></li>
-            <li><span class="k">Office &amp; works</span><span class="v" style="display:block;line-height:1.55">Mumbai, Maharashtra</span></li>
-          </ul>
-          <div class="row" style="margin-top:1.75rem">
-            <a class="btn btn-primary" href="${SITE.waHref}" rel="noopener">WhatsApp us ${ARROW}</a>
-            <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">Call now</a>
-          </div>
+      <div class="g-offices" data-stagger>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Phone &amp; WhatsApp</p>
+          <a class="v" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
         </div>
-        <div data-anim="fade">
-          <h2 class="sub-h mb-m">Helps us quote faster</h2>
-          <ul class="pills" style="flex-direction:column;align-items:flex-start">
-            <li>A floor plan or a section, any format</li>
-            <li>Ceiling height and finishes already fixed</li>
-            <li>What the room is used for, and by how many</li>
-            <li>A voice note of one clap in the empty room</li>
-            <li>Your handover date</li>
-          </ul>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">General enquiries</p>
+          <a class="v" href="mailto:${SITE.email}">${SITE.email}</a>
+        </div>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Drawings &amp; tenders</p>
+          <a class="v" href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a>
+        </div>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Office &amp; works</p>
+          <span class="v">Mumbai, Maharashtra</span>
+        </div>
+        <div class="row" data-anim="fade">
+          <a class="btn btn-primary" href="${SITE.waHref}" rel="noopener">WhatsApp us ${ARROW}</a>
+          <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">Call now</a>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">Helps us quote faster</p>
+    <ul class="g-checks g-checks-3" data-stagger>
+      ${['A floor plan or a section, any format', 'Ceiling height and finishes already fixed', 'What the room is used for, and by how many', 'A voice note of one clap in the empty room', 'Your handover date']
+        .map(t => `<li data-anim="fade"><span class="g-check-row">${checkIco}<b>${t}</b></span></li>`).join('\n      ')}
+    </ul>
   </div>
 </section>`
 }));
@@ -906,18 +891,14 @@ built.push(page({
   file: '404.html', active: '',
   title: 'Page not found — Silence Acoustic',
   desc: 'That page does not exist. Find acoustic panels, ceilings, foam, wood and soundproofing in the product catalogue.',
-  body: `
-<section class="page-head" style="padding-block:clamp(5rem,12vw,9rem)">
-  <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">404</p>
-    <h1 data-in style="--d:170">Nothing here. Not even an echo.</h1>
-    <p class="lead" data-in style="--d:280">That page has moved or never existed. The catalogue and the contact page are both one click away.</p>
-    <div class="row" style="margin-top:2.5rem">
+  body: gHead({
+    eyebrow: '404', h1: 'Nothing here. Not even an echo.',
+    lead: 'That page has moved or never existed. The catalogue and the contact page are both one click away.',
+    extra: `<div class="row" style="margin-top:2.5rem">
       <a class="btn btn-primary" href="products.html">Browse products ${ARROW}</a>
       <a class="btn btn-ghost" href="index.html">Back to home ${ARROW}</a>
-    </div>
-  </div>
-</section>`
+    </div>`,
+  })
 }));
 
 module.exports = built;

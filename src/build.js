@@ -33,7 +33,13 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
    (Bricolage Grotesque + Public Sans, Archivo + Instrument Sans, and IBM
    Plex Sans + Mono were the previous pairings; all three references are
    stale.) */
-const FONTS = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
+/* THE PAIRING IS NOW OPEN SANS ALONE — the "architectural" direction, modelled
+   on the layout language of glydearchitectural.com.au by request (dark bar,
+   full-bleed photographic hero, tight bold headings over small tracked caps).
+   Only the layout language was taken: no copy, imagery, logo or code. The
+   accent stays the logo's cyan where that site uses gold. Instrument Serif +
+   Karla ("Workshop") is the previous pairing and that reference is stale. */
+const FONTS = 'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap';
 
 /* The real Silence Acoustic logo. Two lockups, each in a knockout variant.
    Source: silenceacoustic.com/wp-content/uploads/2026/05/for-website-01-scaled.png
@@ -72,6 +78,9 @@ const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" f
              It is armed regardless of scroll-timeline support, because the
              native path is gated out under reduce anyway. */
 const HEAD_BOOT = `<script>(function(d){d.classList.remove('no-js');
+try{if(sessionStorage.getItem('g-curtain')){sessionStorage.removeItem('g-curtain');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('curtain-in');
+setTimeout(function(){d.classList.remove('curtain-in')},1400)}}}catch(e){}
 try{if(!('IntersectionObserver' in window))return;
 var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
@@ -109,7 +118,16 @@ function header(active, depth) {
     const cur = n.href === active ? ' aria-current="page"' : '';
     return `<a href="${up}${n.href}"${cur}>${n.label}</a>`;
   }).join('\n          ');
-  return `<header class="site-head">
+  /* The utility bar carries contact routes only — every string in it is
+     already published elsewhere on the site (SITE.phone / SITE.email). */
+  return `<div class="topbar">
+    <div class="wrap">
+      <a href="tel:${SITE.phoneHref}">${SITE.phone}</a>
+      <a href="mailto:${SITE.email}">${SITE.email}</a>
+      <a href="${up}contact.html">Book a free site survey</a>
+    </div>
+  </div>
+  <header class="site-head">
     <div class="wrap">
       <a class="brand" href="${up}index.html" aria-label="${SITE.name} — home">
         ${LOGO_HEAD(up)}
@@ -135,7 +153,6 @@ function footer(depth) {
       <div class="foot-grid" data-stagger>
         <div data-anim="fade">
           <a class="brand" href="${up}index.html" aria-label="${SITE.name} — home">${LOGO_FOOT(up)}</a>
-          <p class="foot-blurb">Acoustic design, treatment and soundproofing. Measured, manufactured and installed by our own team, from Mumbai across India.</p>
         </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>
@@ -178,7 +195,7 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#F8FAFC">
+<meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE.name}">
 <meta property="og:title" content="${esc(title)}">
@@ -190,6 +207,7 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <link rel="stylesheet" href="${FONTS}">
 <link rel="stylesheet" href="${up}assets/css/site.css">
 <link rel="stylesheet" href="${up}assets/css/motion.css">
+<link rel="stylesheet" href="${up}assets/css/theme.css">
 <link rel="icon" href="${up}assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="${up}assets/img/favicon.png">
 <meta property="og:image" content="${SITE.url}/assets/img/logo-full.png">
@@ -416,7 +434,7 @@ const famRail = () => {
 </section>`;
 };
 
-const ctaBand = (up = '') => `<section class="cta-band">
+const ctaBand = (up = '') => `<section class="cta-band g-tint">
   <div class="wrap">
     <div class="section-head split">
       <div>
@@ -434,4 +452,4 @@ const ctaBand = (up = '') => `<section class="cta-band">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, page, productCard, famRail, ctaBand, header, footer, nrcBar, nrcOf, roomdex };
+module.exports = { ROOT, esc, ARROW, page, productCard, famRail, railPicks, ctaBand, header, footer, nrcBar, nrcOf, roomdex, MAT };

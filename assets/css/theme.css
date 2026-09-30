@@ -1,0 +1,979 @@
+/* ==========================================================================
+   theme.css — the "architectural" direction.
+
+   Loaded LAST, after site.css and motion.css. It restyles the existing
+   components in the layout language of glydearchitectural.com.au, by request:
+   a thin accent utility bar over a charcoal header, a full-bleed photographic
+   hero with centred white type, tight bold Open Sans headings over small
+   tracked caps with a short accent rule, flat white tiles on a cool grey
+   ground, near-black bands and a near-black footer.
+
+   Only the LAYOUT LANGUAGE was taken. No copy, photograph, logo, icon or code
+   from that site is used, and where it uses gold this site uses the logo's
+   own cyan (`--brand-deep` / `--brand-mark`, #1CABDE) — chosen by the client.
+
+   Rules that bind here:
+   · The raw cyan is never type on a LIGHT ground (2.5:1). On light grounds
+     labels and links take --brand #08597A (4.98:1 worst). On the near-black
+     grounds the raw cyan IS text-safe: 6.9:1 on #1A1A1A.
+   · A cyan FILL carries a dark label, never white (white on #1CABDE is 2.65:1).
+   · No :hover rule in this file may set a transform other than `none`. This
+     file sorts after the touch-hover reset at the end of motion.css, so a
+     hover transform written here would latch on touch again. Image zoom on
+     hover is inherited from motion.css, which is already gated.
+   ========================================================================== */
+
+:root {
+  --night:      #1A1A1A;   /* near-black band, footer, page heads */
+  --night-2:    #222426;   /* header */
+  --night-3:    #2A2D30;   /* raised object on night */
+  --on-night:   #FFFFFF;   /* 17.4:1 on --night */
+  --on-night-mute: #C4C9CE;/* 11.0:1 on --night, 10.2:1 on --night-2 */
+  --night-edge: rgba(255, 255, 255, 0.12);
+  --accent:     #1CABDE;   /* the logo cyan — rules, fills, text on night only */
+
+  --t-hero: clamp(2.5rem, 1.4rem + 4.2vw, 4.75rem);
+  --t-h1:   clamp(2.25rem, 1.35rem + 3.6vw, 4rem);
+  --t-h2:   clamp(1.9rem, 1.3rem + 2.4vw, 3.4rem);
+  --t-h3:   clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --t-lead: clamp(1.0313rem, 0.99rem + 0.25vw, 1.1563rem);
+  --t-body: 1.0313rem;
+  --t-mono: 0.8125rem;
+  --pad-y: clamp(4.5rem, 8vw, 7.5rem);
+  --max: 80rem;
+}
+
+body { line-height: 1.7; color: #1A1A1A; }
+body::after { display: none; }   /* no film grain in this direction */
+::selection { background: var(--accent); color: #14181B; }
+
+/* ------------------------------- type ---------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-variation-settings: normal;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #1A1A1A;
+}
+h3, h4 { font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; }
+
+/* Eyebrow: small tracked caps, then a short accent rule, then the heading.
+   The rule is the eyebrow's existing ::before, moved after the words with
+   `order` — so the scroll-drawn dash (`.eyebrow[data-anim]::before` in
+   motion.css) keeps working unchanged. */
+.eyebrow {
+  font-family: var(--body);
+  font-size: 0.875rem; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brand);
+  flex-direction: column; align-items: flex-start; gap: 1.1rem;
+}
+.eyebrow::before {
+  order: 2; width: 4.5rem; height: 2px;
+  background: var(--accent); opacity: 1;
+}
+.dark .eyebrow, .rail-sec .eyebrow { color: var(--brand); }
+.dark .eyebrow::before, .rail-sec .eyebrow::before { background: var(--accent); }
+.section-head h2, .rail-head h2, .rdx-intro h2, .process-aside h2 { margin-top: 1.25rem; }
+
+.lead { color: #3F454A; }
+.muted { color: #4A5157; }
+
+/* ------------------------------ grounds -------------------------------- */
+/* Three flat grounds, nothing veiled: cool grey, white and near-black.
+   `.light` is the grey page ground, `.dark` is now WHITE (the second light
+   ground — its old meaning, just flatter), and `.night` is the genuinely dark
+   band. Every text colour inside `.night` is named below; see the CLAUDE.md
+   rule that any element setting its own ground must colour its own text. */
+.light { background: #F3F4F7; }
+.dark  { background: #FFFFFF; color: #1A1A1A; }
+.dark h1, .dark h2, .dark h3 { color: #1A1A1A; }
+.rail-sec { background: #FFFFFF; color: #1A1A1A; }
+
+.night, .site-foot, .page-head, .cta-band {
+  background: var(--night); color: var(--on-night-mute);
+}
+.night h1, .night h2, .night h3, .night h4,
+.page-head h1, .page-head h2, .cta-band h2 { color: var(--on-night); }
+.night .eyebrow, .page-head .eyebrow, .cta-band .eyebrow { color: var(--accent); }
+.night .lead, .night .muted, .night p,
+.page-head .lead, .cta-band .lead { color: var(--on-night-mute); }
+.night .tlink, .cta-band .tlink { color: var(--accent); }
+.night .step, .night .steps-spine .step { border-top-color: var(--night-edge); }
+.night .step h3 { color: var(--on-night); }
+.night .step p { color: var(--on-night-mute); }
+.night .steps-spine::before { background: var(--night-edge); }
+.night .steps-spine::after { background: var(--accent); }
+.night .step::before, .night .step::after { color: var(--accent); border-color: var(--night-edge); }
+
+/* The rotated drawing-sheet margin does not belong to this direction. The
+   mobile sticky series label on the products page is kept — it is navigation. */
+@media (min-width: 62rem) {
+  .railed { padding-left: 0; }
+  .railed::before, .rail-label { display: none; }
+}
+
+/* ------------------------------ utility bar ---------------------------- */
+.topbar {
+  background: var(--accent); color: #14181B;   /* 6.74:1 */
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  position: relative; z-index: 101;
+}
+.topbar .wrap {
+  display: flex; justify-content: flex-end; align-items: center;
+  gap: clamp(1rem, 2.5vw, 1.75rem); min-height: 2.25rem;
+}
+.topbar a { text-decoration: none; color: inherit; padding-block: 0.4rem; }
+.topbar a:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 40rem) {
+  .topbar .wrap { justify-content: center; }
+  .topbar a[href^="mailto:"] { display: none; }
+}
+
+/* -------------------------------- header ------------------------------- */
+.site-head,
+html.head-solid .site-head {
+  background: var(--night-2);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-bottom: 1px solid var(--night-edge);
+  color: var(--on-night);
+}
+.site-head .wrap { min-height: 5.5rem; }
+.brand-logo { height: 2.6rem; }
+.nav a {
+  font-family: var(--body); font-size: 0.8125rem; font-weight: 400;
+  letter-spacing: 0.04em; color: var(--on-night);
+}
+.nav a:hover, .nav a[aria-current="page"] { color: var(--accent); }
+.nav a::after { background: var(--accent); height: 2px; bottom: -0.2rem; }
+.nav a.btn-primary, .nav a.btn-primary:hover {
+  background: var(--accent); border-color: var(--accent); color: #14181B;
+  font-weight: 700;
+}
+.nav a.btn-primary:hover { background: var(--on-night); border-color: var(--on-night); }
+.nav-toggle { border-color: var(--night-edge); color: var(--on-night); }
+@media (max-width: 60rem) {
+  .nav {
+    background: var(--night-2); border-bottom-color: var(--night-edge);
+    inset: auto 0 auto 0; top: auto;
+  }
+  .nav { position: absolute; top: 100%; }
+  .nav a { border-bottom-color: var(--night-edge); color: var(--on-night); }
+}
+
+/* -------------------------------- buttons ------------------------------ */
+/* Square, flat, small tracked caps. On light grounds the fill is near-black
+   with a white label and turns logo-cyan with a dark label on hover; on dark
+   grounds it starts cyan and turns white. */
+.btn {
+  font-family: var(--body); font-size: 0.8125rem; font-weight: 600;
+  letter-spacing: 0.08em; padding: 1rem 1.75rem; border-radius: 0;
+  transition: background-color 220ms var(--ease), border-color 220ms var(--ease),
+              color 220ms var(--ease);
+}
+.btn:hover, .btn:active { transform: none; }
+.btn-primary {
+  background: var(--night); color: var(--on-night);
+  border-color: var(--night); box-shadow: none;
+}
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #14181B; box-shadow: none; }
+.btn-ghost { border-color: var(--night); color: var(--night); }
+.btn-ghost::before { background: var(--night); }
+.btn-ghost:hover { color: var(--on-night); }
+.dark .btn-ghost, .btn-ghost.on-light { border-color: var(--night); color: var(--night); }
+.dark .btn-ghost::before, .btn-ghost.on-light::before { background: var(--night); }
+.dark .btn-ghost:hover, .btn-ghost.on-light:hover { color: var(--on-night); }
+
+.hero .btn-primary, .night .btn-primary, .cta-band .btn-primary, .page-head .btn-primary {
+  background: var(--accent); border-color: var(--accent); color: #14181B;
+}
+.hero .btn-primary:hover, .night .btn-primary:hover,
+.cta-band .btn-primary:hover, .page-head .btn-primary:hover {
+  background: var(--on-night); border-color: var(--on-night); color: #14181B;
+}
+.hero .btn-ghost, .night .btn-ghost, .cta-band .btn-ghost, .page-head .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.7); color: var(--on-night);
+}
+.hero .btn-ghost::before, .night .btn-ghost::before,
+.cta-band .btn-ghost::before, .page-head .btn-ghost::before { background: var(--on-night); }
+.hero .btn-ghost:hover, .night .btn-ghost:hover,
+.cta-band .btn-ghost:hover, .page-head .btn-ghost:hover { border-color: var(--on-night); color: #14181B; }
+
+.tlink { font-family: var(--body); font-weight: 600; letter-spacing: 0.08em; font-size: 0.8125rem; }
+
+/* --------------------------------- hero -------------------------------- */
+.hero { background: var(--night); color: var(--on-night); padding-block: 0; }
+.hero-top {
+  min-height: min(90vh, 880px);
+  align-items: center; justify-content: center; text-align: center;
+  padding-block: clamp(6rem, 12vw, 9rem) clamp(5rem, 9vw, 7rem);
+  color: var(--on-night);
+}
+.hero-media { background: var(--night); }
+/* A NEUTRAL DARK SCRIM, and it is what guarantees the white type now. At
+   0.58 black over the brightest possible pixel the ground composites to
+   rgb(107,107,107), where #FFFFFF reads 5.3:1 — so any banner photograph
+   holds body-size white text, not just this three. The bottom deepens to
+   seat the stat rail. */
+.hero-media::after {
+  background:
+    linear-gradient(180deg, rgba(12, 12, 12, 0.58) 0%, rgba(12, 12, 12, 0.58) 70%, rgba(12, 12, 12, 0.78) 100%);
+}
+@media (max-width: 63.999rem) {
+  .hero-media::after {
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.60) 0%, rgba(12, 12, 12, 0.60) 70%, rgba(12, 12, 12, 0.80) 100%);
+  }
+}
+@media (min-width: 64rem) {
+  .hero-top > .wrap { padding-right: var(--gut); }
+}
+.hero-top > .wrap { max-width: 64rem; }
+.hero-copy { justify-items: center; }
+.hero-top .eyebrow,
+.hero-top .lead, .hero-top .hero-lead, .hero-top h1 { color: var(--on-night); }
+.hero-top .eyebrow {
+  /* white, not cyan: over the photograph the scrim guarantees ~5.3:1 for
+     white but only ~2:1 for the cyan at this size */
+  color: var(--on-night); font-weight: 600; align-items: center; font-size: 0.8125rem; letter-spacing: 0.18em;
+}
+.hero-top .eyebrow::before { display: none; }
+.hero-title {
+  font-family: var(--display); font-weight: 700;
+  font-variation-settings: normal;
+  font-size: var(--t-hero); line-height: 1.06; letter-spacing: -0.035em;
+  margin-block: 1.1rem 1.6rem; max-width: 18ch; margin-inline: auto;
+  color: var(--on-night);
+}
+.hero-strong { display: block; font-weight: 700; }
+.hero-title .decay {
+  display: block; font-style: normal; font-weight: 300;
+  color: var(--on-night); letter-spacing: -0.03em;
+}
+.hero-rule { display: block; width: 4.5rem; height: 2px; background: var(--accent); }
+.hero-foot { justify-items: center; gap: 1.6rem; }
+.hero-lead { color: var(--on-night); max-width: 52ch; margin-inline: auto; }
+.hero-cta { justify-content: center; margin-top: 0.75rem; }
+
+.hero-nav {
+  top: 50% !important; margin-top: -1.5rem;
+  max-width: none; padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+}
+.hero-nav-btn {
+  width: 3rem; height: 3rem; border-radius: 50%;
+  background: rgba(12, 12, 12, 0.6); color: var(--on-night);
+  border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: none;
+}
+.hero-nav-btn:hover { background: var(--accent); color: #14181B; border-color: var(--accent); }
+
+/* The stat rail: a near-black strip closing the hero. */
+.hero-rail {
+  background: var(--night); border-bottom: 0;
+}
+.hero-specs { margin-top: 0; border-top: 1px solid var(--night-edge); padding-bottom: clamp(2.25rem, 4vw, 3rem); }
+.hero-spec { text-align: left; }
+.hero-spec + .hero-spec { border-left-color: var(--night-edge) !important; }
+.hero-spec::before { background: var(--accent); width: 2.5rem; height: 2px; }
+.hero-spec dt { color: var(--on-night-mute); font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.hero-spec dd {
+  font-family: var(--display); font-weight: 700; font-variation-settings: normal;
+  color: var(--on-night); letter-spacing: -0.03em;
+}
+
+/* ------------------------------ page heads ----------------------------- */
+.page-head { padding-block: clamp(4.5rem, 9vw, 7rem) clamp(3.5rem, 6vw, 5rem); }
+.page-head::before { display: none; }
+.page-head h1 { font-size: var(--t-h1); margin-block: 1.4rem 1.1rem; max-width: 22ch; }
+.page-head .lead { max-width: 60ch; }
+.page-head .crumbs { color: var(--on-night-mute); font-family: var(--body); letter-spacing: 0.08em; }
+.page-head .crumbs a:hover { color: var(--accent); }
+.page-head .crumbs span[aria-hidden] { opacity: 0.5; }
+/* the NRC bar's empty run is "what comes back off the wall" — on this ground
+   that is the ground's own lift, not a paper tint */
+.page-head .nrc-track { background: var(--night-3); border-color: var(--night-edge); }
+.page-head .nrc-track::after { background: rgba(255, 255, 255, 0.28); }
+.page-head .nrc-fig, .page-head .nrc-fig b, .page-head .nrc-unit, .page-head .nrc-raw { color: var(--on-night); }
+
+/* ------------------------------ cta band ------------------------------- */
+.cta-band::before, .cta-band::after { display: none; }
+.cta-band h2 { font-size: var(--t-h2); max-width: 20ch; }
+
+/* -------------------------------- cards -------------------------------- */
+/* Flat white tiles: photograph on top, the words underneath, no outline and
+   no offset block. Hover is a soft lift of the shadow and the photograph
+   easing in (that scale lives in motion.css, already touch-gated). */
+.card, .dark .card {
+  border: 0; border-radius: 0; box-shadow: none; background: #FFFFFF;
+  transition: box-shadow 320ms var(--ease);
+}
+.dark .card, .rail-sec .card { background: #F3F4F7; }
+a.card:hover, .dark a.card:hover { transform: none; box-shadow: var(--lift-2); }
+a.card:active { transform: none; box-shadow: none; }
+.card h3 { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+.card-cat, .card-foot, .gal-cap p, .crumbs, .foot-bar, .rdx-cols, .note-meta,
+.spec caption, .filter, .fampick a, .bento-i span, .rail-hint, .field label {
+  font-family: var(--body);
+}
+.card-cat { letter-spacing: 0.1em; font-size: 0.75rem; }
+.card-foot { letter-spacing: 0.08em; font-weight: 600; font-size: 0.75rem; }
+
+.panel, .dark .panel { border: 0; box-shadow: none; background: #FFFFFF; }
+.dark .panel { background: #F3F4F7; }
+
+.fam, .fam-all { border: 0; border-radius: 0; }
+.fam-all { background: var(--night); color: var(--on-night); }
+.fam-all h3, .fam-all .fam-n, .fam-all .fam-note, .fam-all .card-foot { color: var(--on-night); }
+.fam-all .card-foot { color: var(--accent); }
+.fam-all:hover { background: var(--night-3); border-color: transparent; transform: none; }
+
+/* ------------------------------- gallery ------------------------------- */
+.gal { gap: 1.5rem; }
+.gal-item { border: 0; border-radius: 0; background: #FFFFFF; transition: box-shadow 320ms var(--ease); }
+.light .gal-item { background: #FFFFFF; }
+.dark .gal-item { background: #F3F4F7; }
+.gal-item:hover { box-shadow: var(--lift-2); }
+.gal-cap { padding: 1.1rem 1.25rem 1.3rem; }
+.gal-cap h3 {
+  font-size: 0.9375rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: #1A1A1A; line-height: 1.35;
+}
+.gal-item:first-child .gal-cap h3 { font-size: 1.0625rem; }
+.gal-cap p { letter-spacing: 0.08em; color: #4A5157; }
+
+.filter {
+  border-radius: 0; border-color: #C9CED3; color: #3F454A;
+  letter-spacing: 0.08em; font-weight: 600;
+}
+.filter[aria-pressed="true"],
+.dark .filter[aria-pressed="true"] { background: var(--night); border-color: var(--night); color: var(--on-night); }
+.fampick a { border-radius: 0; letter-spacing: 0.08em; font-weight: 600; background: #FFFFFF; }
+.dark .fampick a { background: #F3F4F7; }
+
+/* ---------------------------- other objects ---------------------------- */
+.bento-i { border: 0; box-shadow: none; background: #F3F4F7; }
+.light .bento-i { background: #FFFFFF; }
+.bento-i b { font-variation-settings: normal; letter-spacing: -0.03em; }
+.bento-i span { letter-spacing: 0.08em; }
+.quote, .dark .quote { box-shadow: none; }
+.pd-aside { border: 0; box-shadow: none; background: #F3F4F7; }
+.light .pd-aside { background: #FFFFFF; }
+.dip { background: #FFFFFF; }
+.review { box-shadow: none; border: 0; background: #F3F4F7; }
+.review-avatar { font-family: var(--display); font-weight: 700; }
+.statement-em { font-style: normal; font-weight: 300; color: #1A1A1A; }
+.field input, .field select, .field textarea { background: #FFFFFF; border-color: #C9CED3; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--night); outline: none; }
+.pills li { border-radius: 0; }
+.spec caption { letter-spacing: 0.1em; }
+.rdx-fig { font-variation-settings: normal; letter-spacing: -0.03em; }
+
+/* -------------------------------- footer ------------------------------- */
+.site-foot { border-top: 0; }
+.foot-h {
+  font-family: var(--body); font-size: 0.8125rem; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--accent);
+  border-bottom-color: var(--night-edge);
+}
+.foot-list a, .foot-list li { color: var(--on-night-mute); }
+.foot-list a:hover { color: var(--on-night); }
+.foot-blurb { color: var(--on-night-mute); }
+.foot-bar { border-top-color: var(--night-edge); color: #9AA1A7; letter-spacing: 0.08em; }   /* 6.9:1 */
+
+/* ------------------------------- floats -------------------------------- */
+.float { border-radius: 0; background: #FFFFFF; color: var(--brand); box-shadow: 0 8px 24px -12px rgba(0,0,0,0.35); }
+.float:hover { background: var(--accent); color: #14181B; }
+.float-wa { background: var(--night); color: var(--on-night); }
+
+:focus-visible { outline-color: var(--accent); }
+
+/* The drafting-sheet corner ticks were Workshop furniture. */
+.card::before, .panel::before, .quote::before, .pd-aside::before, .sector::before { display: none; }
+
+/* On a phone the centred copy fills the hero's width, so mid-height arrows
+   would sit on the lead. They go back to the top edge, over photograph only. */
+@media (max-width: 47.999rem) {
+  .hero-nav { top: 1rem !important; margin-top: 0; }
+}
+
+/* ==========================================================================
+   HOMEPAGE — the reference layout, section for section:
+   hero · intro over a photograph · Our Products tiles · why-list ·
+   near-black three-column band · projects grid · footer.
+   ========================================================================== */
+
+/* 1 · intro: copy in the left half, a photograph owns the right half */
+.g-intro { position: relative; background: #FFFFFF; padding-block: 0; overflow: hidden; }
+.g-intro-media { display: none; }
+.g-intro .wrap { position: relative; z-index: 2; }
+.g-intro-copy { padding-block: var(--pad-y); max-width: 34rem; }
+.g-intro-copy h2 { font-size: var(--t-h2); margin-block: 1.25rem 1.5rem; }
+@media (min-width: 60rem) {
+  .g-intro-media { display: block; position: absolute; top: 0; right: 0; bottom: 0; width: 50%; }
+  .g-intro-media img { width: 100%; height: 100%; object-fit: cover; }
+  .g-intro-copy { max-width: calc(50% - var(--gut)); padding-right: 2rem; }
+}
+.g-stats {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2rem;
+  margin-block: 2.25rem 2.5rem; padding-top: 2rem; border-top: 1px solid #DDE1E5;
+}
+.g-stats div { display: flex; flex-direction: column-reverse; gap: 0.3rem; }
+.g-stats dd {
+  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.4rem); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1; color: #1A1A1A;
+  font-variant-numeric: tabular-nums;
+}
+.g-stats dt { font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5157; }
+
+/* 2 · Our Products: photograph tiles, centred caption on white */
+.g-products { background: #F3F4F7; }
+.g-products h2 { font-size: var(--t-h2); margin-block: 1.25rem clamp(2rem, 4vw, 3rem); }
+.g-tiles {
+  list-style: none; padding: 0; display: grid; gap: 0;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 40rem) { .g-tiles { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 64rem) { .g-tiles { grid-template-columns: repeat(5, 1fr); } }
+.g-tile a { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: #1A1A1A; background: #FFFFFF; }
+.g-tile-img { position: relative; aspect-ratio: 1 / 1; overflow: hidden; display: block; }
+.g-tile-img > img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease); }
+.g-tile-img.is-cut > img { object-fit: contain; padding: 10%; }
+.g-plus {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-items: center;
+  background: rgba(26, 26, 26, 0.55); color: #FFFFFF;
+  font-size: 2.5rem; font-weight: 300; line-height: 1;
+  opacity: 0; transition: opacity 260ms var(--ease);
+}
+.g-tile a:hover .g-plus, .g-tile a:focus-visible .g-plus { opacity: 1; }
+.g-tile-cap {
+  display: block; padding: 1.25rem 1rem 1.4rem; text-align: center;
+  font-size: 1.0313rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3;
+}
+.g-tile a:hover .g-tile-cap { color: var(--brand); }
+.g-more { margin-top: clamp(2rem, 4vw, 3rem); }
+.center-row { justify-content: center; }
+
+/* 3 · why-list: heading left, two-column check list right, on white */
+.g-why { background: #FFFFFF; }
+.g-why .wrap { display: grid; gap: clamp(2rem, 5vw, 4.5rem); }
+@media (min-width: 60rem) { .g-why .wrap { grid-template-columns: 1fr 1fr; align-items: start; } }
+.g-why-head h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem); margin-block: 1.25rem 1.25rem; }
+.g-checks { list-style: none; padding: 0; display: grid; gap: 0.25rem 2rem; grid-template-columns: 1fr; }
+@media (min-width: 36rem) { .g-checks { grid-template-columns: 1fr 1fr; } }
+.g-checks a {
+  display: flex; gap: 0.85rem; align-items: flex-start;
+  padding-block: 0.8rem; text-decoration: none; color: #303030;
+}
+.g-check { width: 1.15rem; height: 1.15rem; flex: none; margin-top: 0.2rem; color: var(--brand); }
+.g-checks b { display: block; font-size: 1.0625rem; font-weight: 600; line-height: 1.4; }
+.g-checks small { display: block; font-size: 0.875rem; color: #4A5157; margin-top: 0.1rem; }
+.g-checks a:hover b { color: var(--brand); }
+
+/* 4 · near-black band: icon, capitals heading, paragraph */
+.g-band { padding-block: clamp(4.5rem, 8vw, 6.5rem); }
+.g-cols { display: grid; gap: clamp(2.5rem, 5vw, 4rem); grid-template-columns: 1fr; }
+@media (min-width: 56rem) { .g-cols { grid-template-columns: repeat(3, 1fr); } }
+.g-col { display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: inherit; }
+.g-ico { width: 3.5rem; height: 3.5rem; color: var(--accent); margin-bottom: 0.5rem; }
+.g-col h3 {
+  font-size: 1.25rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: -0.02em; color: var(--on-night);
+}
+.g-col p { color: var(--on-night-mute); font-size: 1rem; line-height: 1.75; }
+.g-col .tlink { margin-top: auto; padding-top: 0.5rem; align-self: flex-start; }
+
+/* 5 · projects: centred label, 3-up grid, hover veil with title + View */
+.g-work { background: #F3F4F7; }
+.g-work-head { text-align: center; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.center-eyebrow {
+  align-items: center; font-size: 1.25rem; font-weight: 600; color: #1A1A1A;
+  letter-spacing: 0.02em; line-height: 1.3;
+}
+.center-eyebrow::before { width: 1.4rem; }
+.g-proj { list-style: none; padding: 0; display: grid; gap: clamp(1rem, 2vw, 1.75rem); grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .g-proj { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .g-proj { grid-template-columns: repeat(3, 1fr); } }
+.g-pj a { display: flex; flex-direction: column; text-decoration: none; color: #1A1A1A; }
+.g-pj-img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; display: block; }
+.g-pj-img > img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease); }
+/* 0.82 so white 1.25rem type holds ≥5:1 even where the photo is white */
+.g-pj-over {
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; padding: 1.5rem; text-align: center;
+  background: rgba(26, 26, 26, 0.82); color: #FFFFFF;
+  opacity: 0; transition: opacity 300ms var(--ease);
+}
+.g-pj a:hover .g-pj-over, .g-pj a:focus-visible .g-pj-over { opacity: 1; }
+.g-pj-t { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; }
+.g-pj-rule { width: 1.4rem; height: 2px; background: #FFFFFF; }
+.g-pj-btn {
+  background: var(--accent); color: #14181B;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+}
+.g-pj-cap {
+  margin-top: 1.1rem; font-size: 1.0625rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.35;
+}
+.g-pj-sub { margin-top: 0.3rem; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5157; }
+
+/* touch: the veils are hover-only affordances; captions carry the words */
+@media (hover: none) {
+  .g-plus, .g-pj-over { display: none; }
+}
+/* left-aligned figures here; the right-aligned 2ch box was for the old rail */
+.g-stats .tick { min-width: 0; text-align: left; }
+/* `isolation` makes each tile its own blend group, so the multiply of a
+   cut-out shot always composites against the tile's own mount. Without it
+   Chrome occasionally composited a tile on its own layer and the blend had
+   nothing to multiply — the product vanished (seen on the wedge foam tile). */
+.g-tile-img, .g-pj-img { isolation: isolate; }
+
+/* ==========================================================================
+   INNER PAGES — the reference layout. Pages open on a LIGHT intro, not a
+   dark banner; the page-head rules above are now unused by the templates.
+   ========================================================================== */
+
+/* light page intro — optional photograph in the right half */
+.g-head { background: #FFFFFF; padding-block: clamp(4rem, 8vw, 6.5rem) clamp(3rem, 6vw, 4.5rem); }
+.g-head .wrap { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 60rem) { .g-head.has-img .wrap { grid-template-columns: 1fr 1fr; } }
+.g-head h1 { font-size: var(--t-h1); margin-block: 1.25rem 1.1rem; max-width: 20ch; }
+.g-head .lead { max-width: 60ch; }
+.g-head-media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.g-head.is-center { text-align: center; }
+.g-head.is-center .eyebrow { align-items: center; }
+.g-head.is-center h1, .g-head.is-center .lead { margin-inline: auto; }
+.g-head.is-center .fampick { justify-content: center; margin-top: 2rem; }
+.g-head .crumbs { color: #4A5157; font-family: var(--body); letter-spacing: 0.08em; }
+.g-head .crumbs a:hover { color: var(--brand); }
+
+/* products: three-photograph strip over the intro */
+.g-strip { display: grid; grid-template-columns: repeat(3, 1fr); height: clamp(11rem, 30vw, 26rem); }
+.g-strip-i { overflow: hidden; }
+.g-strip-i img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 40rem) { .g-strip { grid-template-columns: 1fr; } .g-strip-i + .g-strip-i { display: none; } }
+.fampick { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* product detail: near-black intro, product photograph beside the copy */
+.pd-top { padding-block: clamp(4rem, 8vw, 6.5rem); }
+.pd-top-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 60rem) { .pd-top-grid { grid-template-columns: 1fr 1.1fr; } }
+.pd-top h1 { font-size: var(--t-h1); margin-block: 1.25rem 1rem; }
+.pd-top .crumbs { margin-top: 2rem; color: var(--on-night-mute); font-family: var(--body); letter-spacing: 0.08em; }
+.pd-top .crumbs a:hover { color: var(--accent); }
+.pd-top .nrc { margin-top: 1.75rem; max-width: 26rem; }
+.night .nrc-track { background: var(--night-3); border-color: var(--night-edge); }
+.night .nrc-track::after { background: rgba(255, 255, 255, 0.28); }
+.night .nrc-fig, .night .nrc-fig b, .night .nrc-unit, .night .nrc-raw { color: var(--on-night); }
+.pd-top .pd-hero { border: 0; aspect-ratio: 16 / 10; }
+.pd-over { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .pd-over.has-shots { grid-template-columns: 1.2fr 1fr; } }
+.pd-over .pd-body { max-width: 68ch; }
+.pd-over .pd-body h2 { font-size: var(--t-h2); margin-block: 1.25rem 1.25rem; }
+.pd-over .pd-gallery { grid-template-columns: 1fr 1fr; }
+.g-apps {
+  list-style: none; padding: 0; margin-top: 2rem;
+  display: grid; gap: 1rem 2.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+}
+.g-apps li {
+  display: flex; gap: 0.85rem; align-items: flex-start; padding-block: 0.9rem;
+  border-top: 1px solid var(--night-edge);
+  color: var(--on-night); font-size: 1.0625rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.01em; line-height: 1.4;
+}
+.g-apps .g-check { color: var(--accent); }
+.pd-tech { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .pd-tech { grid-template-columns: 1fr 1.6fr; } }
+.pd-tech h2 { font-size: var(--t-h2); margin-top: 1.25rem; }
+.pd-tech .spec { background: #FFFFFF; }
+.pd-tech .spec th, .pd-tech .spec td { padding: 1rem 1.25rem; }
+.pd-related h2 { font-size: var(--t-h2); margin-block: 1.25rem clamp(2rem, 4vw, 3rem); }
+
+/* projects: the gallery IS the tile grid */
+.g-pj[hidden] { display: none; }
+.g-proj .gal-cap { padding: 0; background: none; }
+.g-proj .gal-cap h3.g-pj-cap { font-size: 1rem; margin-top: 1.1rem; margin-bottom: 0; color: #1A1A1A; }
+.g-proj .gal-cap p.g-pj-sub { font-family: var(--body); }
+#gal { margin-top: 0.5rem; }
+
+/* about: story with photographs, logo strip, 8/4 founder + figures */
+.g-story { padding-block: clamp(4rem, 8vw, 6.5rem); }
+.g-story-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .g-story-grid { grid-template-columns: 1.1fr 1fr; } }
+.g-story h1 { font-size: var(--t-h1); margin-top: 0.25rem; }
+.g-story-media { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.g-story-media .surface { aspect-ratio: 4 / 5; }
+.g-logos { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.g-logos .client-wall { margin-top: clamp(2rem, 4vw, 3rem); }
+.center-eyebrow.on-night { color: var(--on-night); }
+.g-8-4 { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .g-8-4 { grid-template-columns: 2fr 1fr; } }
+.g-8-4 .founder { display: block; }
+.g-8-4 .founder > p + p { margin-top: 1.1rem; }
+.g-8-4 .founder-lead { margin-bottom: 1.1rem; }
+.bento-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.bento-col .bento-i:first-child { grid-column: 1 / -1; }
+.dark .bento-i { background: #F3F4F7; }
+
+/* four columns of short items on a light ground */
+.g-cols-4 { grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .g-cols-4 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 72rem) { .g-cols-4 { grid-template-columns: repeat(4, 1fr); } }
+.light .g-col h3, .dark .g-col h3 { color: #1A1A1A; font-size: 1.0625rem; }
+.light .g-col, .dark .g-col { border-top: 2px solid var(--accent); padding-top: 1.5rem; }
+.light .g-col p, .dark .g-col p { color: #4A5157; font-size: 0.9688rem; }
+
+/* notes: FAQ accordion rows */
+.g-faq-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .g-faq-grid { grid-template-columns: 1fr 1.6fr; } }
+.g-faq-grid h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem); margin-top: 1.25rem; }
+.g-faq-i { background: #F3F4F7; margin-bottom: 0.6rem; }
+.g-faq-i summary {
+  list-style: none; cursor: pointer; position: relative;
+  padding: 1.2rem 3.5rem 1.2rem 1.5rem;
+  font-weight: 600; font-size: 1.0625rem; color: #1A1A1A; line-height: 1.4;
+}
+.g-faq-i summary::-webkit-details-marker { display: none; }
+.g-faq-i summary::after {
+  content: '+'; position: absolute; right: 1.4rem; top: 50%; translate: 0 -50%;
+  font-size: 1.5rem; font-weight: 300; color: var(--brand);
+}
+.g-faq-i[open] summary::after { content: '\2212'; }
+.g-faq-i p { padding: 0 1.5rem 1.4rem; color: #3F454A; max-width: 70ch; }
+
+/* contact: form beside the contact blocks */
+.g-contact-grid { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
+@media (min-width: 60rem) { .g-contact-grid { grid-template-columns: 1.5fr 1fr; } }
+.g-offices { display: grid; gap: 1.75rem; }
+.g-office { padding-top: 1.25rem; border-top: 1px solid #DDE1E5; }
+.g-office .eyebrow { font-size: 0.8125rem; gap: 0.6rem; }
+.g-office .eyebrow::before { width: 2rem; }
+.g-office .v { display: block; margin-top: 0.65rem; font-size: 1.125rem; font-weight: 600; color: #1A1A1A; text-decoration: none; overflow-wrap: anywhere; }
+.g-office a.v:hover { color: var(--brand); }
+.g-checks-3 { margin-top: 2rem; }
+@media (min-width: 60rem) { .g-checks-3 { grid-template-columns: repeat(3, 1fr); } }
+.g-check-row { display: flex; gap: 0.85rem; align-items: flex-start; padding-block: 0.8rem; color: #303030; }
+.g-check-row b { font-weight: 600; font-size: 1.0625rem; line-height: 1.45; }
+
+/* THE CLOSING CONTACT BAND is a light tint of the accent, as the reference
+   closes its inner pages on a tint of its own. #D6F0F9 is the logo cyan at
+   18% on white; ink is 16.0:1 on it, the muted lead 9.1:1, --brand 6.2:1. */
+.cta-band.g-tint { background: #D6F0F9; color: #3F454A; }
+.g-tint h2 { color: #1A1A1A; }
+.g-tint .eyebrow { color: var(--brand); }
+.g-tint .lead { color: #3F454A; }
+.g-tint .btn-primary { background: var(--night); border-color: var(--night); color: var(--on-night); }
+.g-tint .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #14181B; }
+.g-tint .btn-ghost { border-color: var(--night); color: var(--night); }
+.g-tint .btn-ghost::before { background: var(--night); }
+.g-tint .btn-ghost:hover { color: var(--on-night); }
+
+/* spec table on a near-black band (the products page's quick guide) */
+.night .spec caption { color: var(--accent); }
+.night .spec th { color: var(--on-night-mute); }
+.night .spec td { color: var(--on-night); }
+.night .spec tr + tr { border-top-color: var(--night-edge); }
+
+/* ==========================================================================
+   NO BLACK GROUNDS — THE LOGO CYAN INSTEAD (by request).
+   Every near-black ground (hero scrim, `.night` bands, product intros, the
+   footer) is now the logo's own #1CABDE, and the header is white.
+
+   The consequence that governs everything below: WHITE ON THIS CYAN IS
+   2.65:1 AND FAILS, so every word on a cyan ground is DARK.
+     --on-night       #0E1A1F   6.8:1 on #1CABDE
+     --on-night-mute  #1C2B31   5.5:1
+   Nothing on a cyan ground may be cyan (eyebrows, rules, icons, ticks, links
+   all move to the dark ink), and a cyan button on a cyan ground is white.
+   The logo itself is cyan, so it cannot sit on this ground: the header is
+   white and the footer puts the lockup on a white mount. The artwork is
+   untouched.
+   The token names keep saying "night" because ~60 rules read them; read
+   them as "the strong band".
+   ========================================================================== */
+:root {
+  --night:         #1CABDE;
+  --night-2:       #FFFFFF;          /* header */
+  --night-3:       #FFFFFF;          /* raised object on the band */
+  --on-night:      #0E1A1F;
+  --on-night-mute: #1C2B31;
+  --night-edge:    rgba(14, 26, 31, 0.22);
+}
+
+/* header: white, the full-colour logo, dark links */
+.site-head, html.head-solid .site-head { border-bottom-color: #E3E6EA; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--brand); }
+.nav a.btn-primary:hover { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+@media (max-width: 60rem) { .nav a { border-bottom-color: #E3E6EA; } }
+
+/* buttons on LIGHT grounds: logo-cyan fill, dark label; hover deepens to
+   --brand with a white label (7.5:1). Ghosts take --brand, never cyan text. */
+.btn-primary:hover { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+.btn-ghost, .dark .btn-ghost, .btn-ghost.on-light,
+.g-tint .btn-ghost { border-color: var(--brand); color: var(--brand); }
+.btn-ghost::before, .dark .btn-ghost::before, .btn-ghost.on-light::before,
+.g-tint .btn-ghost::before { background: var(--brand); }
+.btn-ghost:hover, .dark .btn-ghost:hover, .btn-ghost.on-light:hover,
+.g-tint .btn-ghost:hover { color: #FFFFFF; border-color: var(--brand); }
+.g-tint .btn-primary { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+.g-tint .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #14181B; }
+
+/* buttons on the CYAN grounds: white fill, dark label */
+.hero .btn-primary, .night .btn-primary {
+  background: #FFFFFF; border-color: #FFFFFF; color: var(--on-night);
+}
+.hero .btn-primary:hover, .night .btn-primary:hover {
+  background: var(--brand); border-color: var(--brand); color: #FFFFFF;
+}
+.hero .btn-ghost, .night .btn-ghost { border-color: var(--on-night); color: var(--on-night); }
+.hero .btn-ghost::before, .night .btn-ghost::before { background: #FFFFFF; }
+.hero .btn-ghost:hover, .night .btn-ghost:hover { border-color: #FFFFFF; color: var(--on-night); }
+
+/* hero: the photograph under a CYAN scrim, dark type. 0.85 over the darkest
+   possible pixel still composites to a ground where #0E1A1F reads 4.9:1, so
+   the small eyebrow holds over any banner; the edges fall to 0.55 so the
+   photograph shows outside the type column. */
+.hero-media::after {
+  background: linear-gradient(90deg,
+    rgba(28, 171, 222, 0.55) 0%, rgba(28, 171, 222, 0.85) 20%,
+    rgba(28, 171, 222, 0.85) 80%, rgba(28, 171, 222, 0.55) 100%);
+}
+@media (max-width: 63.999rem) {
+  .hero-media::after { background: rgba(28, 171, 222, 0.86); }
+}
+.hero-rule { background: var(--on-night); }
+.hero-nav-btn { background: #FFFFFF; color: var(--on-night); border-color: transparent; }
+.hero-nav-btn:hover { background: var(--brand); color: #FFFFFF; border-color: var(--brand); }
+
+/* everything that was cyan ON a dark band is dark ink on the cyan band */
+.night .eyebrow, .night .tlink, .night .g-ico, .night .g-check,
+.night .spec caption, .fam-all .card-foot { color: var(--on-night); }
+.night .eyebrow::before { background: #FFFFFF; }
+.night .steps-spine::after { background: var(--on-night); }
+.night .step::before, .night .step::after { color: var(--on-night); }
+.night .tlink::after { opacity: 0.6; }
+.night .nrc-track::after { background: rgba(14, 26, 31, 0.3); }
+.pd-top .crumbs a:hover, .night a:hover { color: var(--on-night); text-decoration: underline; text-underline-offset: 3px; }
+.night :focus-visible { outline-color: var(--on-night); }
+
+/* footer: cyan ground, dark type, the logo on a white mount */
+.foot-h { color: var(--on-night); border-bottom-color: var(--night-edge); }
+.foot-list a:hover { color: var(--on-night); text-decoration: underline; text-underline-offset: 3px; }
+.foot-bar { color: var(--on-night-mute); }
+.site-foot .brand { background: #FFFFFF; padding: 0.85rem 1.1rem; }
+.site-foot .brand-logo-full { height: 2.6rem; }
+.site-foot :focus-visible { outline-color: var(--on-night); }
+
+/* hover veils over photographs: cyan, dark type (5.7:1 over a black pixel) */
+.g-pj-over { background: rgba(28, 171, 222, 0.92); color: var(--on-night); }
+.g-pj-rule { background: var(--on-night); }
+.g-pj-btn { background: #FFFFFF; color: var(--on-night); }
+.g-plus { background: rgba(28, 171, 222, 0.85); color: var(--on-night); }
+
+/* filters: the pressed state takes --brand, so no black pill remains */
+.filter[aria-pressed="true"],
+.dark .filter[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+
+.float-wa { background: var(--accent); color: #14181B; }
+.fam-all:hover { color: var(--on-night); }
+
+/* the WhatsApp float is cyan; its outline keeps it visible over the cyan footer */
+.float-wa { border: 2px solid #FFFFFF; }
+
+/* ==========================================================================
+   THE HERO KEEPS A DARK SCRIM (by request) — the banner photographs are not
+   tinted cyan. Everything else stays on the cyan grounds above.
+   0.58 black over the brightest possible pixel composites to rgb(107,107,107),
+   where #FFFFFF reads 5.3:1, so white type holds over any banner.
+   ========================================================================== */
+.hero, .hero-media { background: #1A1A1A; }
+.hero-media::after {
+  background: linear-gradient(180deg, rgba(12, 12, 12, 0.58) 0%, rgba(12, 12, 12, 0.58) 70%, rgba(12, 12, 12, 0.78) 100%);
+}
+@media (max-width: 63.999rem) {
+  .hero-media::after { background: linear-gradient(180deg, rgba(12, 12, 12, 0.60) 0%, rgba(12, 12, 12, 0.60) 70%, rgba(12, 12, 12, 0.80) 100%); }
+}
+.hero, .hero-top,
+.hero-top .eyebrow, .hero-top h1, .hero-title, .hero-title .decay,
+.hero-top .lead, .hero-top .hero-lead { color: #FFFFFF; }
+.hero-rule { background: var(--accent); }
+/* cyan fill, dark label (6.74:1); hover to white */
+.hero .btn-primary { background: var(--accent); border-color: var(--accent); color: #14181B; }
+.hero .btn-primary:hover { background: #FFFFFF; border-color: #FFFFFF; color: #14181B; }
+.hero-nav-btn { background: rgba(12, 12, 12, 0.6); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.18); }
+.hero-nav-btn:hover { background: var(--accent); color: #14181B; border-color: var(--accent); }
+.hero :focus-visible { outline-color: var(--accent); }
+
+/* homepage counter band — the client's figures, counting up on arrival */
+.g-count { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.g-count-row { display: grid; gap: 2.5rem 2rem; grid-template-columns: 1fr; text-align: center; }
+@media (min-width: 40rem) { .g-count-row { grid-template-columns: repeat(3, 1fr); } }
+.g-count-i { display: flex; flex-direction: column-reverse; align-items: center; gap: 0.6rem; }
+.g-count-i + .g-count-i { border-top: 1px solid var(--night-edge); padding-top: 2.5rem; }
+@media (min-width: 40rem) {
+  .g-count-i + .g-count-i { border-top: 0; padding-top: 0; border-left: 1px solid var(--night-edge); }
+}
+.g-count-i dd {
+  font-size: clamp(3rem, 2rem + 3.5vw, 4.75rem); font-weight: 800;
+  letter-spacing: -0.04em; line-height: 1; color: var(--on-night);
+  font-variant-numeric: tabular-nums;
+}
+.g-count-i dd .tick { min-width: 0; text-align: center; }
+.g-count-i dt {
+  font-size: 0.875rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--on-night-mute);
+}
+.g-clients .client-wall { margin-top: clamp(2rem, 4vw, 3rem); }
+
+/* ==========================================================================
+   MOTION ADDED WITH THE ARCHITECTURAL LAYOUT (by request: "add animations").
+   Everything here obeys the rules the rest of the site's motion keeps:
+   · ALL of it sits under `prefers-reduced-motion: no-preference`.
+   · Scroll-linked pieces are CSS scroll timelines inside
+     `@supports (animation-timeline: view())`; where that is missing they are
+     simply static. Nothing here can leave content hidden: every from-state
+     is visible (a scale, a drawn stroke, a small offset), except the load-in
+     entrances, which are time-based and finish in under a second.
+   · Hover motion is gated on `(hover: hover) and (pointer: fine)`, so it can
+     never latch on touch — which is why it may live in this file even though
+     the ungated touch reset sits at the end of motion.css.
+   · It moves `scale`/`translate` (the individual properties) rather than
+     `transform` wherever an element might already carry a transform
+     animation, so the two compose instead of fighting.
+   ========================================================================== */
+@keyframes gIn     { from { opacity: 0; translate: 0 26px; } }
+@keyframes gGrow   { from { scale: 0 1; } }
+@keyframes gKen    { 0% { scale: 1; } 33.33% { scale: 1.08; } 95% { scale: 1; } 100% { scale: 1; } }
+@keyframes gDraw   { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes gPar    { from { scale: 1.14; } to { scale: 1; } }
+@keyframes gOpen   { from { opacity: 0; translate: 0 -6px; } }
+@keyframes gStrip  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* 1 · Inner-page intros land the way the hero does. They had no entrance
+     at all: `[data-in]` was only wired for .hero and the retired .page-head. */
+  .g-head [data-in], .pd-top [data-in], .g-story [data-in] {
+    animation: gIn 760ms var(--m-in, cubic-bezier(.22,1,.36,1)) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+  /* the products page's photograph strip opens top-down, one after another */
+  .g-strip-i { animation: gStrip 900ms cubic-bezier(.22,1,.36,1) both; }
+  .g-strip-i:nth-child(2) { animation-delay: 120ms; }
+  .g-strip-i:nth-child(3) { animation-delay: 240ms; }
+
+  /* 2 · The banner photographs breathe: a slow push-in while each is on
+     screen, eased back while it is hidden. SAME 27s period and SAME negative
+     delays as mHeroFade, so the zoom rides with its own slide — the
+     slide/headline sync in motion.css is untouched (this is on the
+     photograph wrapper only). `scale`, so it composes with mWall's
+     scroll-driven `transform` on the <img>. */
+  .hero-slide { animation: mHeroFade 27s linear infinite, gKen 27s ease-in-out infinite; }
+  .hero-slide:nth-child(2) { animation-delay: -18s; }
+  .hero-slide:nth-child(3) { animation-delay: -9s; }
+  .hero-rule { transform-origin: 50% 50%; animation: gGrow 800ms cubic-bezier(.22,1,.36,1) 480ms both; }
+
+  /* 3 · The header settles once you scroll: a soft shadow under the bar */
+  .site-head { transition: transform 380ms var(--m-out, ease), box-shadow 300ms ease; }
+  html.head-solid .site-head { box-shadow: 0 8px 24px -18px rgba(14, 26, 31, 0.45); }
+
+  /* the FAQ answer eases in when a row opens */
+  .g-faq-i[open] p { animation: gOpen 320ms ease both; }
+
+  @supports (animation-timeline: view()) {
+    /* 4 · The band icons and the check marks DRAW themselves as they arrive.
+       `pathLength="1"` in the markup makes the dash maths unit-free. The
+       from-state is an undrawn stroke, so if the timeline never resolves an
+       icon is missing — acceptable only because every one is decorative
+       (aria-hidden) and its heading carries the meaning. */
+    .g-ico path, .g-check path {
+      stroke-dasharray: 1; stroke-dashoffset: 0;
+      animation: gDraw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+
+    /* 5 · The intro photograph eases out of a slight zoom as the section
+       passes. It is inside `overflow: hidden`, so it borrows the section's
+       `--box` timeline rather than view() (see the CLAUDE.md note). The
+       from-state is a 1.14 zoom — still a visible picture. */
+    .g-intro-media img {
+      animation: gPar linear both;
+      animation-timeline: --box;
+      animation-range: entry 0% exit 100%;
+    }
+
+  }
+}
+
+/* 6 · Hover, pointer devices only */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .g-tile-img > img, .g-pj-img > img { transition: scale 700ms cubic-bezier(.22,1,.36,1); }
+  .g-tile a:hover .g-tile-img > img,
+  .g-pj a:hover .g-pj-img > img { scale: 1.06; }
+  /* the veil's words rise into place as it fades up */
+  .g-pj-t, .g-pj-rule, .g-pj-btn { transition: translate 420ms cubic-bezier(.22,1,.36,1); translate: 0 14px; }
+  .g-pj-rule { transition-delay: 40ms; } .g-pj-btn { transition-delay: 80ms; }
+  .g-pj a:hover .g-pj-t, .g-pj a:hover .g-pj-rule, .g-pj a:hover .g-pj-btn { translate: 0 0; }
+  .g-plus { transition: opacity 260ms ease, scale 360ms cubic-bezier(.22,1,.36,1); scale: 0.85; }
+  .g-tile a:hover .g-plus { scale: 1; }
+  /* band columns and principle columns: the icon lifts, the link arrow runs */
+  .g-col .g-ico { transition: translate 360ms cubic-bezier(.22,1,.36,1); }
+  .g-col:hover .g-ico { translate: 0 -6px; }
+  .g-col:hover .btn-arrow { translate: 4px 0; }
+  .btn-arrow { transition: translate 260ms ease; }
+  /* client logos come forward a touch */
+  .client { transition: box-shadow 260ms ease, translate 260ms ease; }
+  .client:hover { translate: 0 -3px; box-shadow: 0 10px 22px -16px rgba(14, 26, 31, 0.5); }
+  /* why-list rows nudge right */
+  .g-checks a { transition: translate 260ms ease; }
+  .g-checks a:hover { translate: 4px 0; }
+}
+
+/* OUR VISION — a centred statement between two bands */
+.g-vision { text-align: center; padding-block: clamp(4.5rem, 8vw, 7rem); }
+.g-vision-lead {
+  max-width: 34ch; margin: 1.75rem auto 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem); font-weight: 600;
+  letter-spacing: -0.025em; line-height: 1.35; color: #1A1A1A;
+}
+.g-vision-more { max-width: 62ch; margin: 1.25rem auto 0; }
+
+
+/* ==========================================================================
+   PAGE TRANSITION — the curtain wipe (by request: Motion+'s
+   `curtains(..., { effect: wipe({ direction: 'left', angle: 12 }) })`).
+
+   A cyan curtain, sheared 12deg, sweeps LEFT across the screen when a link
+   is followed; the next page opens under it and the curtain carries on
+   leftwards to uncover it. One continuous leftward pass split across two
+   documents. It is `html::after`, so it exists from the first paint of the
+   new page with no markup, and it is driven by two classes:
+     html.curtain-out  — set by site.js on click; covers, then navigates
+     html.curtain-in   — set by HEAD_BOOT when arriving via a curtain;
+                         uncovers, and is REMOVED after 1.4s regardless
+   FAIL-SAFE: with neither class the pseudo does not exist. If script fails
+   nothing is ever covered; if the reveal animation somehow does not run,
+   the timer still strips `curtain-in` and the page shows. Reduced Motion:
+   neither class is ever set (checked in both scripts), and the block is
+   gated here too.
+
+   (A cross-document View Transition was tried first. It only runs in
+   Chrome/Edge 126+ and Safari 18.2+ and is skipped whenever the OS asks for
+   reduced motion, which is why it was reported as "not working".)
+   ========================================================================== */
+@keyframes gCurtainOut { from { transform: skewX(-12deg) translateX(105%); } to { transform: skewX(-12deg) translateX(0); } }
+@keyframes gCurtainIn  { from { transform: skewX(-12deg) translateX(0); }   to { transform: skewX(-12deg) translateX(-105%); } }
+@media (prefers-reduced-motion: no-preference) {
+  html.curtain-out::after, html.curtain-in::after {
+    content: ''; position: fixed; z-index: 2147483000; pointer-events: none;
+    top: -5vh; bottom: -5vh; left: -25vw; right: -25vw;
+    background:
+      linear-gradient(90deg, #08597A 0, #08597A 1.25rem, #1CABDE 1.25rem);
+    will-change: transform;
+  }
+  html.curtain-out::after { animation: gCurtainOut 520ms cubic-bezier(0.65, 0, 0.35, 1) both; }
+  html.curtain-in::after  { animation: gCurtainIn  620ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both; }
+}

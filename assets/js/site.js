@@ -405,4 +405,33 @@
 
     media.parentNode.appendChild(nav);
   }
+
+  /* ---------------------------- page curtain ----------------------------
+     A same-site page link plays the curtain across the screen, then
+     navigates; the next page's HEAD_BOOT sees the flag and uncovers. See the
+     PAGE TRANSITION block at the end of theme.css. Skipped for anything that
+     is not an ordinary same-tab page load: modifier keys, new tabs,
+     downloads, other origins, tel:/mailto:, in-page #anchors, image files
+     (the lightbox), and any click another handler already claimed. */
+  var curtainOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.addEventListener('click', function (e) {
+    if (!curtainOK || e.defaultPrevented || e.button !== 0 ||
+        e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) { return; }
+    var url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) { return; }
+    if (!/(\.html|\/)$/.test(url.pathname)) { return; }
+    if (url.pathname === location.pathname && url.hash) { return; }
+    e.preventDefault();
+    try { sessionStorage.setItem('g-curtain', '1'); } catch (err) {}
+    document.documentElement.classList.add('curtain-out');
+    window.setTimeout(function () { location.href = url.href; }, 540);
+  });
+  /* Back/forward restores a page from the cache with the curtain still
+     drawn across it — take it down. */
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) { document.documentElement.classList.remove('curtain-out', 'curtain-in'); }
+  });
 })();

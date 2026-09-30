@@ -6,7 +6,7 @@
 <title>About Silence Acoustic — Acoustics, Mumbai</title>
 <meta name="description" content="Two decades of expertise in acoustic products and solutions. Acoustic treatment, soundproofing and high-performance acoustic products across offices, auditoriums, studios and hospitality, with 2035+ projects delivered across India.">
 <link rel="canonical" href="https://silenceacoustic.com/about.html">
-<meta name="theme-color" content="#F8FAFC">
+<meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Silence Acoustic">
 <meta property="og:title" content="About Silence Acoustic — Acoustics, Mumbai">
@@ -15,13 +15,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/motion.css">
+<link rel="stylesheet" href="assets/css/theme.css">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
 <script>(function(d){d.classList.remove('no-js');
+try{if(sessionStorage.getItem('g-curtain')){sessionStorage.removeItem('g-curtain');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('curtain-in');
+setTimeout(function(){d.classList.remove('curtain-in')},1400)}}}catch(e){}
 try{if(!('IntersectionObserver' in window))return;
 var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
@@ -34,7 +38,14 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-head">
+<div class="topbar">
+    <div class="wrap">
+      <a href="tel:+918108400566">+91 81084 00566</a>
+      <a href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a>
+      <a href="contact.html">Book a free site survey</a>
+    </div>
+  </div>
+  <header class="site-head">
     <div class="wrap">
       <a class="brand" href="index.html" aria-label="Silence Acoustic — home">
         <img class="brand-logo" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">
@@ -55,69 +66,138 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </header>
 <main id="main">
 
-<section class="page-head">
+<section class="light g-story">
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">About</p>
-    <h1 data-in style="--d:170">Two Decades of Expertise in Acoustic Product and Solutions</h1>
-  </div>
-</section>
-
-<section class="dark railed">
-  <div class="wrap">
-    <span class="rail-label">Company</span>
-    <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2rem,5vw,4rem)">
+    <div class="g-story-grid">
       <div class="stack stack-m">
-        <p class="eyebrow" data-anim="fade">Since 2006</p>
-        <h2 data-anim="reveal">Two decades of expertise,<br>in product and in solutions.</h2>
-        <!-- CLIENT-SUPPLIED COPY. One long paragraph by their choice; it is
-             split for reading only where their own sentences end, and no
-             words are added, cut or reordered. -->
-        <p class="muted">Silence Acoustic is a professionally driven acoustic and soundproofing solutions company, built on 20+ years of industry expertise under the leadership of our Founder, Ravi Sebastian.</p>
-        <p class="muted">With 2,035+ projects successfully delivered, we bring extensive experience in acoustic treatment, soundproofing, and high-performance acoustic products across diverse applications.</p>
-        <p class="muted">From offices, auditoriums, studios, hospitality spaces, and commercial environments to specialised projects, we combine technical expertise, quality materials, precision installation, and innovative design to create spaces with superior sound control, clarity, comfort, and privacy.</p>
-        <p class="muted">Our commitment is to deliver engineered acoustic solutions that perform, endure, and seamlessly integrate with the aesthetics of every space.</p>
+        <p class="eyebrow" data-in style="--d:60">About &middot; since 2006</p>
+        <h1 data-in style="--d:170">Two Decades of Expertise in Acoustic Product and Solutions</h1>
+        <!-- CLIENT-SUPPLIED COPY. Split only where their own sentences end. -->
+        <p class="muted" data-in style="--d:280">Silence Acoustic is a professionally driven acoustic and soundproofing solutions company, built on 20+ years of industry expertise under the leadership of our Founder, Ravi Sebastian.</p>
+        <p class="muted" data-in style="--d:280">With 2,035+ projects successfully delivered, we bring extensive experience in acoustic treatment, soundproofing, and high-performance acoustic products across diverse applications.</p>
+        <p class="muted" data-in style="--d:280">From offices, auditoriums, studios, hospitality spaces, and commercial environments to specialised projects, we combine technical expertise, quality materials, precision installation, and innovative design to create spaces with superior sound control, clarity, comfort, and privacy.</p>
+        <p class="muted" data-in style="--d:280">Our commitment is to deliver engineered acoustic solutions that perform, endure, and seamlessly integrate with the aesthetics of every space.</p>
       </div>
-      <div>
-        <!-- Deliberately the same material twice: slat samples as we make them,
-             then the same slats fitted on a wall. It is the supplier/installer
-             point made in pictures rather than in another paragraph. -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-          <figure class="stack" style="margin:0;gap:0.5rem">
-            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
-              <img src="assets/img/products/acoustic-wooden-slats-card.webp"
-                   alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We make it</figcaption>
-          </figure>
-          <figure class="stack" style="margin:0;gap:0.5rem">
-            <div class="surface s-slat panel" data-anim="frame" style="aspect-ratio:4/5">
-              <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp"
-                   alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="muted" style="font-family:var(--mono);font-size:var(--t-mono);letter-spacing:0.16em;text-transform:uppercase">We fit it</figcaption>
-          </figure>
+      <div class="g-story-media">
+        <div class="surface s-slat" data-anim="frame">
+          <img src="assets/img/products/acoustic-wooden-slats-card.webp" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
+        </div>
+        <div class="surface s-slat" data-anim="frame">
+          <img src="assets/img/projects/upl-metro-juinagar-navi-mumbai.webp" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <p class="eyebrow" data-anim="fade" style="margin-top:clamp(3rem,6vw,4.5rem)">At a glance</p>
-    <div class="bento" data-stagger>
-      <div class="bento-i bento-lg" data-anim="rise">
-        <b>2035+</b>
-        <span>Installations completed</span>
-        <small>Across 10 room types since 2006, 170 of them photographed on this site.</small>
+
+
+<!-- The logo strip. No lead: the client's own strip carries no heading, and
+     a count read off CLIENTS is the only thing said about it. -->
+<section class="night g-logos" aria-labelledby="clients-h">
+  <div class="wrap">
+    <h2 id="clients-h" class="eyebrow center-eyebrow on-night" data-anim="fade">50 clients</h2>
+    <ul class="client-wall" data-stagger>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-mirchi.webp" alt="98.3 FM Radio Mirchi" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/accenture.webp" alt="Accenture" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/aegon-religare.webp" alt="Aegon Religare Life Insurance" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/abp-ananda.webp" alt="ABP Ananda" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/atlas-copco.webp" alt="Atlas Copco" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/awfis.webp" alt="Awfis" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/barbeque-nation.webp" alt="Barbeque Nation" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bajaj-finserv.webp" alt="Bajaj Finserv" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/balaji-telefilms.webp" alt="Balaji Telefilms" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bd-somani.webp" alt="B. D. Somani International School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bnhs.webp" alt="BNHS India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bombay-gymkhana.webp" alt="Bombay Gymkhana" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/bookmyshow.webp" alt="BookMyShow" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/chatrabhuj-narsee.webp" alt="Chatrabhuj Narsee School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/dbs.webp" alt="DBS" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/doordarshan.webp" alt="Doordarshan" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/edelweiss.webp" alt="Edelweiss Broking" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/euroschool.webp" alt="EuroSchool" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/federal-bank.webp" alt="Federal Bank" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/gaudium.webp" alt="The Gaudium School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/gitam.webp" alt="GITAM University" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/iit-bombay.webp" alt="IIT Bombay" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/ict.webp" alt="Institute of Chemical Technology" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jai-hind-college.webp" alt="Jai Hind College" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jaro-education.webp" alt="Jaro Education" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/jbcn.webp" alt="JBCN International School" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/kk-cinemas.webp" alt="KK Cinemas" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/larsen-toubro.webp" alt="Larsen &amp; Toubro" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/lodha.webp" alt="Lodha" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mithibai-college.webp" alt="Mithibai College" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mscert.webp" alt="MSCERT" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/mumbai-university.webp" alt="University of Mumbai" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/nsci.webp" alt="National Sports Club of India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/pepsico.webp" alt="PepsiCo" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/piramal-realty.webp" alt="Piramal Realty" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/prudential.webp" alt="Prudential" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-city.webp" alt="Radio City" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/radio-nasha.webp" alt="Radio Nasha" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/rbl-bank.webp" alt="RBL Bank" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/red-fm.webp" alt="Red FM 93.5" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/reliance-entertainment.webp" alt="Reliance Entertainment" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sahara-star.webp" alt="Sahara Star" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sbi.webp" alt="State Bank of India" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/sm-shetty.webp" alt="S. M. Shetty" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/starwing.webp" alt="Starwing Developers" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/tata-cliq.webp" alt="Tata CLiQ" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/tata-power.webp" alt="Tata Power" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/teleperformance.webp" alt="Teleperformance" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/thakur.webp" alt="Thakur" width="402" height="162" loading="lazy" decoding="async"></li>
+      <li class="client" data-anim="fade"><img src="assets/img/clients/times-of-india.webp" alt="The Times of India" width="402" height="162" loading="lazy" decoding="async"></li>
+    </ul>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="g-8-4">
+      <div class="founder">
+        <div class="founder-head">
+          <p class="eyebrow" data-anim="fade">Founder &middot; since 2006</p>
+          <h2 data-anim="reveal">Ravi Sebastian</h2>
+        </div>
+        <p class="lead founder-lead" data-anim="fade">Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments.</p>
+        <p class="muted" data-anim="fade">His practical expertise and technical leadership have shaped Silence Acoustic into a trusted provider of professional acoustic treatment and soundproofing solutions. Our team leverages this experience to diagnose unique acoustic problems and to design solutions that balance performance, functionality, aesthetics, and durability.</p>
+        <p class="muted" data-anim="fade">Built on a foundation of industry knowledge and proven project delivery, the Silence Acoustic product range is engineered to deliver optimal acoustic performance while meeting the specific requirements of each space. We offer tailored solutions that integrate seamlessly with architects, deliver measurable acoustic improvements, and stand up to long-term use.</p>
       </div>
-      <div class="bento-i" data-anim="rise"><b>20+</b><span>Years in acoustics</span></div>
-      <div class="bento-i" data-anim="rise"><b>98%</b><span>Customer satisfaction</span></div>
-      <div class="bento-i" data-anim="rise"><b>19</b><span>Products in the range</span></div>
-      <div class="bento-i" data-anim="rise"><b>170</b><span>Rooms photographed</span></div>
+      <div class="bento bento-col" data-stagger>
+        <div class="bento-i" data-anim="rise"><b>2035+</b><span>Installations completed</span></div>
+        <div class="bento-i" data-anim="rise"><b>20+</b><span>Years in acoustics</span></div>
+        <div class="bento-i" data-anim="rise"><b>98%</b><span>Customer satisfaction</span></div>
+        <div class="bento-i" data-anim="rise"><b>19</b><span>Products in the range</span></div>
+        <div class="bento-i" data-anim="rise"><b>170</b><span>Rooms photographed</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="light railed">
+<section class="night">
   <div class="wrap">
-    <span class="rail-label">Principles</span>
+    <div class="process-grid">
+      <div class="process-aside">
+        <p class="eyebrow" data-anim="fade">How a project runs</p>
+        <h2 data-anim="reveal">Seven steps, in this order.</h2>
+        <p class="lead" data-anim="fade">Each one gates the next. We do not cut material before the design is signed off, and we do not hand over before the finished room has been measured against the target.</p>
+      </div>
+      <div class="steps steps-spine">
+        <div class="step" data-anim="fade"><h3>Site survey</h3><p>We come to the room, measure it, and listen to it. Free within Mumbai and the MMR, and chargeable against travel elsewhere in India — refunded if the project proceeds.</p></div>
+        <div class="step" data-anim="fade"><h3>Measurement &amp; report</h3><p>Reverberation time by octave band, background noise level, and the transfer paths between rooms. You get the numbers, not an opinion.</p></div>
+        <div class="step" data-anim="fade"><h3>Design &amp; specification</h3><p>A treatment layout drawn to your architect's plan, with the material, area and expected result stated per surface. Two rounds of revision are included.</p></div>
+        <div class="step" data-anim="fade"><h3>Quotation</h3><p>Itemised by product and area, with installation, transport and taxes separated. No lump sums that hide what you are paying for.</p></div>
+        <div class="step" data-anim="fade"><h3>Manufacture</h3><p>Cutting, routing, printing and assembly to the signed-off design. Custom work is proofed with you before it goes on the machine.</p></div>
+        <div class="step" data-anim="fade"><h3>Installation</h3><p>Fitted by our own crews across Mumbai and Maharashtra, and by certified installation teams elsewhere in India. Either way they work to the drawing and to your site timings, including nights and weekends.</p></div>
+        <div class="step" data-anim="fade"><h3>Verification</h3><p>We measure the finished room against the design target and hand over the report. If it misses, we fix it — that is what the design fee bought.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
     <div class="section-head split">
       <div>
         <p class="eyebrow" data-anim="fade">How we work</p>
@@ -125,16 +205,16 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
       </div>
       <p class="lead" data-anim="fade">Stated plainly, because each one is something the industry does routinely and we think it is why clients end up disappointed.</p>
     </div>
-    <div class="steps" data-stagger="long">
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Sell foam as soundproofing</h3><p style="grid-column:1;grid-row:2;max-width:70ch">If your problem is the neighbour, we will tell you that panels will not fix it — even when panels are the cheaper order and the easier sale.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Quote a lump sum</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Drop the material at your gate</h3><p style="grid-column:1;grid-row:2;max-width:70ch">Supplying the panels is half a job. We fit them too, to the drawing and to your site timings, and we stay on after handover for support and maintenance. If you only want the material, say so and we will price it that way &mdash; but the default is that we finish what we make.</p></div>
-      <div class="step" data-anim="fade" style="grid-template-columns:1fr"><h3 style="grid-column:1;grid-row:1">Hand over unmeasured</h3><p style="grid-column:1;grid-row:2;max-width:70ch">We measure the finished room against the design target and give you the report. If it misses, we come back and fix it. That is what the design fee bought.</p></div>
+    <div class="g-cols g-cols-4" data-stagger>
+      <div class="g-col" data-anim="fade"><h3>Sell foam as soundproofing</h3><p>If your problem is the neighbour, we will tell you that panels will not fix it — even when panels are the cheaper order and the easier sale.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Quote a lump sum</h3><p>Every quotation is itemised by product, area and rate, with installation, transport and taxes shown separately. You can see exactly what you are paying for and take a line out if you need to.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Drop the material at your gate</h3><p>Supplying the panels is half a job. We fit them too, to the drawing and to your site timings, and we stay on after handover for support and maintenance. If you only want the material, say so and we will price it that way &mdash; but the default is that we finish what we make.</p></div>
+      <div class="g-col" data-anim="fade"><h3>Hand over unmeasured</h3><p>We measure the finished room against the design target and give you the report. If it misses, we come back and fix it. That is what the design fee bought.</p></div>
     </div>
   </div>
 </section>
 
-<section class="cta-band">
+<section class="cta-band g-tint">
   <div class="wrap">
     <div class="section-head split">
       <div>
@@ -157,7 +237,6 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
       <div class="foot-grid" data-stagger>
         <div data-anim="fade">
           <a class="brand" href="index.html" aria-label="Silence Acoustic — home"><img class="brand-logo-full" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy"></a>
-          <p class="foot-blurb">Acoustic design, treatment and soundproofing. Measured, manufactured and installed by our own team, from Mumbai across India.</p>
         </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>

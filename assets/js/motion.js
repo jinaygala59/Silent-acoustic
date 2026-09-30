@@ -139,11 +139,30 @@
          The guard still exists for the case frames start and then stop —
          switching tabs mid-count — and it is tight, because by then the
          digits are already on screen. */
-      window.requestAnimationFrame(function () {
-        el.textContent = '0';
-        window.setTimeout(land, DELAY + DUR + 400);
-        window.setTimeout(function () { window.requestAnimationFrame(frame); }, DELAY);
-      });
+      var go = function (delay) {
+        window.requestAnimationFrame(function () {
+          el.textContent = '0';
+          window.setTimeout(land, delay + DUR + 400);
+          window.setTimeout(function () { window.requestAnimationFrame(frame); }, delay);
+        });
+      };
+
+      /* STARTS WHEN IT SCROLLS INTO VIEW. The counters used to live in the
+         hero, where "on load" and "in view" were the same moment. They sit
+         below the fold now (the homepage counter band), and a count that ran
+         at load would be over before anyone reached it. The figure stays at
+         its published value until the observer fires, so a browser with no
+         observer, or a counter never scrolled to, still reads correctly. */
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { io.disconnect(); go(150); }
+          });
+        }, { threshold: 0.6 });
+        io.observe(el);
+      } else {
+        go(DELAY);
+      }
     });
   }
 

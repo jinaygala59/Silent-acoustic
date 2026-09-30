@@ -6,7 +6,7 @@
 <title>Acoustic Wooden Panel | Silence Acoustic, Mumbai</title>
 <meta name="description" content="Acoustic Wooden Panel: Perforated MDF or HDF board with a fleece backing. Supplied and installed across India by Silence Acoustic, Mumbai.">
 <link rel="canonical" href="https://silenceacoustic.com/products/acoustic-wooden-panel.html">
-<meta name="theme-color" content="#F8FAFC">
+<meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Silence Acoustic">
 <meta property="og:title" content="Acoustic Wooden Panel | Silence Acoustic, Mumbai">
@@ -15,13 +15,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="stylesheet" href="../assets/css/motion.css">
+<link rel="stylesheet" href="../assets/css/theme.css">
 <link rel="icon" href="../assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/img/favicon.png">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
 <script>(function(d){d.classList.remove('no-js');
+try{if(sessionStorage.getItem('g-curtain')){sessionStorage.removeItem('g-curtain');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('curtain-in');
+setTimeout(function(){d.classList.remove('curtain-in')},1400)}}}catch(e){}
 try{if(!('IntersectionObserver' in window))return;
 var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
@@ -34,7 +38,14 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-head">
+<div class="topbar">
+    <div class="wrap">
+      <a href="tel:+918108400566">+91 81084 00566</a>
+      <a href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a>
+      <a href="../contact.html">Book a free site survey</a>
+    </div>
+  </div>
+  <header class="site-head">
     <div class="wrap">
       <a class="brand" href="../index.html" aria-label="Silence Acoustic — home">
         <img class="brand-logo" src="../assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">
@@ -55,67 +66,92 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </header>
 <main id="main">
 
-<section class="page-head">
+<section class="night pd-top">
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Acoustic Wood</p>
-    <h1 data-in style="--d:170">Acoustic Wooden Panel</h1>
-    <p class="lead" data-in style="--d:280">Perforated MDF or HDF board with a fleece backing</p>
-    <div class="nrc nrc-lead" data-mat="wood">
+    <div class="pd-top-grid">
+      <div class="pd-top-copy">
+        <p class="eyebrow" data-in style="--d:60">Acoustic Wood</p>
+        <h1 data-in style="--d:170">Acoustic Wooden Panel</h1>
+        <p class="lead" data-in style="--d:280">Perforated MDF or HDF board with a fleece backing</p>
+        <div class="nrc nrc-lead" data-mat="wood">
     <div class="nrc-track"><i style="--v:90%"></i></div>
     <p class="nrc-fig"><b>0.90</b> <span class="nrc-unit">NRC</span><span class="nrc-raw">up to 0.9</span></p>
   </div>
-    <nav class="crumbs" data-in style="--d:390" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a><span aria-hidden="true">/</span>
-      <a href="../products.html">Products</a><span aria-hidden="true">/</span>
-      <a href="../products.html#wood">Acoustic Wood</a><span aria-hidden="true">/</span>
-      <span>Acoustic Wooden Panel</span>
-    </nav>
+        <div class="row" data-in style="--d:360;margin-top:2rem">
+          <a class="btn btn-primary" href="../contact.html">Request a quote <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn-ghost" href="tel:+918108400566">+91 81084 00566</a>
+        </div>
+        <nav class="crumbs" data-in style="--d:420" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span aria-hidden="true">/</span>
+          <a href="../products.html">Products</a><span aria-hidden="true">/</span>
+          <a href="../products.html#wood">Acoustic Wood</a><span aria-hidden="true">/</span>
+          <span>Acoustic Wooden Panel</span>
+        </nav>
+      </div>
+      <!-- data-mat resolves the material colour for the .is-cut mount. -->
+      <div class="pd-hero surface s-woodperf is-cut" data-mat="wood" data-anim="frame">
+        <img src="../assets/img/products/acoustic-wooden-panel-hero.webp" alt="Acoustic Wooden Panel" width="1600" height="1000" fetchpriority="high" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="pd-over has-shots">
+      <div class="pd-body">
+        <p class="eyebrow" data-anim="fade">Overview</p>
+        <h2 data-anim="reveal">Acoustic Wooden Panel</h2>
+        <p class="lead" style="color:var(--on-light)">A solid timber-faced board perforated on a regular grid, with acoustic fleece bonded behind, reaching an NRC of up to 0.9. It looks like joinery and performs like an absorber.</p>
+        <p>Where slats are too informal or too open for the interior, a perforated board gives the same warmth with a near-solid face. The perforation grid can be fine enough to read as texture from two metres away.</p>
+        <p>Supplied in 2400 × 1200 mm sheets at 8, 10 or 12 mm, so it sits flush with most joinery thicknesses and can be matched to the finish schedule rather than standing proud of it.</p>
+        <p>Fire properties comply with UL94, which is usually the line item that decides whether a timber-faced panel can be used in a public assembly space at all — check it against your local authority requirement early.</p>
+      </div>
+      <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-1.webp" alt="Acoustic Wooden Panel — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-2.webp" alt="Acoustic Wooden Panel — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-3.webp" alt="Acoustic Wooden Panel — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
+    </div>
+  </div>
+</section>
+
+<section class="night g-band">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">Typical applications</p>
+    <ul class="g-apps" data-stagger>
+      <li data-anim="fade"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Auditoriums</span></li>
+      <li data-anim="fade"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Lecture halls</span></li>
+      <li data-anim="fade"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Boardrooms</span></li>
+      <li data-anim="fade"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Libraries</span></li>
+      <li data-anim="fade"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Places of worship</span></li>
+    </ul>
   </div>
 </section>
 
 <section class="light">
   <div class="wrap">
-    <div class="pd-grid">
+    <div class="pd-tech">
       <div>
-        <!-- data-mat is what resolves the material colour for the .is-cut
-             mount. Without it every detail hero falls back to the PET grey
-             and a timber sample sits on a cold ground. Same attribute the
-             cards carry; there it also draws the marker, here it only
-             tints the mount. -->
-        <div class="pd-hero surface s-woodperf is-cut" data-mat="wood" data-anim="frame">
-          <img src="../assets/img/products/acoustic-wooden-panel-hero.webp" alt="Acoustic Wooden Panel" width="1600" height="1000" fetchpriority="high" decoding="async">
-        </div>
-        <div class="pd-gallery"><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-1.webp" alt="Acoustic Wooden Panel — view 2" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-2.webp" alt="Acoustic Wooden Panel — view 3" width="800" height="600" loading="lazy" decoding="async"></figure><figure class="pd-shot"><img src="../assets/img/products/acoustic-wooden-panel-3.webp" alt="Acoustic Wooden Panel — view 4" width="800" height="600" loading="lazy" decoding="async"></figure></div>
-        <div class="pd-body" style="margin-top:clamp(2rem,4vw,3rem)">
-          <p class="lead" style="color:var(--on-light)">A solid timber-faced board perforated on a regular grid, with acoustic fleece bonded behind, reaching an NRC of up to 0.9. It looks like joinery and performs like an absorber.</p>
-          <p>Where slats are too informal or too open for the interior, a perforated board gives the same warmth with a near-solid face. The perforation grid can be fine enough to read as texture from two metres away.</p>
-          <p>Supplied in 2400 × 1200 mm sheets at 8, 10 or 12 mm, so it sits flush with most joinery thicknesses and can be matched to the finish schedule rather than standing proud of it.</p>
-          <p>Fire properties comply with UL94, which is usually the line item that decides whether a timber-faced panel can be used in a public assembly space at all — check it against your local authority requirement early.</p>
-          <h2>Typical applications</h2>
-          <ul class="pills"><li>Auditoriums</li><li>Lecture halls</li><li>Boardrooms</li><li>Libraries</li><li>Places of worship</li></ul>
-        </div>
+        <p class="eyebrow" data-anim="fade">Technical information</p>
+        <h2 data-anim="reveal">Specification</h2>
+        <p class="muted" style="font-size:.9375rem;margin-top:1.25rem;line-height:1.6;max-width:34ch">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
       </div>
-      <aside class="pd-aside">
-        <table class="spec">
-          <caption>Specification</caption>
-          <tbody data-stagger="long">
-            <tr data-anim="fade"><th>Material</th><td>MDF / HDF, acoustic fleece backing</td></tr>
-            <tr data-anim="fade"><th>Panel size</th><td>2400 × 1200 mm</td></tr>
-            <tr data-anim="fade"><th>Thickness</th><td>8 / 10 / 12 mm</td></tr>
-            <tr data-anim="fade"><th>NRC</th><td>up to 0.9</td></tr>
-            <tr data-anim="fade"><th>Fire properties</th><td>Comply to UL94</td></tr>
-            <tr data-anim="fade"><th>Density</th><td>32 kg/m³ (as published)</td></tr>
-          </tbody>
-        </table>
-        <p class="muted" style="font-size:.8125rem;margin-top:1.25rem;line-height:1.5">Figures as published by Silence Acoustic. We confirm them against your specification and supply test reports on request.</p>
-        <a class="btn btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center" href="../contact.html">Request a quote <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a class="btn btn-ghost on-light" style="margin-top:.6rem;width:100%;justify-content:center" href="tel:+918108400566">+91 81084 00566</a>
-      </aside>
+      <table class="spec">
+        <caption class="vh">Specification</caption>
+        <tbody data-stagger="long">
+          <tr data-anim="fade"><th>Material</th><td>MDF / HDF, acoustic fleece backing</td></tr>
+          <tr data-anim="fade"><th>Panel size</th><td>2400 × 1200 mm</td></tr>
+          <tr data-anim="fade"><th>Thickness</th><td>8 / 10 / 12 mm</td></tr>
+          <tr data-anim="fade"><th>NRC</th><td>up to 0.9</td></tr>
+          <tr data-anim="fade"><th>Fire properties</th><td>Comply to UL94</td></tr>
+          <tr data-anim="fade"><th>Density</th><td>32 kg/m³ (as published)</td></tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+</section>
 
-    <div class="pd-related">
-    <hr class="rule">
-    <h2 class="sub-h mb-l">Others in Acoustic Wood</h2>
+<section class="dark pd-related">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">Acoustic Wood</p>
+    <h2 class="mb-l" data-anim="reveal">Others in Acoustic Wood</h2>
     <div class="grid g3" data-stagger><a class="card" data-anim="rise" data-mat="wood" href="../products/acoustic-wood-wool-panel.html">
   <div class="card-surface surface s-wool is-cut">
     <img src="../assets/img/products/acoustic-wood-wool-panel-card.webp" alt="Acoustic Wood Wool Panel" width="800" height="600" loading="lazy" decoding="async">
@@ -146,11 +182,10 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
     <span class="card-foot">View spec <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
 </a></div>
-    </div>
   </div>
 </section>
 
-<section class="cta-band">
+<section class="cta-band g-tint">
   <div class="wrap">
     <div class="section-head split">
       <div>
@@ -173,7 +208,6 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
       <div class="foot-grid" data-stagger>
         <div data-anim="fade">
           <a class="brand" href="../index.html" aria-label="Silence Acoustic — home"><img class="brand-logo-full" src="../assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy"></a>
-          <p class="foot-blurb">Acoustic design, treatment and soundproofing. Measured, manufactured and installed by our own team, from Mumbai across India.</p>
         </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>

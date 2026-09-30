@@ -6,7 +6,7 @@
 <title>Contact &amp; Free Site Survey | Silence Acoustic</title>
 <meta name="description" content="Book a free acoustic site survey in Mumbai and the MMR. Call +91 81084 00566 or send your room details and we will come and measure.">
 <link rel="canonical" href="https://silenceacoustic.com/contact.html">
-<meta name="theme-color" content="#F8FAFC">
+<meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Silence Acoustic">
 <meta property="og:title" content="Contact &amp; Free Site Survey | Silence Acoustic">
@@ -15,13 +15,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/motion.css">
+<link rel="stylesheet" href="assets/css/theme.css">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
 <script>(function(d){d.classList.remove('no-js');
+try{if(sessionStorage.getItem('g-curtain')){sessionStorage.removeItem('g-curtain');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('curtain-in');
+setTimeout(function(){d.classList.remove('curtain-in')},1400)}}}catch(e){}
 try{if(!('IntersectionObserver' in window))return;
 var r=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var n=window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()');
@@ -34,7 +38,14 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-head">
+<div class="topbar">
+    <div class="wrap">
+      <a href="tel:+918108400566">+91 81084 00566</a>
+      <a href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a>
+      <a href="contact.html">Book a free site survey</a>
+    </div>
+  </div>
+  <header class="site-head">
     <div class="wrap">
       <a class="brand" href="index.html" aria-label="Silence Acoustic — home">
         <img class="brand-logo" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">
@@ -55,20 +66,24 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </header>
 <main id="main">
 
-<section class="page-head">
+
+<section class="g-head">
   <div class="wrap">
-    <p class="eyebrow" data-in style="--d:60">Contact</p>
-    <h1 data-in style="--d:170">Tell us about the space.</h1>
+    <div class="g-head-copy">
+      <p class="eyebrow" data-in style="--d:60">Contact</p>
+      <h1 data-in style="--d:170">Tell us about the space.</h1>
+      <p class="lead" data-in style="--d:280">The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.</p>
+      
+    </div>
+    
   </div>
 </section>
 
-<section class="light railed">
+<section class="dark g-contact">
   <div class="wrap">
-    <span class="rail-label">Enquiry</span>
-    <div class="grid g2" data-stagger style="align-items:start;gap:clamp(2.5rem,5vw,4.5rem)">
+    <div class="g-contact-grid">
       <div data-anim="fade">
-        <h2 class="sub-h mb-s">Send the details</h2>
-        <p class="lead" style="margin-bottom:2rem">The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.</p>
+        <h2 class="sub-h mb-m">Send the details</h2>
         <form class="form" id="enquiry" data-endpoint="" data-to="info@silenceacoustic.com" novalidate>
           <div class="field half"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field half"><label for="f-org">Company or practice</label><input id="f-org" name="org" type="text" autocomplete="organization"></div>
@@ -102,32 +117,42 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         </form>
       </div>
 
-      <div class="stack stack-l" data-stagger>
-        <div data-anim="fade">
-          <h2 class="sub-h mb-m">Direct</h2>
-          <ul class="contact-list">
-            <li><span class="k">Phone &amp; WhatsApp</span><a class="v" href="tel:+918108400566">+91 81084 00566</a></li>
-            <li><span class="k">General enquiries</span><a class="v" href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a></li>
-            <li><span class="k">Drawings &amp; tenders</span><a class="v" href="mailto:projects@silenceacoustic.com">projects@silenceacoustic.com</a></li>
-            <li><span class="k">Office &amp; works</span><span class="v" style="display:block;line-height:1.55">Mumbai, Maharashtra</span></li>
-          </ul>
-          <div class="row" style="margin-top:1.75rem">
-            <a class="btn btn-primary" href="https://wa.me/919004408289" rel="noopener">WhatsApp us <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn btn-ghost" href="tel:+918108400566">Call now</a>
-          </div>
+      <div class="g-offices" data-stagger>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Phone &amp; WhatsApp</p>
+          <a class="v" href="tel:+918108400566">+91 81084 00566</a>
         </div>
-        <div data-anim="fade">
-          <h2 class="sub-h mb-m">Helps us quote faster</h2>
-          <ul class="pills" style="flex-direction:column;align-items:flex-start">
-            <li>A floor plan or a section, any format</li>
-            <li>Ceiling height and finishes already fixed</li>
-            <li>What the room is used for, and by how many</li>
-            <li>A voice note of one clap in the empty room</li>
-            <li>Your handover date</li>
-          </ul>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">General enquiries</p>
+          <a class="v" href="mailto:info@silenceacoustic.com">info@silenceacoustic.com</a>
+        </div>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Drawings &amp; tenders</p>
+          <a class="v" href="mailto:projects@silenceacoustic.com">projects@silenceacoustic.com</a>
+        </div>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">Office &amp; works</p>
+          <span class="v">Mumbai, Maharashtra</span>
+        </div>
+        <div class="row" data-anim="fade">
+          <a class="btn btn-primary" href="https://wa.me/919004408289" rel="noopener">WhatsApp us <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn-ghost" href="tel:+918108400566">Call now</a>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <p class="eyebrow" data-anim="fade">Helps us quote faster</p>
+    <ul class="g-checks g-checks-3" data-stagger>
+      <li data-anim="fade"><span class="g-check-row"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><b>A floor plan or a section, any format</b></span></li>
+      <li data-anim="fade"><span class="g-check-row"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><b>Ceiling height and finishes already fixed</b></span></li>
+      <li data-anim="fade"><span class="g-check-row"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><b>What the room is used for, and by how many</b></span></li>
+      <li data-anim="fade"><span class="g-check-row"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><b>A voice note of one clap in the empty room</b></span></li>
+      <li data-anim="fade"><span class="g-check-row"><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><b>Your handover date</b></span></li>
+    </ul>
   </div>
 </section>
 </main>
@@ -136,7 +161,6 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
       <div class="foot-grid" data-stagger>
         <div data-anim="fade">
           <a class="brand" href="index.html" aria-label="Silence Acoustic — home"><img class="brand-logo-full" src="assets/img/logo-full.png" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy"></a>
-          <p class="foot-blurb">Acoustic design, treatment and soundproofing. Measured, manufactured and installed by our own team, from Mumbai across India.</p>
         </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>

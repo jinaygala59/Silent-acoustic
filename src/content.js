@@ -208,6 +208,14 @@ const ABOUT_INTRO = {
   body: 'Silence Acoustic is a professionally driven acoustic and soundproofing solutions company, built on 20+ years of industry expertise under the leadership of our Founder, Ravi Sebastian. With 2,035+ projects successfully delivered, we bring extensive experience in acoustic treatment, soundproofing, and high-performance acoustic products across diverse applications. From offices, auditoriums, studios, hospitality spaces, and commercial environments to specialised projects, we combine technical expertise, quality materials, precision installation, and innovative design to create spaces with superior sound control, clarity, comfort, and privacy. Our commitment is to deliver engineered acoustic solutions that perform, endure, and seamlessly integrate with the aesthetics of every space.',
 };
 
+/* ---- OUR VISION ---------------------------------------------------------
+   CLIENT-SUPPLIED COPY ONLY. Asked for on 30 Sep 2026; no vision statement
+   exists on silenceacoustic.com (checked: home and About), so none is
+   written here. Paste the client's own words as `body` (one string, or an
+   array of paragraphs) and rebuild — the About page and the homepage show
+   the section only while this is non-empty. Do NOT compose one. */
+const VISION = { body: '' };
+
 const NAV = [
   { href: 'index.html', label: 'Home' },
   { href: 'products.html', label: 'Products' },
@@ -918,4 +926,4 @@ const FAQ = [
   { q: 'Can acoustic treatments be customized for interior design?', a: 'Yes. Our fabric-wrapped panels and acoustic tiles come in hundreds of colours, patterns and textures, and we work directly with interior designers on the look.' },
 ];
 
-module.exports = { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };
+module.exports = { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };

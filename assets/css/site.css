@@ -295,8 +295,8 @@
   --ombre-dark:  linear-gradient(168deg, rgba(20,24,27,0.030) 0%, rgba(20,24,27,0.055) 52%, rgba(20,24,27,0.085) 100%);
 
   /* -- type ------------------------------------------------------------ */
-  --display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  --body:    'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  --display: 'Open Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --body:    'Open Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
   /* NOT MONOSPACE ANY MORE, AND THE NAME IS A LIE KEPT ON PURPOSE. The
      typewriter register is gone from the site: --mono now resolves to the body
      face. The token keeps its name only because 46 rules consume it (32 here,
@@ -311,14 +311,14 @@
      face vary from 16.27px to 25.91px at 40px, a 9.64px spread, which is what
      would otherwise have made the spec columns ragged once the fixed-width
      face went. */
-  --mono:    'Karla', -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  --mono:    'Open Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
 
   /* One weight for everything set in the display face — headings, the two
      pull-quotes, the sector and roomdex names, the step numerals. It is a
      token because the rule only holds if it is changed in one place: the
      moment two display weights are in play, hierarchy stops being size and
      space and starts being an argument. */
-  --w-display: 400;
+  --w-display: 700;
 
   /* Hierarchy on this site is WIDTH, not weight. Bricolage Grotesque carries
      a `wdth` axis and an `opsz` axis; the display face stays at one weight
@@ -382,12 +382,12 @@
      card read as a physical object resting on the page rather than a div with
      a drop-shadow filter. Cost is one extra shadow layer per token — same
      ~200 call sites, nothing added at the component level. */
-  --lift:   4px 4px 0 #14181B;
-  --lift-2: 7px 7px 0 #14181B;
+  --lift:   none;
+  --lift-2: 0 18px 40px -22px rgba(26, 26, 26, 0.45);
   /* These used to be black, for objects standing on a near-black ground.
      Nothing on the site has a dark ground now, so they match --lift. */
-  --lift-d:   4px 4px 0 #14181B;
-  --lift-d-2: 7px 7px 0 #14181B;
+  --lift-d:   none;
+  --lift-d-2: 0 18px 40px -22px rgba(26, 26, 26, 0.45);
 
   /* -- drafting grid ------------------------------------------------------
      The ink for every grid on the site: the 64px graph on the document ground
@@ -412,7 +412,7 @@
 
      The --ripple / --ripple-2 pair that used to sit here is gone with the
      concentric ripple field it fed; nothing referenced it afterwards. */
-  --grid-line: rgba(20, 24, 27, 0.055);
+  --grid-line: rgba(20, 24, 27, 0);
 }
 
 /* =========================== reset ====================================== */
@@ -455,7 +455,7 @@ body {
 
      Sections do not paint their own ground — they veil this one. See
      --ombre-light / --ombre-dark, which are translucent. */
-  background-color: #E3E8EB;
+  background-color: #F3F4F7;
   /* A SQUARE GRID over the wash, by request. This replaces the two concentric
      "sound ripple" sources that were here — a grid and a ripple field are both
      figure on the same ground, and running them together read as neither, so
@@ -483,7 +483,7 @@ body {
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(180deg, #F7F9FA 0%, #F1F4F6 34%, #EAEEF1 68%, #E3E8EB 100%);
+    linear-gradient(180deg, #F3F4F7 0%, #F3F4F7 100%);
   background-size: 64px 64px, 64px 64px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
   -webkit-font-smoothing: antialiased;

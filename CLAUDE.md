@@ -466,6 +466,159 @@ source site (foam density in kg/cm³, slats weight in kg/cm, perforated panel at
 
 Tokens at the top of `site.css` drive everything; change those, not call sites.
 
+**THE CURRENT DIRECTION IS "ARCHITECTURAL", and it lives in `assets/css/theme.css`.**
+By request (Sep 2026) the site was restyled in the *layout language* of
+glydearchitectural.com.au: a thin cyan utility bar (`.topbar`, contact routes
+only) over a charcoal header with the light logo, a full-bleed photographic
+hero with centred white type on a neutral dark scrim, Open Sans throughout
+(tight bold headings, small tracked caps, a short cyan rule under every
+eyebrow), flat white tiles with no outline or offset block, and near-black
+bands. **Only the layout language was taken — no copy, imagery, logo or code
+from that site.** Where it uses gold, this site uses the logo cyan (client's
+choice). `theme.css` loads after `motion.css` and overrides; its header
+comment lists the rules that bind (cyan is never type on a light ground, a
+cyan fill carries a dark label, and no `:hover` in it may set a transform other
+than `none`, because it sorts after the touch-hover reset).
+
+What changed underneath, so the notes below can be read correctly:
+- Three flat grounds: `.light` = `#F3F4F7`, `.dark` = **white**, and a new
+  **`.night`** = `#1A1A1A` (homepage Method section, `.cta-band`, every
+  `.page-head`, the footer). The ombres, the drafting grid, the film grain,
+  the corner ticks and the rotated rail labels (desktop) are switched off.
+  Where the notes below say "a near-black section is not coming back", that
+  was reversed by this brief — but only through `.night`, whose text colours
+  are all named in `theme.css`. Do not make `.dark` dark.
+- The hero scrim is now `rgba(12,12,12,.58)` (0.60 on mobile), which holds
+  white text at >=5.3:1 over **any** photograph; the per-banner canvas
+  measurements below describe the old light scrim and are stale. The hero
+  eyebrow is white, not cyan, for that reason. The headline is set as a bold
+  first half over a light (300) second half, split at the word midpoint in
+  `src/pages.js` — typesetting only, the client's words are unchanged.
+- Buttons: near-black fill / white label on light grounds, cyan fill / dark
+  label on `.night` and the hero. `--lift` is `none`.
+- Walker result after the change: 0 failures on all nine templates, lowest
+  pair 5.88:1 (cyan active nav link on the header). NRC bars re-checked.
+
+**The homepage now follows the reference layout section for section** (second
+brief, same day): hero (headline + one button; no lead, no stat rail, no
+`.mat-rule`) → `.g-intro` (founder's first paragraph and the four
+`SITE.stats` over a photograph on the right half) → `.g-products` (the ten
+`railPicks()` as photograph tiles, 5-up) → `.g-why` (the ten room types with
+project counts, as a two-column check list) → `.night.g-band` (three columns:
+the two diptych paragraphs and the products lead, all client copy, with icons
+drawn here) → `.g-work` (`workBand()`, now a plain 3-up grid with a hover veil;
+its divisibility rule is `n % 3`). **The pinned rail is no longer on the
+homepage, so there is no pin on the site at all**, and the homepage carries
+no NRC bars — ignore the "homepage family rail 8 bars" check below. The
+founder statement, the seven process steps (`.night`) and the client wall
+moved to `about.html`; the "Ask a client" statement, the diptych, the roomdex
+and the homepage testimonials/CTA were dropped from the homepage (testimonials
+remain on `projects.html`). `famRail()` and `roomdex()` in `src/build.js` and
+the rail CSS in `motion.css` are now unused. The footer's first column is the
+logo alone: its blurb carried the removed manufacturing claim.
+Cut-out product shots in `.g-tile-img` need `isolation: isolate` on the tile:
+without it Chrome sometimes composited a tile alone and the multiply blanked
+the product (wedge foam did).
+
+**The inner pages follow the reference layout too** (third brief). There is
+no dark title banner any more: every inner page opens on `gHead()` in
+`src/pages.js` — a LIGHT intro (eyebrow, h1, lead, optional photograph on the
+right) — and closes on `ctaBand()`, now a light cyan tint (`.g-tint`,
+`#D6F0F9`) instead of a dark band. `.page-head` is no longer emitted; its CSS
+is dead. Per page:
+- `products.html`: a strip of three product photographs (the first three
+  non-`cut` products, derived) → centred intro with the family jump links →
+  the five family sections → the quick guide on a `.night` band.
+- `products/*.html`: `.night.pd-top` (copy, NRC bar, buttons and crumbs beside
+  the product's own photograph) → white overview (lead, body, extra shots) →
+  `.night.g-band` "Typical applications" (`p.apps`) → spec table → related
+  products. Still 4 NRC bars per detail page, all reaching `matrix(1…)`.
+- `projects.html`: intro → filters → the full gallery as `projTile()` hover
+  tiles. **`#gal`, `[data-sector]`, `.gal-zoom` and `.gal-cap` are the hooks
+  the filter and lightbox in `site.js` read** — keep all four on the tile.
+- `about.html`: story + two photographs → the 50-logo wall on a `.night`
+  strip → founder beside the figures (8/4) → process (`.night`) → the four
+  principles as columns. The "We make it / We fit it" captions were dropped:
+  the first asserted manufacturing.
+- `blog.html`: intro → notes → FAQ as `<details>` accordion rows.
+- `contact.html`: intro → form beside four contact blocks → the "helps us
+  quote faster" list as a three-column check list.
+Walker after this pass: 0 failures on all ten templates checked (index,
+products, two product pages, projects, about, blog, contact, 404, article).
+
+**There are no black grounds any more — they are the logo cyan** (fourth
+brief). `--night` is now `#1CABDE`, and every `.night` band, the hero scrim,
+the product intros and the footer paint it. The header is WHITE with
+`logo-full.png`, because the lockup's own icon and tagline are cyan and would
+vanish on a cyan bar; the footer mounts the same lockup on a white plate.
+**White on this cyan is 2.65:1, so every word on a cyan ground is dark**
+(`--on-night` `#0E1A1F` 6.8:1, `--on-night-mute` `#1C2B31` 5.5:1 — the
+site's lowest measured pair now). Nothing on a cyan ground may itself be
+cyan; buttons there are white. On light grounds `.btn-primary` is cyan with
+a dark label and hovers to `--brand` with white. **The hero is the one exception: its scrim is
+dark again** (fifth brief — the banner photographs must not be tinted cyan):
+`rgba(12,12,12,.58)` with white type, 5.3:1 over any photograph, a cyan rule
+and a cyan button with a dark label. That block is the last one in
+`theme.css`. The token names still
+say "night" — read them as "the strong band". Walker after this pass: 0
+failures on all ten templates, lowest 5.51:1.
+
+**Homepage additions (sixth brief):** a cyan counter band (`.g-count`) under
+the intro with three of the four `SITE.stats` — Project Completed, Years of
+Experience, Team Strength; Project Running is left off, being a one-week
+snapshot — plus the testimonials (`.g-voices`) and the 50-logo client wall
+(`.g-clients`) after the projects grid. The intro no longer carries the
+stats. **The count-up in `motion.js` now starts when each figure scrolls into
+view** (IntersectionObserver, 60% visible) instead of 850ms after load; with
+no observer it falls back to the old timing, and an un-reached figure keeps
+its published value.
+
+**Motion added in the architectural layout** lives in the MOTION block near
+the end of `theme.css`, not in `motion.css`. It is: load-in entrances for
+`.g-head` / `.pd-top` / `.g-story` `[data-in]` (these had none — `[data-in]`
+was only wired for `.hero` and the retired `.page-head`) and the products
+photo strip; a slow push-in (`gKen`) on each banner photograph, on the SAME
+27s period and negative delays as `mHeroFade`, applied to `.hero-slide` only
+so the slide/headline sync is untouched; the headline rule growing in; a
+header shadow on `head-solid`; icons and check marks drawing in on `view()`
+(`pathLength="1"` in the markup); the intro photograph easing out of a 1.14
+zoom on `--box`; and pointer-only hover motion (tile zoom, veil words rising,
+logo lift). Rules it keeps: all under `prefers-reduced-motion: no-preference`;
+scroll-linked parts inside `@supports`; hovers gated on `(hover: hover) and
+(pointer: fine)` so they cannot latch on touch; and it animates the
+individual `scale` / `translate` properties so it composes with any
+`transform` animation already on the element.
+
+**"Our vision" is wired but EMPTY, on purpose.** Asked for on 30 Sep 2026;
+no vision statement exists on silenceacoustic.com (home and About checked),
+so none was written. `VISION.body` in `src/content.js` is `''`, and
+`visionBand()` renders nothing until the client's own words go in — then it
+appears on the homepage (under the counter band) and on About (under the
+story). Do not compose one.
+
+**Page transition: a curtain wipe.** Asked for as Motion+'s
+`curtains(update, { effect: wipe({ direction: 'left', angle: 12 }) })`, a
+paid npm package for in-page updates, so it is built by hand: a cyan
+`html::after` curtain sheared 12deg sweeps LEFT to cover the screen when a
+same-site page link is clicked (`html.curtain-out`, set by the click handler
+at the end of `site.js`, which then navigates after 540ms), and the next page
+arrives covered and uncovers leftwards (`html.curtain-in`, set by
+`HEAD_BOOT` in `src/build.js` from a sessionStorage flag). CSS is the last
+block of `theme.css`. Fail-safe: with neither class the pseudo does not
+exist; `curtain-in` is stripped after 1.4s whatever happens; back/forward
+from bfcache clears both on `pageshow`; Reduce Motion never sets either.
+Skipped for modifier-clicks, new tabs, other origins, tel:/mailto:, in-page
+anchors, non-`.html` targets (the lightbox's image links) and any click
+another handler already `preventDefault`ed. **A cross-document View
+Transition was tried first and removed** — Chrome/Edge 126+ and Safari 18.2+
+only, and skipped under the OS reduced-motion setting, which is why it was
+reported as not working.
+
+Everything from here down to *Content provenance* describes the Workshop
+direction that `theme.css` sits on top of. The mechanisms (motion, `--box`,
+NRC, `.is-cut`, provenance) all still hold; the colour, type and ground notes
+are history.
+
 **THE DIRECTION IS "WORKSHOP", AND ITS COLOUR IS THE CLIENT'S OWN.** The
 structure — hard 2px rules, offset blocks, Instrument Serif over Karla — was
 chosen off a canvas of three. The palette went through the warm paper and
