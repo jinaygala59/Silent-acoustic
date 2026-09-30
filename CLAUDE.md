@@ -586,8 +586,48 @@ is dead. Per page:
 Walker after this pass: 0 failures on all ten templates checked (index,
 products, two product pages, projects, about, blog, contact, 404, article).
 
+**THE STRONG BAND IS A CHARCOAL GREY — read the cyan-ground paragraph below
+as history.** (30 Sep 2026, "change the background color to grey".) `--night`
+is `#303438`, so the counter strip, the three-column band, the product
+intros, `.fam-all` and the footer are grey, and **every word on them is LIGHT
+again** — which is the exact reverse of the cyan rules the paragraph below
+describes, so roughly thirty of them had to be flipped back in one pass.
+Measured: `#FFFFFF` 12.5:1, `--on-night-mute` `#C4C9CE` 7.5:1, and the accent
+`#1CABDE` 4.7:1, which is the site's lowest pair now and is what eyebrows,
+rules, icons, step numerals and `.tlink` take. Walker after this pass: **0
+failures on all eight shipped templates**, 668 elements.
+
+Three things deliberately do NOT follow `--night`, and each is a trap:
+
+- **The header stays white** (`--night-2` `#FFFFFF`). The lockup is cyan
+  artwork with near-black type and needs a light ground — that is why the
+  footer still mounts it on a white plate. But a white header that reads
+  `--on-night` for its link colour is now **white on white**, so every header
+  colour that used to come from that token (`.site-head`, `.nav a`,
+  `.nav-toggle`, the mobile drawer) is restated as dark ink in the last block
+  of `theme.css`. Point `--night-2` at `--night` and the nav vanishes.
+- **`.btn-primary` on light grounds is pinned to the accent.** Its fill used
+  to come from `--night`, which is the only reason those buttons were cyan —
+  without the pin, every button on the site would have turned charcoal.
+- **`.night .nrc-track` takes the paper ground, not `--night-3`.** The dark
+  design gave the track a raised dark, which is fine for a white fill and
+  wrong for this one: the fill is the product's own material colour and those
+  are mid-to-dark. Acoustic foam `#33383C` on `#3B4045` is **1.13:1** — an
+  invisible bar understating a published absorption figure, which is this
+  component's documented fail-unsafe failure. On the paper track it is
+  9.6:1, and every bar on the site now reads identically. Re-verified: 13
+  bars on `products.html` and both on a foam detail page reach
+  `matrix(1, 0, 0, 1, 0, 0)`.
+
+Still cyan, deliberately, because they are accent rather than ground: the
+`.topbar` utility strip, `.cta-band.g-tint` (`#D6F0F9`, which closes every
+inner page), and the button fills on both grounds. The hover veils over
+photographs (`.g-pj-over`, `.g-plus`) went back to the near-black wash they
+were written for.
+
 **There are no black grounds any more — they are the logo cyan** (fourth
-brief). `--night` is now `#1CABDE`, and every `.night` band, the hero scrim,
+brief — **superseded for the grounds by the grey pass above; still current
+for the header, the buttons and the hero**). `--night` is now `#1CABDE`, and every `.night` band, the hero scrim,
 the product intros and the footer paint it. The header is WHITE with
 `logo-full.png`, because the lockup's own icon and tagline are cyan and would
 vanish on a cyan bar; the footer mounts the same lockup on a white plate.
@@ -608,7 +648,7 @@ each banner photograph again, so check by eye whenever a banner changes. The tok
 say "night" — read them as "the strong band". Walker after this pass: 0
 failures on all ten templates, lowest 5.51:1.
 
-**Homepage additions (sixth brief):** a cyan counter band (`.g-count`) under
+**Homepage additions (sixth brief):** a counter band (`.g-count`) under
 the intro with three of the four `SITE.stats` — Project Completed, Years of
 Experience, Team Strength; Project Running is left off, being a one-week
 snapshot — plus the testimonials (`.g-voices`) and the 50-logo client wall
