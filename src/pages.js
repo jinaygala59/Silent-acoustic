@@ -401,7 +401,7 @@ ${workBand()}
      nothing else is said about them (see the provenance rule). -->
 <section class="light g-clients" aria-labelledby="clients-home-h">
   <div class="wrap">
-    <h2 id="clients-home-h" class="eyebrow center-eyebrow" data-anim="fade">${CLIENTS.length} clients</h2>
+    <h2 id="clients-home-h" class="eyebrow center-eyebrow clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
     ${clientRows()}
   </div>
 </section>`
@@ -706,7 +706,7 @@ ${visionBand()}
      a count read off CLIENTS is the only thing said about it. -->
 <section class="night g-logos" aria-labelledby="clients-h">
   <div class="wrap">
-    <h2 id="clients-h" class="eyebrow center-eyebrow on-night" data-anim="fade">${CLIENTS.length} clients</h2>
+    <h2 id="clients-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
     ${clientRows()}
   </div>
 </section>
@@ -719,7 +719,9 @@ ${visionBand()}
           <p class="eyebrow" data-anim="fade">Founder &middot; since ${FOUNDED}</p>
           <h2 data-anim="reveal">${esc(FOUNDER.name)}</h2>
         </div>
-        ${FOUNDER.body.map((para, i) => `<p class="${i === 0 ? 'lead founder-lead' : 'muted'}" data-anim="fade">${esc(para)}</p>`).join('\n        ')}
+        <!-- All three paragraphs at ONE size, by request — the first used to
+             run larger as a lead-in. -->
+        ${FOUNDER.body.map(para => `<p class="muted founder-p" data-anim="fade">${esc(para)}</p>`).join('\n        ')}
       </div>
       <div class="bento bento-col" data-stagger>
         <div class="bento-i" data-anim="rise"><b>${SITE.projectsCompleted}</b><span>Installations completed</span></div>

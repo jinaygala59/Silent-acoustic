@@ -576,6 +576,8 @@ a.card:active { transform: none; box-shadow: none; }
   letter-spacing: 0.02em; line-height: 1.3;
 }
 .center-eyebrow::before { width: 1.4rem; }
+/* the "50 clients" label, homepage and About, larger by request */
+.center-eyebrow.clients-title { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem); font-weight: 700; }
 .g-proj { list-style: none; padding: 0; display: grid; gap: clamp(1rem, 2vw, 1.75rem); grid-template-columns: 1fr; }
 @media (min-width: 40rem) { .g-proj { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 64rem) { .g-proj { grid-template-columns: repeat(3, 1fr); } }
@@ -869,21 +871,27 @@ a.card:active { transform: none; box-shadow: none; }
 .float-wa { border: 2px solid #FFFFFF; }
 
 /* ==========================================================================
-   THE HERO KEEPS A DARK SCRIM (by request) — the banner photographs are not
-   tinted cyan. Everything else stays on the cyan grounds above.
-   0.58 black over the brightest possible pixel composites to rgb(107,107,107),
-   where #FFFFFF reads 5.3:1, so white type holds over any banner.
+   THE BANNER PHOTOGRAPHS CARRY NO SCRIM (by request, 30 Sep 2026: "remove
+   the shadow from the banner images, keep the image color as it is"). The
+   0.58 black wash that used to sit over every photograph is gone, so the
+   pictures show in their own colours.
+
+   THE COST: that wash was what guaranteed white type at 5.3:1 over ANY
+   banner. Without it, the type's contrast is a property of each photograph
+   again. What holds it now is a text-shadow on the type itself — a tight
+   dark edge plus a soft halo — which darkens only the pixels directly around
+   each glyph, never the picture. It is not a WCAG-measurable guarantee: over
+   a bright patch of a banner, re-check by eye (and re-check whenever a
+   banner image changes).
    ========================================================================== */
 .hero, .hero-media { background: #1A1A1A; }
-.hero-media::after {
-  background: linear-gradient(180deg, rgba(12, 12, 12, 0.58) 0%, rgba(12, 12, 12, 0.58) 70%, rgba(12, 12, 12, 0.78) 100%);
-}
-@media (max-width: 63.999rem) {
-  .hero-media::after { background: linear-gradient(180deg, rgba(12, 12, 12, 0.60) 0%, rgba(12, 12, 12, 0.60) 70%, rgba(12, 12, 12, 0.80) 100%); }
-}
+.hero-media::after { background: none; }
 .hero, .hero-top,
 .hero-top .eyebrow, .hero-top h1, .hero-title, .hero-title .decay,
 .hero-top .lead, .hero-top .hero-lead { color: #FFFFFF; }
+.hero-top .eyebrow, .hero-top h1, .hero-title, .hero-top .lead, .hero-top .hero-lead {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 18px rgba(0, 0, 0, 0.45);
+}
 .hero-rule { background: var(--accent); }
 /* cyan fill, dark label (6.74:1); hover to white */
 .hero .btn-primary { background: var(--accent); border-color: var(--accent); color: #14181B; }
@@ -1375,14 +1383,13 @@ html.foot-reveal .site-foot { position: sticky; bottom: 0; z-index: 0; }
    hero (by request). The banner is `position: sticky; top: 0` and every
    section after it is an opaque layer above it, so the page slides UP OVER
    the banner instead of the banner scrolling away. As it is covered the
-   banner recedes: `.hero-top` scales down a touch and a veil darkens it,
-   over the first `--hero-h` of scroll (its own height, set by site.js).
+   banner recedes: `.hero-top` scales down a touch (the darkening veil that
+   went with it was removed with the scrim, by request), over the first `--hero-h` of scroll (its own height, set by site.js).
 
    `scale` (the individual property) on `.hero-top`, so it composes with
    mDrift's `transform`/opacity on the copy, mWall's on the <img> and gKen's
    `scale` on each slide — four animations, four different elements or
-   properties. The veil is `.hero-top::after`, above the photograph and
-   below the copy (z 2; the copy's .wrap is z 3).
+   properties.
 
    ONLY under `html.hero-reveal`, which site.js sets only while the banner
    fits the viewport. A sticky banner taller than the screen would never
@@ -1392,12 +1399,7 @@ html.foot-reveal .site-foot { position: sticky; bottom: 0; z-index: 0; }
 html.hero-reveal .hero { position: sticky; top: 0; z-index: 0; }
 html.hero-reveal main > :not(.hero) { position: relative; z-index: 1; }
 html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5); }
-.hero-top::after {
-  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: #0C0C0C; opacity: 0;
-}
 @keyframes gHeroBack { to { scale: 0.93; } }
-@keyframes gHeroDim  { to { opacity: 0.55; } }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
     html.hero-reveal .hero-top {
@@ -1406,11 +1408,14 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
       animation-timeline: scroll(root block);
       animation-range: 0px var(--hero-h, 90vh);
     }
-    html.hero-reveal .hero-top::after {
-      animation: gHeroDim linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0px var(--hero-h, 90vh);
-    }
+    /* The darkening veil (gHeroDim) was removed with the scrim, by request:
+       the photograph keeps its own colour while it is being covered too. */
   }
 }
 @media print { html.hero-reveal .hero { position: static; } }
+
+/* About · founder statement: all three paragraphs at one size and colour */
+.g-8-4 .founder-p {
+  font-size: var(--t-lead); line-height: 1.75; color: #3F454A;
+  max-width: 74ch; margin-top: 1.1rem;
+}

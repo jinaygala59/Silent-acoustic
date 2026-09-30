@@ -599,7 +599,12 @@ a dark label and hovers to `--brand` with white. **The hero is the one exception
 dark again** (fifth brief — the banner photographs must not be tinted cyan):
 `rgba(12,12,12,.58)` with white type, 5.3:1 over any photograph, a cyan rule
 and a cyan button with a dark label. That block is the last one in
-`theme.css`. The token names still
+`theme.css`. **Update, 30 Sep 2026: the scrim is GONE, by request** ("remove
+the shadow from the banner images, keep the image color as it is"). The
+photographs show uncovered, the sticky-reveal darkening veil (`gHeroDim`) was
+removed with it, and the white type is held by a `text-shadow` on the hero
+copy instead. That is NOT a contrast guarantee: legibility is a property of
+each banner photograph again, so check by eye whenever a banner changes. The token names still
 say "night" — read them as "the strong band". Walker after this pass: 0
 failures on all ten templates, lowest 5.51:1.
 

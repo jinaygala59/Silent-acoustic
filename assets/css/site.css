@@ -2821,22 +2821,11 @@ hr.rule { border: 0; border-top: 1px solid var(--paper-edge); margin-block: clam
   max-width: 100%; max-height: 100%;
   width: auto; height: auto;
   object-fit: contain; display: block;
-  /* THE LOGOS ARE THE ONLY COLOUR ON THIS SITE THAT IS NOT OURS, and fifty
-     brand palettes at once would shout down a page whose whole scheme is one
-     hue at three exposures. They are desaturated at rest and come back on
-     hover, which also gives the wall something to do without moving.
-
-     Not greyscale(1): several of these are single-colour marks that vanish
-     into a mid-grey smudge when fully desaturated, and a dozen are fine
-     line-drawn crests that were already close to invisible at this size.
-     0.62 keeps enough hue to tell Radio Mirchi's red from Federal Bank's
-     blue while letting the wall read as one texture; 0.82 was tried first
-     and flattened the whole grid to pencil. */
-  filter: grayscale(0.62);
-  opacity: 0.92;
-  transition: filter 260ms var(--ease), opacity 260ms var(--ease);
+  /* THE LOGOS SHOW IN THEIR OWN ORIGINAL COLOURS, by request (30 Sep 2026).
+     They were desaturated (grayscale 0.62, opacity 0.92) and came back on
+     hover, which read as a grey shadow over every mark. No filter, no
+     opacity: each logo is its owner's artwork exactly as supplied. */
 }
-.client:hover img, .client:focus-within img { filter: grayscale(0); opacity: 1; }
 
 .reviews {
   display: grid; gap: clamp(1rem, 2vw, 1.5rem);
