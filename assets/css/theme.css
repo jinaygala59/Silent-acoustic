@@ -1240,6 +1240,22 @@ a.card:active { transform: none; box-shadow: none; }
 }
 .g-vision-more { max-width: 62ch; margin: 1.25rem auto 0; }
 
+/* CAPACITY — the page's other single-statement section, deliberately on the
+   same padding and the same centring as `.g-vision` above so the two read as
+   one shape. It differs in one way that matters: the vision band makes the
+   eyebrow its heading, and this has a real `h2` under a small eyebrow, so it
+   takes `.eyebrow` rather than `.center-eyebrow` (which is the larger, ink
+   treatment for when the eyebrow IS the heading) and only re-centres it. */
+.g-capacity { text-align: center; padding-block: clamp(4.5rem, 8vw, 7rem); }
+.g-capacity .eyebrow { align-items: center; }
+.g-capacity h2 {
+  max-width: 24ch; margin: 1.5rem auto 0;
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem);
+}
+/* 68ch, not `.g-vision-more`'s 62 — this paragraph is half as long again and
+   62 left it as five narrow lines under a wide heading. */
+.g-capacity-body { max-width: 68ch; margin: 1.5rem auto 0; }
+
 
 /* ==========================================================================
    PAGE TRANSITION — the curtain wipe (by request: Motion+'s
