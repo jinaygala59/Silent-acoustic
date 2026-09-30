@@ -967,6 +967,11 @@ a.card:active { transform: none; box-shadow: none; }
 @keyframes gPar    { from { scale: 1.14; } to { scale: 1; } }
 @keyframes gOpen   { from { opacity: 0; translate: 0 -6px; } }
 @keyframes gStrip  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+/* 1.06 is not a new number: it is exactly what the pointer settles a tile
+   photograph on in block 7. Touch gets the same value from a different
+   trigger — see block 8. */
+@keyframes gSettle { from { scale: 1.06; } to { scale: 1; } }
+@keyframes gNudge  { from { translate: -4px 0; } to { translate: 0 0; } }
 
 @media (prefers-reduced-motion: no-preference) {
 
@@ -1066,6 +1071,64 @@ a.card:active { transform: none; box-shadow: none; }
   /* why-list rows nudge right */
   .g-checks a { transition: translate 260ms ease; }
   .g-checks a:hover { translate: 4px 0; }
+}
+
+/* 8 · THE SAME MOVES ON TOUCH, TRIGGERED BY SCROLL INSTEAD OF HOVER.
+   Everything in block 7 is behind `(hover: hover) and (pointer: fine)`, so a
+   phone sees none of it. It cannot simply be ungated: an unscoped `:hover`
+   LATCHES on touch — a tapped tile stays lifted until you tap elsewhere,
+   which is the whole reason the reset at the end of motion.css exists. So
+   the VALUES are kept and only the TRIGGER changes; 1.06 and 4px below are
+   the same numbers the pointer uses above.
+
+   Two clipping problems, both solved the way CLAUDE.md prescribes:
+
+   - `.g-pj-img` and `.g-tile-img` are both `overflow: hidden`, so `view()`
+     cannot resolve on the photograph itself. Each borrows a named timeline
+     published OUTSIDE its clip.
+   - the product tiles are additionally inside the carousel's horizontal
+     SCROLL CONTAINER, where a timeline does not fail loudly but FREEZES at
+     whatever constant it first resolved to. They therefore take `--box`,
+     which `.g-products` publishes outside the scroller — so all ten settle
+     on the section's own pass, not on a frozen clock.
+
+   Fail-safe, like the rest: every from-state here is a visible photograph at
+   a slight zoom, so a timeline that never resolves leaves the picture on
+   screen rather than blank.
+
+   SIX OF THE TEN PRODUCT TILES DO NOT SETTLE, AND THAT IS CORRECT. The
+   cut-out samples keep `.surface.is-cut > img { animation: none }` from
+   motion.css, which outranks the rule below — a `contain` image inside
+   padding has no overflow to spend, so a scale pushes the sample past its
+   mount and the surface clips it. Only the four real photographs move. Do
+   not raise the specificity here to "fix" the other six. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @media (hover: none), (pointer: coarse) {
+
+      /* The work grid is a plain grid — nothing clips `.g-pj` itself, so it
+         can publish its own timeline and each project settles on its own
+         pass rather than all nine together. */
+      .g-pj { view-timeline-name: --pj; view-timeline-axis: block; }
+      .g-pj-img > img {
+        animation: gSettle linear both;
+        animation-timeline: --pj;
+        animation-range: entry 0% cover 45%;
+      }
+
+      .g-tile-img > img {
+        animation: gSettle linear both;
+        animation-timeline: --box;
+        animation-range: entry 0% cover 50%;
+      }
+
+      .g-checks a {
+        animation: gNudge linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 35%;
+      }
+    }
+  }
 }
 
 /* OUR VISION — a centred statement between two bands */
