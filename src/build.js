@@ -10,6 +10,42 @@ const { SITE, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECT
 const ROOT = path.join(__dirname, '..');
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
+/* ASSET FINGERPRINTS — why the stylesheets carry `?v=`.
+   -------------------------------------------------------------------------
+   vercel.json serves /assets/(css|js)/* with `max-age=2592000` and the
+   filenames never change, so a browser that has been here before keeps its
+   copy of site.css and site.js for THIRTY DAYS and never asks whether there
+   is a newer one. The HTML revalidates every request (`max-age=0`), so the
+   page is always current — and then it references the same five URLs the
+   browser already has, and the reader sees the new markup wearing the old
+   stylesheet. That is not a theoretical risk: it is why a design change can
+   ship, be verified live with curl, and still not appear in the browser of
+   anyone who visited the day before.
+
+   The query string is the version. It changes only when the file's bytes
+   change, so an edited stylesheet is fetched immediately and an untouched
+   one keeps the full thirty days — the caching stays as aggressive as it was
+   and stops being wrong. Eight hex characters of sha-256 is ample: these are
+   cache keys, not signatures.
+
+   A missing file yields no `?v=` rather than throwing, because a stale asset
+   is a far smaller problem than a build that will not run. */
+const fingerprints = new Map();
+const asset = rel => {
+  if (!fingerprints.has(rel)) {
+    let v = '';
+    try {
+      v = require('crypto').createHash('sha256')
+        .update(fs.readFileSync(path.join(ROOT, rel)))
+        .digest('hex').slice(0, 8);
+    } catch (e) {
+      console.warn('  ! no fingerprint for ' + rel + ' (' + e.code + ') — serving it unversioned');
+    }
+    fingerprints.set(rel, v ? rel + '?v=' + v : rel);
+  }
+  return fingerprints.get(rel);
+};
+
 /* Type.
    The display face used to be a high-contrast editorial serif — considered,
    but it read as a fashion brand, not a fabrication shop. Archivo is a
@@ -205,9 +241,9 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
-<link rel="stylesheet" href="${up}assets/css/site.css">
-<link rel="stylesheet" href="${up}assets/css/motion.css">
-<link rel="stylesheet" href="${up}assets/css/theme.css">
+<link rel="stylesheet" href="${up}${asset('assets/css/site.css')}">
+<link rel="stylesheet" href="${up}${asset('assets/css/motion.css')}">
+<link rel="stylesheet" href="${up}${asset('assets/css/theme.css')}">
 <link rel="icon" href="${up}assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="${up}assets/img/favicon.png">
 <meta property="og:image" content="${SITE.url}/assets/img/logo-full.png">
@@ -244,8 +280,8 @@ ${footer(depth)}
     </svg>
   </a>
 </div>
-<script src="${up}assets/js/motion.js" defer></script>
-<script src="${up}assets/js/site.js" defer></script>
+<script src="${up}${asset('assets/js/motion.js')}" defer></script>
+<script src="${up}${asset('assets/js/site.js')}" defer></script>
 </body>
 </html>`;
   const out = path.join(ROOT, file);

@@ -52,6 +52,29 @@ ten and not nineteen because the pin scales at 200px of scroll per card
 
 ## Non-obvious things that will bite you
 
+**THE STYLESHEETS CARRY `?v=` AND THEY HAVE TO.** `vercel.json` serves
+`/assets/(css|js)/*` with `max-age=2592000` and the filenames never change,
+so a browser that has been here before keeps its copy of `site.css` and
+`site.js` for **thirty days** and never asks whether there is a newer one.
+The HTML revalidates every request (`max-age=0`), so the page itself is
+always current — and then it points at the same five URLs the browser
+already has, and the reader gets new markup wearing the old stylesheet.
+
+This is not theoretical. A restyle, a retimed banner and a new homepage
+section all shipped, verified live with `curl`, and still did not appear in
+the browser of someone who had visited the day before. `curl` has no cache,
+which is exactly why checking with it cannot catch this.
+
+`asset()` at the top of `src/build.js` appends eight hex characters of the
+file's own sha-256 to each of the five references in the shell. The query
+changes only when the bytes change, so an edited stylesheet is fetched at
+once and an untouched one keeps the full thirty days — the caching stays as
+aggressive as it was and stops being wrong. **Add a stylesheet or a script
+to the shell and it must go through `asset()` too**; a bare `href` there
+silently reintroduces the thirty-day staleness for that one file.
+`_iotest.html` and `_reducetest.html` reference their stripped copies
+unversioned, which is correct — they are gitignored fixtures and never ship.
+
 **The motion vocabulary is eight words, and two of them were dead.** `fade`,
 `rise`, `reveal`, `frame`, `open`, `line`, `tile` and the `slide-l` / `slide-r` pair.
 `open` (added 30 Sep 2026, a port of a framer-motion `useScroll` clip reveal)
