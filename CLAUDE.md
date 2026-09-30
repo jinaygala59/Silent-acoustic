@@ -267,9 +267,18 @@ string rather than a ragged final row if that ever stops holding — make the
 breakage loud, do not trim to fit.
 
 Then `clientWall()` — the fifty client logos the client already publishes on
-their own homepage, as a flat grid of white tiles. It is
-deliberately **not** a marquee: a marquee of client names was on this page
-once (`.ticker`) and was removed for duplicating the gallery below it. See the
+their own homepage, as white tiles. **As of 30 Sep 2026 it is a
+scroll-linked ticker, by request** (a port of Motion+'s `<Ticker
+offset={scrollY}>`): `clientRows()` in `src/pages.js` splits the fifty into
+three full-bleed rows that slide sideways with the scroll, alternate rows the
+other way, and stop when the scroll stops. It is not a looping marquee, and
+it is logos, not the removed `.ticker` of project names. Each row carries a
+duplicate set (`data-dup`, aria-hidden, empty alt) so a wide screen never
+runs out of plates. Without scroll timelines or with Reduce Motion, rows and
+tracks are `display: contents`, the duplicates are removed, and it is the
+flat auto-fit grid again, so no logo is ever left clipped off a strip that
+isn't moving. Rows are `overflow: clip`, not `hidden`, so the view() on the
+track is not frozen. CSS is beside `.g-clients` in `theme.css`. See the
 `.client-wall` block in `site.css` for why the tiles are `--paper-hi` when
 nothing else on the site is.
 
@@ -621,6 +630,18 @@ another handler already `preventDefault`ed. **A cross-document View
 Transition was tried first and removed** — Chrome/Edge 126+ and Safari 18.2+
 only, and skipped under the OS reduced-motion setting, which is why it was
 reported as not working.
+
+**The same curtain wipe plays on each homepage product tile** (asked for
+"in the products on home page"). Each `.g-tile` carries a `.g-curtain` span;
+as a tile comes into view — down the page or sideways through the carousel —
+the panel sweeps in from the right to cover it, the photograph and caption
+switch on at the midpoint, and the panel carries on left (`gTileCurtain` /
+`gTileSwap`, TILE CURTAIN block in `theme.css`), staggered 110ms along a row
+by `--wd`. **It is triggered by an IntersectionObserver in `site.js`, not a
+`view()` timeline, because the tiles live inside the carousel's horizontal
+scroller** — the frozen-clock trap. Photographs are hidden only under
+`.wipe-armed`, which only that script sets and removes again if the observer
+never reports.
 
 Everything from here down to *Content provenance* describes the Workshop
 direction that `theme.css` sits on top of. The mechanisms (motion, `--box`,

@@ -913,6 +913,37 @@ a.card:active { transform: none; box-shadow: none; }
 }
 .g-clients .client-wall { margin-top: clamp(2rem, 4vw, 3rem); }
 
+/* CLIENT TICKER — see `clientRows()` in src/pages.js. The default below is
+   the static grid: rows and tracks dissolve into `.client-wall`'s auto-fit
+   grid and the duplicate plates are removed. Only where scroll timelines
+   exist and motion is welcome do the rows become full-bleed strips, and only
+   there do they move. A row is `overflow: clip`, NOT `hidden`: `hidden`
+   would make it a scroll container and freeze the view() timeline on the
+   track inside it (the frozen-clock note in CLAUDE.md). */
+.client-row, .client-track { display: contents; }
+.client-track { list-style: none; margin: 0; padding: 0; }
+.client-track > [data-dup] { display: none; }
+@keyframes gTick    { from { translate: 0 0; }    to { translate: -25% 0; } }
+@keyframes gTickRev { from { translate: -25% 0; } to { translate: 0 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .client-rows { display: flex; flex-direction: column; gap: clamp(0.5rem, 1.2vw, 0.875rem); }
+    .client-row {
+      display: block; overflow: clip;
+      margin-inline: calc(50% - 50vw);
+    }
+    .client-track {
+      display: flex; gap: clamp(0.5rem, 1.2vw, 0.875rem); width: max-content;
+      animation: gTick linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .client-row.is-rev .client-track { animation-name: gTickRev; }
+    .client-track > .client { flex: 0 0 clamp(8.5rem, 7rem + 5vw, 12rem); }
+    .client-track > [data-dup] { display: flex; }
+  }
+}
+
 /* ==========================================================================
    MOTION ADDED WITH THE ARCHITECTURAL LAYOUT (by request: "add animations").
    Everything here obeys the rules the rest of the site's motion keeps:

@@ -67,6 +67,33 @@ const visionBand = () => visionParas.length ? `
 
    Multiplex & Cinema is the one type left out, on one completed project. It
    is in the gallery, and the link below goes there. */
+/* THE CLIENT LOGOS AS A SCROLL TICKER (by request, 30 Sep 2026 — a port of
+   Motion+'s <Ticker offset={scrollY}> / {invertScroll} pattern). The fifty
+   logos split into three rows; as the section passes, each row slides
+   sideways with the scroll, alternate rows the other way. It is scroll-
+   LINKED, not a looping marquee: stop scrolling and the rows stop.
+
+   Each row carries its logos twice so a full-bleed row can never run out of
+   plates on a wide screen; the second copy is aria-hidden with empty alts,
+   so a screen reader hears fifty names once. The motion and the full-bleed
+   rows exist ONLY in theme.css's scroll-timeline block. Without it (Firefox,
+   Reduce Motion) `.client-row` and `.client-track` are `display: contents`,
+   the duplicates are `display: none`, and the fifty fall back into the one
+   auto-fit `.client-wall` grid they always were — nothing ever sits clipped
+   off the edge of a strip that is not moving. */
+const clientRows = () => {
+  const ROWS = 3, per = Math.ceil(CLIENTS.length / ROWS);
+  const plate = (c, dup) => `<li class="client"${dup ? ' aria-hidden="true" data-dup' : ''}><img src="assets/img/clients/${c.s}.webp" alt="${dup ? '' : esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`;
+  return `<div class="client-wall client-rows" data-anim="fade">
+      ${Array.from({ length: ROWS }, (_, r) => CLIENTS.slice(r * per, (r + 1) * per)).map((row, r) => `<div class="client-row${r % 2 ? ' is-rev' : ''}">
+        <ul class="client-track">
+          ${row.map(c => plate(c, false)).join('\n          ')}
+          ${row.map(c => plate(c, true)).join('\n          ')}
+        </ul>
+      </div>`).join('\n      ')}
+    </div>`;
+};
+
 const workBand = () => {
   const counts = {};
   PROJECTS.forEach(pr => { counts[pr.sec] = (counts[pr.sec] || 0) + 1; });
@@ -357,9 +384,7 @@ ${workBand()}
 <section class="light g-clients" aria-labelledby="clients-home-h">
   <div class="wrap">
     <h2 id="clients-home-h" class="eyebrow center-eyebrow" data-anim="fade">${CLIENTS.length} clients</h2>
-    <ul class="client-wall" data-stagger>
-      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
-    </ul>
+    ${clientRows()}
   </div>
 </section>`
 }));
@@ -664,9 +689,7 @@ ${visionBand()}
 <section class="night g-logos" aria-labelledby="clients-h">
   <div class="wrap">
     <h2 id="clients-h" class="eyebrow center-eyebrow on-night" data-anim="fade">${CLIENTS.length} clients</h2>
-    <ul class="client-wall" data-stagger>
-      ${CLIENTS.map(c => `<li class="client" data-anim="fade"><img src="assets/img/clients/${c.s}.webp" alt="${esc(c.n)}" width="402" height="162" loading="lazy" decoding="async"></li>`).join('\n      ')}
-    </ul>
+    ${clientRows()}
   </div>
 </section>
 
