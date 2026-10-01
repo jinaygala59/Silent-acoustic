@@ -629,6 +629,79 @@
     /* Native image dragging would otherwise take over from the first move. */
     track.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
+    /* AUTOPLAY (by request: "products to slide automatically"). One page every
+       AUTO_MS, wrapping from the last page back to the first. It holds while
+       anything says a reader is busy with it: pointer over it, keyboard focus
+       inside it, a drag or touch in progress, the row scrolled off screen, or
+       the tab hidden. Any manual move restarts the count, so it never jumps
+       the moment after someone has chosen a page.
+
+       The pause button is not optional: content that moves by itself for more
+       than five seconds needs a way to stop it (WCAG 2.2.2), and hover-to-
+       pause does nothing on a phone. Once paused with the button it stays
+       paused. Reduce Motion: no autoplay at all, and no button, since there
+       is nothing to stop. */
+    if (!reduce && pages() > 1) {
+      var AUTO_MS = 4000;
+      var timer = 0, stopped = false, hover = false, focusIn = false,
+          touching = false, onScreen = true;
+
+      var playBtn = document.createElement('button');
+      playBtn.type = 'button';
+      playBtn.className = 'g-car-btn g-car-play';
+      ctl.appendChild(playBtn);
+      function drawPlay() {
+        playBtn.textContent = '';
+        playBtn.appendChild(arrow(stopped ? 'M7 4 L15 10 L7 16 Z' : 'M7 4 V16 M13 4 V16'));
+        playBtn.setAttribute('aria-label', stopped ? 'Play automatic sliding' : 'Pause automatic sliding');
+        playBtn.setAttribute('aria-pressed', stopped ? 'true' : 'false');
+      }
+
+      function held() {
+        return stopped || hover || focusIn || touching || dragging || !onScreen || document.hidden;
+      }
+      function arm() {
+        window.clearTimeout(timer);
+        if (held()) { return; }
+        timer = window.setTimeout(function () {
+          if (held()) { return; }
+          var i = current(), n = pages();
+          var nextI = i >= n - 1 ? 0 : i + 1;
+          var x = targetFor(nextI);
+          /* No live-region announcement here: a screen reader being told
+             "Page 2 of 4" every four seconds is noise it did not ask for. */
+          if (smooth) { track.scrollTo({ left: x, behavior: 'smooth' }); }
+          else { track.scrollLeft = x; }
+          arm();
+        }, AUTO_MS);
+      }
+
+      playBtn.addEventListener('click', function () {
+        stopped = !stopped;
+        drawPlay();
+        if (stopped) { window.clearTimeout(timer); } else { arm(); }
+      });
+      car.addEventListener('mouseenter', function () { hover = true;  arm(); });
+      car.addEventListener('mouseleave', function () { hover = false; arm(); });
+      car.addEventListener('focusin',  function () { focusIn = true; arm(); });
+      car.addEventListener('focusout', function (e) {
+        if (!car.contains(e.relatedTarget)) { focusIn = false; arm(); }
+      });
+      track.addEventListener('touchstart', function () { touching = true; arm(); }, { passive: true });
+      track.addEventListener('touchend',   function () { touching = false; arm(); }, { passive: true });
+      track.addEventListener('pointerup',  arm);
+      [prev, next, dots].forEach(function (el) { el.addEventListener('click', arm); });
+      document.addEventListener('visibilitychange', arm);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          onScreen = es[0].isIntersecting; arm();
+        }, { threshold: 0.35 }).observe(car);
+      }
+
+      drawPlay();
+      arm();
+    }
+
     sync();
   });
 

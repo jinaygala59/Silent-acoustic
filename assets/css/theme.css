@@ -525,6 +525,8 @@ a.card:active { transform: none; box-shadow: none; }
   background: #FFFFFF; color: #5A646E; cursor: default;   /* 6.03:1 */
 }
 .g-car-btn svg { width: 1.125rem; height: 1.125rem; display: block; }
+/* the autoplay pause/play toggle (site.js) sits apart from the paging arrows */
+.g-car-play { margin-left: clamp(0.25rem, 1.5vw, 1rem); }
 /* Colour-only, so it is safe outside the pointer gate — the touch-hover reset
    at the end of motion.css neutralises `transform` and leaves colour alone. */
 .g-car-btn:not(:disabled):hover { background: var(--brand); color: #FFFFFF; }  /* 7.72:1 */
@@ -1551,4 +1553,11 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
 .foot-certs { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
 @media (max-width: 55.999rem) { .foot-certs { grid-template-columns: repeat(2, minmax(0, 11rem)); } }
 .foot-certs li { background: #FFFFFF; padding: 0.4rem; }
-.foot-certs img { display: block; width: 100%; height: auto; }
+/* flex, not grid: in a grid the implicit row is auto-sized, so the image's
+   max-height: 100% had nothing definite to resolve against and the round
+   badge spilled out of its plate on phones. */
+.foot-certs li {
+  display: flex; align-items: center; justify-content: center;
+  height: 7.5rem; box-sizing: border-box;
+}
+.foot-certs img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }

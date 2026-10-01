@@ -780,6 +780,16 @@ mWall and gKen. Gated by `html.hero-reveal`, set only while the banner fits
 the viewport (it does on desktop and on a 375×812 phone); a taller banner
 would never show its button. No script: ordinary banner.
 
+**Footer · Certified column** (1 Oct 2026, after the reference site's
+"Certified" column). The client's two certificates, supplied directly as
+images: `assets/img/certs/arai.webp` and `assets/img/certs/cii-greenpro.webp`
+— trimmed of their white margins, each on a white plate (the artwork is
+drawn on white). Both go through `asset()`. Alt text is read off the badges.
+The plates are `display: flex`, not grid: in a grid the auto-sized row gave
+the image's `max-height: 100%` nothing to resolve against and the round
+badge spilled out of its plate on phones. Six footer columns at >=56rem;
+the two plates sit side by side below that.
+
 Everything from here down to *Content provenance* describes the Workshop
 direction that `theme.css` sits on top of. The mechanisms (motion, `--box`,
 NRC, `.is-cut`, provenance) all still hold; the colour, type and ground notes

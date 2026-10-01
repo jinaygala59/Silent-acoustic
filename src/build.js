@@ -234,8 +234,8 @@ function footer(depth) {
         <div data-anim="fade">
           <h2 class="foot-h">Certified</h2>
           <ul class="foot-certs">
-            <li><img src="${up}${asset('assets/img/certs/arai.webp')}" alt="ARAI certification" width="500" height="280" loading="lazy" decoding="async"></li>
-            <li><img src="${up}${asset('assets/img/certs/cii-greenpro.webp')}" alt="CII GreenPro Certified Green Product, Boards and Panels 2026" width="500" height="280" loading="lazy" decoding="async"></li>
+            <li><img src="${up}${asset('assets/img/certs/arai.webp')}" alt="ARAI certification" width="374" height="287" loading="lazy" decoding="async"></li>
+            <li><img src="${up}${asset('assets/img/certs/cii-greenpro.webp')}" alt="CII GreenPro Certified Green Product, Boards and Panels 2026" width="282" height="282" loading="lazy" decoding="async"></li>
           </ul>
         </div>
       </div>
