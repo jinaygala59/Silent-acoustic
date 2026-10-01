@@ -904,15 +904,19 @@ ${gHead({
           <div class="full stack stack-m">
             <button class="btn btn-primary" type="submit" style="justify-content:center">Send enquiry ${ARROW}</button>
             <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
-            <p class="form-note">We reply within one working day. Prefer to talk? Call or WhatsApp <a href="tel:${SITE.phoneHref}" style="color:inherit">${SITE.phone}</a>.</p>
+            <p class="form-note">We reply within one working day. Prefer to talk? Call <a href="tel:${SITE.phoneHref}" style="color:inherit">${SITE.phone}</a> or WhatsApp <a href="${SITE.waHref}" target="_blank" rel="noopener" style="color:inherit">${SITE.wa}</a>.</p>
           </div>
         </form>
       </div>
 
       <div class="g-offices" data-stagger>
         <div class="g-office" data-anim="fade">
-          <p class="eyebrow">Phone &amp; WhatsApp</p>
+          <p class="eyebrow">Phone</p>
           <a class="v" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
+        </div>
+        <div class="g-office" data-anim="fade">
+          <p class="eyebrow">WhatsApp chat</p>
+          <a class="v" href="${SITE.waHref}" target="_blank" rel="noopener">${SITE.wa}</a>
         </div>
         <div class="g-office" data-anim="fade">
           <p class="eyebrow">General enquiries</p>
@@ -927,7 +931,7 @@ ${gHead({
           <span class="v">Mumbai, Maharashtra</span>
         </div>
         <div class="row" data-anim="fade">
-          <a class="btn btn-primary" href="${SITE.waHref}" rel="noopener">WhatsApp us ${ARROW}</a>
+          <a class="btn btn-primary" href="${SITE.waHref}" target="_blank" rel="noopener">WhatsApp us ${ARROW}</a>
           <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">Call now</a>
         </div>
       </div>

@@ -9,6 +9,9 @@ const SITE = {
   tagline: 'Acoustic design, treatment and soundproofing',
   phone: '+91 81084 00566',
   phoneHref: '+918108400566',
+  /* WhatsApp is a DIFFERENT number from the phone line (confirmed 1 Oct
+     2026: 90044 08289). Never label the phone number as WhatsApp. */
+  wa: '+91 90044 08289',
   waHref: 'https://wa.me/919004408289',
   email: 'info@silenceacoustic.com',
   emailProjects: 'projects@silenceacoustic.com',

@@ -180,17 +180,18 @@ function header(active, depth) {
 }
 
 /* Social icons for the footer — simple monochrome glyphs drawn here on a
-   24px grid, in currentColor, so they take the footer's own text colours.
+   24px grid, in currentColor (white), on a disc of each network's own
+   colour (by request: "colorful icons"; the colours are in theme.css).
    They are pictograms of each network, not the networks' brand artwork. */
 const SOCIAL_ICON = {
   facebook:  '<path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21z"/>',
   instagram: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.9" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor"/>',
   linkedin:  '<rect x="4" y="9" width="3.4" height="11" fill="currentColor"/><circle cx="5.7" cy="5.6" r="1.95" fill="currentColor"/><path fill="currentColor" d="M10 9h3.2v1.6c.5-.9 1.7-1.9 3.6-1.9 3.3 0 3.7 2.2 3.7 4.9V20h-3.4v-5.6c0-1.4 0-3-1.9-3s-2.2 1.4-2.2 2.9V20H10z"/>',
-  youtube:   '<rect x="2.5" y="5.5" width="19" height="13" rx="3.5" fill="currentColor"/><path d="M10 9v6l5.2-3z" fill="var(--night, #262626)"/>',
+  youtube:   '<rect x="2.5" y="5.5" width="19" height="13" rx="3.5" fill="currentColor"/><path d="M10 9v6l5.2-3z" fill="var(--tri, #FF0000)"/>',
   x:         '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 4.5l14 15M19 4.5l-14 15"/>',
 };
 const socialRow = () => `<ul class="foot-social" aria-label="${SITE.name} on social media">
-            ${SITE.social.map(s => `<li><a href="${s.href}" target="_blank" rel="noopener" aria-label="${s.name} (opens in a new tab)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">${SOCIAL_ICON[s.id] || ''}</svg></a></li>`).join('\n            ')}
+            ${SITE.social.map(s => `<li><a data-net="${s.id}" href="${s.href}" target="_blank" rel="noopener" aria-label="${s.name} (opens in a new tab)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">${SOCIAL_ICON[s.id] || ''}</svg></a></li>`).join('\n            ')}
           </ul>`;
 
 function footer(depth) {
@@ -220,11 +221,22 @@ function footer(depth) {
           <h2 class="foot-h">Get in touch</h2>
           <ul class="foot-list">
             <li><a href="tel:${SITE.phoneHref}">${SITE.phone}</a></li>
+            <li><a href="${SITE.waHref}" target="_blank" rel="noopener">WhatsApp ${SITE.wa}</a></li>
             <li><a href="mailto:${SITE.email}">${SITE.email}</a></li>
             <li><a href="mailto:${SITE.emailProjects}">${SITE.emailProjects}</a></li>
             <li style="margin-top:.4rem;line-height:1.5">${SITE.addrShort}</li>
           </ul>
           ${socialRow()}
+        </div>
+        <!-- CERTIFIED. The client's own two certificates, supplied directly
+             (1 Oct 2026). Alt text is read off each badge. Both images go
+             through asset() like every other photograph. -->
+        <div data-anim="fade">
+          <h2 class="foot-h">Certified</h2>
+          <ul class="foot-certs">
+            <li><img src="${up}${asset('assets/img/certs/arai.webp')}" alt="ARAI certification" width="500" height="280" loading="lazy" decoding="async"></li>
+            <li><img src="${up}${asset('assets/img/certs/cii-greenpro.webp')}" alt="CII GreenPro Certified Green Product, Boards and Panels 2026" width="500" height="280" loading="lazy" decoding="async"></li>
+          </ul>
         </div>
       </div>
       <div class="foot-bar">

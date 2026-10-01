@@ -866,17 +866,25 @@ a.card:active { transform: none; box-shadow: none; }
 .site-foot .brand { background: #FFFFFF; padding: 0.85rem 1.1rem; }
 .site-foot .brand-logo-full { height: 2.6rem; }
 .site-foot :focus-visible { outline-color: var(--on-night); }
-/* footer social icons — colour feedback only on hover (no transform: this
-   file sorts after the touch-hover reset). 2.5rem, so all five fit one row. */
+/* footer social icons — each on a disc of its network's own colour, glyph
+   in white (by request). White on every disc is >= 4.5:1 except YouTube red
+   (4.0:1), which still clears the 3:1 a non-text graphic needs. X is black,
+   so it carries a light ring to stay visible on the charcoal footer.
+   Hover is a brightness lift only — no transform: this file sorts after the
+   touch-hover reset. 2.5rem, so all five fit one row. */
 .foot-social { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .foot-social a {
   display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
-  border: 1px solid var(--night-edge); border-radius: 50%;
-  color: var(--on-night-mute);
-  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+  border-radius: 50%; color: #FFFFFF; background: var(--net, #444);
+  transition: filter 200ms ease, box-shadow 200ms ease;
 }
-.foot-social a:hover { color: #14181B; background-color: var(--accent); border-color: var(--accent); }
-.foot-social a:hover svg path[fill^="var(--night"] { fill: var(--accent); }
+.foot-social a[data-net="facebook"]  { --net: #1877F2; }
+.foot-social a[data-net="instagram"] { background: radial-gradient(circle at 30% 107%, #FDF497 0%, #FDF497 5%, #FD5949 45%, #D6249F 60%, #285AEB 90%); }
+.foot-social a[data-net="linkedin"]  { --net: #0A66C2; }
+.foot-social a[data-net="youtube"]   { --net: #FF0000; --tri: #FF0000; }
+.foot-social a[data-net="x"]         { --net: #000000; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+.foot-social a:hover { filter: brightness(1.15); }
+.foot-social a[data-net="x"]:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7); }
 
 /* hover veils over photographs: cyan, dark type (5.7:1 over a black pixel) */
 .g-pj-over { background: rgba(28, 171, 222, 0.92); color: var(--on-night); }
@@ -1534,3 +1542,13 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
 .g-pj-rule { background: #FFFFFF; }
 .g-pj-btn  { background: #FFFFFF; color: #14181B; }
 .g-plus    { background: rgba(26, 26, 26, 0.55); color: #FFFFFF; }
+
+/* Footer · Certified column — the two certificate badges, each on a white
+   plate (their artwork is drawn on white) like the logo above them. */
+@media (min-width: 56rem) {
+  .foot-grid { grid-template-columns: 1.2fr 1fr 1fr 0.8fr 1.3fr 1.05fr; }
+}
+.foot-certs { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+@media (max-width: 55.999rem) { .foot-certs { grid-template-columns: repeat(2, minmax(0, 11rem)); } }
+.foot-certs li { background: #FFFFFF; padding: 0.4rem; }
+.foot-certs img { display: block; width: 100%; height: auto; }
