@@ -593,7 +593,8 @@ What changed underneath, so the notes below can be read correctly:
 brief, same day): hero (headline + one button; no lead, no stat rail, no
 `.mat-rule`) → `.g-intro` (founder's first paragraph and the four
 `SITE.stats` over a photograph on the right half) → `.g-products` (the ten
-`railPicks()` as photograph tiles, 5-up) → `.g-why` (the ten room types with
+`railPicks()` as photograph tiles in a snap carousel, 3-up on desktop) →
+`.g-why` (the ten room types with
 project counts, as a two-column check list) → `.night.g-band` (three columns:
 the two diptych paragraphs and the products lead, all client copy, with icons
 drawn here) → `.g-work` (`workBand()`, now a plain 3-up grid with a hover veil;

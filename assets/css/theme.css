@@ -486,8 +486,16 @@ a.card:active { transform: none; box-shadow: none; }
 }
 .g-tiles.g-car-track::-webkit-scrollbar { display: none; }
 .g-car-track > .g-tile { scroll-snap-align: start; min-width: 0; }
+/* 2 / 3 / 3. It was 2 / 3 / 5; desktop came down to three by request
+   ("increase the size and 3 images in 1 row"), which is the only edit that
+   change needs — the column width, the arrows' page size and the dot count
+   all read --car-n. Ten products over three is four pages, the last of them
+   short, which targetFor() in site.js already clamps so the track never
+   scrolls past its end and leaves a gap. The 64rem step is kept rather than
+   deleted: it states the desktop count instead of leaving it to be inferred
+   from the tablet rule, which is where anyone will look to change it. */
 @media (min-width: 40rem) { .g-tiles.g-car-track { --car-n: 3; } }
-@media (min-width: 64rem) { .g-tiles.g-car-track { --car-n: 5; } }
+@media (min-width: 64rem) { .g-tiles.g-car-track { --car-n: 3; } }
 
 /* While a pointer drag is in progress the snap is suspended — otherwise the
    browser fights every mousemove by snapping back to the nearest tile. */

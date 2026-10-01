@@ -399,9 +399,9 @@ ${workBand()}
 
 <!-- CLIENT LOGOS — CLIENTS, as on the client's own homepage. A count and
      nothing else is said about them (see the provenance rule). -->
-<section class="light g-clients" aria-labelledby="clients-home-h">
+<section class="night g-clients" aria-labelledby="clients-home-h">
   <div class="wrap">
-    <h2 id="clients-home-h" class="eyebrow center-eyebrow clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
+    <h2 id="clients-home-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
     ${clientRows()}
   </div>
 </section>`
