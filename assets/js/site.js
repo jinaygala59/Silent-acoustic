@@ -631,19 +631,23 @@
 
     /* AUTOPLAY (by request: "products to slide automatically"). One page every
        AUTO_MS, wrapping from the last page back to the first. It holds while
-       anything says a reader is busy with it: pointer over it, keyboard focus
-       inside it, a drag or touch in progress, the row scrolled off screen, or
-       the tab hidden. Any manual move restarts the count, so it never jumps
-       the moment after someone has chosen a page.
+       keyboard focus is inside it, a drag or touch is in progress, the row is
+       scrolled off screen, or the tab is hidden. Any manual move restarts the
+       count, so it never jumps the moment after someone has chosen a page.
+
+       It does NOT pause on mouse hover. It did, and it was reported as "not
+       moving automatically": anyone watching it with the pointer resting on
+       the row saw it stand still. The pause button is the stop control.
 
        The pause button is not optional: content that moves by itself for more
        than five seconds needs a way to stop it (WCAG 2.2.2), and hover-to-
        pause does nothing on a phone. Once paused with the button it stays
-       paused. Reduce Motion: no autoplay at all, and no button, since there
-       is nothing to stop. */
-    if (!reduce && pages() > 1) {
+       paused. Reduce Motion: it still advances, but the page is swapped in
+       place (`behavior: 'auto'`) rather than travelling — a change of
+       content, not motion — and the button is there to stop it. */
+    if (pages() > 1) {
       var AUTO_MS = 4000;
-      var timer = 0, stopped = false, hover = false, focusIn = false,
+      var timer = 0, stopped = false, focusIn = false,
           touching = false, onScreen = true;
 
       var playBtn = document.createElement('button');
@@ -658,7 +662,7 @@
       }
 
       function held() {
-        return stopped || hover || focusIn || touching || dragging || !onScreen || document.hidden;
+        return stopped || focusIn || touching || dragging || !onScreen || document.hidden;
       }
       function arm() {
         window.clearTimeout(timer);
@@ -670,7 +674,7 @@
           var x = targetFor(nextI);
           /* No live-region announcement here: a screen reader being told
              "Page 2 of 4" every four seconds is noise it did not ask for. */
-          if (smooth) { track.scrollTo({ left: x, behavior: 'smooth' }); }
+          if (smooth) { track.scrollTo({ left: x, behavior: reduce ? 'auto' : 'smooth' }); }
           else { track.scrollLeft = x; }
           arm();
         }, AUTO_MS);
@@ -681,9 +685,15 @@
         drawPlay();
         if (stopped) { window.clearTimeout(timer); } else { arm(); }
       });
-      car.addEventListener('mouseenter', function () { hover = true;  arm(); });
-      car.addEventListener('mouseleave', function () { hover = false; arm(); });
-      car.addEventListener('focusin',  function () { focusIn = true; arm(); });
+      /* KEYBOARD focus only. A mouse click on an arrow or a dot also leaves
+         focus on that button, and counting that held the row still for good
+         after the first click. `:focus-visible` is the browser's own test
+         for "this focus came from the keyboard". */
+      car.addEventListener('focusin', function (e) {
+        var kb = true;
+        try { kb = e.target.matches(':focus-visible'); } catch (err) {}
+        focusIn = kb; arm();
+      });
       car.addEventListener('focusout', function (e) {
         if (!car.contains(e.relatedTarget)) { focusIn = false; arm(); }
       });
