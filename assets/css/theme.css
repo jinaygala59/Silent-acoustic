@@ -902,10 +902,16 @@ a.card:active { transform: none; box-shadow: none; }
    so it carries a light ring to stay visible on the charcoal footer.
    Hover is a brightness lift only — no transform: this file sorts after the
    touch-hover reset. 2.5rem, so all five fit one row. */
-.foot-social { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+/* ONE LINE, always (by request). The Certified column narrowed this column
+   and the fifth icon wrapped. Each disc is a share of the row, at most
+   2.75rem (44px, the comfortable tap target), so where five do not fit at
+   full size they shrink together instead of one dropping to a second line.
+   The glyph scales with the disc. */
+.foot-social { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: nowrap; gap: 0.35rem; }
+.foot-social li { flex: 0 1 2.75rem; min-width: 0; }
+.foot-social svg { width: 46%; height: 46%; }
 .foot-social a {
-  /* 2.75rem = 44px, the minimum comfortable tap target (was 40px). */
-  display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center; width: 100%; aspect-ratio: 1;
   border-radius: 50%; color: #FFFFFF; background: var(--net, #444);
   transition: filter 200ms ease, box-shadow 200ms ease;
 }
@@ -1635,3 +1641,19 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
    the footer's FIRST column full width on phones — a rule written for the
    logo — so without this "Products" would take that slot alone. */
 .foot-grid > div:first-child { grid-column: auto; }
+
+/* WHATSAPP CHAT BUTTON (by request, 1 Oct 2026): the familiar green disc
+   with a white pictogram, bottom right, and ALWAYS shown — not revealed on
+   scroll like back-to-top, because a chat button that is missing on the
+   first screen is the one most people never find. White on #25D366 is a
+   pictogram, not text; it is ringed in white so it still reads over the
+   green-adjacent cyan of buttons and the photographs behind it. */
+.float-wa,
+.floats .float-wa {
+  width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  background: #25D366; color: #FFFFFF; border: 2px solid #FFFFFF;
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.45);
+  opacity: 1; visibility: visible; transform: none;
+}
+.float-wa svg { width: 1.9rem; height: 1.9rem; }
+.float-wa:hover, .floats .float-wa:hover { background: #1EBE5A; color: #FFFFFF; }
