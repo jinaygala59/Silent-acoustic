@@ -689,12 +689,11 @@ built.push(page({
         <!-- CLIENT-SUPPLIED COPY. Split only where their own sentences end. -->
         ${ABOUT_INTRO.body.split(/(?<=\.)\s+(?=With 2,035|From offices|Our commitment)/).map(para => `<p class="muted" data-in style="--d:280">${esc(para)}</p>`).join('\n        ')}
       </div>
-      <div class="g-story-media">
-        <div class="surface s-slat" data-anim="open">
-          <img src="${asset('assets/img/products/acoustic-wooden-slats-card.webp')}" alt="Acoustic wooden slat panels in several veneers" width="800" height="600" loading="lazy" decoding="async">
-        </div>
-        <div class="surface s-slat" data-anim="open">
-          <img src="${asset('assets/img/projects/upl-metro-juinagar-navi-mumbai.webp')}" alt="Slat wall installed at UPL Metro, Juinagar" width="760" height="570" loading="lazy" decoding="async">
+      <!-- One photograph, supplied directly on 1 Oct 2026 for this spot ("beside
+           two decades"); it replaced the slat-panel and UPL Metro pair. -->
+      <div class="g-story-media is-single">
+        <div class="surface s-plate" data-anim="open">
+          <img src="${asset('assets/img/about/recording-studio-control-room.webp')}" alt="A recording studio control room in blue light, looking through the observation window into the vocal booth" width="1200" height="1600" loading="lazy" decoding="async">
         </div>
       </div>
     </div>

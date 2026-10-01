@@ -653,7 +653,7 @@ a.card:active { transform: none; box-shadow: none; }
 .g-strip-i { overflow: hidden; }
 .g-strip-i img { width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 40rem) { .g-strip { grid-template-columns: 1fr; } .g-strip-i + .g-strip-i { display: none; } }
-.fampick { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fampick { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
 /* product detail: near-black intro, product photograph beside the copy */
 .pd-top { padding-block: clamp(4rem, 8vw, 6.5rem); }
@@ -704,6 +704,8 @@ a.card:active { transform: none; box-shadow: none; }
 .g-story h1 { font-size: var(--t-h1); margin-top: 0.25rem; }
 .g-story-media { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .g-story-media .surface { aspect-ratio: 4 / 5; }
+.g-story-media.is-single { grid-template-columns: 1fr; }
+.g-story-media.is-single .surface { aspect-ratio: 3 / 4; }
 .g-logos { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
 .g-logos .client-wall { margin-top: clamp(2rem, 4vw, 3rem); }
 .center-eyebrow.on-night { color: var(--on-night); }
@@ -864,6 +866,17 @@ a.card:active { transform: none; box-shadow: none; }
 .site-foot .brand { background: #FFFFFF; padding: 0.85rem 1.1rem; }
 .site-foot .brand-logo-full { height: 2.6rem; }
 .site-foot :focus-visible { outline-color: var(--on-night); }
+/* footer social icons — colour feedback only on hover (no transform: this
+   file sorts after the touch-hover reset). 2.5rem, so all five fit one row. */
+.foot-social { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.foot-social a {
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  border: 1px solid var(--night-edge); border-radius: 50%;
+  color: var(--on-night-mute);
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+.foot-social a:hover { color: #14181B; background-color: var(--accent); border-color: var(--accent); }
+.foot-social a:hover svg path[fill^="var(--night"] { fill: var(--accent); }
 
 /* hover veils over photographs: cyan, dark type (5.7:1 over a black pixel) */
 .g-pj-over { background: rgba(28, 171, 222, 0.92); color: var(--on-night); }

@@ -22,6 +22,16 @@ const SITE = {
      should not be published anywhere, the structured data has to be cut too,
      and that costs local search visibility — it is a separate decision. */
   addrShort: 'Mumbai, Maharashtra',
+  /* The client's social accounts, read off the footer of silenceacoustic.com
+     on 1 Oct 2026. Rendered as an icon row in the site footer (src/build.js).
+     Do not add a network they do not link to themselves. */
+  social: [
+    { id: 'facebook',  name: 'Facebook',  href: 'https://www.facebook.com/silenceacousticofficial' },
+    { id: 'instagram', name: 'Instagram', href: 'https://www.instagram.com/silenceacoustic/' },
+    { id: 'linkedin',  name: 'LinkedIn',  href: 'https://www.linkedin.com/company/42698711/' },
+    { id: 'youtube',   name: 'YouTube',   href: 'https://www.youtube.com/@silenceacoustic' },
+    { id: 'x',         name: 'X',         href: 'https://x.com/silenceacoustic' },
+  ],
   /* NO OPENING HOURS. They were 'Mon–Sat, 10:00–19:00 IST' and were invented:
      the live site publishes email, phone and address in its footer and states
      opening hours nowhere. Verified against silenceacoustic.com. Do not put
