@@ -605,8 +605,11 @@ founder statement, the seven process steps (`.night`) and the client wall
 moved to `about.html`; the "Ask a client" statement, the diptych, the roomdex
 and the homepage testimonials/CTA were dropped from the homepage (testimonials
 remain on `projects.html`). `famRail()` and `roomdex()` in `src/build.js` and
-the rail CSS in `motion.css` are now unused. The footer's first column is the
-logo alone: its blurb carried the removed manufacturing claim.
+the rail CSS in `motion.css` are now unused. **The footer carries no logo**
+(removed by request, 1 Oct 2026, along with `LOGO_FOOT`); it had been the
+logo alone since its blurb, which carried the removed manufacturing claim,
+went. Five columns now, and `theme.css` neutralises `site.css`'s
+"first column spans full width on phones" rule, which was written for it.
 Cut-out product shots in `.g-tile-img` need `isolation: isolate` on the tile:
 without it Chrome sometimes composited a tile alone and the multiply blanked
 the product (wedge foam did).
@@ -789,6 +792,25 @@ The plates are `display: flex`, not grid: in a grid the auto-sized row gave
 the image's `max-height: 100%` nothing to resolve against and the round
 badge spilled out of its plate on phones. Six footer columns at >=56rem;
 the two plates sit side by side below that.
+
+**Mobile audit, 1 Oct 2026.** At 320px every page overflowed by 6px: the
+menu button was pushed off by the logo, because `theme.css` set
+`.brand-logo { height: 2.6rem }` at every width and so overrode `site.css`'s
+own small-screen step. The step is restated in `theme.css` and the brand may
+now shrink. iOS Safari pans a page sideways for that, `overflow-x: hidden`
+on `body` notwithstanding — re-check `scrollWidth` at 320 after any header
+change. Footer social discs went 40 → 44px. Animation, at 375×812 with
+touch emulated (hover: none, pointer: coarse): **0 animations with a null
+timeline on all ten templates**, and on the homepage all 106 scroll-driven
+ones advanced between two scroll positions; the carousel autoplay advanced a
+page in 5s. Two pointer-only moves got touch versions (TOUCH EQUIVALENTS,
+PART 2 in `theme.css`): the band-column icon rises on `view()`, and tiles,
+projects and buttons dim on `:active` — which needs the empty passive
+`touchstart` listener at the end of `site.js` before iOS will apply it.
+**Deliberately not on phones:** the hover veils (a tap opens the photo or
+page at once, so a veil would only flash) and the sticky reveal footer (1611px
+tall on a phone; a sticky bottom edge would hide its top) — its columns still
+fade in on scroll there.
 
 Everything from here down to *Content provenance* describes the Workshop
 direction that `theme.css` sits on top of. The mechanisms (motion, `--box`,

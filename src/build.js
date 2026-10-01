@@ -89,7 +89,6 @@ const FONTS = 'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,30
    back, go back to logo-mark.png rather than shipping an illegible line of
    type — logo-mark.png is kept in assets/img for exactly that. */
 const LOGO_HEAD = (up) => `<img class="brand-logo" src="${up}${asset('assets/img/logo-full.png')}" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" fetchpriority="high">`;
-const LOGO_FOOT = (up) => `<img class="brand-logo-full" src="${up}${asset('assets/img/logo-full.png')}" alt="Silence Acoustic — Innovating Sound In A Better Way" width="947" height="168" loading="lazy">`;
 
 const ARROW = '<svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -202,9 +201,6 @@ function footer(depth) {
   return `<footer class="site-foot">
     <div class="wrap">
       <div class="foot-grid" data-stagger>
-        <div data-anim="fade">
-          <a class="brand" href="${up}index.html" aria-label="${SITE.name} — home">${LOGO_FOOT(up)}</a>
-        </div>
         <div data-anim="fade">
           <h2 class="foot-h">Products</h2>
           <ul class="foot-list">${prodLinks}</ul>

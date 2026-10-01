@@ -749,4 +749,10 @@
     window.addEventListener('resize', fitHero);
     window.addEventListener('load', fitHero);
   }
+
+  /* iOS Safari only applies :active on touch once the document has a
+     touchstart listener. This empty, passive one turns on the press feedback
+     in the TOUCH EQUIVALENTS block of theme.css; it does nothing else and
+     never blocks scrolling. */
+  document.addEventListener('touchstart', function () {}, { passive: true });
 })();

@@ -144,7 +144,15 @@ html.head-solid .site-head {
   color: var(--on-night);
 }
 .site-head .wrap { min-height: 5.5rem; }
+/* 2.6rem, stepping down on small phones. theme.css used to set 2.6rem at
+   every width, which overrode site.css's own small-screen step, and at
+   320px the logo + gap + 44px menu button ran 6px past the right edge —
+   enough for iOS Safari to let the whole page pan sideways. The brand may
+   also shrink, so no future logo can push the button off again. */
 .brand-logo { height: 2.6rem; }
+@media (max-width: 30rem) { .brand-logo { height: 2.1rem; } }
+.site-head .brand { min-width: 0; flex: 0 1 auto; }
+.site-head .brand-logo { max-width: 100%; object-fit: contain; object-position: left center; }
 .nav a {
   font-family: var(--body); font-size: 0.8125rem; font-weight: 400;
   letter-spacing: 0.04em; color: var(--on-night);
@@ -896,7 +904,8 @@ a.card:active { transform: none; box-shadow: none; }
    touch-hover reset. 2.5rem, so all five fit one row. */
 .foot-social { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .foot-social a {
-  display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  /* 2.75rem = 44px, the minimum comfortable tap target (was 40px). */
+  display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
   border-radius: 50%; color: #FFFFFF; background: var(--net, #444);
   transition: filter 200ms ease, box-shadow 200ms ease;
 }
@@ -1568,7 +1577,7 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
 /* Footer · Certified column — the two certificate badges, each on a white
    plate (their artwork is drawn on white) like the logo above them. */
 @media (min-width: 56rem) {
-  .foot-grid { grid-template-columns: 1.2fr 1fr 1fr 0.8fr 1.3fr 1.05fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr 0.8fr 1.3fr 1.05fr; }
 }
 .foot-certs { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
 @media (max-width: 55.999rem) { .foot-certs { grid-template-columns: repeat(2, minmax(0, 11rem)); } }
@@ -1581,3 +1590,48 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
   height: 7.5rem; box-sizing: border-box;
 }
 .foot-certs img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+
+/* ==========================================================================
+   TOUCH EQUIVALENTS, PART 2 (mobile audit, 1 Oct 2026).
+   Block 8 above gave touch the photo settle and the why-list nudge. Two
+   pointer-only moves were still missing on phones:
+   · the band-column icon lift — now the icon rises into place as its column
+     scrolls in (same 6px the hover uses, plus a little), on view();
+   · press feedback — a tapped tile, project or button visibly gives. It is
+     `:active`, which ends with the touch, so it cannot latch the way an
+     unscoped `:hover` does. iOS Safari only applies `:active` once the page
+     has a touchstart listener; site.js registers an empty passive one.
+   It dims rather than scales: the photographs already animate `scale` on
+   touch (block 8), and an animation outranks a state rule on that property.
+   The hover veils (`.g-pj-over`, `.g-plus`) stay pointer-only on purpose —
+   on a phone a tap opens the photograph or the page immediately, so a veil
+   could only ever flash.
+   ========================================================================== */
+@keyframes gLift { from { translate: 0 12px; } to { translate: 0 0; } }
+@media (hover: none), (pointer: coarse) {
+  .g-tile a, .g-pj a, .g-col, .btn, .card, .client, .g-car-btn, .float, .filter {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Only elements with no transition of their own get one here. The buttons
+     restate theirs so opacity JOINS the colour transitions rather than
+     replacing them; .float and .card are left alone entirely, because their
+     own transitions run the show/hide and the shadow. */
+  .g-tile a, .g-pj a, a.g-col { transition: opacity 140ms ease; }
+  .btn { transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, opacity 140ms ease; }
+  .g-tile a:active, .g-pj a:active, a.g-col:active, a.card:active { opacity: 0.82; }
+  .btn:active, .g-car-btn:active, .float:active, .filter:active { opacity: 0.78; }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .g-col .g-ico {
+        animation: gLift linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 35%;
+      }
+    }
+  }
+}
+
+/* The footer logo was removed by request (1 Oct 2026). site.css still spans
+   the footer's FIRST column full width on phones — a rule written for the
+   logo — so without this "Products" would take that slot alone. */
+.foot-grid > div:first-child { grid-column: auto; }
