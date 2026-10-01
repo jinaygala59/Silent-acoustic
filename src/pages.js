@@ -397,11 +397,12 @@ ${workBand()}
   </div>
 </section>
 
-<!-- CLIENT LOGOS — CLIENTS, as on the client's own homepage. A count and
-     nothing else is said about them (see the provenance rule). -->
+<!-- CLIENT LOGOS — CLIENTS, as on the client's own homepage. Headed with a
+     plain label, "Our Clientele" (asked for 1 Oct 2026, replacing "50
+     clients"), and nothing else is said about them (see the provenance rule). -->
 <section class="night g-clients" aria-labelledby="clients-home-h">
   <div class="wrap">
-    <h2 id="clients-home-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
+    <h2 id="clients-home-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">Our Clientele</h2>
     ${clientRows()}
   </div>
 </section>`
@@ -706,7 +707,7 @@ ${visionBand()}
      a count read off CLIENTS is the only thing said about it. -->
 <section class="night g-logos" aria-labelledby="clients-h">
   <div class="wrap">
-    <h2 id="clients-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">${CLIENTS.length} clients</h2>
+    <h2 id="clients-h" class="eyebrow center-eyebrow on-night clients-title" data-anim="fade">Our Clientele</h2>
     ${clientRows()}
   </div>
 </section>

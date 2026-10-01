@@ -639,12 +639,12 @@ products, two product pages, projects, about, blog, contact, 404, article).
 
 **THE STRONG BAND IS A CHARCOAL GREY — read the cyan-ground paragraph below
 as history.** (30 Sep 2026, "change the background color to grey".) `--night`
-is `#1F2226` (darkened from `#303438` on 1 Oct 2026, "a darker grey"), so the counter strip, the three-column band, the product
+is `#262626` (1 Oct 2026, matched exactly to a screenshot the client sent as "this exact same color"; it was `#303438`), so the counter strip, the three-column band, the product
 intros, `.fam-all` and the footer are grey, and **every word on them is LIGHT
 again** — which is the exact reverse of the cyan rules the paragraph below
 describes, so roughly thirty of them had to be flipped back in one pass.
-Measured on `#1F2226`: `#FFFFFF` 16.0:1, `--on-night-mute` `#C4C9CE` 9.6:1, and
-the accent `#1CABDE` 6.0:1 (it was 4.7:1 on `#303438`), the band's lowest pair and is what eyebrows,
+Measured on `#262626`: `#FFFFFF` 15.1:1, `--on-night-mute` `#C4C9CE` 9.1:1, and
+the accent `#1CABDE` 5.7:1 (it was 4.7:1 on `#303438`), the band's lowest pair and is what eyebrows,
 rules, icons, step numerals and `.tlink` take. Walker after this pass: **0
 failures on all eight shipped templates**, 668 elements.
 
