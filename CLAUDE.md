@@ -639,12 +639,12 @@ products, two product pages, projects, about, blog, contact, 404, article).
 
 **THE STRONG BAND IS A CHARCOAL GREY — read the cyan-ground paragraph below
 as history.** (30 Sep 2026, "change the background color to grey".) `--night`
-is `#303438`, so the counter strip, the three-column band, the product
+is `#1F2226` (darkened from `#303438` on 1 Oct 2026, "a darker grey"), so the counter strip, the three-column band, the product
 intros, `.fam-all` and the footer are grey, and **every word on them is LIGHT
 again** — which is the exact reverse of the cyan rules the paragraph below
 describes, so roughly thirty of them had to be flipped back in one pass.
-Measured: `#FFFFFF` 12.5:1, `--on-night-mute` `#C4C9CE` 7.5:1, and the accent
-`#1CABDE` 4.7:1, which is the site's lowest pair now and is what eyebrows,
+Measured on `#1F2226`: `#FFFFFF` 16.0:1, `--on-night-mute` `#C4C9CE` 9.6:1, and
+the accent `#1CABDE` 6.0:1 (it was 4.7:1 on `#303438`), the band's lowest pair and is what eyebrows,
 rules, icons, step numerals and `.tlink` take. Walker after this pass: **0
 failures on all eight shipped templates**, 668 elements.
 
@@ -1046,7 +1046,16 @@ marginal.
 **The banner's contrast is a property of the current photograph, not of the
 scrim.**
 
-**THE BANNERS ARE THE CLIENT'S OWN THREE, ported from their live site**
+**The banner set changed on 1 Oct 2026, by request:** `home-theatre` and
+`boardroom` (two images supplied directly, not from the live site) plus the
+client's own `auditorium` in slot 3. `recording-studio` and
+`office-conference` were removed. The supplied two carry the room types they
+show (Home Theatre, Conference Room) and the other two client headlines;
+auditorium keeps its original label and headline. Keep it at three slides,
+because the fade timing is written for three. Only the auditorium figures
+below still apply.
+
+**THE BANNERS WERE THE CLIENT'S OWN THREE, ported from their live site**
 (`assets/img/banners/`: `recording-studio`, `office-conference`,
 `auditorium`), and each was measured against the real composite — both
 gradients replicated on a canvas over the actual image, darkest pixel under

@@ -219,11 +219,11 @@ built.push(page({
         const head = `<span class="hero-strong">${esc(words.join(' '))}</span> ${decay}`;
         return i === 0
           ? `<div class="hero-say is-on">
-        <p class="eyebrow" data-in style="--d:60">${esc(b.sector)} &middot; Mumbai</p>
+        <p class="eyebrow" data-in style="--d:60">${esc(b.sector)}</p>
         <h1 class="hero-title"><span class="hl"><span style="--d:160">${head}</span></span></h1>
       </div>`
           : `<div class="hero-say" aria-hidden="true">
-        <p class="eyebrow">${esc(b.sector)} &middot; Mumbai</p>
+        <p class="eyebrow">${esc(b.sector)}</p>
         <p class="hero-title">${head}</p>
       </div>`;
       }).join('\n      ')}

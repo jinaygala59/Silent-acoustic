@@ -155,9 +155,17 @@ const CLIENTS = [
    three `pxl-item` slides in their hero. Do not rewrite the headlines: they
    are the client's marketing copy, capitalisation included.
 
-     Recording-studio-1.jpg  -> banners/recording-studio.webp
-     Banner-5.jpg            -> banners/office-conference.webp
      Banner-4.jpg            -> banners/auditorium.webp
+
+   1 Oct 2026, by request: the set is now home-theatre and boardroom
+   (two images supplied directly, not from the live site) plus the
+   client's own auditorium (Banner-4.jpg), which stays in slot three with
+   its original sector and headline. office-conference (Banner-5.jpg) and
+   recording-studio (Recording-studio-1.jpg) were removed; both are in git
+   history. The supplied two carry the room types they show ('Home
+   Theatres', 'Conference Room & Cabin' in SECTORS) and the other two
+   client headlines. KEEP THREE SLIDES: the cross-fade timing in motion.css
+   and theme.css is written for exactly three.
 
    THE SCRIM DOES NOT GUARANTEE AN ARBITRARY PHOTOGRAPH (see the hero notes in
    CLAUDE.md). Every one of these three was measured against the real
@@ -174,8 +182,8 @@ const BANNERS = [
      sector and the headline beside the picture already say what it is. An
      alt written here would also have been a description composed rather than
      taken from the client, which is the thing this file exists to prevent. */
-  { img: 'recording-studio',  w: 1600, h: 612, sector: 'Recording Studio', title: 'Silence That Speaks Style' },
-  { img: 'office-conference', w: 1600, h: 731, sector: 'Offices',          title: 'Designed for Sound. Crafted for Spaces.' },
+  { img: 'home-theatre',      w: 1536, h: 864, sector: 'Home Theatre',     title: 'Silence That Speaks Style' },
+  { img: 'boardroom',         w: 1672, h: 941, sector: 'Conference Room',  title: 'Designed for Sound. Crafted for Spaces.' },
   { img: 'auditorium',        w: 1600, h: 731, sector: 'Auditorium',       title: 'Where Superior Acoustics Meet Elegant Design' },
 ];
 

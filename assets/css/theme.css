@@ -127,6 +127,9 @@ h3, h4 { font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; }
 }
 .topbar a { text-decoration: none; color: inherit; padding-block: 0.4rem; }
 .topbar a:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* The email address is set in lower case, as it is written — by request.
+   The bar's uppercase is for labels; an address in capitals reads wrong. */
+.topbar a[href^="mailto:"] { text-transform: none; letter-spacing: 0.02em; }
 @media (max-width: 40rem) {
   .topbar .wrap { justify-content: center; }
   .topbar a[href^="mailto:"] { display: none; }
@@ -1438,9 +1441,10 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
    ONE ABOVE: on cyan every word had to be DARK (white was 2.65:1); on
    charcoal every word is LIGHT again, and the ~30 rules that flipped the
    band to dark ink have to flip back or they put near-black on near-black.
-     #FFFFFF  on #303438  12.5:1   headings, figures, links
-     #C4C9CE  on #303438   7.5:1   body and labels
-     #1CABDE  on #303438   4.7:1   eyebrows, rules, icons, step numerals
+     (1 Oct 2026, "a darker grey": the band is #1F2226 now, not #303438)
+     #FFFFFF  on #1F2226  16.0:1   headings, figures, links
+     #C4C9CE  on #1F2226   9.6:1   body and labels
+     #1CABDE  on #1F2226   6.0:1   eyebrows, rules, icons, step numerals
    THE CYAN IS NOT GONE — it is the accent again, which is what it was before
    it became a ground: the topbar, the rule under every eyebrow, the icons,
    and the button fills on both grounds.
@@ -1456,9 +1460,9 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
      strong band, and closes every inner page. It is untouched.
    ========================================================================== */
 :root {
-  --night:         #303438;          /* the strong band */
+  --night:         #1F2226;          /* the strong band — darkened 1 Oct 2026, was #303438 */
   --night-2:       #FFFFFF;          /* header — STAYS LIGHT, see above */
-  --night-3:       #3B4045;          /* raised object on the band */
+  --night-3:       #2A2E32;          /* raised object on the band */
   --on-night:      #FFFFFF;
   --on-night-mute: #C4C9CE;
   --night-edge:    rgba(255, 255, 255, 0.16);
