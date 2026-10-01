@@ -25,6 +25,13 @@ const SITE = {
      should not be published anywhere, the structured data has to be cut too,
      and that costs local search visibility — it is a separate decision. */
   addrShort: 'Mumbai, Maharashtra',
+  /* GOOGLE MAPS (contact page). The query is the client's OWN, copied from
+     the map embedded on silenceacoustic.com/contact-us — it is their Google
+     business listing, so the pin is the one they already publish. Note that
+     this does show the office's exact location, which the address-in-footer
+     note above deliberately avoided in text; it was asked for on 1 Oct 2026
+     ("so if someone clicks there they get the exact location"). */
+  mapQuery: 'Silence Acoustics Pvt. Ltd., malad',
   /* The client's social accounts, read off the footer of silenceacoustic.com
      on 1 Oct 2026. Rendered as an icon row in the site footer (src/build.js).
      Do not add a network they do not link to themselves. */

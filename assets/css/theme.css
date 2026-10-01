@@ -525,6 +525,26 @@ a.card:active { transform: none; box-shadow: none; }
   background: #FFFFFF; color: #5A646E; cursor: default;   /* 6.03:1 */
 }
 .g-car-btn svg { width: 1.125rem; height: 1.125rem; display: block; }
+/* contact page — the Google map under the form and office blocks */
+.g-map { position: relative; margin-top: clamp(2.5rem, 5vw, 4rem); }
+.g-map-frame {
+  display: block; width: 100%; border: 0; background: #E3E8EB;
+  height: clamp(18rem, 42vw, 30rem);
+}
+.g-map-btn { margin-top: 1rem; }
+.g-map-hit { position: absolute; inset: 0; z-index: 1; cursor: pointer; }
+/* a visible cue that the map is a link — bottom-left, clear of Google's own
+   attribution, which sits bottom-right */
+.g-map-tag {
+  position: absolute; left: 0.75rem; bottom: 0.75rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 0.9rem; background: #FFFFFF; color: #14181B;
+  font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  box-shadow: 0 6px 18px -8px rgba(14, 26, 31, 0.45);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.g-map-hit:hover .g-map-tag { background: var(--accent); color: #14181B; }
+.g-map-hit:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 /* the autoplay pause/play toggle (site.js) sits apart from the paging arrows */
 .g-car-play { margin-left: clamp(0.25rem, 1.5vw, 1rem); }
 /* Colour-only, so it is safe outside the pointer gate — the touch-hover reset

@@ -869,6 +869,11 @@ ${ctaBand()}`
 /* ================================ CONTACT =============================== */
 /* Reference contact-page order: title and intro, the form beside the office
    contact blocks, then a grey section of short items. */
+const mapHref  = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(SITE.mapQuery);
+/* Directions FROM wherever the visitor is TO the office — Google Maps asks
+   for their location itself, and on a phone this opens the Maps app. */
+const mapDir   = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(SITE.mapQuery);
+const mapEmbed = 'https://maps.google.com/maps?q=' + encodeURIComponent(SITE.mapQuery) + '&amp;t=m&amp;z=15&amp;output=embed&amp;iwloc=near';
 const roomOptions = SECTORS.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('\n              ');
 built.push(page({
   file: 'contact.html', active: 'contact.html',
@@ -928,7 +933,7 @@ ${gHead({
         </div>
         <div class="g-office" data-anim="fade">
           <p class="eyebrow">Office &amp; works</p>
-          <span class="v">Mumbai, Maharashtra</span>
+          <a class="v" href="${mapHref}" target="_blank" rel="noopener">Mumbai, Maharashtra</a>
         </div>
         <div class="row" data-anim="fade">
           <a class="btn btn-primary" href="${SITE.waHref}" target="_blank" rel="noopener">WhatsApp us ${ARROW}</a>
@@ -936,6 +941,23 @@ ${gHead({
         </div>
       </div>
     </div>
+
+    <!-- GOOGLE MAP. The client's own map query (SITE.mapQuery). The embed is
+         the keyless maps.google.com one their live page already uses; the
+         link opens the same place in Google Maps (the app, on a phone) for
+         directions. Lazy-loaded, so the third-party frame costs nothing
+         until someone scrolls to it. -->
+    <!-- THE WHOLE MAP IS ONE LINK (by request: a click should take them to
+         the location in Google Maps). A transparent anchor lies over the
+         frame, so the embed is a picture of the map rather than a map to pan
+         — a click anywhere opens directions to the office. The frame is out
+         of the tab order and hidden from screen readers; the link is the one
+         thing to focus and it says where it goes. -->
+    <div class="g-map" data-anim="fade">
+      <iframe class="g-map-frame" src="${mapEmbed}" title="Map showing the ${esc(SITE.name)} office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1" aria-hidden="true"></iframe>
+      <a class="g-map-hit" href="${mapDir}" target="_blank" rel="noopener" aria-label="Get directions to the ${esc(SITE.name)} office in Google Maps (opens in a new tab)"><span class="g-map-tag">Get directions ${ARROW}</span></a>
+    </div>
+    <a class="btn btn-primary g-map-btn" href="${mapDir}" target="_blank" rel="noopener">Get directions in Google Maps ${ARROW}</a>
   </div>
 </section>
 

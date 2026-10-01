@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css?v=208b792f">
 <link rel="stylesheet" href="assets/css/motion.css?v=cde7630d">
-<link rel="stylesheet" href="assets/css/theme.css?v=fc9f048d">
+<link rel="stylesheet" href="assets/css/theme.css?v=7e66cd6c">
 <link rel="icon" href="assets/img/favicon.png?v=6a9a7f53" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png?v=6a9a7f53">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
@@ -136,7 +136,7 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         </div>
         <div class="g-office" data-anim="fade">
           <p class="eyebrow">Office &amp; works</p>
-          <span class="v">Mumbai, Maharashtra</span>
+          <a class="v" href="https://www.google.com/maps/search/?api=1&query=Silence%20Acoustics%20Pvt.%20Ltd.%2C%20malad" target="_blank" rel="noopener">Mumbai, Maharashtra</a>
         </div>
         <div class="row" data-anim="fade">
           <a class="btn btn-primary" href="https://wa.me/919004408289" target="_blank" rel="noopener">WhatsApp us <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -144,6 +144,23 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
         </div>
       </div>
     </div>
+
+    <!-- GOOGLE MAP. The client's own map query (SITE.mapQuery). The embed is
+         the keyless maps.google.com one their live page already uses; the
+         link opens the same place in Google Maps (the app, on a phone) for
+         directions. Lazy-loaded, so the third-party frame costs nothing
+         until someone scrolls to it. -->
+    <!-- THE WHOLE MAP IS ONE LINK (by request: a click should take them to
+         the location in Google Maps). A transparent anchor lies over the
+         frame, so the embed is a picture of the map rather than a map to pan
+         — a click anywhere opens directions to the office. The frame is out
+         of the tab order and hidden from screen readers; the link is the one
+         thing to focus and it says where it goes. -->
+    <div class="g-map" data-anim="fade">
+      <iframe class="g-map-frame" src="https://maps.google.com/maps?q=Silence%20Acoustics%20Pvt.%20Ltd.%2C%20malad&amp;t=m&amp;z=15&amp;output=embed&amp;iwloc=near" title="Map showing the Silence Acoustic office" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1" aria-hidden="true"></iframe>
+      <a class="g-map-hit" href="https://www.google.com/maps/dir/?api=1&destination=Silence%20Acoustics%20Pvt.%20Ltd.%2C%20malad" target="_blank" rel="noopener" aria-label="Get directions to the Silence Acoustic office in Google Maps (opens in a new tab)"><span class="g-map-tag">Get directions <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+    <a class="btn btn-primary g-map-btn" href="https://www.google.com/maps/dir/?api=1&destination=Silence%20Acoustics%20Pvt.%20Ltd.%2C%20malad" target="_blank" rel="noopener">Get directions in Google Maps <svg class="btn-arrow" width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M8.4.6 12.3 4.5 8.4 8.4M12 4.5H.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </section>
 
