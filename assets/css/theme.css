@@ -1657,3 +1657,13 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
 }
 .float-wa svg { width: 1.9rem; height: 1.9rem; }
 .float-wa:hover, .floats .float-wa:hover { background: #1EBE5A; color: #FFFFFF; }
+
+/* footer credit line (3 Oct 2026): sentence case, not the bar's tracked
+   caps, and the link underlined so it reads as a link on the charcoal. */
+.foot-credit { letter-spacing: 0.02em; text-transform: none; }
+.foot-credit a { color: #FFFFFF; text-decoration: underline; text-underline-offset: 3px; }
+.foot-credit a:hover { color: var(--accent); }
+/* The WhatsApp button is always on and sits over the bottom-right corner,
+   which is exactly where the credit ends — so the bar keeps clear space
+   below it the height of that button plus its margin. */
+.site-foot .foot-bar { padding-bottom: calc(3.5rem + clamp(1rem, 3vw, 1.75rem) + env(safe-area-inset-bottom, 0px)); }
