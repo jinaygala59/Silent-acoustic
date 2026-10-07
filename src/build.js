@@ -238,6 +238,9 @@ function footer(depth) {
       </div>
       <div class="foot-bar">
         <span>&copy; ${new Date().getFullYear()} ${SITE.name}</span>
+        <!-- Site credit, by request (3 Oct 2026; restored 7 Oct 2026 after the
+             client's change list had taken it out). -->
+        <span class="foot-credit">Thoughtfully designed by <a href="https://www.digitaljin.in/" target="_blank" rel="noopener">Digital Jin</a></span>
       </div>
     </div>
   </footer>`;

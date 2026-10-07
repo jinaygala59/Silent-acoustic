@@ -87,7 +87,8 @@ brief removed.
 - **Removed outright**: the homepage intro eyebrow; About's "since 2006"
   eyebrows, the seven process steps and "Four things we will not do";
   the products page "Catalogue" eyebrow and quick-guide band; the footer
-  bar's "Mumbai, India" and the Digital Jin credit.
+  bar's "Mumbai, India". (The brief also cut the "Thoughtfully designed by
+  Digital Jin" credit; it was put back by request the same day, 7 Oct 2026.)
 - **"Notes" is "Blog"** in the menu, page eyebrow, breadcrumb and title.
 - **Menu labels are `.nav-roll` markup** (two copies, the second
   aria-hidden) for the hover roll in theme.css — anything that reads nav

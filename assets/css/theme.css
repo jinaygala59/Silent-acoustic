@@ -1698,6 +1698,11 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
    so the bar keeps clear space below it the height of that button plus
    its margin. (The credit and "Mumbai, India" were removed from the bar
    on 7 Oct 2026; the copyright line remains.) */
+/* footer credit line: sentence case, not the bar's tracked caps, and the
+   link underlined so it reads as a link on the charcoal. */
+.foot-credit { letter-spacing: 0.02em; text-transform: none; }
+.foot-credit a { color: #FFFFFF; text-decoration: underline; text-underline-offset: 3px; }
+.foot-credit a:hover { color: var(--accent); }
 .site-foot .foot-bar { padding-bottom: calc(3.5rem + clamp(1rem, 3vw, 1.75rem) + env(safe-area-inset-bottom, 0px)); }
 
 /* ==========================================================================
