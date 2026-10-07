@@ -66,22 +66,24 @@
   if (filters.length && gal) {
     var items = [].slice.call(gal.querySelectorAll('[data-sector]'));
     var count = document.getElementById('gal-count');
+    /* The same filter runs the projects gallery and (since 7 Oct 2026) the
+       products grid; data-noun says which. The status line carries no
+       numbers — "remove number from everywhere" was the brief. */
+    var noun = gal.getAttribute('data-noun') || 'projects';
     filters.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var want = btn.getAttribute('data-filter');
         filters.forEach(function (b) {
           b.setAttribute('aria-pressed', String(b === btn));
         });
-        var shown = 0;
         items.forEach(function (el) {
           var match = want === 'all' || el.getAttribute('data-sector') === want;
           el.hidden = !match;
-          if (match) shown++;
         });
         if (count) {
           count.textContent = want === 'all'
-            ? 'Showing all ' + shown + ' projects'
-            : 'Showing ' + shown + ' ' + (shown === 1 ? 'project' : 'projects') + ' in ' + want;
+            ? 'Showing all ' + noun
+            : 'Showing ' + noun + ': ' + btn.textContent.trim();
         }
       });
     });
@@ -92,7 +94,10 @@
        load and on hashchange, because a same-page hash link does not
        reload. */
     var applyHash = function () {
-      var m = /^#room=(.+)$/.exec(location.hash || '');
+      /* #room=<sector> from the homepage room list, or a plain #<family>
+         (#panels, #proof …) from the footer and the homepage band, which
+         used to be section anchors on the products page. */
+      var m = /^#(?:room=)?(.+)$/.exec(location.hash || '');
       if (!m) return;
       var want = decodeURIComponent(m[1]);
       var btn = filters.filter(function (b) {
@@ -755,4 +760,42 @@
      in the TOUCH EQUIVALENTS block of theme.css; it does nothing else and
      never blocks scrolling. */
   document.addEventListener('touchstart', function () {}, { passive: true });
+
+  /* -------------------------- ESTIMATE CALCULATOR -------------------------
+     Contact page. Area is the wall area, 2 × (L + W) × H in square feet;
+     price is area × the product's rate from CALC in content.js. A product
+     with no rate set shows "on request" rather than a guessed figure. */
+  var calc = document.getElementById('calc');
+  if (calc) {
+    var rates = {};
+    try { rates = JSON.parse(calc.getAttribute('data-rates') || '{}'); } catch (e) {}
+    var out = document.getElementById('calc-out');
+    var fmt = function (n, d) {
+      return n.toLocaleString('en-IN', { maximumFractionDigits: d, minimumFractionDigits: d });
+    };
+    calc.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = function (n) { return parseFloat(calc.elements[n].value); };
+      var l = v('l'), w = v('w'), h = v('h');
+      var bad = [l, w, h].some(function (x) { return !(x > 0); });
+      ['l', 'w', 'h'].forEach(function (n) {
+        calc.elements[n].setAttribute('aria-invalid', String(!(v(n) > 0)));
+      });
+      if (bad) { calc.elements[!(l > 0) ? 'l' : !(w > 0) ? 'w' : 'h'].focus(); return; }
+      var area = 2 * (l + w) * h;
+      var pick = calc.querySelector('input[name="product"]:checked');
+      var rate = pick ? rates[pick.value] : null;
+      document.getElementById('calc-area').textContent = fmt(area, 1) + ' sq ft';
+      var price = document.getElementById('calc-price');
+      var note = document.getElementById('calc-price-note');
+      if (typeof rate === 'number' && rate > 0) {
+        price.textContent = '\u20B9 ' + fmt(Math.round(area * rate), 0);
+        note.textContent = 'At \u20B9 ' + fmt(rate, 0) + ' per sq ft, material only';
+      } else {
+        price.textContent = 'On request';
+        note.textContent = 'Call or WhatsApp us with these figures for a price';
+      }
+      out.hidden = false;
+    });
+  }
 })();

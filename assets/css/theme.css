@@ -583,8 +583,41 @@ a.card:active { transform: none; box-shadow: none; }
 /* 3 · why-list: heading left, two-column check list right, on white */
 .g-why { background: #FFFFFF; }
 .g-why .wrap { display: grid; gap: clamp(2rem, 5vw, 4.5rem); }
-@media (min-width: 60rem) { .g-why .wrap { grid-template-columns: 1fr 1fr; align-items: start; } }
-.g-why-head h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem); margin-block: 1.25rem 1.25rem; }
+/* heading left, the client's paragraph right, bottom-aligned; the room
+   tiles run full width underneath */
+.g-why-head { display: grid; gap: 1rem clamp(2rem, 5vw, 4.5rem); }
+@media (min-width: 60rem) { .g-why-head { grid-template-columns: 1.15fr 1fr; align-items: end; } }
+.g-why-head h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem); margin-block: 1.25rem 0; }
+.g-why-head > p { margin: 0; max-width: 46ch; }
+
+/* the ten room types as photograph tiles — 2 across on phones, 5 on desktop
+   (10 divides by both, so there is never a ragged row) */
+.g-rooms { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 48rem) { .g-rooms { grid-template-columns: repeat(5, 1fr); } }
+.g-room a {
+  position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 5;
+  background: #E3E8EB; text-decoration: none; isolation: isolate;
+}
+/* two-up between phone and desktop: landscape, or five rows of 4:5 tiles
+   run ~2000px tall on a tablet */
+@media (min-width: 30rem) and (max-width: 47.999rem) { .g-room a { aspect-ratio: 3 / 2; } }
+.g-room img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the scrim is what the white name is read against: 0.78 black at the foot
+   holds white text at >= 9:1 over even a white patch of photograph */
+.g-room a::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.78) 100%);
+}
+.g-room-name {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 1rem 1rem 1.1rem; color: #FFFFFF;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem); font-weight: 600; line-height: 1.3;
+}
+.g-room-name::before {
+  content: ""; display: block; width: 1.75rem; height: 2px; margin-bottom: 0.6rem;
+  background: var(--accent);
+}
+.g-room a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .g-checks { list-style: none; padding: 0; display: grid; gap: 0.25rem 2rem; grid-template-columns: 1fr; }
 @media (min-width: 36rem) { .g-checks { grid-template-columns: 1fr 1fr; } }
 .g-checks a {
@@ -1274,6 +1307,9 @@ a.card:active { transform: none; box-shadow: none; }
   .client:hover { translate: 0 -3px; box-shadow: 0 10px 22px -16px rgba(14, 26, 31, 0.5); }
   /* why-list rows nudge right */
   .g-checks a { transition: translate 260ms ease; }
+  /* room tiles: the photograph pushes in */
+  .g-room img { transition: scale 700ms cubic-bezier(.22,1,.36,1); }
+  .g-room a:hover img { scale: 1.06; }
   .g-checks a:hover { translate: 4px 0; }
 }
 
@@ -1658,12 +1694,104 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
 .float-wa svg { width: 1.9rem; height: 1.9rem; }
 .float-wa:hover, .floats .float-wa:hover { background: #1EBE5A; color: #FFFFFF; }
 
-/* footer credit line (3 Oct 2026): sentence case, not the bar's tracked
-   caps, and the link underlined so it reads as a link on the charcoal. */
-.foot-credit { letter-spacing: 0.02em; text-transform: none; }
-.foot-credit a { color: #FFFFFF; text-decoration: underline; text-underline-offset: 3px; }
-.foot-credit a:hover { color: var(--accent); }
 /* The WhatsApp button is always on and sits over the bottom-right corner,
-   which is exactly where the credit ends — so the bar keeps clear space
-   below it the height of that button plus its margin. */
+   so the bar keeps clear space below it the height of that button plus
+   its margin. (The credit and "Mumbai, India" were removed from the bar
+   on 7 Oct 2026; the copyright line remains.) */
 .site-foot .foot-bar { padding-bottom: calc(3.5rem + clamp(1rem, 3vw, 1.75rem) + env(safe-area-inset-bottom, 0px)); }
+
+/* ==========================================================================
+   7 OCT 2026 CHANGE LIST
+   ========================================================================== */
+
+/* LOGO, larger (asked for). The header lost its "Book a survey" button in
+   the same list, which is what makes the room. The phone step stays small
+   enough that the menu button never gets pushed off a 320px screen (the
+   mobile audit note in CLAUDE.md: re-check scrollWidth at 320). */
+.brand-logo { height: 3.4rem; }
+@media (max-width: 60rem) { .brand-logo { height: 2.9rem; } }
+@media (max-width: 30rem) { .brand-logo { height: 2.3rem; } }
+
+/* MENU TEXT ROLL (asked for: "add text animation on menu"). Each label sits
+   in a one-line window with a copy of itself underneath; on hover the pair
+   rolls up, so the word appears to flip over. It animates the individual
+   `translate` property, never `transform`, and only for a fine pointer, so
+   it cannot latch on touch. The menu items also drop in one after another
+   when the page loads. Both sit out Reduce Motion. */
+.nav-roll { display: inline-grid; overflow: hidden; vertical-align: top; line-height: 1.25; }
+.nav-roll .nav-t { grid-area: 1 / 1; }
+.nav-roll .nav-t + .nav-t { translate: 0 105%; }
+@media (prefers-reduced-motion: no-preference) {
+  .nav-roll .nav-t { transition: translate 420ms cubic-bezier(.22, 1, .36, 1); }
+  @media (hover: hover) and (pointer: fine) {
+    .nav a:hover .nav-t { translate: 0 -105%; }
+    .nav a:hover .nav-t + .nav-t { translate: 0 0; }
+  }
+  @keyframes gNavIn { from { opacity: 0; translate: 0 -0.6rem; } }
+  @media (min-width: 60.0625rem) {
+    .nav > a { animation: gNavIn 560ms cubic-bezier(.22, 1, .36, 1) both; }
+    .nav > a:nth-child(2) { animation-delay: 70ms; }
+    .nav > a:nth-child(3) { animation-delay: 140ms; }
+    .nav > a:nth-child(4) { animation-delay: 210ms; }
+    .nav > a:nth-child(5) { animation-delay: 280ms; }
+    .nav > a:nth-child(6) { animation-delay: 350ms; }
+  }
+}
+
+/* PRODUCT DETAIL: the way back to the catalogue, above the eyebrow. */
+.pd-back {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  margin-bottom: 1.5rem; font-size: 0.8125rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--on-night); text-decoration: none;
+}
+.pd-back svg { transition: translate 260ms ease; }
+.pd-back:hover { color: var(--accent); }
+@media (hover: hover) and (pointer: fine) { .pd-back:hover svg { translate: -4px 0; } }
+
+/* PRODUCTS PAGE: centred heading over centred family filters. */
+.filters.center-row { justify-content: center; }
+.g-work-head h1 { font-size: var(--t-h1); }
+
+/* CONTACT: the estimate calculator. */
+.g-calc-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 60rem) { .g-calc-grid { grid-template-columns: 1fr 1.25fr; } }
+.g-calc-intro h2 { margin-top: 0.25rem; }
+.g-calc-intro .muted { margin-top: 1.25rem; max-width: 42ch; }
+.g-calc-form {
+  background: #FFFFFF; padding: clamp(1.5rem, 4vw, 2.5rem);
+  display: grid; gap: 1.5rem; border-top: 3px solid var(--accent);
+}
+.g-calc-sub { margin-top: -0.75rem; font-size: 0.9375rem; }
+.g-calc-set { border: 0; margin: 0; padding: 0; min-width: 0; }
+.g-calc-set legend {
+  padding: 0; margin-bottom: 0.85rem; font-size: 0.8125rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #1A1A1A;
+}
+.g-calc-opts { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+.g-calc-opt { display: flex; align-items: center; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid #DDE1E5; cursor: pointer; font-size: 0.9375rem; color: #1A1A1A; transition: border-color 200ms ease, background-color 200ms ease; }
+.g-calc-opt input { accent-color: var(--brand); width: 1.1rem; height: 1.1rem; margin: 0; flex: none; }
+.g-calc-opt:has(input:checked) { border-color: var(--brand); background: #EEF7FB; }
+.g-calc-opt:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
+.g-calc-dims { display: grid; gap: 0.75rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 30rem) { .g-calc-dims { grid-template-columns: 1fr; } }
+.g-calc-form .btn { justify-self: start; }
+.g-calc-out { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+.g-calc-out[hidden] { display: none; }
+.g-calc-res { background: #F3F4F7; padding: 1.1rem 1.25rem; display: grid; gap: 0.3rem; }
+.g-calc-res span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #3F454A; }
+.g-calc-res b { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem); font-weight: 700; color: #1A1A1A; letter-spacing: -0.01em; }
+.g-calc-res small { font-size: 0.8125rem; color: #3F454A; line-height: 1.45; }
+.g-calc-note { font-size: 0.8125rem; line-height: 1.55; color: #3F454A; }
+.g-calc-note b { color: #1A1A1A; }
+/* A filtered-out product card: `.card` sets its own display, which beats
+   the [hidden] attribute's, so the filter has to say it outright. */
+#gal > [hidden] { display: none !important; }
+/* The homepage carousel carries all eighteen products now (the client's
+   sequence), so on a phone it has nine pages: nine dots plus three buttons
+   no longer fit one 320px row. Below 40rem the dots take a row of their own
+   above the buttons. */
+@media (max-width: 40rem) {
+  .g-car-ctl { flex-wrap: wrap; row-gap: 0.25rem; }
+  .g-car-dots { order: -1; flex-basis: 100%; justify-content: center; flex-wrap: wrap; }
+}

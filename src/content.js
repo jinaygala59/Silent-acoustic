@@ -217,6 +217,10 @@ const BANNERS = [
    client's own way for prose. Do not wire one to the other — the brief writes
    it with a comma and no plus, and that is their sentence. */
 const FOUNDER = {
+  /* The homepage intro's paragraph — CLIENT-SUPPLIED, verbatim from the
+     7 Oct 2026 change list. It is body[0] plus one further sentence, so it
+     lives separately rather than editing the About page's text. */
+  home: 'Ravi Sebastian, Founder of Silence Acoustic, brings more than 20 years of industry experience in acoustics and soundproofing and has successfully delivered over 2,035 projects across a wide range of spaces and applications. His extensive hands-on background provides deep technical insight into the functional and aesthetic challenges of creating acoustically efficient environments. He ensures that the right acoustic materials are carefully selected for each space based on its specific requirements, while integrating thoughtful and aesthetically appealing designs that complement the overall look and functionality of the environment.',
   name: 'Ravi Sebastian',
   role: 'Founder, Silence Acoustic',
   body: [
@@ -249,7 +253,7 @@ const NAV = [
   { href: 'products.html', label: 'Products' },
   { href: 'projects.html', label: 'Projects' },
   { href: 'about.html', label: 'About' },
-  { href: 'blog.html', label: 'Notes' },
+  { href: 'blog.html', label: 'Blog' },
   { href: 'contact.html', label: 'Contact' },
 ];
 
@@ -258,7 +262,7 @@ const NAV = [
 const CATEGORIES = [
   { id: 'panels',  name: 'Acoustic Panels',    surf: 's-groove',  img: 'acoustic-designer-panel',  note: 'Wall-mounted absorbers, decorative and plain' },
   { id: 'ceiling', name: 'Acoustic Ceilings',  surf: 's-baffle',  img: 'acoustic-ceiling-baffle',  note: 'Suspended clouds and baffles for open volumes' },
-  { id: 'foam',    name: 'Acoustic Foam',      surf: 's-wedge',   img: 'acoustic-wedge-foam',   note: 'Profiled PU foam for critical listening rooms' },
+  { id: 'foam',    name: 'Acoustic Foam',      surf: 's-wedge',   img: 'acoustic-foam',   note: 'Profiled PU foam for critical listening rooms' },
   { id: 'wood',    name: 'Acoustic Wood',      surf: 's-slat',    img: 'acoustic-wooden-slats',    note: 'Slatted, perforated and wood-wool systems' },
   { id: 'proof',   name: 'Soundproofing',      surf: 's-door',    img: 'soundproof-door',    note: 'Blocking sound between rooms, not inside one' },
 ];
@@ -344,7 +348,7 @@ const PRODUCTS = [
     apps: ['Offices', 'Classrooms', 'Retail', 'Reception areas'],
   },
   {
-    slug: 'acoustic-designer-panel', name: 'Acoustic Designer Panel', cat: 'panels', surf: 's-groove', cut: true, shots: [1, 2, 3],
+    slug: 'acoustic-designer-panel', name: 'Acoustic Designer Panels', cat: 'panels', surf: 's-groove', cut: true, shots: [1, 2, 3],
     tag: 'CNC-cut patterns: V-groove, U-groove, fluted, bespoke',
     lead: 'Absorption with a cut pattern in it. The routing is done from your drawing, so the panel reads as part of the interior rather than as acoustic treatment bolted onto it.',
     body: [
@@ -371,7 +375,7 @@ const PRODUCTS = [
     apps: ['Receptions', 'Training rooms', 'Clinics', 'Retail', 'Sports venues'],
   },
   {
-    slug: 'acoustic-screen-partitions', name: 'Acoustic Screen Partitions', cat: 'panels', surf: 's-screen', shots: [1, 2, 3],
+    slug: 'acoustic-screen-partitions', name: 'Screen Partitions', cat: 'panels', surf: 's-screen', shots: [1, 2, 3],
     tag: 'Desk and floor screens for open-plan floors',
     lead: 'Screens that cut the direct path between people sitting near each other. The cheapest way to make an open office quieter without touching the base build.',
     body: [
@@ -390,7 +394,7 @@ const PRODUCTS = [
     apps: ['Open-plan offices', 'Call centres', 'Co-working', 'Libraries'],
   },
   {
-    slug: 'acoustic-3d-embossed-panel', name: 'Acoustic 3D Embossed Panel', cat: 'panels', surf: 's-emboss', cut: true, shots: [1, 2, 3],
+    slug: 'acoustic-3d-embossed-panel', name: 'Acoustic 3D Panels', cat: 'panels', surf: 's-emboss', cut: true, shots: [1, 2, 3],
     tag: 'Moulded relief that scatters as well as absorbs',
     lead: 'A pressed three-dimensional face on a recycled polyester board, reaching an NRC of 0.85. The relief adds scatter to what would otherwise be a purely absorptive surface, which keeps a room from going dead.',
     body: [
@@ -427,7 +431,7 @@ const PRODUCTS = [
     apps: ['Auditoriums', 'Hotel lobbies', 'Showrooms', 'Atriums'],
   },
   {
-    slug: 'micro-perforated-panel', name: 'Micro-Perforated Panel', cat: 'panels', surf: 's-perf', shots: [1, 2, 3],
+    slug: 'micro-perforated-panel', name: 'Micro Perforated Panel', cat: 'panels', surf: 's-perf', shots: [1, 2, 3],
     tag: 'Fine perforation over a tuned cavity',
     lead: 'A rigid panel perforated at 0.5–1.5 mm across 3–8% of its face. Set over an air cavity it behaves as a resonant absorber, and the cavity depth can be sized to the frequency a room actually has a problem at.',
     body: [
@@ -447,7 +451,7 @@ const PRODUCTS = [
   },
 
   {
-    slug: 'acoustic-ceiling-cloud', name: 'Acoustic Ceiling Cloud', cat: 'ceiling', surf: 's-cloud', shots: [1, 2, 3],
+    slug: 'acoustic-ceiling-cloud', name: 'Acoustic Ceiling Clouds', cat: 'ceiling', surf: 's-cloud', shots: [1, 2, 3],
     tag: 'Horizontal absorbers hung below a hard soffit',
     lead: 'Flat PET panels suspended below the slab. They treat the largest untreated surface in most rooms while leaving services, lighting and sprinklers reachable.',
     body: [
@@ -464,7 +468,7 @@ const PRODUCTS = [
     apps: ['Open-plan offices', 'Restaurants', 'Classrooms', 'Atriums'],
   },
   {
-    slug: 'acoustic-ceiling-baffle', name: 'Acoustic Ceiling Baffle', cat: 'ceiling', surf: 's-baffle', shots: [1, 2, 3],
+    slug: 'acoustic-ceiling-baffle', name: 'Acoustic Ceiling Baffles', cat: 'ceiling', surf: 's-baffle', shots: [1, 2, 3],
     tag: 'Vertical fins for tall, hard rooms',
     lead: 'PET panels hung on edge in rows. They present far more absorbing area per square metre of ceiling than a flat cloud does, which is what a gym or a warehouse-style office needs.',
     body: [
@@ -478,18 +482,26 @@ const PRODUCTS = [
     apps: ['Indoor sports halls', 'Gyms', 'Warehouse offices', 'Canteens', 'Auditoriums'],
   },
 
+  /* ONE FOAM PRODUCT, by request (7 Oct 2026 change list: "Pyramid and
+     Wedge, make it 1 as Acoustic Foam"). The two shared one published
+     specification; only the profile differed, so the spec row "Shape" now
+     names both. The copy below is the two old entries' own sentences,
+     combined — nothing new was written. The old URLs redirect here
+     (vercel.json). Images: card, hero and shots 1/3 are the pyramid's,
+     shot 2 the wedge's. */
   {
-    slug: 'acoustic-pyramid-foam', name: 'Acoustic Pyramid Foam', cat: 'foam', surf: 's-pyramid', cut: true, shots: [1, 2, 3],
-    tag: 'Profiled PU foam for control rooms and booths',
-    lead: 'Open-cell polyurethane foam cut into a field of pyramids at 50 mm, reaching an NRC of up to 0.9. The profile increases surface area and gives the wave a graded entry into the material instead of a hard face.',
+    slug: 'acoustic-foam', name: 'Acoustic Foam', cat: 'foam', surf: 's-pyramid', cut: true, shots: [1, 2, 3],
+    tag: 'Profiled PU foam in pyramid and wedge profiles',
+    lead: 'Open-cell polyurethane foam cut into a field of pyramids or as parallel wedges at 50 mm, reaching an NRC of up to 0.9. The profile increases surface area and gives the wave a graded entry into the material instead of a hard face.',
     body: [
       'Foam is the standard answer inside a small critical-listening room — a vocal booth, a control room, a podcast studio — where the distances are short and the reflections arrive early enough to smear what you are hearing.',
+      'Wedge and pyramid share the same specification and perform the same on paper. Choose on appearance and on how the tiles will be laid out, not on the datasheet. The wedge profile is directional, so orienting alternate tiles at ninety degrees evens out the response across the wall.',
       'It is not a soundproofing material. Foam on the wall will not stop your neighbour hearing the mix; that is a job for mass and isolation. Foam changes how the room sounds from the inside.',
       'Supplied in 305 × 305 mm and 610 × 610 mm tiles. The smaller tile is easier to work around switches and sockets; the larger one goes up faster on a clear wall.',
     ],
     specs: {
       'Item': 'Polyurethane acoustic foam',
-      'Shape': 'Pyramid',
+      'Shape': 'Pyramid & Wedge',
       'Tile size': '305 × 305 mm & 610 × 610 mm',
       'Thickness': '50 mm',
       'NRC': 'up to 0.9',
@@ -498,33 +510,11 @@ const PRODUCTS = [
       'Tensile strength': '0.97 kg/cm²',
       'Elongation': '135%',
     },
-    apps: ['Recording studios', 'Vocal booths', 'Podcast rooms', 'Control rooms'],
-  },
-  {
-    slug: 'acoustic-wedge-foam', name: 'Acoustic Wedge Foam', cat: 'foam', surf: 's-wedge', cut: true, shots: [1, 2, 3],
-    tag: 'Directional wedge profile for first reflections',
-    lead: 'The same 50 mm polyurethane foam cut as parallel wedges rather than pyramids. The profile is directional, so orienting alternate tiles at ninety degrees evens out the response across the wall.',
-    body: [
-      'Wedge and pyramid share the same specification and perform the same on paper. Choose on appearance and on how the tiles will be laid out, not on the datasheet.',
-      'The usual application is the mirror points either side of a mixing position — the spots on the side walls where a hand mirror would show you the speaker from the listening chair.',
-      'Rotating alternate tiles is worth doing. A whole wall of wedges running the same way is measurably less even than a checkerboard.',
-    ],
-    specs: {
-      'Item': 'Polyurethane acoustic foam',
-      'Shape': 'Wedge',
-      'Tile size': '305 × 305 mm & 610 × 610 mm',
-      'Thickness': '50 mm',
-      'NRC': 'up to 0.9',
-      'Cell size': '77 PPI',
-      'Density': '23 kg/cm³ (as published)',
-      'Tensile strength': '0.97 kg/cm²',
-      'Elongation': '135%',
-    },
-    apps: ['Recording studios', 'Rehearsal rooms', 'Editing suites', 'Home studios'],
+    apps: ['Recording studios', 'Vocal booths', 'Podcast rooms', 'Control rooms', 'Rehearsal rooms', 'Editing suites', 'Home studios'],
   },
 
   {
-    slug: 'acoustic-wood-wool-panel', name: 'Acoustic Wood Wool Panel', cat: 'wood', surf: 's-wool', cut: true, shots: [1, 2, 3],
+    slug: 'acoustic-wood-wool-panel', name: 'Acoustic Wood Wool Board', cat: 'wood', surf: 's-wool', cut: true, shots: [1, 2, 3],
     tag: 'Magnesite-bonded wood fibre, robust and paintable',
     lead: 'Long wood fibres bound with magnesite into a rigid, open board reaching an NRC of up to 0.9. It is the toughest absorber we supply, and the one to use where panels will be kicked, leaned on or hosed down.',
     body: [
@@ -584,7 +574,7 @@ const PRODUCTS = [
   },
 
   {
-    slug: 'polysynth-wool', name: 'PolySynth Wool', cat: 'proof', surf: 's-batt', shots: [1, 2, 3],
+    slug: 'polysynth-wool', name: 'Polysynth Wool', cat: 'proof', surf: 's-batt', shots: [1, 2, 3],
     tag: 'Non-itch polyester insulation roll for cavities',
     lead: 'Polyester insulation supplied in 15 metre rolls for filling stud walls, ceiling voids and the cavity behind panels. It replaces glass and mineral wool without the fibre.',
     body: [
@@ -663,6 +653,25 @@ const PRODUCTS = [
     apps: ['Road-facing bedrooms', 'Recording studios', 'Offices', 'Hotels', 'Clinics'],
   },
 ];
+
+/* THE CLIENT'S PRODUCT SEQUENCE (7 Oct 2026 change list). Every list of
+   products on the site — the products page, the homepage carousel, the
+   footer and "related" rows — follows this order. It deliberately crosses
+   the five families, which is why the products page is now one grid with
+   family filters rather than five family sections. A slug missing from
+   this list throws at build time instead of silently dropping a product. */
+const PRODUCT_ORDER = [
+  'acoustic-ceiling-baffle', 'acoustic-ceiling-cloud', 'acoustic-designer-panel',
+  'parametric-design', 'micro-perforated-panel', 'acoustic-wooden-slats',
+  'acoustic-printed-panel', 'acoustic-wood-wool-panel', 'acoustic-wooden-panel',
+  'acoustic-3d-embossed-panel', 'acoustic-screen-partitions', 'acoustic-polyester-panel',
+  'acoustic-tile-panel', 'acoustic-foam', 'polysynth-wool', 'polyblock-membrane',
+  'soundproof-door', 'soundproof-window',
+];
+PRODUCTS.forEach(p => {
+  if (!PRODUCT_ORDER.includes(p.slug)) throw new Error('PRODUCT_ORDER is missing ' + p.slug);
+});
+PRODUCTS.sort((a, b) => PRODUCT_ORDER.indexOf(a.slug) - PRODUCT_ORDER.indexOf(b.slug));
 
 /* NO RT / STC / NC TARGETS HERE. Each sector used to carry one — "RT 1.2-1.6 s
    target", "RT < 0.3 s target", "STC 50+ between rooms", "NC 20-25 target" —
@@ -954,4 +963,25 @@ const FAQ = [
   { q: 'Can acoustic treatments be customized for interior design?', a: 'Yes. Our fabric-wrapped panels and acoustic tiles come in hundreds of colours, patterns and textures, and we work directly with interior designers on the look.' },
 ];
 
-module.exports = { SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };
+/* ---- CONTACT-PAGE ESTIMATE CALCULATOR (7 Oct 2026 change list) ----------
+   The four products and every heading, label and the note under the
+   calculator are the client's own words from the change list.
+
+   RATES ARE NOT SET, ON PURPOSE. The brief asks for an "estimated price"
+   but gives no prices, and a made-up rate published on the site would be a
+   quotation the client never gave. Put each product's material rate in
+   rupees per square foot as `rate` (a number) and rebuild; until then the
+   calculator shows the area and says the price is given on request.
+
+   Area is the WALL area of the room — 2 × (length + width) × height, in
+   square feet — which is the surface these four wall products cover. */
+const CALC = {
+  products: [
+    { slug: 'acoustic-polyester-panel', name: 'Acoustic Polyester Panel', rate: null },
+    { slug: 'acoustic-printed-panel',   name: 'Acoustic Printed Panel',   rate: null },
+    { slug: 'acoustic-designer-panel',  name: 'Acoustic Designer Panel',  rate: null },
+    { slug: 'acoustic-foam',            name: 'Acoustic Foam',            rate: null },
+  ],
+};
+
+module.exports = { CALC, SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };

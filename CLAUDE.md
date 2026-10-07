@@ -50,6 +50,56 @@ family's own `img` field already names its most recognisable member, so
 ten and not nineteen because the pin scales at 200px of scroll per card
 (`--rail-n`, clamped 900–2600px) and nineteen would want ~4800px.
 
+## The 7 Oct 2026 change list (client brief, Word document)
+
+Read this before the older notes below — several of them describe things this
+brief removed.
+
+- **No "Book a (free) site survey" anywhere**: top bar link, header button,
+  hero button and the article sidebar button are gone, and **`ctaBand()` is
+  no longer called on any page** (the function is kept in `src/build.js`,
+  unused). Do not reinstate either.
+- **Product order is the client's**, `PRODUCT_ORDER` in `src/content.js`;
+  `PRODUCTS` is sorted by it at load and a missing slug throws. It crosses
+  families, so **the products page is ONE grid with family filter buttons**,
+  not five family sections. The filter reuses the projects filter in
+  `site.js` (`#gal`, `[data-sector]`, `data-noun`); a plain `#panels` /
+  `#proof` hash (footer, homepage band) selects the matching filter.
+  `#gal > [hidden]` must stay `display:none !important` because `.card`
+  sets its own display. The homepage carousel shows all products in that
+  order (not `railPicks()` any more).
+- **Pyramid and wedge foam are one product, `acoustic-foam`** (images copied
+  to `acoustic-foam-*.webp`; old URLs redirect in `vercel.json`).
+  **Every product name matches the client's list word for word** (confirmed
+  7 Oct 2026: "match exactly") — e.g. Acoustic Ceiling Baffles, Acoustic
+  Wood Wool Board, Screen Partitions, Polysynth Wool, Acoustic 3D Panels.
+  Only the names changed; slugs, URLs and images did not. The calculator's
+  four labels are the brief's own calculator list and stay singular.
+- **Counts stay removed** (confirmed 7 Oct 2026). The client's own figures —
+  the homepage counter strip and About's 2035+ — stay.
+- **No counts anywhere**: no "All 19 products", no family or room-type
+  counts, no "N projects" under room types, numberless filter status text,
+  and the About figures panel keeps only the client's 2035+.
+- **The banner slider is `heroSlider(slides, h1)`** in `src/pages.js`, shared
+  by the homepage and the products page (three product photographs). Still
+  three slides, always — the fade timing assumes three.
+- **Product detail pages carry `.pd-back`** ("Back to products").
+- **Removed outright**: the homepage intro eyebrow; About's "since 2006"
+  eyebrows, the seven process steps and "Four things we will not do";
+  the products page "Catalogue" eyebrow and quick-guide band; the footer
+  bar's "Mumbai, India" and the Digital Jin credit.
+- **"Notes" is "Blog"** in the menu, page eyebrow, breadcrumb and title.
+- **Menu labels are `.nav-roll` markup** (two copies, the second
+  aria-hidden) for the hover roll in theme.css — anything that reads nav
+  link text should read the first `.nav-t`. Logo is larger (3.4rem).
+- **Contact page estimate calculator** (`#calc`, `CALC` in content.js).
+  **Rates are `null` until the client supplies them** — the calculator then
+  shows the wall area and "On request". Never fill a rate in by guesswork:
+  it would be a published price.
+- Still waiting on the client: the Acoustic Felt product details, and the
+  shared toll-free / WhatsApp number (a telecom/WhatsApp Business setup,
+  not a code change).
+
 ## Non-obvious things that will bite you
 
 **A 404 UNDER `/assets/img/` IS CACHED FOR A YEAR, AND THAT IS WHY THE

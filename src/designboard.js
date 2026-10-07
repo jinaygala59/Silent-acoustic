@@ -276,7 +276,7 @@ const body = `<div class="db-wrap">
     ${PRODUCTS.length}</b> products. The rest show nothing rather than a bar at an invented
     value.</p>
     <div class="db-nrc">
-      ${['acoustic-polyester-panel', 'acoustic-wedge-foam', 'acoustic-wooden-slats']
+      ${['acoustic-polyester-panel', 'acoustic-foam', 'acoustic-wooden-slats']
         .map(sl => PRODUCTS.find(p => p.slug === sl)).filter(Boolean)
         .map(p => `<div><p class="db-stack" style="margin:0 0 .5rem">${esc(p.name)}</p>${nrcBar(p)}</div>`).join('')}
     </div>

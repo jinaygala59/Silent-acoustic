@@ -151,7 +151,10 @@ function header(active, depth) {
   const up = depth ? '../' : '';
   const links = NAV.map(n => {
     const cur = n.href === active ? ' aria-current="page"' : '';
-    return `<a href="${up}${n.href}"${cur}>${n.label}</a>`;
+    /* Menu text animation (7 Oct 2026): the label sits in a one-line window
+       with a copy of itself below, and rolls up on hover — theme.css, MENU
+       TEXT ROLL. The copy is aria-hidden, so it is read once. */
+    return `<a href="${up}${n.href}"${cur}><span class="nav-roll"><span class="nav-t">${n.label}</span><span class="nav-t" aria-hidden="true">${n.label}</span></span></a>`;
   }).join('\n          ');
   /* The utility bar carries contact routes only — every string in it is
      already published elsewhere on the site (SITE.phone / SITE.email). */
@@ -159,7 +162,6 @@ function header(active, depth) {
     <div class="wrap">
       <a href="tel:${SITE.phoneHref}">${SITE.phone}</a>
       <a href="mailto:${SITE.email}">${SITE.email}</a>
-      <a href="${up}contact.html">Book a free site survey</a>
     </div>
   </div>
   <header class="site-head">
@@ -172,7 +174,6 @@ function header(active, depth) {
       </button>
       <nav class="nav" id="nav" aria-label="Main">
           ${links}
-          <a class="btn btn-primary" href="${up}contact.html">Book a survey ${ARROW}</a>
       </nav>
     </div>
   </header>`;
@@ -237,9 +238,6 @@ function footer(depth) {
       </div>
       <div class="foot-bar">
         <span>&copy; ${new Date().getFullYear()} ${SITE.name}</span>
-        <span>Mumbai, India</span>
-        <!-- Site credit, by request (3 Oct 2026). -->
-        <span class="foot-credit">Thoughtfully designed by <a href="https://www.digitaljin.in/" target="_blank" rel="noopener">Digital Jin</a></span>
       </div>
     </div>
   </footer>`;
@@ -507,7 +505,6 @@ const ctaBand = (up = '') => `<section class="cta-band g-tint">
       <div class="stack stack-m">
         <p class="lead" data-anim="fade">Send the dimensions and what the space is used for. Clap once in the empty room and send us the voice note — that ten-second clip tells us more than most briefs do.</p>
         <div class="row" data-anim="fade">
-          <a class="btn btn-primary" href="${up}contact.html">Book a free site survey ${ARROW}</a>
           <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
         </div>
       </div>

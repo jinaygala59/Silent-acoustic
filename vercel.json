@@ -7,6 +7,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/products/acoustic-pyramid-foam",
+      "destination": "/products/acoustic-foam",
+      "permanent": true
+    },
+    {
+      "source": "/products/acoustic-wedge-foam",
+      "destination": "/products/acoustic-foam",
+      "permanent": true
+    },
+    {
       "source": "/our-products",
       "destination": "/products",
       "permanent": true
@@ -83,12 +93,12 @@
     },
     {
       "source": "/product/acoustic-foam-pyramid-panels-for-recording-studio",
-      "destination": "/products/acoustic-pyramid-foam",
+      "destination": "/products/acoustic-foam",
       "permanent": true
     },
     {
       "source": "/product/acoustic-foam-wedge-panels",
-      "destination": "/products/acoustic-wedge-foam",
+      "destination": "/products/acoustic-foam",
       "permanent": true
     },
     {
