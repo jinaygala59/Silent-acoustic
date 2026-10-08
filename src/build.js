@@ -400,13 +400,13 @@ const roomdex = (base = 'projects.html') => {
 
 const productCard = (p, up = '') => `<a class="card" data-anim="rise" data-mat="${MAT[p.cat] || 'pet'}" href="${up}products/${p.slug}.html">
   <div class="card-surface surface ${p.surf}${p.cut ? ' is-cut' : ''}">
-    <img src="${up}${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
+    <img src="${up}${asset(`assets/img/products/${p.cardImg}.webp`)}" alt="${esc(p.name)}" width="800" height="600" loading="lazy" decoding="async">
   </div>
   <div class="card-body">
     <span class="card-cat">${esc(CATEGORIES.find(c => c.id === p.cat).name)}</span>
     <h3>${esc(p.name)}</h3>
     <p>${esc(p.tag)}</p>
-    ${nrcBar(p, 'nrc-sm')}
+    <!-- No NRC bar on product cards: removed by request, 8 Oct 2026. -->
     <span class="card-foot">View spec ${ARROW}</span>
   </div>
 </a>`;

@@ -50,6 +50,28 @@ family's own `img` field already names its most recognisable member, so
 ten and not nineteen because the pin scales at 200px of scroll per card
 (`--rail-n`, clamped 900–2600px) and nineteen would want ~4800px.
 
+## The 8 Oct 2026 change list ("website changes 3", Word document)
+
+- **No NRC bar anywhere on the product pages** — not on the cards
+  (`productCard()` in `src/build.js`) and not in the detail-page intro. The
+  published NRC figures stay in each product's spec table. `nrcOf` /
+  `nrcBar` are kept (the design board still draws one); everything below
+  about the NRC bar being on cards and detail pages is history.
+- **A product's first image is an application photograph.** `APP_FIRST` in
+  `src/content.js` names, for ten products whose card/hero was a cut-out,
+  which of their own `-1/-2/-3` shots shows the product fitted; templates
+  read `p.cardImg` / `p.heroImg`, and the cut-out moves into the detail
+  gallery as `'hero'`. Those ten are no longer `cut`. **Acoustic Wooden
+  Panel** still leads with a cut-out: none of its four photos shows it
+  installed, so it waits on the client.
+- **The calculator has the client's rates and method**: Polyester 140,
+  Foam 140, Printed 200, Designer 200 (₹/sq ft); wall area 2(L×H)+2(W×H),
+  × 70% coverage, × rate. Their worked example (20×10×8 on Polyester =
+  ₹47,040) is reproduced exactly — keep it that way.
+- **Contact page heading** is the client's: "Planning a Large-Scale
+  Project?" with their lead line.
+- Product sequence was re-sent and already matched `PRODUCT_ORDER`.
+
 ## The 7 Oct 2026 change list (client brief, Word document)
 
 Read this before the older notes below — several of them describe things this

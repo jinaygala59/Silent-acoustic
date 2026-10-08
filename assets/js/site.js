@@ -762,12 +762,16 @@
   document.addEventListener('touchstart', function () {}, { passive: true });
 
   /* -------------------------- ESTIMATE CALCULATOR -------------------------
-     Contact page. Area is the wall area, 2 × (L + W) × H in square feet;
-     price is area × the product's rate from CALC in content.js. A product
-     with no rate set shows "on request" rather than a guessed figure. */
+     Contact page, the client's own method (8 Oct 2026): wall area is
+     2 × (L × H) + 2 × (W × H) in square feet; the product covers 70% of it
+     (data-coverage); price is that coverage × the product's per-sq-ft rate
+     from CALC in content.js. Their example, L20 W10 H8 on Polyester at 140:
+     480 sq ft of wall → 336 sq ft → ₹47,040. A product with no rate set
+     shows "on request" rather than a guessed figure. */
   var calc = document.getElementById('calc');
   if (calc) {
     var rates = {};
+    var cover = parseFloat(calc.getAttribute('data-coverage')) || 1;
     try { rates = JSON.parse(calc.getAttribute('data-rates') || '{}'); } catch (e) {}
     var out = document.getElementById('calc-out');
     var fmt = function (n, d) {
@@ -782,15 +786,19 @@
         calc.elements[n].setAttribute('aria-invalid', String(!(v(n) > 0)));
       });
       if (bad) { calc.elements[!(l > 0) ? 'l' : !(w > 0) ? 'w' : 'h'].focus(); return; }
-      var area = 2 * (l + w) * h;
+      var wall = 2 * (l * h) + 2 * (w * h);
+      var area = wall * cover;
       var pick = calc.querySelector('input[name="product"]:checked');
       var rate = pick ? rates[pick.value] : null;
-      document.getElementById('calc-area').textContent = fmt(area, 1) + ' sq ft';
+      var dp = function (n) { return Math.round(n) === n ? 0 : 1; };
+      document.getElementById('calc-area').textContent = fmt(area, dp(area)) + ' sq ft';
+      document.getElementById('calc-area-note').textContent =
+        Math.round(cover * 100) + '% of ' + fmt(wall, dp(wall)) + ' sq ft of wall';
       var price = document.getElementById('calc-price');
       var note = document.getElementById('calc-price-note');
       if (typeof rate === 'number' && rate > 0) {
         price.textContent = '\u20B9 ' + fmt(Math.round(area * rate), 0);
-        note.textContent = 'At \u20B9 ' + fmt(rate, 0) + ' per sq ft, material only';
+        note.textContent = fmt(area, dp(area)) + ' sq ft \u00D7 \u20B9 ' + fmt(rate, 0) + ' per sq ft';
       } else {
         price.textContent = 'On request';
         note.textContent = 'Call or WhatsApp us with these figures for a price';

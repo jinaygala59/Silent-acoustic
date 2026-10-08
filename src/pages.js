@@ -174,7 +174,7 @@ const productCarousel = (up = '') => `<div class="g-car" data-carousel data-anim
       <ul class="g-tiles g-car-track">
         ${PRODUCTS.map(p => `<li class="g-tile"><a href="${up}products/${p.slug}.html">
           <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
-            <img src="${up}${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <img src="${up}${asset(`assets/img/products/${p.cardImg}.webp`)}" alt="" width="800" height="600" loading="lazy" decoding="async">
             <span class="g-plus" aria-hidden="true">+</span>
           </span>
           <span class="g-tile-cap">${esc(p.name)}</span>
@@ -554,7 +554,8 @@ PRODUCTS.forEach(p => {
         <p class="eyebrow" data-in style="--d:60">${esc(cat.name)}</p>
         <h1 data-in style="--d:170">${esc(p.name)}</h1>
         <p class="lead" data-in style="--d:280">${esc(p.tag)}</p>
-        ${nrcBar(p, 'nrc-lead')}
+        <!-- No NRC bar: removed from every product page by request, 8 Oct 2026.
+             The published NRC figure stays in the spec table below. -->
         <div class="row" data-in style="--d:360;margin-top:2rem">
           <a class="btn btn-primary" href="../contact.html">Request a quote ${ARROW}</a>
           <a class="btn btn-ghost" href="tel:${SITE.phoneHref}">${SITE.phone}</a>
@@ -568,7 +569,7 @@ PRODUCTS.forEach(p => {
       </div>
       <!-- data-mat resolves the material colour for the .is-cut mount. -->
       <div class="pd-hero surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}" data-anim="frame">
-        <img src="../${asset(`assets/img/products/${p.slug}-hero.webp`)}" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
+        <img src="../${asset(`assets/img/products/${p.heroImg}.webp`)}" alt="${esc(p.name)}" width="1600" height="1000" fetchpriority="high" decoding="async">
       </div>
     </div>
   </div>
@@ -848,8 +849,9 @@ built.push(page({
   desc: 'Contact Silence Acoustic, Mumbai. Call +91 81084 00566, WhatsApp, or send your room details — and get an instant acoustic estimate.',
   body: `
 ${gHead({
-  eyebrow: 'Contact', h1: 'Tell us about the space.',
-  lead: 'The more you can tell us now, the more useful the first call is. Room size and what goes on in it are the two that matter most.',
+  /* CLIENT-SUPPLIED COPY, verbatim from the change brief of 8 Oct 2026. */
+  eyebrow: 'Contact', h1: 'Planning a Large-Scale Project?',
+  lead: 'For large-scale acoustic and soundproofing projects, fill out the form below. Our team will contact you with tailored solutions for your requirements.',
 })}
 
 <section class="dark g-contact">
@@ -941,7 +943,8 @@ ${gHead({
         <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
       </div>
       <form class="g-calc-form" id="calc" data-anim="fade" novalidate
-            data-rates='${esc(JSON.stringify(Object.fromEntries(CALC.products.map(p => [p.slug, p.rate]))))}'>
+            data-rates='${esc(JSON.stringify(Object.fromEntries(CALC.products.map(p => [p.slug, p.rate]))))}'
+            data-coverage="${CALC.coverage}">
         <h3 class="sub-h">Calculate Your Acoustic Solution</h3>
         <p class="muted g-calc-sub">Choose your preferred product, enter your room dimensions, and get an instant estimated price based on your space.</p>
         <fieldset class="g-calc-set">
@@ -960,7 +963,7 @@ ${gHead({
         </fieldset>
         <button class="btn btn-primary" type="submit">Get Your Estimate ${ARROW}</button>
         <div class="g-calc-out" id="calc-out" role="status" aria-live="polite" hidden>
-          <div class="g-calc-res"><span>Area / Coverage Required</span><b id="calc-area">&mdash;</b><small>Wall area: 2 &times; (length + width) &times; height</small></div>
+          <div class="g-calc-res"><span>Area / Coverage Required</span><b id="calc-area">&mdash;</b><small id="calc-area-note"></small></div>
           <div class="g-calc-res"><span>Estimated Total Price</span><b id="calc-price">&mdash;</b><small id="calc-price-note"></small></div>
         </div>
         <p class="g-calc-note"><b>Please Note:</b> The displayed price is an estimated material cost based on the dimensions provided. Final pricing may vary depending on product selection, design, installation requirements, site conditions, transportation and project specifications.</p>

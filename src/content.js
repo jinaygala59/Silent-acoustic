@@ -673,6 +673,36 @@ PRODUCTS.forEach(p => {
 });
 PRODUCTS.sort((a, b) => PRODUCT_ORDER.indexOf(a.slug) - PRODUCT_ORDER.indexOf(b.slug));
 
+/* FIRST IMAGE = THE APPLICATION (client brief, 8 Oct 2026: "for all the
+   product image keep application area in the first image"). Products whose
+   own card/hero shot was a cut-out on white lead instead with the one of
+   their own three shots that shows the product fitted in a room — picked by
+   eye from the client's photographs, numbers are the -1/-2/-3 files. The
+   cut-out is not lost: it moves into the detail page's gallery ('hero').
+   Acoustic Wooden Panel is missing on purpose: all four of its photographs
+   are cut-outs, so there is no application shot to lead with until the
+   client sends one.
+
+   `cardImg` / `heroImg` are the file stems every template reads; a product
+   that leads with a room photograph is no longer `cut`, so it is not
+   multiply-blended onto its material mount. */
+const APP_FIRST = {
+  'acoustic-designer-panel': 1, 'acoustic-wooden-slats': 3, 'acoustic-printed-panel': 1,
+  'acoustic-wood-wool-panel': 3, 'acoustic-3d-embossed-panel': 3, 'acoustic-polyester-panel': 1,
+  'acoustic-tile-panel': 1, 'acoustic-foam': 3, 'polyblock-membrane': 3, 'soundproof-window': 1,
+};
+PRODUCTS.forEach(p => {
+  const n = APP_FIRST[p.slug];
+  if (n) {
+    p.cardImg = p.heroImg = `${p.slug}-${n}`;
+    p.cut = false;
+    p.shots = (p.shots || []).filter(x => x !== n).concat('hero');
+  } else {
+    p.cardImg = `${p.slug}-card`;
+    p.heroImg = `${p.slug}-hero`;
+  }
+});
+
 /* NO RT / STC / NC TARGETS HERE. Each sector used to carry one — "RT 1.2-1.6 s
    target", "RT < 0.3 s target", "STC 50+ between rooms", "NC 20-25 target" —
    and all ten were invented. Checked against eight of the ten live room-type
@@ -967,21 +997,23 @@ const FAQ = [
    The four products and every heading, label and the note under the
    calculator are the client's own words from the change list.
 
-   RATES ARE NOT SET, ON PURPOSE. The brief asks for an "estimated price"
-   but gives no prices, and a made-up rate published on the site would be a
-   quotation the client never gave. Put each product's material rate in
-   rupees per square foot as `rate` (a number) and rebuild; until then the
-   calculator shows the area and says the price is given on request.
-
-   Area is the WALL area of the room — 2 × (length + width) × height, in
-   square feet — which is the surface these four wall products cover. */
+   RATES AND METHOD ARE THE CLIENT'S (change brief of 8 Oct 2026), rupees
+   per square foot: Polyester 140, Foam 140, Printed 200, Designer 200.
+   Their worked example, which the calculator reproduces exactly:
+     L 20 ft, W 10 ft, H 8 ft
+     walls  2 × (20 × 8) + 2 × (10 × 8) = 320 + 160 = 480 sq ft
+     cover  480 × 70% = 336 sq ft
+     price  336 × ₹140 = ₹47,040
+   A product with `rate: null` still shows the area and "On request". */
 const CALC = {
   products: [
-    { slug: 'acoustic-polyester-panel', name: 'Acoustic Polyester Panel', rate: null },
-    { slug: 'acoustic-printed-panel',   name: 'Acoustic Printed Panel',   rate: null },
-    { slug: 'acoustic-designer-panel',  name: 'Acoustic Designer Panel',  rate: null },
-    { slug: 'acoustic-foam',            name: 'Acoustic Foam',            rate: null },
+    { slug: 'acoustic-polyester-panel', name: 'Acoustic Polyester Panel', rate: 140 },
+    { slug: 'acoustic-printed-panel',   name: 'Acoustic Printed Panel',   rate: 200 },
+    { slug: 'acoustic-designer-panel',  name: 'Acoustic Designer Panel',  rate: 200 },
+    { slug: 'acoustic-foam',            name: 'Acoustic Foam',            rate: 140 },
   ],
+  /* Share of the wall area the product covers — the client's own 70%. */
+  coverage: 0.7,
 };
 
 module.exports = { CALC, SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ };
