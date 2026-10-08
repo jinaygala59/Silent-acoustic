@@ -166,6 +166,22 @@ const workBand = () => {
    slide is a plain .hero-title that screen readers still read. Three
    slides, always: the fade timing in motion.css / theme.css is written for
    three. */
+/* The products carousel — shared by the homepage and the top of the
+   products page (by request, 8 Oct 2026: it replaced the products page's
+   banner slider). `up` is the path prefix to the site root. */
+const productCarousel = (up = '') => `<div class="g-car" data-carousel data-anim="rise"
+         role="group" aria-roledescription="carousel" aria-label="Our products">
+      <ul class="g-tiles g-car-track">
+        ${PRODUCTS.map(p => `<li class="g-tile"><a href="${up}products/${p.slug}.html">
+          <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
+            <img src="${up}${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">${esc(p.name)}</span>
+        </a></li>`).join('\n        ')}
+      </ul>
+    </div>`;
+
 const heroSlider = (slides, h1 = true) => `<section class="hero">
   <div class="hero-top">
   <div class="hero-media" aria-hidden="true">
@@ -299,18 +315,7 @@ ${visionBand()}
          The row itself is native scroll-snap, not a JS-driven track: with
          site.js blocked this is still a draggable, snapping row of ten
          products. site.js only adds the arrows, the dots and the keyboard. -->
-    <div class="g-car" data-carousel data-anim="rise"
-         role="group" aria-roledescription="carousel" aria-label="Our products">
-      <ul class="g-tiles g-car-track">
-        ${PRODUCTS.map(p => `<li class="g-tile"><a href="products/${p.slug}.html">
-          <span class="g-tile-img surface ${p.surf}${p.cut ? ' is-cut' : ''}" data-mat="${MATKEY[p.cat] || 'pet'}">
-            <img src="${asset(`assets/img/products/${p.slug}-card.webp`)}" alt="" width="800" height="600" loading="lazy" decoding="async">
-            <span class="g-plus" aria-hidden="true">+</span>
-          </span>
-          <span class="g-tile-cap">${esc(p.name)}</span>
-        </a></li>`).join('\n        ')}
-      </ul>
-    </div>
+    ${productCarousel()}
     <div class="row g-more" data-anim="fade"><a class="btn btn-ghost" href="products.html">All products ${ARROW}</a></div>
   </div>
 </section>
@@ -498,19 +503,22 @@ const projTile = (pr, up = '') => `<li class="g-pj" data-anim="open" data-sector
      homepage band still land on the right filter (site.js);
    · the "Which family do you need / Quick guide" band and the contact band
      were removed. */
-const slidePicks = PRODUCTS.filter(p => !p.cut).slice(0, 3);
 built.push(page({
   file: 'products.html', active: 'products.html',
   title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
   desc: 'Acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Silence Acoustic, Mumbai.',
   body: `
-${heroSlider(slidePicks.map(p => ({ src: `assets/img/products/${p.slug}-hero.webp`, w: 1600, h: 1000, sector: CATEGORIES.find(c => c.id === p.cat).name, title: p.name })), false)}
+<!-- 8 Oct 2026, by request: the page opens on the homepage's products
+     carousel, not the banner slider. The page's h1 heads it. -->
+<section class="g-products g-products-top" aria-labelledby="products-h1">
+  <div class="wrap">
+    <h1 id="products-h1" data-anim="reveal">Products</h1>
+    ${productCarousel()}
+  </div>
+</section>
 
 <section class="light">
   <div class="wrap">
-    <div class="g-work-head">
-      <h1 data-anim="reveal">Products</h1>
-    </div>
     <div class="filters center-row" role="group" aria-label="Filter products by family">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
       ${CATEGORIES.map(c => `<button class="filter" type="button" data-filter="${c.id}" aria-pressed="false">${esc(c.name)}</button>`).join('\n      ')}

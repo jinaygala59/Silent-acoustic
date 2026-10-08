@@ -439,6 +439,11 @@ a.card:active { transform: none; box-shadow: none; }
 /* 2 · Our Products: photograph tiles, centred caption on white */
 .g-products { background: #F3F4F7; }
 .g-products h2 { font-size: var(--t-h2); margin-block: 1.25rem clamp(2rem, 4vw, 3rem); }
+/* products page: the carousel opens the page under its h1 (8 Oct 2026),
+   and the filter grid follows straight on, so the gap below is tightened */
+.g-products-top { padding-bottom: clamp(2rem, 4vw, 3rem); }
+.g-products-top h1 { margin-block: 0 clamp(2rem, 4vw, 3rem); }
+.g-products-top + .light { padding-top: clamp(2rem, 4vw, 3rem); }
 .g-tiles {
   list-style: none; padding: 0; display: grid; gap: 0;
   grid-template-columns: repeat(2, 1fr);

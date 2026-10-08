@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css?v=208b792f">
 <link rel="stylesheet" href="assets/css/motion.css?v=cde7630d">
-<link rel="stylesheet" href="assets/css/theme.css?v=6aef275b">
+<link rel="stylesheet" href="assets/css/theme.css?v=7895ed31">
 <link rel="icon" href="assets/img/favicon.png?v=6a9a7f53" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png?v=6a9a7f53">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
@@ -64,45 +64,147 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </header>
 <main id="main">
 
-<section class="hero">
-  <div class="hero-top">
-  <div class="hero-media" aria-hidden="true">
-    <div class="hero-slide"><img src="assets/img/products/acoustic-ceiling-baffle-hero.webp?v=302e20f0"
-         alt="" width="1600" height="1000" fetchpriority="high" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/products/acoustic-ceiling-cloud-hero.webp?v=c72a6483"
-         alt="" width="1600" height="1000" fetchpriority="low" loading="lazy" decoding="async"></div>
-    <div class="hero-slide"><img src="assets/img/products/parametric-design-hero.webp?v=76727056"
-         alt="" width="1600" height="1000" fetchpriority="low" loading="lazy" decoding="async"></div>
-  </div>
+<!-- 8 Oct 2026, by request: the page opens on the homepage's products
+     carousel, not the banner slider. The page's h1 heads it. -->
+<section class="g-products g-products-top" aria-labelledby="products-h1">
   <div class="wrap">
-    <!-- The headline rotates with the photograph. Only slide one is the h1 —
-         see the HOME note at the top of src/pages.js before editing. -->
-    <div class="hero-copy">
-      <div class="hero-say is-on">
-        <p class="eyebrow">Acoustic Ceilings</p>
-        <p class="hero-title"><span class="hero-strong">Acoustic Ceiling</span> <span class="decay">Baffles</span></p>
-      </div>
-      <div class="hero-say" aria-hidden="true">
-        <p class="eyebrow">Acoustic Ceilings</p>
-        <p class="hero-title"><span class="hero-strong">Acoustic Ceiling</span> <span class="decay">Clouds</span></p>
-      </div>
-      <div class="hero-say" aria-hidden="true">
-        <p class="eyebrow">Acoustic Panels</p>
-        <p class="hero-title"><span class="hero-strong">Parametric</span> <span class="decay">Design</span></p>
-      </div>
+    <h1 id="products-h1" data-anim="reveal">Products</h1>
+    <div class="g-car" data-carousel data-anim="rise"
+         role="group" aria-roledescription="carousel" aria-label="Our products">
+      <ul class="g-tiles g-car-track">
+        <li class="g-tile"><a href="products/acoustic-ceiling-baffle.html">
+          <span class="g-tile-img surface s-baffle" data-mat="cloud">
+            <img src="assets/img/products/acoustic-ceiling-baffle-card.webp?v=2145f245" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Ceiling Baffles</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-ceiling-cloud.html">
+          <span class="g-tile-img surface s-cloud" data-mat="cloud">
+            <img src="assets/img/products/acoustic-ceiling-cloud-card.webp?v=7d3333ac" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Ceiling Clouds</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-designer-panel.html">
+          <span class="g-tile-img surface s-groove is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-designer-panel-card.webp?v=b582f800" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Designer Panels</span>
+        </a></li>
+        <li class="g-tile"><a href="products/parametric-design.html">
+          <span class="g-tile-img surface s-param" data-mat="pet">
+            <img src="assets/img/products/parametric-design-card.webp?v=ff6c8889" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Parametric Design</span>
+        </a></li>
+        <li class="g-tile"><a href="products/micro-perforated-panel.html">
+          <span class="g-tile-img surface s-perf" data-mat="pet">
+            <img src="assets/img/products/micro-perforated-panel-card.webp?v=5fd4acf5" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Micro Perforated Panel</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-wooden-slats.html">
+          <span class="g-tile-img surface s-slat is-cut" data-mat="wood">
+            <img src="assets/img/products/acoustic-wooden-slats-card.webp?v=0ca06550" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wooden Slats</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-printed-panel.html">
+          <span class="g-tile-img surface s-print is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-printed-panel-card.webp?v=09d4b63a" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Printed Panel</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-wood-wool-panel.html">
+          <span class="g-tile-img surface s-wool is-cut" data-mat="wood">
+            <img src="assets/img/products/acoustic-wood-wool-panel-card.webp?v=8a690344" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wood Wool Board</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-wooden-panel.html">
+          <span class="g-tile-img surface s-woodperf is-cut" data-mat="wood">
+            <img src="assets/img/products/acoustic-wooden-panel-card.webp?v=2811787a" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Wooden Panel</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-3d-embossed-panel.html">
+          <span class="g-tile-img surface s-emboss is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-3d-embossed-panel-card.webp?v=eed6d73c" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic 3D Panels</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-screen-partitions.html">
+          <span class="g-tile-img surface s-screen" data-mat="pet">
+            <img src="assets/img/products/acoustic-screen-partitions-card.webp?v=adf954b4" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Screen Partitions</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-polyester-panel.html">
+          <span class="g-tile-img surface s-felt is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-polyester-panel-card.webp?v=51326fad" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Polyester Panel</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-tile-panel.html">
+          <span class="g-tile-img surface s-tile is-cut" data-mat="pet">
+            <img src="assets/img/products/acoustic-tile-panel-card.webp?v=8d3b3bf1" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Tile Panel</span>
+        </a></li>
+        <li class="g-tile"><a href="products/acoustic-foam.html">
+          <span class="g-tile-img surface s-pyramid is-cut" data-mat="foam">
+            <img src="assets/img/products/acoustic-foam-card.webp?v=d65190d5" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Acoustic Foam</span>
+        </a></li>
+        <li class="g-tile"><a href="products/polysynth-wool.html">
+          <span class="g-tile-img surface s-batt" data-mat="proof">
+            <img src="assets/img/products/polysynth-wool-card.webp?v=e7669573" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Polysynth Wool</span>
+        </a></li>
+        <li class="g-tile"><a href="products/polyblock-membrane.html">
+          <span class="g-tile-img surface s-mlv is-cut" data-mat="proof">
+            <img src="assets/img/products/polyblock-membrane-card.webp?v=a9800def" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Polyblock Membrane</span>
+        </a></li>
+        <li class="g-tile"><a href="products/soundproof-door.html">
+          <span class="g-tile-img surface s-door" data-mat="proof">
+            <img src="assets/img/products/soundproof-door-card.webp?v=9ea9e261" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Soundproof Door</span>
+        </a></li>
+        <li class="g-tile"><a href="products/soundproof-window.html">
+          <span class="g-tile-img surface s-glass is-cut" data-mat="proof">
+            <img src="assets/img/products/soundproof-window-card.webp?v=05cf12b7" alt="" width="800" height="600" loading="lazy" decoding="async">
+            <span class="g-plus" aria-hidden="true">+</span>
+          </span>
+          <span class="g-tile-cap">Soundproof Window</span>
+        </a></li>
+      </ul>
     </div>
-    <div class="hero-foot">
-      <span class="hero-rule" aria-hidden="true"></span>
-    </div>
-  </div>
   </div>
 </section>
 
 <section class="light">
   <div class="wrap">
-    <div class="g-work-head">
-      <h1 data-anim="reveal">Products</h1>
-    </div>
     <div class="filters center-row" role="group" aria-label="Filter products by family">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
       <button class="filter" type="button" data-filter="panels" aria-pressed="false">Acoustic Panels</button>
