@@ -703,6 +703,23 @@ PRODUCTS.forEach(p => {
   }
 });
 
+/* SUPPLIED LEAD IMAGES (by request, 9 Oct 2026). Three products open on an
+   image supplied directly rather than one of the client's own shots: the
+   slatted hall for Wooden Slats, the hall with insulation in the frame for
+   Polysynth Wool, the perforated-wood home theatre for Wooden Panel. The
+   image each product led with until now is NOT dropped — it moves to the
+   front of that product's detail gallery, so it is shown, just not first.
+   Files are `<slug>-app.webp`. Applied after APP_FIRST, so it wins. */
+const LEAD_SUPPLIED = ['acoustic-wooden-slats', 'polysynth-wool', 'acoustic-wooden-panel'];
+PRODUCTS.forEach(p => {
+  if (!LEAD_SUPPLIED.includes(p.slug)) return;
+  const prev = p.cardImg.slice(p.slug.length + 1);   // '3', 'card' …
+  const prevShot = prev === 'card' ? 'hero' : prev;  // the gallery shows -hero, the larger cut
+  p.shots = [prevShot].concat((p.shots || []).filter(x => String(x) !== String(prevShot)));
+  p.cardImg = p.heroImg = `${p.slug}-app`;
+  p.cut = false;
+});
+
 /* NO RT / STC / NC TARGETS HERE. Each sector used to carry one — "RT 1.2-1.6 s
    target", "RT < 0.3 s target", "STC 50+ between rooms", "NC 20-25 target" —
    and all ten were invented. Checked against eight of the ten live room-type
