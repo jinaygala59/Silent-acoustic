@@ -177,24 +177,34 @@ const CLIENTS = [
 
      Banner-4.jpg            -> banners/auditorium.webp
 
-   9 Oct 2026, by request: ALL THREE banners replaced with images supplied
-   directly (not from the live site): a home theatre lined with perforated
-   wood panels, a hall lined with wooden slats, and the same hall with its
-   timber frame and insulation exposed. The client's three headlines stay in
-   slot order; each eyebrow names what its photograph shows (Home Theatre,
-   Auditorium, Soundproofing). The previous set (home-theatre, boardroom,
-   auditorium) is in git history. KEEP THREE SLIDES: the cross-fade timing
-   in motion.css and theme.css is written for exactly three.
-   */
+   1 Oct 2026, by request: the set is now home-theatre and boardroom
+   (two images supplied directly, not from the live site) plus the
+   client's own auditorium (Banner-4.jpg), which stays in slot three with
+   its original sector and headline. office-conference (Banner-5.jpg) and
+   recording-studio (Recording-studio-1.jpg) were removed; both are in git
+   history. The supplied two carry the room types they show ('Home
+   Theatres', 'Conference Room & Cabin' in SECTORS) and the other two
+   client headlines. KEEP THREE SLIDES: the cross-fade timing in motion.css
+   and theme.css is written for exactly three.
+
+   THE SCRIM DOES NOT GUARANTEE AN ARBITRARY PHOTOGRAPH (see the hero notes in
+   CLAUDE.md). Every one of these three was measured against the real
+   composite before it went in, at 1440 and at 375, and the figures are
+   recorded beside `.hero-media::after` in site.css. If you swap one, measure
+   the replacement the same way — a darker picture than these will take the
+   headline under the floor and nothing automated will catch it.
+
+   `w`/`h` are the intrinsic pixels of the WebP, needed so the banner reserves
+   its box before the image lands. */
 const BANNERS = [
   /* No `alt` field: the banner photographs are decorative. `.hero-media`
      carries aria-hidden and each <img> ships alt="", which is correct — the
      sector and the headline beside the picture already say what it is. An
      alt written here would also have been a description composed rather than
      taken from the client, which is the thing this file exists to prevent. */
-  { img: 'perforated-theatre', w: 1448, h: 1086, sector: 'Home Theatre',  title: 'Silence That Speaks Style' },
-  { img: 'slatted-hall',       w: 1536, h: 1024, sector: 'Auditorium',    title: 'Designed for Sound. Crafted for Spaces.' },
-  { img: 'insulated-hall',     w: 1536, h: 1024, sector: 'Soundproofing', title: 'Where Superior Acoustics Meet Elegant Design' },
+  { img: 'home-theatre',      w: 1536, h: 864, sector: 'Home Theatre',     title: 'Silence That Speaks Style' },
+  { img: 'boardroom',         w: 1672, h: 941, sector: 'Conference Room',  title: 'Designed for Sound. Crafted for Spaces.' },
+  { img: 'auditorium',        w: 1600, h: 731, sector: 'Auditorium',       title: 'Where Superior Acoustics Meet Elegant Design' },
 ];
 
 /* ---- FOUNDER ------------------------------------------------------------

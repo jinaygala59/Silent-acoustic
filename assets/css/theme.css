@@ -997,15 +997,7 @@ a.card:active { transform: none; box-shadow: none; }
 .hero-top .eyebrow, .hero-top h1, .hero-title, .hero-title .decay,
 .hero-top .lead, .hero-top .hero-lead { color: #FFFFFF; }
 .hero-top .eyebrow, .hero-top h1, .hero-title, .hero-top .lead, .hero-top .hero-lead {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), 0 2px 22px rgba(0, 0, 0, 0.55);
-}
-/* Strengthened 9 Oct 2026 for the insulated-hall banner, where the type
-   sits on white insulation: the small tracked eyebrow had almost vanished.
-   Still a shadow on the TYPE only — the photographs carry no scrim, by
-   request. The eyebrow, being small, gets the heaviest halo. */
-.hero-top .eyebrow {
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 .hero-rule { background: var(--accent); }
 /* cyan fill, dark label (6.74:1); hover to white */
