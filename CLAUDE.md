@@ -1151,6 +1151,12 @@ marginal.
 **The banner's contrast is a property of the current photograph, not of the
 scrim.**
 
+**The banner set was replaced again on 9 Oct 2026, by request:**
+`perforated-theatre`, `slatted-hall` and `insulated-hall`, all three
+supplied directly (not from the live site), eyebrows Home Theatre /
+Auditorium / Soundproofing, the client's three headlines in their old order.
+None of the earlier banners remains; the paragraphs below are history.
+
 **The banner set changed on 1 Oct 2026, by request:** `home-theatre` and
 `boardroom` (two images supplied directly, not from the live site) plus the
 client's own `auditorium` in slot 3. `recording-studio` and
