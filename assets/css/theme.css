@@ -813,6 +813,10 @@ a.card:active { transform: none; box-shadow: none; }
 .g-faq-i p { padding: 0 1.5rem 1.4rem; color: #3F454A; max-width: 70ch; }
 
 /* contact: form beside the contact blocks */
+/* contact page: the h1 and lead introduce the form, above it (9 Oct 2026) */
+.g-contact-head { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.g-contact-head h1 { font-size: var(--t-h1); margin-block: 1.25rem 1.1rem; max-width: 20ch; }
+.g-contact-head .lead { max-width: 60ch; }
 .g-contact-grid { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
 @media (min-width: 60rem) { .g-contact-grid { grid-template-columns: 1.5fr 1fr; } }
 .g-offices { display: grid; gap: 1.75rem; }

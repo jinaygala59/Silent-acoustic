@@ -848,13 +848,7 @@ built.push(page({
   title: 'Contact Us | Silence Acoustic',
   desc: 'Contact Silence Acoustic, Mumbai. Call +91 81084 00566, WhatsApp, or send your room details — and get an instant acoustic estimate.',
   body: `
-${gHead({
-  /* CLIENT-SUPPLIED COPY, verbatim from the change brief of 8 Oct 2026. */
-  eyebrow: 'Contact', h1: 'Planning a Large-Scale Project?',
-  lead: 'For large-scale acoustic and soundproofing projects, fill out the form below. Our team will contact you with tailored solutions for your requirements.',
-})}
-
-<!-- INSTANT ESTIMATE. First under the page heading, above the enquiry form, by request (9 Oct 2026: "this will come up"). Every heading, label and the note are the client's
+<!-- INSTANT ESTIMATE. First on the page, above the heading and the enquiry form, by request (9 Oct 2026: "this will come up"). Every heading, label and the note are the client's
      own words (7 Oct 2026 change list). The arithmetic is in site.js
      (ESTIMATE CALCULATOR); the products, the client's per-sq-ft rates and
      their coverage factor are CALC in content.js. -->
@@ -893,6 +887,15 @@ ${gHead({
 
 <section class="dark g-contact">
   <div class="wrap">
+    <!-- The page heading sits HERE, directly above the enquiry form, not at
+         the top of the page (by request, 9 Oct 2026): it introduces the form
+         it describes. CLIENT-SUPPLIED COPY, verbatim from the change brief
+         of 8 Oct 2026. Still the page's only h1. -->
+    <div class="g-contact-head">
+      <p class="eyebrow" data-anim="fade">Contact</p>
+      <h1 data-anim="reveal">Planning a Large-Scale Project?</h1>
+      <p class="lead" data-anim="fade">For large-scale acoustic and soundproofing projects, fill out the form below. Our team will contact you with tailored solutions for your requirements.</p>
+    </div>
     <div class="g-contact-grid">
       <div data-anim="fade">
         <h2 class="sub-h mb-m">Send the details</h2>
