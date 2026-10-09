@@ -854,6 +854,47 @@ ${gHead({
   lead: 'For large-scale acoustic and soundproofing projects, fill out the form below. Our team will contact you with tailored solutions for your requirements.',
 })}
 
+<!-- INSTANT ESTIMATE. First under the page heading, above the enquiry form, by request (9 Oct 2026: "this will come up"). Every heading, label and the note are the client's
+     own words (7 Oct 2026 change list). The arithmetic is in site.js
+     (ESTIMATE CALCULATOR); the products, the client's per-sq-ft rates and
+     their coverage factor are CALC in content.js. -->
+<section class="light g-calc" aria-labelledby="calc-h">
+  <div class="wrap">
+    <div class="g-calc-grid">
+      <div class="g-calc-intro">
+        <h2 id="calc-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
+        <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
+      </div>
+      <form class="g-calc-form" id="calc" data-anim="fade" novalidate
+            data-rates='${esc(JSON.stringify(Object.fromEntries(CALC.products.map(p => [p.slug, p.rate]))))}'
+            data-coverage="${CALC.coverage}">
+        <h3 class="sub-h">Calculate Your Acoustic Solution</h3>
+        <p class="muted g-calc-sub">Choose your preferred product, enter your room dimensions, and get an instant estimated price based on your space.</p>
+        <fieldset class="g-calc-set">
+          <legend>Select Product</legend>
+          <div class="g-calc-opts">
+            ${CALC.products.map((p, i) => `<label class="g-calc-opt"><input type="radio" name="product" value="${p.slug}"${i === 0 ? ' checked' : ''}><span>${esc(p.name)}</span></label>`).join('\n            ')}
+          </div>
+        </fieldset>
+        <fieldset class="g-calc-set">
+          <legend>Enter Your Space Dimensions</legend>
+          <div class="g-calc-dims">
+            <div class="field"><label for="c-l">Length (ft)</label><input id="c-l" name="l" type="number" inputmode="decimal" min="0" step="0.1" required></div>
+            <div class="field"><label for="c-w">Width (ft)</label><input id="c-w" name="w" type="number" inputmode="decimal" min="0" step="0.1" required></div>
+            <div class="field"><label for="c-h">Height (ft)</label><input id="c-h" name="h" type="number" inputmode="decimal" min="0" step="0.1" required></div>
+          </div>
+        </fieldset>
+        <button class="btn btn-primary" type="submit">Get Your Estimate ${ARROW}</button>
+        <div class="g-calc-out" id="calc-out" role="status" aria-live="polite" hidden>
+          <div class="g-calc-res"><span>Area / Coverage Required</span><b id="calc-area">&mdash;</b><small id="calc-area-note"></small></div>
+          <div class="g-calc-res"><span>Estimated Total Price</span><b id="calc-price">&mdash;</b><small id="calc-price-note"></small></div>
+        </div>
+        <p class="g-calc-note"><b>Please Note:</b> The displayed price is an estimated material cost based on the dimensions provided. Final pricing may vary depending on product selection, design, installation requirements, site conditions, transportation and project specifications.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section class="dark g-contact">
   <div class="wrap">
     <div class="g-contact-grid">
@@ -927,48 +968,6 @@ ${gHead({
       <a class="g-map-hit" href="${mapDir}" target="_blank" rel="noopener" aria-label="Get directions to the ${esc(SITE.name)} office in Google Maps (opens in a new tab)"><span class="g-map-tag">Get directions ${ARROW}</span></a>
     </div>
     <a class="btn btn-primary g-map-btn" href="${mapDir}" target="_blank" rel="noopener">Get directions in Google Maps ${ARROW}</a>
-  </div>
-</section>
-
-<!-- INSTANT ESTIMATE. Every heading, label and the note are the client's
-     own words (7 Oct 2026 change list). The arithmetic is in site.js
-     (ESTIMATE CALCULATOR); the products and their per-sq-ft rates are CALC
-     in content.js — rates are blank until the client supplies them, and the
-     calculator then says the price is given on request rather than guess. -->
-<section class="light g-calc" aria-labelledby="calc-h">
-  <div class="wrap">
-    <div class="g-calc-grid">
-      <div class="g-calc-intro">
-        <h2 id="calc-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
-        <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
-      </div>
-      <form class="g-calc-form" id="calc" data-anim="fade" novalidate
-            data-rates='${esc(JSON.stringify(Object.fromEntries(CALC.products.map(p => [p.slug, p.rate]))))}'
-            data-coverage="${CALC.coverage}">
-        <h3 class="sub-h">Calculate Your Acoustic Solution</h3>
-        <p class="muted g-calc-sub">Choose your preferred product, enter your room dimensions, and get an instant estimated price based on your space.</p>
-        <fieldset class="g-calc-set">
-          <legend>Select Product</legend>
-          <div class="g-calc-opts">
-            ${CALC.products.map((p, i) => `<label class="g-calc-opt"><input type="radio" name="product" value="${p.slug}"${i === 0 ? ' checked' : ''}><span>${esc(p.name)}</span></label>`).join('\n            ')}
-          </div>
-        </fieldset>
-        <fieldset class="g-calc-set">
-          <legend>Enter Your Space Dimensions</legend>
-          <div class="g-calc-dims">
-            <div class="field"><label for="c-l">Length (ft)</label><input id="c-l" name="l" type="number" inputmode="decimal" min="0" step="0.1" required></div>
-            <div class="field"><label for="c-w">Width (ft)</label><input id="c-w" name="w" type="number" inputmode="decimal" min="0" step="0.1" required></div>
-            <div class="field"><label for="c-h">Height (ft)</label><input id="c-h" name="h" type="number" inputmode="decimal" min="0" step="0.1" required></div>
-          </div>
-        </fieldset>
-        <button class="btn btn-primary" type="submit">Get Your Estimate ${ARROW}</button>
-        <div class="g-calc-out" id="calc-out" role="status" aria-live="polite" hidden>
-          <div class="g-calc-res"><span>Area / Coverage Required</span><b id="calc-area">&mdash;</b><small id="calc-area-note"></small></div>
-          <div class="g-calc-res"><span>Estimated Total Price</span><b id="calc-price">&mdash;</b><small id="calc-price-note"></small></div>
-        </div>
-        <p class="g-calc-note"><b>Please Note:</b> The displayed price is an estimated material cost based on the dimensions provided. Final pricing may vary depending on product selection, design, installation requirements, site conditions, transportation and project specifications.</p>
-      </form>
-    </div>
   </div>
 </section>
 
