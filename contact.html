@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css?v=208b792f">
 <link rel="stylesheet" href="assets/css/motion.css?v=cde7630d">
-<link rel="stylesheet" href="assets/css/theme.css?v=3696ec57">
+<link rel="stylesheet" href="assets/css/theme.css?v=02a953ef">
 <link rel="icon" href="assets/img/favicon.png?v=6a9a7f53" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png?v=6a9a7f53">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
@@ -81,13 +81,9 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
      own words (7 Oct 2026 change list). The arithmetic is in site.js
      (ESTIMATE CALCULATOR); the products, the client's per-sq-ft rates and
      their coverage factor are CALC in content.js. -->
-<section class="light g-calc" aria-labelledby="calc-h">
+<section class="light g-calc" aria-label="Calculate your acoustic solution">
   <div class="wrap">
-    <div class="g-calc-grid">
-      <div class="g-calc-intro">
-        <h2 id="calc-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
-        <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
-      </div>
+    <div class="g-calc-grid is-solo">
       <form class="g-calc-form" id="calc" data-anim="fade" novalidate
             data-rates='{&quot;acoustic-polyester-panel&quot;:140,&quot;acoustic-printed-panel&quot;:200,&quot;acoustic-designer-panel&quot;:200,&quot;acoustic-foam&quot;:140}'
             data-coverage="0.7">
@@ -157,6 +153,13 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
             <p class="form-note">We reply within one working day. Prefer to talk? Call <a href="tel:+918108400566" style="color:inherit">+91 81084 00566</a> or WhatsApp <a href="https://wa.me/919004408289" target="_blank" rel="noopener" style="color:inherit">+91 90044 08289</a>.</p>
           </div>
         </form>
+        <!-- The calculator's heading and lead sit under the enquiry form, by
+             request (9 Oct 2026); the calculator itself stays first on the
+             page, under the page heading. -->
+        <div class="g-calc-intro g-calc-after">
+          <h2 id="calc-h" class="sub-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
+          <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
+        </div>
       </div>
 
       <div class="g-offices" data-stagger>

@@ -1813,3 +1813,9 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
   .g-car-ctl { flex-wrap: wrap; row-gap: 0.25rem; }
   .g-car-dots { order: -1; flex-basis: 100%; justify-content: center; flex-wrap: wrap; }
 }
+/* Contact (9 Oct 2026): the calculator runs alone at the top, so its card
+   takes a centred measure instead of the right half of a two-up grid; its
+   heading and lead sit under the enquiry form instead (.g-calc-after). */
+.g-calc-grid.is-solo { grid-template-columns: minmax(0, 52rem); justify-content: center; }
+.g-calc-after { margin-top: clamp(2rem, 4vw, 3rem); padding-top: clamp(1.5rem, 3vw, 2rem); border-top: 1px solid #DDE1E5; }
+.g-calc-after .muted { margin-top: 0.85rem; max-width: 52ch; }
