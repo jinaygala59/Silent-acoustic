@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/site.css?v=208b792f">
 <link rel="stylesheet" href="assets/css/motion.css?v=cde7630d">
-<link rel="stylesheet" href="assets/css/theme.css?v=897b9dc9">
+<link rel="stylesheet" href="assets/css/theme.css?v=6e9a6209">
 <link rel="icon" href="assets/img/favicon.png?v=6a9a7f53" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png?v=6a9a7f53">
 <meta property="og:image" content="https://silenceacoustic.com/assets/img/logo-full.png">
@@ -341,25 +341,43 @@ setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
   </div>
 </section>
 
-<!-- 3b · CAPACITY. A centred statement, on the same measurements as the (still
-     empty) vision band so the page's two single-statement sections read as
-     one shape rather than two near-misses.
-
-     CLIENT-SUPPLIED COPY, verbatim from the brief of 30 Sep 2026 — heading
-     and paragraph both. Nothing here was composed: see the provenance rule
-     in CLAUDE.md, which is wider than specs and covers section copy too.
-
-     '.light' puts it on #F3F4F7 between '.g-why''s white and the cyan band
-     below, so the page keeps alternating grounds and no two neighbours are
-     the same — read the sequence off the rendered background, not the class,
-     and re-check it if this section moves. NOTE: no backticks in this
-     comment; it lives inside a template literal and a backtick would end the
-     string (it already did once). -->
+<!-- 3b · OUR CORE STRENGTH (rewritten by request, 10 Oct 2026). CLIENT-
+     SUPPLIED COPY: the heading and all three paragraphs are verbatim from
+     their message. The step names (01-04) and the three aims in the panel
+     are phrases lifted from those same paragraphs, as labels — no new copy.
+     Layout (tightened by request, "it has become lengthy"): heading beside
+     the first paragraph; the four stages as a one-line numbered strip; the
+     second and third paragraphs side by side, the aims as one row. Still '.light'
+     (F3F4F7) between the white '.g-why' and the charcoal band. NOTE: no
+     backticks in this comment; it is inside a template literal. -->
 <section class="light g-capacity" aria-labelledby="capacity-h">
   <div class="wrap">
-    <p class="eyebrow" data-anim="fade">Our Core Strength</p>
-    <h2 id="capacity-h" data-anim="reveal">We Can Handle Multiple Projects Across Different Locations</h2>
-    <p class="muted g-capacity-body" data-anim="fade">With a strong team, streamlined processes, and reliable project management, we have the capacity to execute multiple acoustic projects simultaneously across different locations. From site assessment and acoustic planning to material supply and professional installation, we ensure every project is delivered with consistent quality, attention to detail, and timely execution.</p>
+    <div class="g-cap-top">
+      <div>
+        <p class="eyebrow" data-anim="fade">Our Core Strength</p>
+        <h2 id="capacity-h" data-anim="reveal">Proven Expertise in Managing and Delivering Acoustic Projects Across Regions</h2>
+      </div>
+      <p class="g-cap-lead" data-anim="fade">At Silence Acoustics, our strong technical team, streamlined execution processes, and robust project management systems enable us to handle multiple acoustic projects simultaneously—across cities, regions, and complex site conditions.</p>
+    </div>
+
+    <ol class="g-cap-steps" data-stagger>
+      <li data-anim="fade"><span class="g-cap-n">01</span><b>Site assessment</b></li>
+      <li data-anim="fade"><span class="g-cap-n">02</span><b>Acoustic planning</b></li>
+      <li data-anim="fade"><span class="g-cap-n">03</span><b>Material supply</b></li>
+      <li data-anim="fade"><span class="g-cap-n">04</span><b>Installation</b></li>
+    </ol>
+
+    <div class="g-cap-cols">
+      <p class="muted" data-anim="fade">From detailed site assessments and acoustic planning to engineered material supply and professional installation, every stage is executed with consistency, accuracy, and disciplined timelines.</p>
+      <div data-anim="fade">
+        <p class="muted">We go beyond standard execution by recommending the most suitable acoustic products based on the specific area, usage pattern, and performance requirements of each space. Our solutions are tailored to optimise sound isolation, absorption, and overall acoustic comfort, ensuring every project delivers measurable results and long‑term reliability.</p>
+        <ul class="g-cap-aims" aria-label="What each solution is tailored for">
+          <li><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Sound isolation</span></li>
+          <li><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Absorption</span></li>
+          <li><svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg><span>Acoustic comfort</span></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 

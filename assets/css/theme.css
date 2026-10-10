@@ -1395,21 +1395,46 @@ a.card:active { transform: none; box-shadow: none; }
 }
 .g-vision-more { max-width: 62ch; margin: 1.25rem auto 0; }
 
-/* CAPACITY — the page's other single-statement section, deliberately on the
-   same padding and the same centring as `.g-vision` above so the two read as
-   one shape. It differs in one way that matters: the vision band makes the
-   eyebrow its heading, and this has a real `h2` under a small eyebrow, so it
-   takes `.eyebrow` rather than `.center-eyebrow` (which is the larger, ink
-   treatment for when the eyebrow IS the heading) and only re-centres it. */
-.g-capacity { text-align: center; padding-block: clamp(4.5rem, 8vw, 7rem); }
-.g-capacity .eyebrow { align-items: center; }
+/* OUR CORE STRENGTH (10 Oct 2026, tightened the same day: "it has become
+   lengthy"). Heading beside the opening paragraph; the four stages as a
+   one-line numbered strip; the other two paragraphs side by side, with the
+   three aims as a single row. Left-aligned, unlike the centred vision band. */
+.g-capacity { padding-block: clamp(3.5rem, 6vw, 5rem); }
+.g-cap-top { display: grid; gap: 1.25rem clamp(2rem, 5vw, 4.5rem); }
+@media (min-width: 60rem) { .g-cap-top { grid-template-columns: 1.1fr 1fr; align-items: end; } }
 .g-capacity h2 {
-  max-width: 24ch; margin: 1.5rem auto 0;
+  max-width: 24ch; margin: 1.25rem 0 0;
   font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.4rem);
 }
-/* 68ch, not `.g-vision-more`'s 62 — this paragraph is half as long again and
-   62 left it as five narrow lines under a wide heading. */
-.g-capacity-body { max-width: 68ch; margin: 1.5rem auto 0; }
+.g-cap-lead {
+  margin: 0; color: #303030;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.7;
+}
+
+/* the four stages: one compact line each, joined by the accent rule */
+.g-cap-steps {
+  list-style: none; margin: clamp(2rem, 4vw, 2.75rem) 0 0; padding: 0;
+  display: grid; gap: 0.5rem; grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 48rem) { .g-cap-steps { grid-template-columns: repeat(4, 1fr); gap: 0; } }
+.g-cap-steps li {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  padding: 0.95rem 1.1rem; background: #FFFFFF; border-top: 3px solid var(--accent);
+}
+@media (min-width: 48rem) { .g-cap-steps li + li { border-left: 1px solid #E3E8EB; } }
+.g-cap-n {
+  font-size: 1.375rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+  color: var(--brand); font-variant-numeric: tabular-nums;
+}
+.g-cap-steps b { font-size: 0.9375rem; font-weight: 600; color: #1A1A1A; }
+
+/* the other two paragraphs, side by side */
+.g-cap-cols { display: grid; gap: 1.25rem clamp(2rem, 5vw, 4.5rem); margin-top: clamp(1.5rem, 3vw, 2rem); }
+@media (min-width: 60rem) { .g-cap-cols { grid-template-columns: 1fr 1fr; } }
+.g-cap-cols p { margin: 0; }
+.g-cap-aims { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.g-cap-aims li { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9375rem; color: #1A1A1A; }
+.g-cap-aims .g-check { margin-top: 0; }
 
 
 /* ==========================================================================
