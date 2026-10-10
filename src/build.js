@@ -124,10 +124,32 @@ if(c){d.classList.add(c);
 setTimeout(function(){if(!d.dataset.mo)d.classList.remove(c)},6000)}}catch(e){}
 })(document.documentElement)</script>`;
 
+/* THE ADDRESS GOOGLE SEES. vercel.json serves every page with cleanUrls, so
+   /about.html answers with a 308 to /about — a canonical, og:url or sitemap
+   entry naming the .html file points search engines at a redirect. Every
+   one of those goes through cleanUrl(); the homepage is the bare domain.
+   (Internal links still say .html and are redirected the same way; the
+   page-to-page curtain in site.js keys on .html, so they were left.) */
+const cleanUrl = (file) => file === 'index.html'
+  ? `${SITE.url}/`
+  : `${SITE.url}/${file.replace(/\.html$/, '')}`;
+
+/* Site-wide structured data. SEO pass, 10 Oct 2026: "manufacture" came out
+   of the description (the client removed the manufacturing claim from the
+   site), and the business now names its logo, its founding year, its
+   founder and its own social profiles (SITE.social) — all facts already
+   published on the site. The same no-invention test applies here as on the
+   page: nothing goes in that a visitor could not already read. */
 const jsonLd = () => JSON.stringify({
   '@context': 'https://schema.org', '@type': 'LocalBusiness',
-  name: SITE.name, url: SITE.url, telephone: SITE.phone, email: SITE.email,
-  description: 'Acoustic treatment, acoustic panels and soundproofing. Design, manufacture and installation across India, from Mumbai.',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name, url: `${SITE.url}/`, telephone: SITE.phone, email: SITE.email,
+  logo: `${SITE.url}/assets/img/logo-full.png`,
+  image: `${SITE.url}/assets/img/logo-full.png`,
+  description: 'Acoustic treatment, acoustic panels and soundproofing — supplied and installed across India from Mumbai since 2006.',
+  foundingDate: '2006',
+  founder: { '@type': 'Person', name: 'Ravi Sebastian' },
+  sameAs: (SITE.social || []).map(x => x.href),
   /* Locality only, to match the footer. streetAddress and postalCode were
      here and are deliberately gone: the request was that the site show the
      city and state, and a street address in the page source is still
@@ -246,9 +268,13 @@ function footer(depth) {
   </footer>`;
 }
 
-function page({ file, title, desc, active, body, depth = 0 }) {
+/* `schema` is extra JSON-LD objects for this page (Product, BreadcrumbList,
+   FAQPage, BlogPosting); `image` is an absolute or site-relative path for the
+   share card; `noindex` keeps a page (the 404) out of search. */
+function page({ file, title, desc, active, body, depth = 0, schema = [], image = '', noindex = false }) {
   const up = depth ? '../' : '';
-  const canonical = `${SITE.url}/${file}`;
+  const canonical = cleanUrl(file);
+  const ogImage = image ? (image.startsWith('http') ? image : `${SITE.url}/${image}`) : `${SITE.url}/assets/img/logo-full.png`;
   const html = `<!doctype html>
 <html lang="en" class="no-js">
 <head>
@@ -256,7 +282,7 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<link rel="canonical" href="${canonical}">
+${noindex ? '<meta name="robots" content="noindex, follow">' : `<link rel="canonical" href="${canonical}">`}
 <meta name="theme-color" content="#1CABDE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE.name}">
@@ -264,6 +290,8 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${canonical}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
@@ -272,9 +300,11 @@ function page({ file, title, desc, active, body, depth = 0 }) {
 <link rel="stylesheet" href="${up}${asset('assets/css/theme.css')}">
 <link rel="icon" href="${up}${asset('assets/img/favicon.png')}" type="image/png">
 <link rel="apple-touch-icon" href="${up}${asset('assets/img/favicon.png')}">
-<meta property="og:image" content="${SITE.url}/assets/img/logo-full.png">
+<meta property="og:image" content="${ogImage}">
+<meta property="og:locale" content="en_IN">
 ${HEAD_BOOT}
 <script type="application/ld+json">${jsonLd()}</script>
+${schema.map(o => `<script type="application/ld+json">${JSON.stringify(Object.assign({ '@context': 'https://schema.org' }, o)).replace(/</g, '\\u003c')}</script>`).join('\n')}
 </head>
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
@@ -521,4 +551,4 @@ const ctaBand = (up = '') => `<section class="cta-band g-tint">
   </div>
 </section>`;
 
-module.exports = { ROOT, esc, ARROW, asset, page, productCard, famRail, railPicks, ctaBand, header, footer, nrcBar, nrcOf, roomdex, MAT };
+module.exports = { cleanUrl, ROOT, esc, ARROW, asset, page, productCard, famRail, railPicks, ctaBand, header, footer, nrcBar, nrcOf, roomdex, MAT };

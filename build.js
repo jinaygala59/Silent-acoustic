@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { SITE } = require('./src/content.js');
 const built = require('./src/pages.js');
+const { cleanUrl } = require('./src/build.js');
 /* The design board writes itself but deliberately stays out of `built`,
    so it never reaches the sitemap. It is an internal reference page. */
 const board = require('./src/designboard.js');
@@ -19,7 +20,7 @@ const priority = f =>
 const urls = built
   .filter(f => f !== '404.html')
   .map(f => `  <url>
-    <loc>${SITE.url}/${f}</loc>
+    <loc>${cleanUrl(f)}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${priority(f)}</priority>

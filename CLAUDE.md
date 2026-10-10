@@ -50,6 +50,28 @@ family's own `img` field already names its most recognisable member, so
 ten and not nineteen because the pin scales at 200px of scroll per card
 (`--rail-n`, clamped 900–2600px) and nineteen would want ~4800px.
 
+## SEO conventions (10 Oct 2026 pass)
+
+- **Canonical, `og:url` and sitemap use clean URLs** via `cleanUrl()` in
+  `src/build.js` (`/about`, homepage `/`), because `vercel.json` has
+  `cleanUrls` and answers every `.html` address with a 308. Never put a
+  `.html` URL back in any of them. Internal links still say `.html` (the
+  page curtain in `site.js` keys on it) and are redirected.
+- **`page()` takes `schema` (extra JSON-LD objects), `image` (share card)
+  and `noindex`.** Products emit `Product` + `BreadcrumbList`; the blog emits
+  `FAQPage`; the article emits `BlogPosting`; the 404 is `noindex`. Every
+  schema value is read from data already printed on the page. Product uses
+  `brand`, **not `manufacturer`** — the manufacturing claim is removed.
+- **Titles follow "<thing> in Mumbai | Silence Acoustic"** on commercial
+  pages (competitor research showed Mumbai-intent titles winning). Keep
+  titles ≤ 62 characters and descriptions ≤ 160; product descriptions are
+  generated from `tag` + the published NRC.
+- **The homepage `<h1>` is the intro's "Silence Acoustic"**; the banner
+  slider runs with `heroSlider(..., false)` so no slogan is the main heading.
+- `SITE.url` is `https://silenceacoustic.com`, so the vercel.app staging copy
+  canonicalises to the real domain — intended, and it keeps the staging site
+  out of the index as a duplicate.
+
 ## The 8 Oct 2026 change list ("website changes 3", Word document)
 
 - **No NRC bar anywhere on the product pages** — not on the cards

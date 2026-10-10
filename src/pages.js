@@ -1,7 +1,7 @@
 const C = require('./content.js');
 const B = require('./build.js');
 const { CALC, SITE, CLIENTS, BANNERS, FOUNDER, ABOUT_INTRO, VISION, NAV, CATEGORIES, PRODUCTS, SECTORS, PROCESS, TESTIMONIALS, PROJECTS, POSTS, FAQ } = C;
-const { esc, ARROW, asset, page, productCard, railPicks, ctaBand, nrcBar } = B;
+const { cleanUrl, esc, ARROW, asset, page, productCard, railPicks, ctaBand, nrcBar } = B;
 
 /* "20+ yrs" was typed, next to "since 2006" which is the client's published
    fact. Two ways of saying the same thing, one of which goes stale on its own:
@@ -261,10 +261,13 @@ const heroSlider = (slides, h1 = true) => `<section class="hero">
    and you must change the other in the same edit. */
 built.push(page({
   file: 'index.html', active: 'index.html',
-  title: 'Silence Acoustic — Acoustic Treatment & Soundproofing, Mumbai',
-  desc: 'Acoustic panels, ceilings, foam and soundproofing for auditoriums, studios, offices and homes. Designed, made and installed by our own team in Mumbai.',
+  /* SEO pass, 10 Oct 2026. "Designed, made and installed by our own team"
+     came out: "made" is the manufacturing claim the client removed. */
+  title: 'Acoustic Panels & Soundproofing in Mumbai | Silence Acoustic',
+  desc: 'Acoustic panels, ceilings, foam and soundproofing for auditoriums, studios, offices and home theatres in Mumbai. 2035+ projects since 2006.',
+  image: `assets/img/banners/${BANNERS[0].img}.webp`,
   body: `
-${heroSlider(BANNERS.map(b => ({ src: `assets/img/banners/${b.img}.webp`, w: b.w, h: b.h, sector: b.sector, title: b.title })))}
+${heroSlider(BANNERS.map(b => ({ src: `assets/img/banners/${b.img}.webp`, w: b.w, h: b.h, sector: b.sector, title: b.title })), false)}
 
 <!-- 1 · INTRO. Copy over a photograph that fills the right half. -->
 <section class="g-intro" aria-labelledby="intro-h">
@@ -273,7 +276,11 @@ ${heroSlider(BANNERS.map(b => ({ src: `assets/img/banners/${b.img}.webp`, w: b.w
   </div>
   <div class="wrap">
     <div class="g-intro-copy">
-      <h2 id="intro-h" data-anim="reveal">${esc(SITE.name)}</h2>
+      <!-- The page's h1 (SEO pass, 10 Oct 2026). It used to be the first
+           banner slogan, "Silence That Speaks Style", which names neither
+           the business nor what it does; the slider now carries no heading
+           semantics and this, the brand, is the main heading. -->
+      <h1 id="intro-h" class="g-intro-h" data-anim="reveal">${esc(SITE.name)}</h1>
       <p class="muted" data-anim="fade">${esc(FOUNDER.home)}</p>
       <div class="row" data-anim="fade"><a class="btn btn-primary" href="about.html">About us ${ARROW}</a></div>
     </div>
@@ -456,6 +463,14 @@ ${workBand()}
    items, and the accent-tinted contact band at the foot (`ctaBand()`).
    Only the layout was taken. All copy below was already on this site. */
 
+/* SEO pass, 10 Oct 2026: page-level structured data. Every value is read
+   from data that is already printed on the page — names, specs, FAQ text,
+   dates — so the markup cannot say anything the page does not. */
+const crumbs = (...items) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map(([name, file], i) => ({ '@type': 'ListItem', position: i + 1, name, item: cleanUrl(file) })),
+});
+
 /* The light page intro. `img` puts a photograph in the right half. */
 const gHead = ({ eyebrow, h1, lead = '', img = '', imgAlt = '', extra = '', center = false, up = '' }) => `
 <section class="g-head${img ? ' has-img' : ''}${center ? ' is-center' : ''}">
@@ -518,14 +533,16 @@ const projTile = (pr, up = '') => `<li class="g-pj" data-anim="open" data-sector
      were removed. */
 built.push(page({
   file: 'products.html', active: 'products.html',
-  title: 'Acoustic Panels & Soundproofing Products | Silence Acoustic',
+  schema: [crumbs(['Home', 'index.html'], ['Products', 'products.html'])],
+  title: 'Acoustic Products in Mumbai: Panels, Ceilings & Soundproofing',
+  image: `assets/img/products/${PRODUCTS[0].heroImg}.webp`,
   desc: 'Acoustic products: PET panels, ceiling clouds and baffles, foam, wood wool, slats, mass-loaded vinyl, soundproof doors and windows. Silence Acoustic, Mumbai.',
   body: `
 <!-- 8 Oct 2026, by request: the page opens on the homepage's products
      carousel, not the banner slider. The page's h1 heads it. -->
 <section class="g-products g-products-top" aria-labelledby="products-h1">
   <div class="wrap">
-    <h1 id="products-h1" data-anim="reveal">Products</h1>
+    <h1 id="products-h1" data-anim="reveal">Acoustic Products</h1>
     ${productCarousel()}
   </div>
 </section>
@@ -554,8 +571,28 @@ PRODUCTS.forEach(p => {
   const related = PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 3);
   built.push(page({
     file: `products/${p.slug}.html`, active: 'products.html', depth: 1,
-    title: `${p.name} | Silence Acoustic, Mumbai`,
-    desc: `${p.name}: ${p.tag}. Supplied and installed across India by Silence Acoustic, Mumbai.`,
+    image: `assets/img/products/${p.heroImg}.webp`,
+    schema: [
+      {
+        '@type': 'Product', name: p.name, description: p.lead, category: cat.name,
+        url: cleanUrl(`products/${p.slug}.html`),
+        image: [...new Set([p.heroImg, ...(p.shots || []).map(n => `${p.slug}-${n}`)])].map(f => `${SITE.url}/assets/img/products/${f}.webp`),
+        /* brand, not manufacturer: the client removed the manufacturing
+           claim from the site, so the markup does not make it either. */
+        brand: { '@type': 'Brand', name: SITE.name },
+        additionalProperty: Object.entries(p.specs).map(([k, v]) => ({ '@type': 'PropertyValue', name: k, value: v })),
+      },
+      crumbs(['Home', 'index.html'], ['Products', 'products.html'], [p.name, `products/${p.slug}.html`]),
+    ],
+    title: `${p.name} in Mumbai | Silence Acoustic`,
+    desc: (() => {
+      const nrc = p.specs.NRC ? `, NRC ${p.specs.NRC}` : '';
+      /* lower-case the tag's first letter for mid-sentence use, but never an
+         acronym ("PET felt board", "CNC-cut") */
+      const tag = /^[A-Z][a-z]/.test(p.tag) ? p.tag.charAt(0).toLowerCase() + p.tag.slice(1) : p.tag;
+      const d = `${p.name} in Mumbai — ${tag}${nrc}. Supplied and installed by Silence Acoustic since 2006.`;
+      return d.length <= 160 ? d : `${p.name} in Mumbai — ${tag}. Supplied and installed by Silence Acoustic.`;
+    })(),
     body: `
 <section class="night pd-top">
   <div class="wrap">
@@ -642,8 +679,9 @@ ${related.length ? `<section class="dark pd-related">
 /* =============================== PROJECTS =============================== */
 built.push(page({
   file: 'projects.html', active: 'projects.html',
-  title: 'Projects & Room Types | Silence Acoustic',
-  desc: 'Acoustic treatment for auditoriums, recording studios, offices, schools, sports halls, hotels and home theatres. Each room designed to its own target.',
+  schema: [crumbs(['Home', 'index.html'], ['Projects', 'projects.html'])],
+  title: 'Acoustic Projects in Mumbai & India | Silence Acoustic',
+  desc: 'Completed acoustic treatment and soundproofing projects: auditoriums, recording studios, offices, conference rooms, home theatres, hotels and more.',
   body: `
 ${gHead({
   /* CLIENT-SUPPLIED COPY, verbatim from the 7 Oct 2026 change list. */
@@ -699,8 +737,10 @@ ${gHead({
    strip of logos · a two-part story with figures · the contact band. */
 built.push(page({
   file: 'about.html', active: 'about.html',
-  title: 'About Silence Acoustic — Acoustics, Mumbai',
-  desc: 'Two decades of expertise in acoustic products and solutions. Acoustic treatment, soundproofing and high-performance acoustic products across offices, auditoriums, studios and hospitality, with 2035+ projects delivered across India.',
+  schema: [crumbs(['Home', 'index.html'], ['About', 'about.html'])],
+  title: 'About Silence Acoustic — Mumbai Acoustic Experts Since 2006',
+  desc: '20+ years in acoustics and soundproofing under founder Ravi Sebastian, with 2,035+ projects across offices, auditoriums, studios and hospitality.',
+  image: 'assets/img/about/recording-studio-control-room.webp',
   body: `
 <section class="light g-story">
   <div class="wrap">
@@ -758,6 +798,10 @@ ${visionBand()}
 /* The FAQ takes the reference's accordion rows. <details> needs no script. */
 built.push(page({
   file: 'blog.html', active: 'blog.html',
+  schema: [
+    { '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    crumbs(['Home', 'index.html'], ['Blog', 'blog.html']),
+  ],
   title: 'Acoustics Blog & Guides | Silence Acoustic',
   desc: 'Plain-language notes on room acoustics from Silence Acoustic, Mumbai — starting with a beginner\'s guide to acoustic polyester panels and how they work.',
   body: `
@@ -815,8 +859,23 @@ const blocks = (body) => body.map(b => {
 POSTS.forEach(post => {
   built.push(page({
     file: `${post.slug}.html`, active: 'blog.html',
-    title: `${post.t.replace(/\s*—.*$/, '')} | Silence Acoustic`.slice(0, 62),
-    desc: post.d.slice(0, 158),
+    /* The old title was sliced at 62 characters and ended mid-word ("A Beg").
+       The question is the part people search for, so it keeps that and
+       drops the subtitle after the question mark. */
+    title: `${post.t.split('?')[0]}?`.length < 70 ? `${post.t.split('?')[0]}?` : post.t,
+    desc: post.d.length > 158 ? post.d.slice(0, post.d.lastIndexOf(' ', 155)) + '…' : post.d,
+    image: 'assets/img/products/acoustic-polyester-panel-hero.webp',
+    schema: [
+      {
+        '@type': 'BlogPosting', headline: post.t, description: post.d,
+        datePublished: post.date, dateModified: post.date,
+        url: cleanUrl(`${post.slug}.html`), mainEntityOfPage: cleanUrl(`${post.slug}.html`),
+        author: { '@type': 'Organization', name: SITE.name, url: `${SITE.url}/` },
+        publisher: { '@id': `${SITE.url}/#business` },
+        image: `${SITE.url}/assets/img/products/acoustic-polyester-panel-hero.webp`,
+      },
+      crumbs(['Home', 'index.html'], ['Blog', 'blog.html'], [post.t, `${post.slug}.html`]),
+    ],
     body: `
 ${gHead({
   eyebrow: `${esc(post.tag)} &middot; ${esc(post.read)} read`, h1: esc(post.t),
@@ -858,8 +917,9 @@ const mapEmbed = 'https://maps.google.com/maps?q=' + encodeURIComponent(SITE.map
 const roomOptions = SECTORS.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('\n              ');
 built.push(page({
   file: 'contact.html', active: 'contact.html',
-  title: 'Contact Us | Silence Acoustic',
-  desc: 'Contact Silence Acoustic, Mumbai. Call +91 81084 00566, WhatsApp, or send your room details — and get an instant acoustic estimate.',
+  schema: [crumbs(['Home', 'index.html'], ['Contact', 'contact.html'])],
+  title: 'Contact Silence Acoustic, Mumbai | Get an Acoustic Estimate',
+  desc: 'Call +91 81084 00566, WhatsApp, or send your room details to Silence Acoustic, Mumbai — and get an instant acoustic estimate online.',
   body: `
 <!-- INSTANT ESTIMATE. First on the page, above the heading and the enquiry form, by request (9 Oct 2026: "this will come up"). Every heading, label and the note are the client's
      own words (7 Oct 2026 change list). The arithmetic is in site.js
@@ -1003,7 +1063,7 @@ built.push(page({
 
 /* ================================== 404 ================================= */
 built.push(page({
-  file: '404.html', active: '',
+  file: '404.html', active: '', noindex: true,
   title: 'Page not found — Silence Acoustic',
   desc: 'That page does not exist. Find acoustic panels, ceilings, foam, wood and soundproofing in the product catalogue.',
   body: gHead({
