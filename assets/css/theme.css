@@ -394,6 +394,12 @@ a.card:active { transform: none; box-shadow: none; }
 /* ------------------------------- floats -------------------------------- */
 .float { border-radius: 0; background: #FFFFFF; color: var(--brand); box-shadow: 0 8px 24px -12px rgba(0,0,0,0.35); }
 .float:hover { background: var(--accent); color: #14181B; }
+/* product pages: the bottom-left float is a labelled "Back to Products
+   Page" link instead of the back-to-top arrow (10 Oct 2026) */
+.float.float-back {
+  width: auto; padding: 0 1.15rem; text-decoration: none; white-space: nowrap;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+}
 .float-wa { background: var(--night); color: var(--on-night); }
 
 :focus-visible { outline-color: var(--accent); }
@@ -1752,16 +1758,21 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
   }
 }
 
-/* PRODUCT DETAIL: the way back to the catalogue, above the eyebrow. */
+/* PRODUCT DETAIL: the way back to the catalogue, above the eyebrow.
+   A labelled button, "Back to Products Page", not an arrow link (by
+   request, 10 Oct 2026). Outlined in white on the charcoal intro; fills
+   white with dark ink on hover — colour only, so it cannot latch on touch. */
 .pd-back {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  margin-bottom: 1.5rem; font-size: 0.8125rem; font-weight: 600;
+  display: inline-flex; align-items: center; min-height: 2.75rem;
+  padding: 0.7rem 1.25rem; margin-bottom: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  font-size: 0.8125rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--on-night); text-decoration: none;
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
-.pd-back svg { transition: translate 260ms ease; }
-.pd-back:hover { color: var(--accent); }
-@media (hover: hover) and (pointer: fine) { .pd-back:hover svg { translate: -4px 0; } }
+.pd-back:hover { background: #FFFFFF; border-color: #FFFFFF; color: #14181B; }
+.pd-back:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
 /* PRODUCTS PAGE: centred heading over centred family filters. */
 .filters.center-row { justify-content: center; }

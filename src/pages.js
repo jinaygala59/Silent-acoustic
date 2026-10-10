@@ -550,7 +550,7 @@ PRODUCTS.forEach(p => {
       <div class="pd-top-copy">
         <!-- "Once you open a product there should be an option to go back to
              the product page" (7 Oct 2026). -->
-        <a class="pd-back" href="../products.html" data-in style="--d:0"><svg width="13" height="9" viewBox="0 0 13 9" fill="none" aria-hidden="true"><path d="M4.6.6.7 4.5l3.9 3.9M1 4.5h11.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Back to products</a>
+        <a class="pd-back" href="../products.html" data-in style="--d:0">Back to Products Page</a>
         <p class="eyebrow" data-in style="--d:60">${esc(cat.name)}</p>
         <h1 data-in style="--d:170">${esc(p.name)}</h1>
         <p class="lead" data-in style="--d:280">${esc(p.tag)}</p>

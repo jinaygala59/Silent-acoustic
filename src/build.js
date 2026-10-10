@@ -290,12 +290,18 @@ ${footer(depth)}
      calls to action. Left/right split so neither can sit under a thumb
      reaching for the other. -->
 <div class="floats" aria-hidden="false">
-  <button class="float float-top" type="button" aria-label="Back to top">
+  ${file.startsWith('products/')
+    /* On a product page the bottom-left control is the way back to the
+       catalogue, not back-to-top (by request, 10 Oct 2026). Same float,
+       same show-once-scrolled behaviour; a plain link, so it works with
+       no script at all. */
+    ? `<a class="float float-back" href="${up}products.html">Back to Products Page</a>`
+    : `<button class="float float-top" type="button" aria-label="Back to top">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-  </button>
+  </button>`}
   <a class="float float-wa" href="${SITE.waHref}" target="_blank" rel="noopener"
      aria-label="Chat with us on WhatsApp">
     <!-- The WhatsApp pictogram (by request, 1 Oct 2026): a white speech
