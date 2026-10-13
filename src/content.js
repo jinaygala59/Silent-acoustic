@@ -913,6 +913,10 @@ const PROJECTS = [
   { s: 'arrcus-prestige-tech-park-bengaluru', n: 'Arrcus Prestige Tech Park', l: 'Bengaluru', sec: 'Office Space' },
   { s: 'ambit-house-worli', n: 'Ambit House', l: 'Worli', sec: 'Office Space' },
   { s: 'accenture-bangalore', n: 'Accenture', l: 'Bangalore', sec: 'Office Space' },
+  /* Supplied directly by the client on 13 Oct 2026 with the caption
+     "Warner Music Studio, Andheri"; first in its room type, so it is also
+     the Recording Studio tile on the homepage. */
+  { s: 'warner-music-studio-andheri', n: 'Warner Music Studio', l: 'Andheri', sec: 'Recording Studio' },
   { s: '3n-studio-andheri-mumbai', n: '3n Studio Andheri', l: 'Mumbai', sec: 'Recording Studio' },
   { s: 'varsha-bungalow-mumbai', n: 'Varsha Bungalow', l: 'Mumbai', sec: 'Recording Studio' },
   { s: 'tiger-studio-mumbai', n: 'Tiger Studio', l: 'Mumbai', sec: 'Recording Studio' },
