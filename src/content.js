@@ -284,12 +284,15 @@ const CATEGORIES = [
 /* The PET board behind most of the panel and ceiling range. Their product pages
    publish this same block for polyester, tile, designer, printed, cloud and
    baffle — those products are all made from it. */
+/* Weight and density updated by the client, 14 Oct 2026: 5.5 / 7.5 kg per
+   panel and 205 / 210 kg/m³ (9 / 12 mm), replacing 4 / 5 kg and
+   150.5 / 200.6 kg/m³. Parametric Design's polyester rows follow suit. */
 const PET = {
   'Material': '100% polyester fibre, recycled PET',
   'Panel size': '2420 × 1220 mm',
   'Thickness': '9 mm / 12 mm',
-  'Weight': '4 kg (9 mm) / 5 kg (12 mm) per panel',
-  'Density': '150.5 kg/m³ (9 mm) / 200.6 kg/m³ (12 mm)',
+  'Weight': '5.5 kg (9 mm) / 7.5 kg (12 mm) per panel',
+  'Density': '205 kg/m³ (9 mm) / 210 kg/m³ (12 mm)',
   'NRC': 'up to 0.6 (9 mm) / up to 0.85 (12 mm)',
 };
 
@@ -387,8 +390,8 @@ const PRODUCTS = [
       'Material': '100% polyester fibre, recycled PET',
       'Panel size': '2400 × 1200 mm',
       'Thickness': '9 mm / 12 mm',
-      'Weight': '4 kg (9 mm) / 5 kg (12 mm) per panel',
-      'Density': '150.5 kg/m³ (9 mm) / 200.6 kg/m³ (12 mm)',
+      'Weight': '5.5 kg (9 mm) / 7.5 kg (12 mm) per panel',
+      'Density': '205 kg/m³ (9 mm) / 210 kg/m³ (12 mm)',
       'NRC': 'up to 0.6 (9 mm) / up to 0.85 (12 mm)',
     },
     apps: ['Open-plan offices', 'Call centres', 'Co-working', 'Libraries'],
@@ -422,8 +425,8 @@ const PRODUCTS = [
       'Expect a longer lead time than a flat panel; the cutting alone runs to several days on a large ceiling. Plan the site sequence around it.',
     ],
     specs: {
-      'Polyester 9 mm': '2420 × 1220 mm · 4 kg/panel · 150.5 kg/m³ · NRC up to 0.6',
-      'Polyester 12 mm': '2420 × 1220 mm · 5 kg/panel · 200.6 kg/m³ · NRC up to 0.85',
+      'Polyester 9 mm': '2420 × 1220 mm · 5.5 kg/panel · 205 kg/m³ · NRC up to 0.6',
+      'Polyester 12 mm': '2420 × 1220 mm · 7.5 kg/panel · 210 kg/m³ · NRC up to 0.85',
       'MDF 8–12 mm': '2440 × 1220 mm · 680–780 kg/m³',
       'Acrylic 6–12 mm': '2440 × 1220 mm · 1.18–1.20 g/cm³',
       'Input': '3D model or DXF',
