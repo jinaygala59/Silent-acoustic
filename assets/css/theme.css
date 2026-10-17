@@ -1846,8 +1846,13 @@ html.hero-reveal .hero + * { box-shadow: 0 -28px 44px -26px rgba(14, 26, 31, 0.5
   .g-car-dots { order: -1; flex-basis: 100%; justify-content: center; flex-wrap: wrap; }
 }
 /* Contact (9 Oct 2026): the calculator runs alone at the top, so its card
-   takes a centred measure instead of the right half of a two-up grid; its
-   heading and lead sit under the enquiry form instead (.g-calc-after). */
+   takes a centred measure instead of the right half of a two-up grid.
+   `.g-calc-after` — the heading and lead under the enquiry form — is gone:
+   they sit above the card again (17 Oct 2026). */
 .g-calc-grid.is-solo { grid-template-columns: minmax(0, 52rem); justify-content: center; }
-.g-calc-after { margin-top: clamp(2rem, 4vw, 3rem); padding-top: clamp(1.5rem, 3vw, 2rem); border-top: 1px solid #DDE1E5; }
-.g-calc-after .muted { margin-top: 0.85rem; max-width: 52ch; }
+/* Centred on the card's own measure, so the heading sits over the card
+   rather than over the full gutter-to-gutter width. */
+.g-calc-lead {
+  max-width: 52rem; margin: 0 auto clamp(1.75rem, 3.5vw, 2.5rem);
+}
+.g-calc-lead .muted { margin-top: 0.85rem; max-width: 56ch; }

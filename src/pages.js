@@ -921,12 +921,19 @@ built.push(page({
   title: 'Contact Silence Acoustic, Mumbai | Get an Acoustic Estimate',
   desc: 'Call +91 81084 00566, WhatsApp, or send your room details to Silence Acoustic, Mumbai — and get an instant acoustic estimate online.',
   body: `
-<!-- INSTANT ESTIMATE. First on the page, above the heading and the enquiry form, by request (9 Oct 2026: "this will come up"). Every heading, label and the note are the client's
+<!-- INSTANT ESTIMATE. First on the page. Its heading and lead sit ABOVE the
+     calculator card (17 Oct 2026) — they were moved below the enquiry form on
+     9 Oct and moved back here; the calculator itself has been first on the
+     page throughout. Every heading, label and the note are the client's
      own words (7 Oct 2026 change list). The arithmetic is in site.js
      (ESTIMATE CALCULATOR); the products, the client's per-sq-ft rates and
      their coverage factor are CALC in content.js. -->
-<section class="light g-calc" aria-label="Calculate your acoustic solution">
+<section class="light g-calc" aria-labelledby="calc-h">
   <div class="wrap">
+    <div class="g-calc-intro g-calc-lead">
+      <h2 id="calc-h" class="sub-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
+      <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
+    </div>
     <div class="g-calc-grid is-solo">
       <form class="g-calc-form" id="calc" data-anim="fade" novalidate
             data-rates='${esc(JSON.stringify(Object.fromEntries(CALC.products.map(p => [p.slug, p.rate]))))}'
@@ -994,13 +1001,6 @@ built.push(page({
             <p class="form-note">We reply within one working day. Prefer to talk? Call <a href="tel:${SITE.phoneHref}" style="color:inherit">${SITE.phone}</a> or WhatsApp <a href="${SITE.waHref}" target="_blank" rel="noopener" style="color:inherit">${SITE.wa}</a>.</p>
           </div>
         </form>
-        <!-- The calculator's heading and lead sit under the enquiry form, by
-             request (9 Oct 2026); the calculator itself stays first on the
-             page, under the page heading. -->
-        <div class="g-calc-intro g-calc-after">
-          <h2 id="calc-h" class="sub-h" data-anim="reveal">Get an Instant Acoustic Estimate</h2>
-          <p class="muted" data-anim="fade">Tell us about your space. Enter the length, width and height below to get an estimated quantity and pricing for your selected acoustic solution.</p>
-        </div>
       </div>
 
       <div class="g-offices" data-stagger>
