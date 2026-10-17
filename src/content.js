@@ -798,7 +798,7 @@ const PROJECTS = [
   { s: 'euroschool-balkum-thane', n: 'EuroSchool', l: 'Balkum Thane', sec: 'Auditorium & Halls' },
   { s: 'ckp-club-khar-mumbai', n: 'CKP Club', l: 'Khar Mumbai', sec: 'Auditorium & Halls' },
   { s: 'bnhs-bombay-mumbai', n: 'BNHS Bombay', l: 'Mumbai', sec: 'Auditorium & Halls' },
-  { s: 'bharmakunari-vasai', n: 'Bharmakunari', l: 'Vasai', sec: 'Auditorium & Halls' },
+  { s: 'bharmakunari-vasai', n: 'Prajapati Brahmakumari', l: 'Vasai', sec: 'Auditorium & Halls' },
   { s: 'barc-mankhud', n: 'BARC', l: 'Mankhud', sec: 'Auditorium & Halls' },
   { s: 'balasaheb-thackeray-rashtriya-smarak-dadar', n: 'Balasaheb Thackeray Rashtriya Smarak', l: 'Dadar', sec: 'Auditorium & Halls' },
   { s: 'accenture-vikroli', n: 'Accenture', l: 'Vikroli', sec: 'Classroom & Training Rooms' },
